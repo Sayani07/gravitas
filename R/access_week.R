@@ -22,7 +22,7 @@ first_day_of_month_wday <- function(dy) {
   wday(first_day_month)
 }
 
-sem_day <- function(x) {
+d_sem <- function(x) {
    which_sem <- semester(x)
    day_x <- yday(x)
    year_leap <- leap_year(x)
@@ -43,6 +43,6 @@ w_q = function(x)
 
 w_sem = function(x)
 {
-  ceiling((sem_day(x))/ 7)
+  ceiling((d_sem(x))/ 7)
 }
 
