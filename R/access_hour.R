@@ -29,3 +29,27 @@ h_m  =  function(x)
   hour_month
 }
 
+
+h_q = function(x)
+
+{
+  day_quarter <- lubridate::quarter(x)
+  hour_quarter <- lubridate::hour(x) + 24*(day_quarter-1)
+  hour_quarter
+}
+
+h_sem = function(x)
+
+{
+  day_semester <- lubridate::semester(x)
+  hour_semester <- lubridate::hour(x) + 24*(day_semester-1)
+  hour_semester
+}
+
+h_y = function(x)
+
+{
+  day_year <- lubridate::yday(x)
+  hour_year <- lubridate::hour(x) + 24*(day_year-1)
+  hour_year
+}
