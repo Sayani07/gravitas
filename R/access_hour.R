@@ -15,22 +15,21 @@
 #' hour_week(today())
 #' }
 #' @export
-h_w = function(x)
+hh_w = function(x)
 {
   day_week <- lubridate::wday(x)
   hour_week <- lubridate::hour(x) + 24*(day_week-1)
   hour_week
 }
 
-h_m  =  function(x)
+hh_m  =  function(x)
 {
   day_month <- lubridate::day(x)
   hour_month <- lubridate::hour(x) + 24*(day_month-1)
   hour_month
 }
 
-
-h_q = function(x)
+hh_q = function(x)
 
 {
   day_quarter <- lubridate::quarter(x)
@@ -38,7 +37,7 @@ h_q = function(x)
   hour_quarter
 }
 
-h_sem = function(x)
+hh_sem = function(x)
 
 {
   day_semester <- lubridate::semester(x)
@@ -46,7 +45,7 @@ h_sem = function(x)
   hour_semester
 }
 
-h_y = function(x)
+hh_y = function(x)
 
 {
   day_year <- lubridate::yday(x)
