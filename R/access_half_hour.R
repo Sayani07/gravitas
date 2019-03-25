@@ -15,7 +15,6 @@
 #' hh_week(today())
 #' }
 #' @export
-
 hh_w = function(x)
 {
   day_week <- wday(x)
@@ -23,34 +22,33 @@ hh_w = function(x)
   hh_week
 }
 
-h_m  =  function(x)
+hh_m  =  function(x)
 {
-  day_month <- lubridate::day(x)
-  hh_month <- lubridate::hh(x) + 48*(day_month-1)
+  day_month <- day(x)
+  hh_month <- (hour(x)*60 + minute(x))/30 + 48*(day_month-1)
   hh_month
 }
 
-
-h_q = function(x)
+hh_q = function(x)
 
 {
-  day_quarter <- lubridate::quarter(x)
-  hh_quarter <- lubridate::hh(x) + 48*(day_quarter-1)
+  day_quarter <- quarter(x)
+  hh_quarter <- (hour(x)*60 + minute(x))/30 + 48*(day_quarter-1)
   hh_quarter
 }
 
-h_sem = function(x)
+hh_sem = function(x)
 
 {
-  day_semester <- lubridate::semester(x)
-  hh_semester <- lubridate::hh(x) + 48*(day_semester-1)
+  day_semester <- semester(x)
+  hh_semester <- (hour(x)*60 + minute(x))/30 + 48*(day_semester-1)
   hh_semester
 }
 
-h_y = function(x)
+hh_y = function(x)
 
 {
-  day_year <- lubridate::yday(x)
-  hh_year <- lubridate::hh(x) + 48*(day_year-1)
+  day_year <- yday(x)
+  hh_year <- (hour(x)*60 + minute(x))/30 + 48*(day_year-1)
   hh_year
 }
