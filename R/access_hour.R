@@ -1,4 +1,4 @@
-#' Get hour of the week component of a date time
+#' Get combiantion of hour component of a date time
 #'
 
 #' Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
