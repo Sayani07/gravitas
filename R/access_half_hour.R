@@ -1,4 +1,4 @@
-#' Get half-hour of the week component of a date time
+#' Get combinations of half-hour component of a date time
 #'
 
 #' Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
@@ -15,6 +15,12 @@
 #' hh_week(today())
 #' }
 #' @export
+
+hh_d = function(x)
+{
+  (hour(x)*60 + minute(x))/30
+}
+
 hh_w = function(x)
 {
   day_week <- wday(x)
