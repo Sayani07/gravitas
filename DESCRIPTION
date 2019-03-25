@@ -7,8 +7,9 @@ Imports:
   dplyr,
   lubridate
 Maintainer: Sayani Gupta <Sayani.Gupta@monash.edu>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Functions for algebraic manipulation of date-time objects. It complements
+  the lubridate package by building time granularties like hour of the week, half-hour
+  of the day, that combines two or more level up components of date-time data.  
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
