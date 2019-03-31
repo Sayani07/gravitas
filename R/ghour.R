@@ -74,5 +74,5 @@ lubridate_match <- c("hour","wday","day", "quarter","semester","yday")
 
 match_value <- eval(parse(text = paste0("lubridate::",lubridate_match[gran_type_indx],"(x)")))
 
-lubridate::hour(x) + 24*(match_value-1)
+dplyr::if_else(gran_type_indx==1, as.numeric(lubridate::hour(x)),  as.numeric(lubridate::hour(x) + 24*(match_value-1)))
 }
