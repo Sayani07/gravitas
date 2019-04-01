@@ -6,6 +6,7 @@
 #'
 
 #' @param x a date-time object
+#' @param granularity the granularity to be paired up with hour
 #' @return combination of the hour component of x as a number
 #
 #' @author Sayani Gupta
@@ -63,6 +64,6 @@ d_sem <- function(x) {
   which_sem <- lubridate::semester(x)
   day_x <- lubridate::yday(x)
   year_leap <- lubridate::leap_year(x)
-  div_indx <- if_else(year_leap == "FALSE",182, 183)
-  if_else(which_sem==1,day_x, day_x - div_indx + 1)
+  div_indx <- dplyr::if_else(year_leap == "FALSE",182, 183)
+  dplyr::if_else(which_sem==1,day_x, day_x - div_indx + 1)
 }

@@ -6,6 +6,7 @@
 #'
 
 #' @param x a date-time object
+#' @param granularity the granularity to be paired up with half-hour
 #' @return combination of the hour component of x as a number
 #
 #' @author Sayani Gupta
