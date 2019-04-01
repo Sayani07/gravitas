@@ -6,16 +6,16 @@
 #'
 
 #' @param x a date-time object
-#' @return the hour of the week component of x as a number
+#' @return combination of the hour component of x as a number
 #
 #' @author Sayani Gupta
 #' @examples
 #' \dontrun{
-#' tsibbledata::aus_elec %>% mutate(hour_week = ghour(Time, "day"))
-#' hour_week(today())
+#' tsibbledata::aus_elec %>% mutate(hour_day = ghour(Time, "day")) %>% tail()
+#' ghour(lubridate::now(),"week")
 #' }
 #' @export ghour
-ghour <- function(.data, granularity = c("day","week", "month", "quarter", "semester", "year"))
+ghour <- function(x, granularity = "day")
 {
   # match the gran_type
   gran_lower <- tolower(granularity)
@@ -33,36 +33,36 @@ gran_type_indx <- match(gran_type, c("day","week", "month", "quarter", "semester
 
 lubridate_match <- c("hour","wday","day", "quarter","semester","yday")
 
-match_value <- eval(parse(text = paste0("lubridate::",lubridate_match[gran_type_indx],"(.data)")))
+match_value <- eval(parse(text = paste0("lubridate::",lubridate_match[gran_type_indx],"(x)")))
 
 if(gran_type_indx==1)
 {
-   ghour_value <-  lubridate::hour(.data)
+   ghour_value <-  lubridate::hour(x)
 }
 else if (gran_type_indx==5)
 {
-  ghour_value <-  lubridate::hour(.data) + 24*(d_sem(.data) - 1)
+  ghour_value <-  lubridate::hour(x) + 24*(d_sem(x) - 1)
 }
 else
 {
-  ghour_value <- lubridate::hour(.data) + 24*(match_value-1)
+  ghour_value <- lubridate::hour(x) + 24*(match_value-1)
 }
 
 return(ghour_value)
 }
 
 #
-# dplyr::if_else(gran_type_indx==1, as.numeric(lubridate::hour(.data)),
-#                dplyr::if_else(gran_type_indx==5, as.numeric(lubridate::hour(.data) + 24*(d_sem(.data) - 1)), as.numeric(lubridate::hour(.data) + 24*(match_value-1))))
+# dplyr::if_else(gran_type_indx==1, as.numeric(lubridate::hour(x)),
+#                dplyr::if_else(gran_type_indx==5, as.numeric(lubridate::hour(x) + 24*(d_sem(x) - 1)), as.numeric(lubridate::hour(x) + 24*(match_value-1))))
 # }
 
 
-d_sem <- function(.data) {
+d_sem <- function(x) {
 
   # finds day of the semester
-  which_sem <- lubridate::semester(.data)
-  day_x <- lubridate::yday(.data)
-  year_leap <- lubridate::leap_year(.data)
+  which_sem <- lubridate::semester(x)
+  day_x <- lubridate::yday(x)
+  year_leap <- lubridate::leap_year(x)
   div_indx <- if_else(year_leap == "FALSE",182, 183)
   if_else(which_sem==1,day_x, day_x - div_indx + 1)
 }

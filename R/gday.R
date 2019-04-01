@@ -6,7 +6,7 @@
 #'
 
 #' @param x a date-time object
-#' @return the hour of the week component of x as a number
+#' @return combiantion of the day component of x as a number
 #
 #' @author Sayani Gupta
 #' @examples
@@ -14,7 +14,7 @@
 #' tsibbledata::aus_elec %>% mutate(day_week = gday(Time, "week")) %>% tail()
 #' gday(lubridate::now(),"month")
 #' }
-#' @export ghour
+#' @export gday
 gday <- function(x, granularity = "week")
 {
   # match the gran_type
@@ -49,13 +49,3 @@ gday <- function(x, granularity = "week")
 }
 
 
-
-d_sem <- function(x) {
-
-  # finds day of the semester
-  which_sem <- lubridate::semester(x)
-  day_x <- lubridate::yday(x)
-  year_leap <- lubridate::leap_year(x)
-  div_indx <- if_else(year_leap == "FALSE",182, 183)
-  if_else(which_sem==1,day_x, day_x - div_indx + 1)
-}
