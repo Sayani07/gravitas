@@ -33,20 +33,22 @@ ghalfhour <- function(x, granularity = "hour")
 
   gran_type_indx <- match(gran_type, gran_pos)
 
-  lubridate_match <- c("hour","NA","wday", "qday","semester","yday")
+  # there is no function in lubrdiate which computes half hour of the hour or half hour of the day
+  lubridate_match <- c("wday", "day", "qday","semester","yday")
 
-  match_value <- eval(parse(text = paste0("lubridate::",lubridate_match[gran_type_indx],"(x)")))
 
   if(gran_type_indx==1)
   {
-    ghalfhour_value <- lubridate::hour(x)
+    ghalfhour_value <- dplyr::if_else(lubridate::minute(x) <30, 1, 2)
   }
   else if(gran_type_indx==2)
   {
-    ghalfhour_value <- lubridate::hh_d(x)
+    ghalfhour_value <- hh_d(x)
   }
   else
   {
+
+    match_value <- eval(parse(text = paste0("lubridate::",lubridate_match[gran_type_indx - 2],"(x)")))
     ghalfhour_value <- hh_d(x) + 48*(match_value - 1)
   }
 
@@ -57,5 +59,6 @@ ghalfhour <- function(x, granularity = "hour")
 
 hh_d = function(x)
 {
-  (hour(x)*60 + minute(x))/30
+  (lubridate::hour(x)*60 + lubridate::minute(x))/30
 }
+
