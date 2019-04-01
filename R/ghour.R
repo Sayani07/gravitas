@@ -18,16 +18,16 @@
 ghour <- function(.data, granularity = c("day","week", "month", "quarter", "semester", "year"))
 {
   # match the gran_type
-  gran_type <- tolower(granularity)
+  gran_lower <- tolower(granularity)
 
   #check if the user input is correct
-  if(!gran_type  %in% c("day","week", "month", "quarter", "semester", "year"))
+  if(!gran_lower  %in% c("day","week", "month", "quarter", "semester", "year"))
   {
-    stop("granularity not found: should be one of day, week, month, quarter, semester or year")
+    stop(paste("granularity", gran_lower, "is not one of day, week, month, quarter, semester or year", sep = " "), call.=F)
   }
 
   # match the gran_type
-gran_type <- match.arg(granularity)
+gran_type <- match.arg(gran_lower, choices = c("day","week", "month", "quarter", "semester", "year"), several.ok = TRUE)
 
 gran_type_indx <- match(gran_type, c("day","week", "month", "quarter", "semester", "year"))
 
