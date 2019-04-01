@@ -14,57 +14,17 @@
 #' tsibbledata::aus_elec %>% mutate(hour_week = h_w(Time))
 #' hour_week(today())
 #' }
-#' @export
-h_w = function(x)
-{
-  day_week <- wday(x)
-  hour_week <- hour(x) + 24*(day_week-1)
-  hour_week
-}
-
-h_m  =  function(x)
-{
-  day_month <- day(x)
-  hour_month <- hour(x) + 24*(day_month-1)
-  hour_month
-}
-
-h_q = function(x)
-
-{
-  day_quarter <- quarter(x)
-  hour_quarter <- hour(x) + 24*(day_quarter-1)
-  hour_quarter
-}
-
-h_sem = function(x)
-
-{
-  day_semester <- semester(x)
-  hour_semester <- hour(x) + 24*(day_semester-1)
-  hour_semester
-}
-
-h_y = function(x)
-
-{
-  day_year <- yday(x)
-  hour_year <- hour(x) + 24*(day_year-1)
-  hour_year
-}
-
-
+#' @export ghour
 ghour <- function(x, granularity = c("day","week", "month", "quarter", "semester", "year"))
 {
-
   # match the gran_type
   gran_type <- tolower(granularity)
 
-  # check if the user input is correct
-  # if (!gran_type  %in% c("day","week", "month", "quarter", "semester", "year")
-  # {
-  #   stop("granularity not found")
-  # }
+  #check if the user input is correct
+  if(!gran_type  %in% c("day","week", "month", "quarter", "semester", "year"))
+  {
+    stop("granularity not found: should be one of day, week, month, quarter, semester or year")
+  }
 
 gran_type <- match.arg(granularity)
 
@@ -74,5 +34,17 @@ lubridate_match <- c("hour","wday","day", "quarter","semester","yday")
 
 match_value <- eval(parse(text = paste0("lubridate::",lubridate_match[gran_type_indx],"(x)")))
 
-dplyr::if_else(gran_type_indx==1, as.numeric(lubridate::hour(x)),  as.numeric(lubridate::hour(x) + 24*(match_value-1)))
+dplyr::if_else(gran_type_indx==1, as.numeric(lubridate::hour(x)),
+               dplyr::if_else(gran_type_indx==5, as.numeric(lubridate::hour(x) + 24*(d_sem(x) - 1)), as.numeric(lubridate::hour(x) + 24*(match_value-1))))
+}
+
+
+d_sem <- function(x) {
+
+  # finds day of the semester
+  which_sem <- lubridate::semester(x)
+  day_x <- lubridate::yday(x)
+  year_leap <- lubridate::leap_year(x)
+  div_indx <- if_else(year_leap == "FALSE",182, 183)
+  if_else(which_sem==1,day_x, day_x - div_indx + 1)
 }
