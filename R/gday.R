@@ -11,8 +11,8 @@
 #' @author Sayani Gupta
 #' @examples
 #' \dontrun{
-#' tsibbledata::aus_elec %>% mutate(day_week = ghour(Time, "week")) %>% tail()
-#' ghour(lubridate::now(),"month")
+#' tsibbledata::aus_elec %>% mutate(day_week = gday(Time, "week")) %>% tail()
+#' gday(lubridate::now(),"month")
 #' }
 #' @export ghour
 gday <- function(x, granularity = "week")
