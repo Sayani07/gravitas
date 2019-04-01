@@ -6,7 +6,7 @@
 #'
 
 #' @param x a date-time object
-#' @return combiantion of the day component of x as a number
+#' @return combination of the day component of x as a number
 #
 #' @author Sayani Gupta
 #' @examples
