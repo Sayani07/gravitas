@@ -6,7 +6,7 @@
 #'
 
 #' @param x a date-time object
-#' @param granularity the granularity to be paired up with week
+#' @param granularity the granularity to be paired up with month
 #' @return combination of the month component of x as a number
 #
 #' @author Sayani Gupta
