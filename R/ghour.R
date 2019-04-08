@@ -22,7 +22,7 @@ ghour <- function(x, granularity = "day")
   gran_lower <- tolower(granularity)
 
   #check if the user input is correct
-  if(!gran_lower  %in% c("day","week", "month", "quarter", "semester", "year"))
+  if(length(stopifnot(gran_lower %in% c("day","week", "month", "quarter", "semester", "year")))!=1)
   {
     stop(paste("granularity", gran_lower, "is not one of day, week, month, quarter, semester or year", sep = " "), call.=F)
   }
@@ -54,7 +54,7 @@ return(ghour_value)
 
 #
 # dplyr::if_else(gran_type_indx==1, as.numeric(lubridate::hour(x)),
-#                dplyr::if_else(gran_type_indx==5, as.numeric(lubridate::hour(x) + 24*(d_sem(x) - 1)), as.numeric(lubridate::hour(x) + 24*(match_value-1))))
+#                dplyr::if_else(gran_type_indx==5L, as.numeric(lubridate::hour(x) + 24*(d_sem(x) - 1)), as.numeric(lubridate::hour(x) + 24*(match_value-1))))
 # }
 
 
