@@ -13,7 +13,7 @@
 #' @examples
 #' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(quarter_year = gquarter(Time, "year")) %>% tail()
-#' gmonth(lubridate::now(),"semester")
+#' gquarter(lubridate::now(),"semester")
 #' }
 #' @export gquarter
 gquarter <- function(x, granularity = "year",...)
