@@ -7,7 +7,7 @@
 
 #' @param x a date-time object
 #' @param granularity the granularity to be paired up with week
-#' @return combination of the week component of x as a number
+#' @return combination of the month component of x as a number
 #
 #' @author Sayani Gupta
 #' @examples
@@ -16,7 +16,7 @@
 #' gmonth(lubridate::now(),"quarter")
 #' }
 #' @export gmonth
-gmonth <- function(x, granularity = "month",...)
+gmonth <- function(x, granularity = "year",...)
 {
   # match the gran_type
   gran_lower <- tolower(granularity)
@@ -32,18 +32,18 @@ gmonth <- function(x, granularity = "month",...)
 
   if(gran_type=="quarter")
   {
-    gmonth_value <-  month(x)%%3
+    gmonth_value <-  lubridate::month(x)%%3
 
   }
   else if(gran_type=="semester")
   {
 
-    gmonth_value <- month(x)%%2
+    gmonth_value <- lubridate::month(x)%%2
 
   }
   else
   {
-    gmonth_value <-  month(x,...)
+    gmonth_value <-  lubridate::month(x,...)
   }
   return(gmonth_value)
 
