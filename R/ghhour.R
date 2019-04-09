@@ -7,6 +7,7 @@
 
 #' @param x a date-time object
 #' @param granularity the granularity to be paired up with half-hour
+#' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the hour component of x as a number
 #
 #' @author Sayani Gupta
@@ -16,7 +17,7 @@
 #' ghalfhour(lubridate::now(),"week")
 #' }
 #' @export ghalfhour
-ghalfhour <- function(x, granularity = "hour")
+ghalfhour <- function(x, granularity = "hour",...)
 {
   # match the gran_type
   gran_lower <- tolower(granularity)

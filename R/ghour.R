@@ -7,6 +7,7 @@
 
 #' @param x a date-time object
 #' @param granularity the granularity to be paired up with hour
+#' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the hour component of x as a number
 #
 #' @author Sayani Gupta
@@ -16,7 +17,7 @@
 #' ghour(lubridate::now(),"week")
 #' }
 #' @export ghour
-ghour <- function(x, granularity = "day")
+ghour <- function(x, granularity = "day",...)
 {
   # match the gran_type
   gran_lower <- tolower(granularity)
@@ -38,7 +39,7 @@ match_value <- eval(parse(text = paste0("lubridate::",lubridate_match[gran_type_
 
 if(gran_type_indx==1)
 {
-   ghour_value <-  lubridate::hour(x)
+   ghour_value <-  lubridate::hour(x,...)
 }
 else if (gran_type_indx==5)
 {

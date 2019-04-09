@@ -7,6 +7,7 @@
 
 #' @param x a date-time object
 #' @param granularity the granularity to be paired up with quarter
+#' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the quarter component of x as a number
 #
 #' @author Sayani Gupta

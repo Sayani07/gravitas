@@ -7,6 +7,7 @@
 
 #' @param x a date-time object
 #' @param granularity the granularity to be paired up with day
+#' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the day component of x as a number
 #
 #' @author Sayani Gupta
@@ -16,7 +17,7 @@
 #' gday(lubridate::now(),"month")
 #' }
 #' @export gday
-gday <- function(x, granularity = "week")
+gday <- function(x, granularity = "week",...)
 {
   # match the gran_type
   gran_lower <- tolower(granularity)
@@ -39,7 +40,7 @@ gday <- function(x, granularity = "week")
 
   if(!gran_type_indx==4)
   {
-    match_value <- eval(parse(text = paste0("lubridate::",lubridate_match[gran_type_indx],"(x)")))
+    match_value <- eval(parse(text = paste0("lubridate::",lubridate_match[gran_type_indx],"(x, ...)")))
   }
   else
   {
