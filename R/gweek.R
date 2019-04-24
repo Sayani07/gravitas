@@ -13,26 +13,22 @@
 #' @examples
 #' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(week_year = gweek(Time, "year")) %>% tail()
-#' gweek(lubridate::now(),"month")
+#' gweek(lubridate::now(), "month")
 #' }
 #' @export gweek
-gweek <- function(x, granularity = "month")
-{
+gweek <- function(x, granularity = "month") {
   # match the gran_type
   gran_lower <- tolower(granularity)
 
-  #check if the user input is correct
-  if(!gran_lower  %in% c("month", "quarter", "semester", "year"))
-  {
-    stop(paste("granularity", gran_lower, "is not one of month, quarter, semester or year", sep = " "), call.=F)
+  # check if the user input is correct
+  if (!gran_lower %in% c("month", "quarter", "semester", "year")) {
+    stop(paste("granularity", gran_lower, "is not one of month, quarter, semester or year", sep = " "), call. = F)
   }
 
   # match the gran_type
   gran_type <- match.arg(gran_lower, choices = c("month", "quarter", "semester", "year"), several.ok = TRUE)
 
-  gweek_value <-  ceiling((gday(x, gran_type))/7)
+  gweek_value <- ceiling((gday(x, gran_type)) / 7)
 
-return(gweek_value)
-
+  return(gweek_value)
 }
-
