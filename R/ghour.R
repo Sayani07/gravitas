@@ -36,7 +36,7 @@ ghour <- function(x, granularity = "day", ...) {
   gran_type_indx <- match(gran_type, gran_opt)
 
   # find the corresponding  function match from lubridate -  na implies either no function exists in lubridate OR the function from lubridate cannot be used in the same form as required by the loop
-  lubridate_match <- c("na", "wday", "day", "quarter", "na", "yday")
+  lubridate_match <- c("na", "wday", "day", "qday", "na", "yday")
 
   if (gran_type == "day") {
     ghour_value <- lubridate::hour(x, ...)
