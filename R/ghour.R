@@ -25,9 +25,8 @@ ghour <- function(x, granularity = "day", ...) {
 
   # check if the user input is correct
   if (!gran_lower %in% gran_opt) {
-    stop(paste0("granularity ",  gran_lower, " is not one of ", paste(gran_opt, collapse = ", ")), call. = F)
+    stop(paste0("granularity ",  gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
   }
-
 
   # match the gran_type
   gran_type <- match.arg(gran_lower, choices = gran_opt, several.ok = TRUE)
