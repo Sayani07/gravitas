@@ -24,7 +24,7 @@ ghhour <- function(x, granularity = "hour", ...) {
 
   # check if the user input is correct
   if (!gran_lower %in% gran_opt) {
-    stop(paste0("granularity", gran_lower, "is not one of", paste0(gran_opt, collapse = ",")), call. = F)
+    stop(paste0("granularity ",  gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
   }
 
   gran_type <- match.arg(gran_lower, choices = gran_opt, several.ok = TRUE)
@@ -39,6 +39,9 @@ ghhour <- function(x, granularity = "hour", ...) {
   }
   else if (gran_type == "day") {
     ghalfhour_value <- hh_d(x)
+  }
+  else if (gran_type == "semester") {
+    ghalfhour_value <- hh_d(x) + 48 * (d_sem(x) - 1)
   }
   else {
     match_value <- eval(parse(text = paste0("lubridate::", lubridate_match[gran_type_indx], "(x)")))
