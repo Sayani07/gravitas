@@ -25,7 +25,7 @@ ghour <- function(x, granularity = "day", ...) {
 
   # check if the user input is correct
   if (!gran_lower %in% gran_opt) {
-    stop(glue::glue("granularity {gran_lower} is not one of day, week, month, quarter, semester or year"), call. = F)
+    stop(paste0("granularity ",  gran_lower, " is not one of ", paste(gran_opt, collapse = ", ")), call. = F)
   }
 
 
