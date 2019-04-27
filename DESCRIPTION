@@ -1,11 +1,28 @@
 Package: gravitas
 Type: Package
 Title: Granularity visualisation of temporal and spatial data
-Version: 0.1.0
-Author: Sayani Gupta
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "Sayani",
+             family = "Gupta",
+             role = c("aut", "cre"),
+             email = "gupta.sayani@gmail.com",
+             comment = c(ORCID = "0000-0003-0643-5358")),
+      person(given = "Rob",
+             family = "Hyndman",
+             role = c("aut", "ths"),
+             comment = c(ORCID = "0000-0002-2140-5352")),
+      person(given = "Di",
+             family = "Cook",
+             role = c("aut", "ths"),
+             comment = c(ORCID = "0000-0002-3813-7155")),
+Depends:
+  R(>=3.5.1)
 Imports:
-  lubridate,
-  dplyr
+  lubridate(1.7.4),
+  dplyr(>=0.8.0.9009)
+Suggests:
+  tsibbledata
 Maintainer: Sayani Gupta <Sayani.Gupta@monash.edu>
 Description: Functions for algebraic manipulation of date-time objects. It complements
   the lubridate package by building time granularties like hour of the week, half-hour
