@@ -13,10 +13,10 @@
 #' @author Sayani Gupta
 #' @examples
 #' \dontrun{
-#' tsibbledata::aus_elec %>% mutate(hh_day = ghalfhour(Time, "day")) %>% tail()
-#' ghalfhour(lubridate::now(), "week")
+#' tsibbledata::aus_elec %>% mutate(hh_day = ghour(Time, "day")) %>% tail()
+#' ghhour(lubridate::now(), "week")
 #' }
-#' @export ghalfhour
+#' @export ghhour
 ghhour <- function(x, granularity = "hour", ...) {
   # match the gran_type
   gran_lower <- tolower(granularity)
