@@ -14,39 +14,31 @@
 #' @examples
 #' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(month_year = gmonth(Time, "year")) %>% tail()
-#' gmonth(lubridate::now(),"quarter")
+#' gmonth(lubridate::now(), "quarter")
 #' }
 #' @export gmonth
-gmonth <- function(x, granularity = "year",...)
-{
+gmonth <- function(x, granularity = "year", ...) {
   # match the gran_type
   gran_lower <- tolower(granularity)
+  gran_opt <- c("quarter", "semester", "year")
 
-  #check if the user input is correct
-  if(!gran_lower  %in% c( "quarter", "semester", "year"))
-  {
-    stop(paste("granularity", gran_lower, "is not one of quarter, semester or year", sep = " "), call.=F)
+  # check if the user input is correct
+  if (!gran_lower %in% gran_opt) {
+    stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
   }
 
   # match the gran_type
-  gran_type <- match.arg(gran_lower, choices = c("quarter", "semester", "year"))
+  gran_type <- match.arg(gran_lower, gran_opt)
 
-  if(gran_type=="quarter")
-  {
-    gmonth_value <-  lubridate::month(x)%%3
 
+  if (gran_type == "quarter") {
+    gmonth_value <- lubridate::month(x) %% 3
   }
-  else if(gran_type=="semester")
-  {
-
-    gmonth_value <- lubridate::month(x)%%2
-
+  else if (gran_type == "semester") {
+    gmonth_value <- lubridate::month(x) %% 2
   }
-  else
-  {
-    gmonth_value <-  lubridate::month(x,...)
+  else {
+    gmonth_value <- lubridate::month(x, ...)
   }
   return(gmonth_value)
-
 }
-
