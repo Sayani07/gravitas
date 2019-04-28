@@ -14,34 +14,28 @@
 #' @examples
 #' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(quarter_year = gquarter(Time, "year")) %>% tail()
-#' gquarter(lubridate::now(),"semester")
+#' gquarter(lubridate::now(), "semester")
 #' }
 #' @export gquarter
-gquarter <- function(x, granularity = "year",...)
-{
+gquarter <- function(x, granularity = "year", ...) {
   # match the gran_type
   gran_lower <- tolower(granularity)
 
-  #check if the user input is correct
-  if(!gran_lower  %in% c( "semester", "year"))
-  {
-    stop(paste("granularity", gran_lower, "is not one of semester or year", sep = " "), call.=F)
+
+  # check if the user input is correct
+  if (!gran_lower %in% c("semester", "year")) {
+    stop(paste("granularity", gran_lower, "is not one of semester or year", sep = " "), call. = F)
   }
 
   # match the gran_type
   gran_type <- match.arg(gran_lower, choices = c("semester", "year"))
 
-  if(gran_type=="semester")
-  {
-    gquarter_value <-  lubridate::quarter(x)%%2
-
+  if (gran_type == "semester") {
+    gquarter_value <- lubridate::quarter(x) %% 2
   }
-  else
-  {
-
-    gquarter_value <- lubridate::quarter(x,...)
+  else {
+    gquarter_value <- lubridate::quarter(x, ...)
   }
 
   return(gquarter_value)
-
 }
