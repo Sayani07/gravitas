@@ -9,8 +9,7 @@
 #' @param granularity the granularity to be paired up with half-hour
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the hour component of x as a number
-#
-#' @author Sayani Gupta
+
 #' @examples
 #' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(hh_day = ghour(Time, "day")) %>% tail()

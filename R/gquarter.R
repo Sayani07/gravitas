@@ -22,9 +22,8 @@ gquarter <- function(x, granularity = "year", ...) {
   gran_opt <- c("semester", "year")
 
 
-  # check if the user input is correct
-  if (!gran_lower %in% c("semester", "year")) {
-    stop(paste("granularity", gran_lower, "is not one of semester or year", sep = " "), call. = F)
+  if (!gran_lower %in% gran_opt) {
+    stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
   }
 
   # match the gran_type
