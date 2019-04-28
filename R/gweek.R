@@ -8,8 +8,6 @@
 #' @param x a date-time object
 #' @param granularity the granularity to be paired up with week
 #' @return combination of the week component of x as a number
-#
-#' @author Sayani Gupta
 #' @examples
 #' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(week_year = gweek(Time, "year")) %>% tail()
@@ -20,13 +18,15 @@ gweek <- function(x, granularity = "month") {
   # match the gran_type
   gran_lower <- tolower(granularity)
 
+  gran_opt <- c("month", "quarter", "semester", "year")
+
   # check if the user input is correct
-  if (!gran_lower %in% c("month", "quarter", "semester", "year")) {
-    stop(paste("granularity", gran_lower, "is not one of month, quarter, semester or year", sep = " "), call. = F)
+  if (!gran_lower %in% gran_opt) {
+    stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
   }
 
   # match the gran_type
-  gran_type <- match.arg(gran_lower, choices = c("month", "quarter", "semester", "year"), several.ok = TRUE)
+  gran_type <- match.arg(gran_lower, gran_opt, several.ok = TRUE)
 
   gweek_value <- ceiling((gday(x, gran_type)) / 7)
 

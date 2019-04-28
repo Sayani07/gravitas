@@ -9,8 +9,6 @@
 #' @param granularity the granularity to be paired up with quarter
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the quarter component of x as a number
-#
-#' @author Sayani Gupta
 #' @examples
 #' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(quarter_year = gquarter(Time, "year")) %>% tail()
@@ -21,6 +19,8 @@ gquarter <- function(x, granularity = "year", ...) {
   # match the gran_type
   gran_lower <- tolower(granularity)
 
+  gran_opt <- c("semester", "year")
+
 
   # check if the user input is correct
   if (!gran_lower %in% c("semester", "year")) {
@@ -28,7 +28,7 @@ gquarter <- function(x, granularity = "year", ...) {
   }
 
   # match the gran_type
-  gran_type <- match.arg(gran_lower, choices = c("semester", "year"))
+  gran_type <- match.arg(gran_lower, gran_opt)
 
   if (gran_type == "semester") {
     gquarter_value <- lubridate::quarter(x) %% 2

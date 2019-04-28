@@ -10,7 +10,6 @@
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the hour component of x as a number
 #
-#' @author Sayani Gupta
 #' @examples
 #' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(hour_day = ghour(Time, "day")) %>% tail()
@@ -25,7 +24,7 @@ ghour <- function(x, granularity = "day", ...) {
 
   # check if the user input is correct
   if (!gran_lower %in% gran_opt) {
-    stop(paste0("granularity ",  gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
+    stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
   }
 
   # match the gran_type

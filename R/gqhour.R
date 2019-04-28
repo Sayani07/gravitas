@@ -8,8 +8,6 @@
 #' @param x a date-time object
 #' @param granularity the granularity to be paired up with  quarter of an hour
 #' @return combination of the quarter hour component of x as a number
-#
-#' @author Sayani Gupta
 #' @examples
 #' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(qhour_day = gqhour(Time, "hour")) %>% tail()
@@ -19,12 +17,12 @@
 gqhour <- function(x, granularity = "day") {
   # match the gran_type
   gran_lower <- tolower(granularity)
-  gran_opt <- c("hhour", "hour", "day", "week", "month", "quarter", "semester",  "year")
+  gran_opt <- c("hhour", "hour", "day", "week", "month", "quarter", "semester", "year")
 
   # check if the user input is correct
 
   if (!gran_lower %in% gran_opt) {
-    stop(paste0("granularity ",  gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
+    stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
   }
 
   gran_type <- match.arg(gran_lower, choices = gran_opt, several.ok = TRUE)

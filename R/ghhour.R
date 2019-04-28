@@ -24,14 +24,14 @@ ghhour <- function(x, granularity = "hour", ...) {
 
   # check if the user input is correct
   if (!gran_lower %in% gran_opt) {
-    stop(paste0("granularity ",  gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
+    stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
   }
 
   gran_type <- match.arg(gran_lower, choices = gran_opt, several.ok = TRUE)
 
   gran_type_indx <- match(gran_type, gran_opt)
 
-  lubridate_match <- c("na","na","wday", "day", "qday", "na", "yday")
+  lubridate_match <- c("na", "na", "wday", "day", "qday", "na", "yday")
 
 
   if (gran_type == "hour") {
