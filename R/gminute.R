@@ -14,7 +14,7 @@
 #' tsibbledata::nyc_bikes %>% mutate(m_hour = gmin(Time, "hour")) %>% tail()
 #' gmin(lubridate::now(), "day")
 #' }
-#' @export ghhour
+#' @export gmin
 gmin <- function(x, granularity = "hour", ...) {
   # match the gran_type
   gran_lower <- tolower(granularity)
