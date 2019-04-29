@@ -11,11 +11,11 @@
 #' @return combination of the hour component of x as a number
 #' @examples
 #' \dontrun{
-#' tsibbledata::nyc_bikes %>% mutate(m_hour = gmin(Time, "hour")) %>% tail()
-#' gmin(lubridate::now(), "day")
+#' tsibbledata::nyc_bikes %>% mutate(m_hour = gminute(Time, "hour")) %>% tail()
+#' gminute(lubridate::now(), "day")
 #' }
-#' @export gmin
-gmin <- function(x, granularity = "hour", ...) {
+#' @export gminute
+gminute <- function(x, granularity = "hour", ...) {
   # match the gran_type
   gran_lower <- tolower(granularity)
   gran_opt <- c("qhour", "hhour", "hour", "day", "week", "month", "quarter", "semester", "year")
