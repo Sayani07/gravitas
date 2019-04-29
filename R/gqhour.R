@@ -41,7 +41,7 @@ gqhour <- function(x, granularity = "day") {
     gqhour_value <- qh_d(x)
   }
   else if (gran_type == "semester") {
-    gqhour_value <- qh_d(x) + 24 * 4 * (gravitas:::d_sem(x) - 1)
+    gqhour_value <- qh_d(x) + 24 * 4 * (d_sem(x) - 1)
   }
 
   else {
