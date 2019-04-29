@@ -32,4 +32,3 @@ gfortnight <- function(x, granularity = "month") {
 
   return(gfortnight_value)
 }
-
