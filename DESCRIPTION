@@ -20,7 +20,10 @@ Depends:
   R(>= 3.4.1)
 Imports:
   lubridate(>= 1.7.4),
-  dplyr(>= 0.8.0.9009)
+  dplyr(>= 0.8.0.9009),
+  tsibble (>= 0.8.0),
+  tibble(>= 2.1.1),
+  rlang(>= 0.3.4)
 Suggests:
   tsibbledata
 Maintainer: Sayani Gupta <Sayani.Gupta@monash.edu>
