@@ -15,7 +15,7 @@
 #' ghour(lubridate::now(), "week")
 
 #' @export ghour
-ghour <- function(x, granularity) {
+ghour <- function(x, granularity,...) {
 
   # Pick up the possible granularities from lookup table
 
@@ -23,28 +23,26 @@ ghour <- function(x, granularity) {
 
   gran_opt <- lookup_tbl("hour")[[2]]
 
-  # check if the user input is correct
-  if (!gran_lower %in% gran_opt) {
-    stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
-  }
+  # # check if the user input is correct
+  # if (!gran_lower %in% gran_opt) {
+  #   stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
+  # }
 
-  # match the gran_type
+  # match the input granuarity with the possible ones
   gran_type <- match.arg(gran_lower, choices = gran_opt, several.ok = TRUE)
 
   # get the index which will be mapped to lubridate function
   gran_type_indx <- match(gran_type, gran_opt)
 
-  # find the corresponding  function match from lubridate -  na implies either no function exists in lubridate OR the function from lubridate cannot be used in the same form as required by the loop
-  lubridate_match <- c("na", "wday", "day", "qday", "na", "yday")
 
   if (gran_type == "day") {
-    ghour_value <- lubridate::hour(x, ...)
+    ghour_value <- lubridate::hour(x)
   }
   else if (gran_type == "semester") {
     ghour_value <- lubridate::hour(x) + 24 * (d_sem(x) - 1)
   }
   else {
-    match_value <- eval(parse(text = paste0("lubridate::", lubridate_match[gran_type_indx], "(x)")))
+    match_value <- eval(parse(text = paste0("lubridate::",lookup_tbl(gran_type)[[1]], "(x)")))
     ghour_value <- lubridate::hour(x) + 24 * (match_value - 1)
   }
 
