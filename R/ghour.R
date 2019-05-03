@@ -15,18 +15,14 @@
 #' ghour(lubridate::now(), "week")
 
 #' @export ghour
-ghour <- function(x, granularity,...) {
+ghour <- function(x, granularity = "day",...) {
 
-  # Pick up the possible granularities from lookup table
+
 
   gran_lower <- tolower(granularity)
 
+  # Pick up the possible granularities from lookup table
   gran_opt <- lookup_tbl("hour")[[2]]
-
-  # # check if the user input is correct
-  # if (!gran_lower %in% gran_opt) {
-  #   stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
-  # }
 
   # match the input granuarity with the possible ones
   gran_type <- match.arg(gran_lower, choices = gran_opt, several.ok = TRUE)
