@@ -8,5 +8,5 @@ lookup_tbl <- function(gran)
 
   m = match(gran, granularity)
 
-  lubridate_value[m]
+  return(list(lub_match = lubridate_value[m],  gran_possible  = granularity[-(1:m)]))
   }
