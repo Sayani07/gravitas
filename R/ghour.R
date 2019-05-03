@@ -11,16 +11,17 @@
 #' @return combination of the hour component of x as a number
 #
 #' @examples
-#' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(hour_day = ghour(Time, "day")) %>% tail()
 #' ghour(lubridate::now(), "week")
-#' }
+
 #' @export ghour
-ghour <- function(x, granularity = "day", ...) {
-  # match the gran_type
+ghour <- function(x, granularity) {
+
+  # Pick up the possible granularities from lookup table
+
   gran_lower <- tolower(granularity)
 
-  gran_opt <- c("day", "week", "month", "quarter", "semester", "year")
+  gran_opt <- lookup_tbl("hour")[[2]]
 
   # check if the user input is correct
   if (!gran_lower %in% gran_opt) {
