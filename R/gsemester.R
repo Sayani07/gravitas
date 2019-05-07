@@ -11,9 +11,7 @@
 #' @return combination of the semester component of x as a number
 
 #' @examples
-#' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(semester_year = gsemester(Time, "year")) %>% tail()
-#' }
 #' @export gsemester
 gsemester <- function(x, granularity = "year", ...) {
   # match the gran_type

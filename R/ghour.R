@@ -15,15 +15,7 @@
 #' ghour(lubridate::now(), "week")
 
 #' @export ghour
-ghour <- function(data, granularity = "day",...) {
-
-  if (!tsibble::is_tsibble(data)) {
-    stop("must use tsibble")
-  }
-
-  # Pick up the time index varible form the tsibble
-  x <- data[[rlang::as_string(tsibble::index(data))]]
-
+ghour <- function(x, granularity = "day",...) {
 
   gran_lower <- tolower(granularity)
 
@@ -44,7 +36,7 @@ ghour <- function(data, granularity = "day",...) {
     ghour_value <- lubridate::hour(x) + 24 * (d_sem(x) - 1)
   }
   else {
-    match_value <- eval(parse(text = paste0("lubridate::",lookup_tbl(gran_type)[[1]], "(x)")))
+    match_value <- eval(parse(text = paste0(lookup_tbl(gran_type)[[1]], "(x)")))
     ghour_value <- lubridate::hour(x) + 24 * (match_value - 1)
   }
 

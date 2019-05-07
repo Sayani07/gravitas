@@ -10,10 +10,8 @@
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the quarter component of x as a number
 #' @examples
-#' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(quarter_year = gquarter(Time, "year")) %>% tail()
 #' gquarter(lubridate::now(), "semester")
-#' }
 #' @export gquarter
 gquarter <- function(x, granularity = "year", ...) {
   # match the gran_type

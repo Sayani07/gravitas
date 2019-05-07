@@ -19,8 +19,6 @@ Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zo
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
-\dontrun{
 tsibbledata::aus_elec \%>\% mutate(ft_year = gfortnight(Time, "year")) \%>\% tail()
 gfortnight(lubridate::now(), "month")
-}
 }

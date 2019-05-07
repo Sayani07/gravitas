@@ -9,10 +9,8 @@
 #' @param granularity the granularity to be paired up with fortnight
 #' @return combination of the week component of x as a number
 #' @examples
-#' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(ft_year = gfortnight(Time, "year")) %>% tail()
 #' gfortnight(lubridate::now(), "month")
-#' }
 #' @export gfortnight
 gfortnight <- function(x, granularity = "month") {
   # match the gran_type

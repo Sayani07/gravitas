@@ -21,8 +21,6 @@ Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zo
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
-\dontrun{
 tsibbledata::nyc_bikes \%>\% mutate(m_hour = gminute(Time, "hour")) \%>\% tail()
 gminute(lubridate::now(), "day")
-}
 }

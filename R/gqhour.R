@@ -9,10 +9,8 @@
 #' @param granularity the granularity to be paired up with  quarter of an hour
 #' @return combination of the quarter hour component of x as a number
 #' @examples
-#' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(qhour_day = gqhour(Time, "hour")) %>% tail()
 #' gqtrhour(lubridate::now(), "day")
-#' }
 #' @export gqhour
 gqhour <- function(x, granularity = "day") {
   # match the gran_type

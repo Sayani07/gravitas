@@ -10,10 +10,8 @@
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the month component of x as a number
 #' @examples
-#' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(month_year = gmonth(Time, "year")) %>% tail()
 #' gmonth(lubridate::now(), "quarter")
-#' }
 #' @export gmonth
 gmonth <- function(x, granularity = "year", ...) {
   # match the gran_type

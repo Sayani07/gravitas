@@ -15,7 +15,7 @@
 
 #' @examples
 #' \dontrun{
-#' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) %>% compatibility.tbl_ts(hour_day, day_week)
+#' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) %>% compatibility("hour_day", "day_week")
 #' }
 
 
@@ -65,6 +65,7 @@ compatibility.tbl_ts <- function(.data, level1, level2, ...)
   Output = list()
 
   Output$data <- .data %>% mutate(L1 = .data[[level1]], L2 = .data[[level2]])
+
 
   Output$Type <- Type <- dplyr::if_else(nrow(cmbmiss) != 0, "Clashes", "Harmonies")
 

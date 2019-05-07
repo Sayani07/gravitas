@@ -11,10 +11,8 @@
 #' @return combination of the hour component of x as a number
 
 #' @examples
-#' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(hh_day = ghour(Time, "day")) %>% tail()
 #' ghhour(lubridate::now(), "week")
-#' }
 #' @export ghhour
 ghhour <- function(x, granularity = "hour", ...) {
   # match the gran_type

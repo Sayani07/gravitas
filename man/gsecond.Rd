@@ -22,7 +22,7 @@ zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
 \dontrun{
-tsibbledata::nyc_bikes \%>\% mutate(m_hour = gsecond(Time, "hour")) \%>\% tail()
+tsibbledata::nyc_bikes \%>\% mutate(sec_hour = gsecond(start_time, "hour")) \%>\% tail()
 gsecond(lubridate::now(), "day")
 }
 }

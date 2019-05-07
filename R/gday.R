@@ -9,12 +9,9 @@
 #' @param granularity the granularity to be paired up with day
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the day component of x as a number
-
 #' @examples
-#' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(day_week = gday(Time, "week")) %>% tail()
 #' gday(lubridate::now(), "month")
-#' }
 #' @export gday
 gday <- function(x, granularity = "week", ...) {
   gran_lower <- tolower(granularity)

@@ -9,10 +9,8 @@
 #' @param granularity the granularity to be paired up with week
 #' @return combination of the week component of x as a number
 #' @examples
-#' \dontrun{
 #' tsibbledata::aus_elec %>% mutate(week_year = gweek(Time, "year")) %>% tail()
 #' gweek(lubridate::now(), "month")
-#' }
 #' @export gweek
 gweek <- function(x, granularity = "month") {
   # match the gran_type

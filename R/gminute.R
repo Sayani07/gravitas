@@ -10,10 +10,8 @@
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the hour component of x as a number
 #' @examples
-#' \dontrun{
 #' tsibbledata::nyc_bikes %>% mutate(m_hour = gminute(Time, "hour")) %>% tail()
 #' gminute(lubridate::now(), "day")
-#' }
 #' @export gminute
 gminute <- function(x, granularity = "hour", ...) {
   # match the gran_type
@@ -48,7 +46,7 @@ gminute <- function(x, granularity = "hour", ...) {
     gmin_value <- min_d(x) + 24 * 60 * (d_sem(x) - 1)
   }
   else {
-    match_value <- eval(parse(text = paste0("lubridate::", lubridate_match[gran_type_indx], "(x)")))
+    match_value <- eval(parse(text = paste0(lookup_tbl(gran_type)[[1]], "(x)")))
     gmin_value <- min_d(x) + 24 * 60 * (match_value - 1)
   }
 
