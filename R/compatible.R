@@ -15,45 +15,66 @@
 
 #' @examples
 #' \dontrun{
-#' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day")) %>% tail()
+#' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) %>% compatibility.tbl_ts(hour_day, day_week)
 #' }
 
-compatible_table <- function(data, fn1, argfn1 = "week", fn2, argfn2 = "day") {
-  if (!tsibble::is_tsibble(data)) {
+
+compatibility <- function(.data, ...) {
+  UseMethod("compatibility")
+}
+
+compatibility.tbl_ts <- function(.data, level1, level2, ...)
+
+{
+
+#   exprs <- enexprs(..., .named = TRUE)
+# if (is_empty(exprs)) {
+#   attr(.data, "index2") <- index(.data)
+#   return(.data)
+# }
+# if (is_false(has_length(exprs, 1))) {
+#   abort("`index_by()` only accepts one expression.")
+# }
+# expr_name <- names(exprs)[1]
+#
+# idx <- index(.data)
+# idx_chr <- as_string(idx)
+#
+# if (identical(idx_chr, expr_name)) {
+#   abort(sprintf("Column `%s` (index) can't be overwritten.", idx_chr))
+# }
+#
+# idx2 <- sym(expr_name)
+#
+# expr_name
+
+
+  if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
 
-
-  ind <- data[[rlang::as_string(tsibble::index(data))]]
-
-  arg_opt <- c("minute", "qhour", "hhour", "hour", "day", "week", "month", "quarter", "semester", "year")
-
-  argfn1 <- tolower(argfn1)
-  argfn2 <- tolower(argfn2)
-
-  if (!argfn1 %in% arg_opt || !argfn2 %in% arg_opt) {
-    stop(paste0("argument is not one of ", paste0(arg_opt, collapse = ", ")), call. = F)
-  }
-
-  mk_data <- data %>% dplyr::mutate(
-    L1 = fn1(ind, argfn1),
-    L2 = fn2(ind, argfn2)
-  )
+  ind <- .data[[rlang::as_string(tsibble::index(.data))]]
 
   # All possible combinations that are possible
-  Allcomb <- tidyr::expand(mk_data, L1, L2)
+  Allcomb <- .data %>% tidyr::expand(level1, level2)
   # All possible combinations that  exist
-  combexist <- tidyr::expand(mk_data, tidyr::nesting(L1, L2))
+  combexist <- .data %>% tidyr::expand(tidyr::nesting(level1, level2))
   # All possible combination that are missing
   cmbmiss <- Allcomb %>% dplyr::anti_join(combexist)
 
-  Type <- dplyr::if_else(nrow(cmbmiss) != 0, "Clashes", "Harmonies")
-  Obs_combinations <- mk_data %>% tibble::as_tibble() %>% dplyr::group_by(L1, L2) %>% dplyr::tally()
-  Obs_comb_min <- range(Obs_combinations$n)[1]
-  Obs_comb_max <- range(Obs_combinations$n)[2]
-  Obs_comb_var <- round(stats::sd(Obs_combinations$n) / mean(Obs_combinations$n), digits = 3)
+  Output = list()
 
-  Output <- tibble::tibble(Type, `Min Obs` = Obs_comb_min, `Max Obs` = Obs_comb_max, `CV` = Obs_comb_var)
+  Output$data <- .data %>% mutate(L1 = .data[[level1]], L2 = .data[[level2]])
+
+  Output$Type <- Type <- dplyr::if_else(nrow(cmbmiss) != 0, "Clashes", "Harmonies")
+
+  Output$Missing_comb <- cmbmiss
+
+  Obs_per_possible_combn <- .data %>% dplyr::group_by(L1 = .data[[level1]], L2 = .data[[level2]]) %>% dplyr::tally()
+
+  Output$Obs_per_possible_combn <- Obs_per_possible_combn
+
+  Output$Summary <- summary(Obs_per_possible_combn$n)
 
   Output
 }
