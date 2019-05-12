@@ -1,10 +1,6 @@
 #' Get combination of seconds component of a date time
-#'
-
 #' Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
 #' zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
-#'
-
 #' @param x a date-time object
 #' @param granularity the granularity to be paired up with seconds
 #' @param ... other arguments to be passed for appropriate labels

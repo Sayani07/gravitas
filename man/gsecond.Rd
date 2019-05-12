@@ -2,7 +2,9 @@
 % Please edit documentation in R/gsecond.R
 \name{gsecond}
 \alias{gsecond}
-\title{Get combination of seconds component of a date time}
+\title{Get combination of seconds component of a date time
+Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
+zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.}
 \usage{
 gsecond(x, granularity = "hour", ...)
 }
@@ -17,12 +19,11 @@ gsecond(x, granularity = "hour", ...)
 combination of the seconds component of x as a number
 }
 \description{
+Get combination of seconds component of a date time
 Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
-\dontrun{
 tsibbledata::nyc_bikes \%>\% mutate(sec_hour = gsecond(start_time, "hour")) \%>\% tail()
 gsecond(lubridate::now(), "day")
-}
 }

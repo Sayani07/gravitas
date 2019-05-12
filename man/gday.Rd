@@ -2,7 +2,9 @@
 % Please edit documentation in R/gday.R
 \name{gday}
 \alias{gday}
-\title{Get combination of day component of a date time}
+\title{Get combination of day component of a date time
+Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
+zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.}
 \usage{
 gday(x, granularity = "week", ...)
 }
@@ -17,6 +19,7 @@ gday(x, granularity = "week", ...)
 combination of the day component of x as a number
 }
 \description{
+Get combination of day component of a date time
 Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }

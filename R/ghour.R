@@ -11,8 +11,8 @@
 #' @return combination of the hour component of x as a number
 #
 #' @examples
-#' tsibbledata::aus_elec %>% mutate(hour_day = ghour(Time, "day")) %>% tail()
-#' ghour(lubridate::now(), "week")
+#' aus_elec <- tsibbledata::aus_elec %>% mutate(hour_day = ghour(Time, "day")) %>% slice(1:1000)
+#'aus_elec %>% ggplot(aes(x = as.factor(hour_day), y = Demand)) + geom_boxplot()
 
 #' @export ghour
 ghour <- function(x, granularity = "day",...) {

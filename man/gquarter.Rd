@@ -21,8 +21,6 @@ Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zo
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
-\dontrun{
 tsibbledata::aus_elec \%>\% mutate(quarter_year = gquarter(Time, "year")) \%>\% tail()
 gquarter(lubridate::now(), "semester")
-}
 }

@@ -21,6 +21,6 @@ Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zo
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
-tsibbledata::aus_elec \%>\% mutate(hour_day = ghour(Time, "day")) \%>\% tail()
-ghour(lubridate::now(), "week")
+aus_elec <- tsibbledata::aus_elec \%>\% mutate(hour_day = ghour(Time, "day")) \%>\% slice(1:1000)
+aus_elec \%>\% ggplot(aes(x = as.factor(hour_day), y = Demand)) + geom_boxplot()
 }
