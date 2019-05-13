@@ -29,11 +29,11 @@ ghour <- function(x, granularity = "day",...) {
 
 
   if (gran_type == "day") {
-    ghour_value <-   eval(parse(text = paste0(lookup_l1$match_day, "(x)")))
+    ghour_value <-   eval(parse_exp(lookup_l1$match_day))
   }
   else {
-    match_value <- eval(parse(text = paste0(lookup_l2$match_day, "(x)")))
-    ghour_value <- eval(parse(text = paste0(lookup_l1$match_day, "(x)"))) + 24 * (match_value - 1)
+    match_value <- eval(parse_exp(lookup_l2$match_day))
+    ghour_value <- eval(parse_exp(lookup_l1$match_day)) + 24 * (match_value - 1)
   }
 
   return(ghour_value)
