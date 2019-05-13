@@ -11,40 +11,30 @@
 #' @return combination of the hour component of x as a number
 
 #' @examples
-#' tsibbledata::aus_elec %>% mutate(hh_day = ghour(Time, "day")) %>% tail()
+#' tsibbledata::aus_elec %>% mutate(hh_day = ghhour(Time, "day")) %>% tail()
 #' ghhour(lubridate::now(), "week")
 #' @export ghhour
 ghhour <- function(x, granularity = "hour", ...) {
-  # match the gran_type
-  gran_lower <- tolower(granularity)
-  gran_opt <- c("hour", "day", "week", "month", "quarter", "semester", "year")
 
-  # check if the user input is correct
-  if (!gran_lower %in% gran_opt) {
-    stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
-  }
+  # lookup_tbl to be used for gran hour
+  lookup_l1 <- lookup_tbl("hhour")
 
-  gran_type <- match.arg(gran_lower, choices = gran_opt, several.ok = TRUE)
+  # Pick up the possible granularities from lookup table
+  gran_opt <- lookup_l1$gran_possible
 
-  gran_type_indx <- match(gran_type, gran_opt)
 
-  lubridate_match <- c("na", "na", "wday", "day", "qday", "na", "yday")
+  gran_type <- match.arg(granularity, choices = gran_opt, several.ok = TRUE)
+
+  # Match the input granularity from the lookup_tbl
+  lookup_l2 <-  lookup_tbl(granularity)$match_day
 
 
   if (gran_type == "hour") {
     ghalfhour_value <- dplyr::if_else(lubridate::minute(x) < 30, 1, 2)
   }
-  else if (gran_type == "day") {
-    ghalfhour_value <- hh_d(x)
-  }
-  else if (gran_type == "semester") {
-    ghalfhour_value <- hh_d(x) + 48 * (d_sem(x) - 1)
-  }
-  else {
-    match_value <- eval(parse(text = paste0("lubridate::", lubridate_match[gran_type_indx], "(x)")))
-    ghalfhour_value <- hh_d(x) + 48 * (match_value - 1)
-  }
-
+  else{
+    ghalfhour_value <- eval(parse_exp(lookup_l1$match_day)) + 48 * (eval(parse_exp(lookup_l2)) - 1)
+}
   return(ghalfhour_value)
 }
 
