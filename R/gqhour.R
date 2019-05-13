@@ -13,21 +13,19 @@
 #' gqtrhour(lubridate::now(), "day")
 #' @export gqhour
 gqhour <- function(x, granularity = "day") {
-  # match the gran_type
-  gran_lower <- tolower(granularity)
-  gran_opt <- c("hhour", "hour", "day", "week", "month", "quarter", "semester", "year")
+
+  # lookup_tbl to be used for gran qhour
+  lookup_l1 <- lookup_tbl("qhour")
+
+  # Pick up the possible granularities from lookup table
+  gran_opt <- lookup_l1$gran_possible
 
   # check if the user input is correct
+  gran_type <- match.arg(granularity, choices = gran_opt, several.ok = TRUE)
 
-  if (!gran_lower %in% gran_opt) {
-    stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
-  }
+  # Match the input granularity from the lookup_tbl
+  lookup_l2 <-  lookup_tbl(granularity)$match_day
 
-  gran_type <- match.arg(gran_lower, choices = gran_opt, several.ok = TRUE)
-
-  gran_type_indx <- match(gran_lower, gran_opt)
-
-  lubridate_match <- c("na", "na", "na", "wday", "day", "qday", "na", "yday")
 
   if (gran_type == "hhour") {
     gqhour_value <- ceiling(qh_h(x) %% 2)
@@ -35,17 +33,8 @@ gqhour <- function(x, granularity = "day") {
   else if (gran_type == "hour") {
     gqhour_value <- qh_h(x)
   }
-  else if (gran_type == "day") {
-    gqhour_value <- qh_d(x)
-  }
-  else if (gran_type == "semester") {
-    gqhour_value <- qh_d(x) + 24 * 4 * (d_sem(x) - 1)
-  }
-
   else {
-    match_value <- eval(parse(text = paste0("lubridate::", lubridate_match[gran_type_indx], "(x)")))
-
-    gqhour_value <- qh_d(x) + 24 * 4 * (match_value - 1)
+    gqhour_value <- eval(parse_exp(lookup_l1$match_day)) + 24 * 4 * (eval(parse_exp(lookup_l2))  - 1)
   }
 
   return(gqhour_value)
