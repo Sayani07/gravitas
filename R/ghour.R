@@ -20,7 +20,8 @@ ghour <- function(x, granularity = "day",...) {
   lookup_l1 <- lookup_tbl("hour")
 
   # match the input granuarity with the possible ones
-  lookup_l2 <-  lookup_tbl(granularity)
+  lookup_l2 <-  lookup_tbl(granularity)$match_day
+
   gran_lower <- tolower(granularity)
 
   # Pick up the possible granularities from lookup table
@@ -28,11 +29,11 @@ ghour <- function(x, granularity = "day",...) {
 
 
   if (gran_type == "day") {
-    ghour_value <- lookup_l1$match_day
+    ghour_value <-   eval(parse(text = paste0(lookup_l1$match_day, "(x)")))
   }
   else {
     match_value <- eval(parse(text = paste0(lookup_l2$match_day, "(x)")))
-    ghour_value <- lookup_l1$match_day + 24 * (match_value - 1)
+    ghour_value <- eval(parse(text = paste0(lookup_l1$match_day, "(x)"))) + 24 * (match_value - 1)
   }
 
   return(ghour_value)
