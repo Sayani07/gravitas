@@ -17,27 +17,22 @@
 #' @export ghour
 ghour <- function(x, granularity = "day",...) {
 
+  lookup_l1 <- lookup_tbl("hour")
+
+  # match the input granuarity with the possible ones
+  lookup_l2 <-  lookup_tbl(granularity)
   gran_lower <- tolower(granularity)
 
   # Pick up the possible granularities from lookup table
-  gran_opt <- lookup_tbl("hour")[[2]]
-
-  # match the input granuarity with the possible ones
-  gran_type <- match.arg(gran_lower, choices = gran_opt, several.ok = TRUE)
-
-  # get the index which will be mapped to lubridate function
-  gran_type_indx <- match(gran_type, gran_opt)
+  gran_opt <- lookup_l1$gran_possible
 
 
   if (gran_type == "day") {
-    ghour_value <- lubridate::hour(x)
-  }
-  else if (gran_type == "semester") {
-    ghour_value <- lubridate::hour(x) + 24 * (d_sem(x) - 1)
+    ghour_value <- lookup_l1$match_day
   }
   else {
-    match_value <- eval(parse(text = paste0(lookup_tbl(gran_type)[[1]], "(x)")))
-    ghour_value <- lubridate::hour(x) + 24 * (match_value - 1)
+    match_value <- eval(parse(text = paste0(lookup_l2$match_day, "(x)")))
+    ghour_value <- lookup_l1$match_day + 24 * (match_value - 1)
   }
 
   return(ghour_value)
