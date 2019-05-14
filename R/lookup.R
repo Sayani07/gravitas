@@ -8,9 +8,14 @@ lookup_tbl <- function(gran)
 
   match_day = c("sec_d", "min_d", "qh_d", "hh_d" , "lubridate::hour", 1, "lubridate::wday", NA,  "lubridate::mday", "lubridate::qday", "d_sem", "lubridate::yday")
 
+
+  match_hour <-  c("sec_hour", "lubridate::minute", "qh_hour", "hh_hour" , 1, NA, NA, NA, NA, NA, NA, NA)
+
   m = match(gran, granularity)
 
-  return(list(match_day = match_day[m],  gran_possible  = granularity[-(1:m)]))
+  return(list(match_day = match_day[m],
+              match_hour = match_hour[m],
+              gran_possible  = granularity[-(1:m)]))
   }
 
 

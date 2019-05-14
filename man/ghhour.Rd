@@ -21,6 +21,6 @@ Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zo
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
-tsibbledata::aus_elec \%>\% mutate(hh_day = ghour(Time, "day")) \%>\% tail()
+tsibbledata::aus_elec \%>\% mutate(hh_day = ghhour(Time, "day")) \%>\% tail()
 ghhour(lubridate::now(), "week")
 }

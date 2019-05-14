@@ -14,17 +14,19 @@
 #' gmonth(lubridate::now(), "quarter")
 #' @export gmonth
 gmonth <- function(x, granularity = "year", ...) {
-  # match the gran_type
-  gran_lower <- tolower(granularity)
-  gran_opt <- c("quarter", "semester", "year")
+
+  # lookup_tbl to be used for gran hour
+  lookup_l1 <- lookup_tbl("month")
+
+  # Pick up the possible granularities from lookup table
+  gran_opt <- lookup_l1$gran_possible
 
   # check if the user input is correct
-  if (!gran_lower %in% gran_opt) {
-    stop(paste0("granularity ", gran_lower, " is not one of ", paste0(gran_opt, collapse = ", ")), call. = F)
-  }
+  gran_type <- match.arg(granularity, choices = gran_opt, several.ok = TRUE)
 
-  # match the gran_type
-  gran_type <- match.arg(gran_lower, gran_opt)
+  # Match the input granularity from the lookup_tbl
+  lookup_l2 <-  lookup_tbl(granularity)$match_day
+
 
 
   if (gran_type == "quarter") {
