@@ -15,7 +15,8 @@
 #' library(dplyr)
 #' aus_elec <- tsibbledata::aus_elec %>%
 #'   mutate(
-#'     hour_day = nest(Time, "hour", "day"))
+#'     hour_day = nest(Time, "hour", "day")
+#'   )
 #' @export nest
 nest <- function(x, granularity1, granularity2, ...) {
 
@@ -25,7 +26,7 @@ nest <- function(x, granularity1, granularity2, ...) {
   lookup_l1 <- lookup_all(granularity1)
 
   # find the set of for granularities that are higher in order than granularity 1
-  gran <-  lookup_l1$gran_possible
+  gran <- lookup_l1$order_up
 
   # check if the user input for granularity2 is correct/ else show an error to the user
   granularity2 <- match.arg(granularity2, gran, several.ok = TRUE)
@@ -35,8 +36,13 @@ nest <- function(x, granularity1, granularity2, ...) {
   lookup_l2 <- lookup_all(granularity2)
 
   #
-  g_value <- eval(parse_exp(lookup_l1$match_day)) + lookup_l1$match_rel * (eval(parse_exp(lookup_l2$match_day)) - 1)
-
-  return(g_value)
+  if (granularity2 %in% lookup_all("day")$order_up & granularity1 %in% lookup_all("day")$order_down) {
+    g_value <- eval(parse_exp(lookup_l1$match_day)) + lookup_l1$match_rel * (eval(parse_exp(lookup_l2$match_day)) - 1)
+  }
+  else if (granularity1 == "month") {
+    g_value <- lubridate::month(x) %% lookup_l2$match_arg_month
+  }
+  else if (granularity1 == "semester") {
+    return(g_value)
+  }
 }
-
