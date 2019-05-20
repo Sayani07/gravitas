@@ -24,7 +24,7 @@ gqhour <- function(x, granularity = "day") {
   gran_type <- match.arg(granularity, choices = gran_opt, several.ok = TRUE)
 
   # Match the input granularity from the lookup_tbl
-  lookup_l2 <-  lookup_tbl(granularity)$match_day
+  lookup_l2 <- lookup_tbl(granularity)$match_day
 
 
   if (gran_type == "hhour") {
@@ -34,7 +34,7 @@ gqhour <- function(x, granularity = "day") {
     gqhour_value <- qh_h(x)
   }
   else {
-    gqhour_value <- eval(parse_exp(lookup_l1$match_day)) + 24 * 4 * (eval(parse_exp(lookup_l2))  - 1)
+    gqhour_value <- eval(parse_exp(lookup_l1$match_day)) + 24 * 4 * (eval(parse_exp(lookup_l2)) - 1)
   }
 
   return(gqhour_value)

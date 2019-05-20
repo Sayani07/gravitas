@@ -24,7 +24,7 @@ gminute <- function(x, granularity = "hour", ...) {
 
 
   # Match the input granularity from the lookup_tbl
-  lookup_l2 <-  lookup_tbl(granularity)$match_day
+  lookup_l2 <- lookup_tbl(granularity)$match_day
 
 
   gran_type <- match.arg(granularity, choices = gran_opt, several.ok = TRUE)
@@ -40,15 +40,15 @@ gminute <- function(x, granularity = "hour", ...) {
   else if (gran_type == "hour") {
     gmin_value <- lubridate::minute(x)
   }
-else{
+  else {
     gmin_value <- eval(parse_exp(lookup_l1$match_day)) + 24 * (eval(parse_exp(lookup_l2)) - 1)
-}
+  }
 
   return(gmin_value)
 }
 
 
-ghour <- function(x, granularity = "day",...) {
+ghour <- function(x, granularity = "day", ...) {
 
   # lookup_tbl to be used for gran hour
   lookup_l1 <- lookup_tbl("hour")
@@ -62,7 +62,7 @@ ghour <- function(x, granularity = "day",...) {
   }
 
   # Match the input granularity from the lookup_tbl
-  lookup_l2 <-  lookup_tbl(granularity)$match_day
+  lookup_l2 <- lookup_tbl(granularity)$match_day
 
 
   ghour_value <- eval(parse_exp(lookup_l1$match_day)) + 24 * (eval(parse_exp(lookup_l2)) - 1)

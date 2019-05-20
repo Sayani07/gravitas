@@ -22,30 +22,28 @@ compatibility <- function(.data, ...) {
   UseMethod("compatibility")
 }
 
-compatibility.tbl_ts <- function(.data, level1, level2, ...)
+compatibility.tbl_ts <- function(.data, level1, level2, ...) {
 
-{
-
-#   exprs <- enexprs(..., .named = TRUE)
-# if (is_empty(exprs)) {
-#   attr(.data, "index2") <- index(.data)
-#   return(.data)
-# }
-# if (is_false(has_length(exprs, 1))) {
-#   abort("`index_by()` only accepts one expression.")
-# }
-# expr_name <- names(exprs)[1]
-#
-# idx <- index(.data)
-# idx_chr <- as_string(idx)
-#
-# if (identical(idx_chr, expr_name)) {
-#   abort(sprintf("Column `%s` (index) can't be overwritten.", idx_chr))
-# }
-#
-# idx2 <- sym(expr_name)
-#
-# expr_name
+  #   exprs <- enexprs(..., .named = TRUE)
+  # if (is_empty(exprs)) {
+  #   attr(.data, "index2") <- index(.data)
+  #   return(.data)
+  # }
+  # if (is_false(has_length(exprs, 1))) {
+  #   abort("`index_by()` only accepts one expression.")
+  # }
+  # expr_name <- names(exprs)[1]
+  #
+  # idx <- index(.data)
+  # idx_chr <- as_string(idx)
+  #
+  # if (identical(idx_chr, expr_name)) {
+  #   abort(sprintf("Column `%s` (index) can't be overwritten.", idx_chr))
+  # }
+  #
+  # idx2 <- sym(expr_name)
+  #
+  # expr_name
 
 
   if (!tsibble::is_tsibble(.data)) {
@@ -61,7 +59,7 @@ compatibility.tbl_ts <- function(.data, level1, level2, ...)
   # All possible combination that are missing
   cmbmiss <- Allcomb %>% dplyr::anti_join(combexist)
 
-  Output = list()
+  Output <- list()
 
   Output$data <- .data %>% mutate(L1 = .data[[level1]], L2 = .data[[level2]])
 

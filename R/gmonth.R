@@ -25,8 +25,7 @@ gmonth <- function(x, granularity = "year", ...) {
   gran_type <- match.arg(granularity, choices = gran_opt, several.ok = TRUE)
 
   # Match the input granularity from the lookup_tbl
-  lookup_l2 <-  lookup_tbl(granularity)$match_day
-
+  lookup_l2 <- lookup_tbl(granularity)$match_day
 
 
   if (gran_type == "quarter") {

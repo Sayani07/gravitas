@@ -22,17 +22,29 @@ zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
 aus_elec <- tsibbledata::aus_elec \%>\%
-mutate(hour_day = ghour(Time, "day"),
-month_year = gmonth(Time, "year"))
+  mutate(
+    hour_day = ghour(Time, "day"),
+    month_year = gmonth(Time, "year")
+  )
 aus_elec \%>\%
-filter(hour_day \%in\% c(1, 10, 15),
-month_year \%in\% c(4,5,6) ) \%>\%
-ggplot(aes(x = as.factor(hour_day), y = Demand)) + facet_wrap(~month_year) +
-geom_boxplot()
-aus_quant <- aus_elec \%>\% filter(hour_day \%in\% c(1, 10, 15), month_year \%in\% c(4,5,6) ) \%>\% group_by(hour_day, month_year) \%>\%
-do({x <- .$Demand
-purrr::map_dfr(.x = c(0.1, 0.5, 0.9),
-              .f = ~ tibble(Quantile = .x,
-                            Value = quantile(x, probs = .x,na.rm=TRUE)))})
-aus_quant \%>\%ggplot(aes(x=hour_day,y=Value,col=as.factor(Quantile))) + geom_line() + facet_wrap(~month_year)
+  filter(
+    hour_day \%in\% c(1, 10, 15),
+    month_year \%in\% c(4, 5, 6)
+  ) \%>\%
+  ggplot(aes(x = as.factor(hour_day), y = Demand)) + facet_wrap(~month_year) +
+  geom_boxplot()
+aus_quant <- aus_elec \%>\%
+  filter(hour_day \%in\% c(1, 10, 15), month_year \%in\% c(4, 5, 6)) \%>\%
+  group_by(hour_day, month_year) \%>\%
+  do({
+    x <- .$Demand
+    purrr::map_dfr(
+      .x = c(0.1, 0.5, 0.9),
+      .f = ~ tibble(
+        Quantile = .x,
+        Value = quantile(x, probs = .x, na.rm = TRUE)
+      )
+    )
+  })
+aus_quant \%>\% ggplot(aes(x = hour_day, y = Value, col = as.factor(Quantile))) + geom_line() + facet_wrap(~month_year)
 }

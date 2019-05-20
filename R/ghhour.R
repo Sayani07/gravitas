@@ -26,14 +26,14 @@ ghhour <- function(x, granularity = "hour", ...) {
   gran_type <- match.arg(granularity, choices = gran_opt, several.ok = TRUE)
 
   # Match the input granularity from the lookup_tbl
-  lookup_l2 <-  lookup_tbl(granularity)$match_day
+  lookup_l2 <- lookup_tbl(granularity)$match_day
 
 
-  if (gran_type == "hour")
+  if (gran_type == "hour") {
     ghalfhour_value <- eval(parse_exp(lookup_l1$match_hour))
-  else{
+  } else {
     ghalfhour_value <- eval(parse_exp(lookup_l1$match_day)) + 48 * (eval(parse_exp(lookup_l2)) - 1)
-}
+  }
   return(ghalfhour_value)
 }
 
@@ -42,7 +42,6 @@ hh_d <- function(x) {
   (lubridate::hour(x) * 60 + lubridate::minute(x)) / 30
 }
 
-hh_hour <- function(x)
-{
+hh_hour <- function(x) {
   dplyr::if_else(lubridate::minute(x) < 30, 1, 2)
 }

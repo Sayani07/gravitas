@@ -22,7 +22,7 @@ gday <- function(x, granularity = "week", ...) {
   gran_type <- match.arg(granularity, choices = gran_opt, several.ok = TRUE)
 
   # Match the input granularity from the lookup_tbl
-  lookup_l2 <-  lookup_tbl(granularity)$match_day
+  lookup_l2 <- lookup_tbl(granularity)$match_day
 
   gday_value <- eval(parse_exp(lookup_l2))
 
