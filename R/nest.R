@@ -15,7 +15,7 @@
 #' library(dplyr)
 #' aus_elec <- tsibbledata::aus_elec %>%
 #'   mutate(
-#'     hour_day = nest(Time, "hour", "day")
+#'     hour_day = nest(Time, "quarter", "year")
 #'   )
 #' @export nest
 nest <- function(x, granularity1, granularity2, ...) {
@@ -39,10 +39,13 @@ nest <- function(x, granularity1, granularity2, ...) {
   if (granularity2 %in% lookup_all("day")$order_up & granularity1 %in% lookup_all("day")$order_down) {
     g_value <- eval(parse_exp(lookup_l1$match_day)) + lookup_l1$match_rel * (eval(parse_exp(lookup_l2$match_day)) - 1)
   }
-  else if (granularity1 == "month") {
-    g_value <- lubridate::month(x) %% lookup_l2$match_arg_month
+  else if (granularity1 %in% lookup_all("day")$order_up) {
+    if (granularity2 == "year") {
+      g_value <- eval(parse_exp(lookup_l1$lub_match))
+    }
+    else {
+      g_value <- eval(parse_exp(lookup_l1$lub_match)) %% relate_tbl(granularity1, granularity2)
+    }
   }
-  else if (granularity1 == "semester") {
-    return(g_value)
-  }
+  return(g_value)
 }
