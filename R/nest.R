@@ -6,7 +6,8 @@
 #'
 
 #' @param x a date-time object
-#' @param granularity the granularity to be paired up with hour
+#' @param granularity1 granularity level 1
+#' @param granularity2 any higher order granularity to be paired with granularity 1
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the hour component of x as a number
 #
