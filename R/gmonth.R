@@ -10,6 +10,8 @@
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the month component of x as a number
 #' @examples
+#' library(ggplot2)
+#' library(dplyr)
 #' tsibbledata::aus_elec %>% mutate(month_year = gmonth(Time, "year")) %>% tail()
 #' gmonth(lubridate::now(), "quarter")
 #' @export gmonth

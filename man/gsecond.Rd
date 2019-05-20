@@ -24,6 +24,8 @@ Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zo
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
+library(ggplot2)
+library(dplyr)
 tsibbledata::nyc_bikes \%>\% mutate(sec_hour = gsecond(start_time, "hour")) \%>\% tail()
 gsecond(lubridate::now(), "day")
 }

@@ -13,11 +13,10 @@
 #'
 #' @return compatibility table providing if the two granularities are harmonies or clashes. It also provides information on the range of the number of observations per combination and variation across number of combinations and other summery statistics.
 #'
-#' #' @examples
+#' @examples
+#' library(ggplot2)
+#' library(dplyr)
 #' #' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) %>% compatibility("hour_day", "day_week")
-#'
-
-
 compatibility <- function(.data, ...) {
   UseMethod("compatibility")
 }

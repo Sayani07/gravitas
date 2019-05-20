@@ -19,6 +19,8 @@ Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zo
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
+library(ggplot2)
+library(dplyr)
 tsibbledata::aus_elec \%>\% mutate(qhour_day = gqhour(Time, "hour")) \%>\% tail()
-gqtrhour(lubridate::now(), "day")
+gqhour(lubridate::now(), "day")
 }

@@ -9,6 +9,8 @@
 #' @param granularity the granularity to be paired up with week
 #' @return combination of the week component of x as a number
 #' @examples
+#' library(ggplot2)
+#' library(dplyr)
 #' tsibbledata::aus_elec %>% mutate(week_year = gweek(Time, "year")) %>% tail()
 #' gweek(lubridate::now(), "month")
 #' @export gweek

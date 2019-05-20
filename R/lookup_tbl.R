@@ -9,6 +9,8 @@ lookup_all <- function(gran) {
 
   match_arg_day <- c(24 * 60 * 60, 24 * 60, 24 * 4, 24 * 2, 24, 1, 1 / 7, 1 / 14, NA, NA, NA, NA)
 
+  lub_match <- c("lubridate::second", "lubridate::minute", NA, NA, "lubridate::hour", "lubridate::day", "lubridate::week", NA, "lubridate::month", "lubridate::quarter", "lubridate::semester", "lubridate::year")
+
   match_hour <- c("sec_hour", "lubridate::minute", "qh_hour", "hh_hour", 1, NA, NA, NA, NA, NA, NA, NA)
 
   match_arg_month <- c(NA, NA, NA, NA, NA, NA, NA, NA, 1, 4, 6, 12)
@@ -21,10 +23,29 @@ lookup_all <- function(gran) {
     order_up = granularity[-(1:m)],
     order_down = granularity[1:(m - 1)],
     match_rel = match_arg_day[m],
-    match_month = match_arg_month[m]
+    match_month = match_arg_month[m],
+    lub_match = lub_match[m]
   ))
 }
 
+relate_tbl <- function(gran1, gran2) {
+  if (gran1 == "month" & gran2 == "year") {
+    value <- 12
+  } else if (gran1 == "month" & gran2 == "semester") {
+    value <- 6
+  } else if (gran1 == "month" & gran2 == "quarter") {
+    value <- 4
+  } else if (gran1 == "quarter" & gran2 == "semester") {
+    value <- 2
+  } else if (gran1 == "quarter" & gran2 == "year") {
+    value <- 4
+  } else if (gran1 == "month" & gran2 == "quarter") {
+    value <- 3
+  } else if (gran1 == "month" & gran2 == "semester") {
+    value <- 6
+  }
+  return(value)
+}
 
 parse_exp <- function(y) {
   if (y == "1") {

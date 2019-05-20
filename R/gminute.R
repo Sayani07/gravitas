@@ -10,7 +10,9 @@
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the hour component of x as a number
 #' @examples
-#' tsibbledata::nyc_bikes %>% mutate(m_hour = gminute(Time, "hour")) %>% tail()
+#' library(ggplot2)
+#' library(dplyr)
+#' tsibbledata::nyc_bikes %>% mutate(m_hour = gminute(start_time, "hour")) %>% tail()
 #' gminute(lubridate::now(), "day")
 #' @export gminute
 gminute <- function(x, granularity = "hour", ...) {
@@ -69,7 +71,6 @@ ghour <- function(x, granularity = "day", ...) {
 
   return(ghour_value)
 }
-
 
 
 

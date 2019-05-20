@@ -9,6 +9,8 @@
 #' @param granularity the granularity to be paired up with fortnight
 #' @return combination of the week component of x as a number
 #' @examples
+#' library(ggplot2)
+#' library(dplyr)
 #' tsibbledata::aus_elec %>% mutate(ft_year = gfortnight(Time, "year")) %>% tail()
 #' gfortnight(lubridate::now(), "month")
 #' @export gfortnight

@@ -21,6 +21,8 @@ Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zo
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
+library(ggplot2)
+library(dplyr)
 tsibbledata::aus_elec \%>\% mutate(month_year = gmonth(Time, "year")) \%>\% tail()
 gmonth(lubridate::now(), "quarter")
 }

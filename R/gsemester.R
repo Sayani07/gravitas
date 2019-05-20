@@ -11,6 +11,8 @@
 #' @return combination of the semester component of x as a number
 
 #' @examples
+#' library(ggplot2)
+#' library(dplyr)
 #' tsibbledata::aus_elec %>% mutate(semester_year = gsemester(Time, "year")) %>% tail()
 #' @export gsemester
 gsemester <- function(x, granularity = "year", ...) {

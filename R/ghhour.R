@@ -11,6 +11,8 @@
 #' @return combination of the hour component of x as a number
 
 #' @examples
+#' library(ggplot2)
+#' library(dplyr)
 #' tsibbledata::aus_elec %>% mutate(hh_day = ghhour(Time, "day")) %>% tail()
 #' ghhour(lubridate::now(), "week")
 #' @export ghhour
@@ -41,6 +43,7 @@ ghhour <- function(x, granularity = "hour", ...) {
 hh_d <- function(x) {
   (lubridate::hour(x) * 60 + lubridate::minute(x)) / 30
 }
+
 
 hh_hour <- function(x) {
   dplyr::if_else(lubridate::minute(x) < 30, 1, 2)

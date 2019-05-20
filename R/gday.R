@@ -8,6 +8,8 @@
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the day component of x as a number
 #' @examples
+#' library(ggplot2)
+#' library(dplyr)
 #' tsibbledata::aus_elec %>% mutate(day_week = gday(Time, "week")) %>% tail()
 #' gday(lubridate::now(), "month")
 #' @export gday

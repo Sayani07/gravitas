@@ -6,6 +6,8 @@
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of the seconds component of x as a number
 #' @examples
+#' library(ggplot2)
+#' library(dplyr)
 #' tsibbledata::nyc_bikes %>% mutate(sec_hour = gsecond(start_time, "hour")) %>% tail()
 #' gsecond(lubridate::now(), "day")
 #' @export gsecond
@@ -18,22 +20,22 @@ gsecond <- function(x, granularity = "hour", ...) {
   # # Pick up the time index varible form the tsibble
   # x <- data[[rlang::as_string(tsibble::index(data))]]
 
-  gran_lower <- tolower(granularity)
-
+  lookup_l1 <- lookup_all("second")
   # Pick up the possible granularities from lookup table
-  gran_opt <- lookup_tbl("second")[[2]]
+  gran_opt <- lookup_l1$order_up
 
-  # match the input granuarity with the possible ones
-  gran_type <- match.arg(gran_lower, choices = gran_opt, several.ok = TRUE)
+  # check if the user input is correct
+  gran_type <- match.arg(granularity, choices = gran_opt, several.ok = TRUE)
 
-  # get the index which will be mapped to lubridate function
-  gran_type_indx <- match(gran_type, gran_opt)
+  # Match the input granularity from the lookup_tbl
+  lookup_l2 <- lookup_all(granularity)$match_day
+
 
   if (gran_type == "minute") {
-    gsec_value <- lubridate::second(x)
+    gsec_value <- eval(parse_exp(lookup_l1$lub_match))
   }
   else if (gran_type %in% c("qhour", "hhour", "hour")) {
-    gsec_value <- lubridate::second(x) + 60 * gminute(x, gran_type)
+    gsec_value <- eval(parse_exp(lookup_l1$lub_match)) + 60 * gminute(x, gran_type)
   }
   else if (gran_type == "day") {
     gsec_value <- sec_d(x)
@@ -42,7 +44,7 @@ gsecond <- function(x, granularity = "hour", ...) {
     gsec_value <- sec_d(x) + 24 * 60 * (d_sem(x) - 1)
   }
   else {
-    match_value <- eval(parse(text = paste0(lookup_tbl(gran_type)[[1]], "(x)")))
+    match_value <- eval(parse_exp(lookup_l2))
     gsec_value <- sec_d(x) + 24 * 60 * (match_value - 1)
   }
 
