@@ -23,10 +23,12 @@ Imports:
   dplyr(>= 0.8.0.9009),
   tsibble (>= 0.8.0),
   tibble(>= 2.1.1),
-  rlang(>= 0.3.4)
+  rlang(>= 0.3.4),
+  tidyr
 Suggests:
   tsibbledata,
-  purrr
+  purrr,
+  ggplot2
 Maintainer: Sayani Gupta <Sayani.Gupta@monash.edu>
 Description: Functions for algebraic manipulation of date-time objects. It complements
   the lubridate package by building time granularties like hour of the week, half-hour
