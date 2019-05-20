@@ -32,7 +32,7 @@ gmonth <- function(x, granularity = "year", ...) {
     gmonth_value <- lubridate::month(x) %% 3
   }
   else if (gran_type == "semester") {
-    gmonth_value <- lubridate::month(x) %% 2
+    gmonth_value <- lubridate::month(x) %% 6
   }
   else {
     gmonth_value <- lubridate::month(x, ...)
