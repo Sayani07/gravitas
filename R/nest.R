@@ -26,7 +26,7 @@ nest <- function(x, granularity1, granularity2, ...) {
   # use lookup table for granularity1
   lookup_l1 <- lookup_all(granularity1)
 
-  # find the set of for granularities that are higher in order than granularity 1
+  # find the set of granularities that are higher in order than granularity 1
   gran <- lookup_l1$order_up
 
   # check if the user input for granularity2 is correct/ else show an error to the user

@@ -6,43 +6,43 @@
 #'
 
 #' @param data a tsibble object
-#' @param fn1 the first granularity function to use
-#' @param fn2 the first granularity function to use
-#' @param argfn1 granularity to be fed in fn1
-#' @param argfn2 granularity to be fed in fn2
+#' @param gran1 the first granularity function to use
+#' @param gran2 the first granularity function to use
+
 #'
 #' @return compatibility table providing if the two granularities are harmonies or clashes. It also provides information on the range of the number of observations per combination and variation across number of combinations and other summery statistics.
 #'
 #' @examples
 #' library(ggplot2)
 #' library(dplyr)
-#' #' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) %>% compatibility("hour_day", "day_week")
+#' #' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) %>% compatibility( "hour_day", "day_week", "Demand")
+#' @export compatibility
 compatibility <- function(.data, ...) {
   UseMethod("compatibility")
 }
 
-compatibility.tbl_ts <- function(.data, level1, level2, ...) {
-
-  #   exprs <- enexprs(..., .named = TRUE)
-  # if (is_empty(exprs)) {
-  #   attr(.data, "index2") <- index(.data)
-  #   return(.data)
-  # }
-  # if (is_false(has_length(exprs, 1))) {
-  #   abort("`index_by()` only accepts one expression.")
-  # }
-  # expr_name <- names(exprs)[1]
-  #
-  # idx <- index(.data)
-  # idx_chr <- as_string(idx)
-  #
-  # if (identical(idx_chr, expr_name)) {
-  #   abort(sprintf("Column `%s` (index) can't be overwritten.", idx_chr))
-  # }
-  #
-  # idx2 <- sym(expr_name)
-  #
-  # expr_name
+compatibility.tbl_ts <- function(.data, gran1, gran2, response, ...) {
+#
+#   #   exprs <- enexprs(..., .named = TRUE)
+#   # if (is_empty(exprs)) {
+#   #   attr(.data, "index2") <- index(.data)
+#   #   return(.data)
+#   # }
+#   # if (is_false(has_length(exprs, 1))) {
+#   #   abort("`index_by()` only accepts one expression.")
+#   # }
+#   # expr_name <- names(exprs)[1]
+#   #
+#   # idx <- index(.data)
+#   # idx_chr <- as_string(idx)
+#   #
+#   # if (identical(idx_chr, expr_name)) {
+#   #   abort(sprintf("Column `%s` (index) can't be overwritten.", idx_chr))
+#   # }
+#   #
+#   # idx2 <- sym(expr_name)
+#   #
+#   # expr_name
 
 
   if (!tsibble::is_tsibble(.data)) {
@@ -52,26 +52,31 @@ compatibility.tbl_ts <- function(.data, level1, level2, ...) {
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
 
   # All possible combinations that are possible
-  Allcomb <- .data %>% tidyr::expand(level1, level2)
+  Allcomb <- .data %>% tidyr::expand(gran1, gran2)
   # All possible combinations that  exist
-  combexist <- .data %>% tidyr::expand(tidyr::nesting(level1, level2))
+  combexist <- .data %>% tidyr::expand(tidyr::nesting(gran1, gran2))
   # All possible combination that are missing
   cmbmiss <- Allcomb %>% dplyr::anti_join(combexist)
 
-  Output <- list()
+  #Output <- list()
 
-  Output$data <- .data %>% mutate(L1 = .data[[level1]], L2 = .data[[level2]])
+  #Data <- .data %>% mutate(L1 = .data[[level1]], L2 = .data[[level2]])
 
 
-  Output$Type <- Type <- dplyr::if_else(nrow(cmbmiss) != 0, "Clashes", "Harmonies")
+  #Output$Type <- Type <- dplyr::if_else(nrow(cmbmiss) != 0, "Clashes", "Harmonies")
 
-  Output$Missing_comb <- cmbmiss
 
-  Obs_per_possible_combn <- .data %>% dplyr::group_by(L1 = .data[[level1]], L2 = .data[[level2]]) %>% dplyr::tally()
+  Obs_per_possible_combn <- .data %>% tibble::as_tibble() %>% dplyr::group_by(.data[[gran1]],.data[[gran2]]) %>% summarise(count = n(), min = fivenum(response)[1],
+                                                                                                                                                      q1 = fivenum(response)[2],
+                                                                                                                                                                    median = fivenum(response)[3],
+                                                                                                                                                                                  q3 = fivenum(response)[4],
+                                                                                                                                                                                                max = fivenum(.data[[response]])[5])
 
-  Output$Obs_per_possible_combn <- Obs_per_possible_combn
+  #Output$Missing_comb <- cmbmiss
 
-  Output$Summary <- summary(Obs_per_possible_combn$n)
+  combn_table <- Obs_per_possible_combn
 
-  Output
+  #Output$Summary <- summary(Obs_per_possible_combn$n)
+
+  combn_table
 }
