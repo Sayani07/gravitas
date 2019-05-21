@@ -8,18 +8,18 @@
 #' @param data a tsibble object
 #' @param gran1 the first granularity function to use
 #' @param gran2 the first granularity function to use
-
-#'
+#' @param response variable for which summary is desired per combination
 #' @return compatibility table providing if the two granularities are harmonies or clashes. It also provides information on the range of the number of observations per combination and variation across number of combinations and other summery statistics.
 #'
 #' @examples
 #' library(ggplot2)
 #' library(dplyr)
-#' #' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) %>% compatibility( "hour_day", "day_week", "Demand")
-#' @export compatibility
-compatibility <- function(.data, ...) {
-  UseMethod("compatibility")
-}
+#' library(tsibbledata)
+#' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) %>% compatibility.tbl_ts( "hour_day", "day_week", "Demand")
+#' @export compatibility.tbl_ts
+# compatibility <- function(.data, ...) {
+#   UseMethod("compatibility")
+# }
 
 compatibility.tbl_ts <- function(.data, gran1, gran2, response, ...) {
 #
@@ -66,11 +66,11 @@ compatibility.tbl_ts <- function(.data, gran1, gran2, response, ...) {
   #Output$Type <- Type <- dplyr::if_else(nrow(cmbmiss) != 0, "Clashes", "Harmonies")
 
 
-  Obs_per_possible_combn <- .data %>% tibble::as_tibble() %>% dplyr::group_by(.data[[gran1]],.data[[gran2]]) %>% summarise(count = n(), min = fivenum(response)[1],
-                                                                                                                                                      q1 = fivenum(response)[2],
-                                                                                                                                                                    median = fivenum(response)[3],
-                                                                                                                                                                                  q3 = fivenum(response)[4],
-                                                                                                                                                                                                max = fivenum(.data[[response]])[5])
+  Obs_per_possible_combn <- .data %>% tibble::as_tibble() %>% dplyr::group_by(.data[[gran1]],.data[[gran2]]) %>% dplyr::summarise(count = n(), min = stats::fivenum(.data[[response]])[1],
+                                                                                                                                                      q1 = stats::fivenum(.data[[response]])[2],
+                                                                                                                                                                    median = stats::fivenum(.data[[response]])[3],
+                                                                                                                                                                                  q3 = stats::fivenum(.data[[response]])[4],
+                                                                                                                                                                                                max = stats::fivenum(.data[[response]])[5])
 
   #Output$Missing_comb <- cmbmiss
 
