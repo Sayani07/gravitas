@@ -19,18 +19,24 @@ g_order <- function(gran1, gran2 = NULL, order = NULL) {
 
 # provides the conversion factor between two granularities
 
-gran_convert <- function(gran1, gran2) {
-
+gran_convert <- function(a,b) {
+  granularity <- lookup_table %>% .$granularity
   conv_fac <- lookup_table %>% .$constant
-  if()
+  index_gran1 <- granularity %>% match(x = a)
+  if(g_order(a,b)==1)
+  {
+    return(conv_fac[index_gran1])
+  }
+  else
+  {
+    return(conv_fac[index_gran1]*gran_convert(g_order(b,order=-1), b))
   }
 }
-
 
 nest <- function(x, y)
 if(g_order(x,y)==1) return(one_order(x, y))
 else{
-   value <- nest(x,g_order(y,-1)) + c(x, g_order(y,-1)) * (nest(x, g_order(y,-1)) - 1)
+   value <- nest(x,g_order(y,-1)) + gran_convert(x, g_order(y,-1)) * (nest(x, g_order(y,-1)) - 1)
    return(value)
 }
 
