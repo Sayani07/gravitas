@@ -9,7 +9,7 @@ g_order <- function(gran1, gran2 = NULL, order = NULL) {
   index_gran1 <- granularity %>% match(x = gran1)
   if (!is.null(gran2)) {
     index_gran2 <- granularity %>% match(x = gran2)
-    return(abs(index_gran1 - index_gran2))
+    return(index_gran1 - index_gran2)
   }
   if (!is.null(order))
   {
@@ -23,13 +23,13 @@ gran_convert <- function(a,b) {
   granularity <- lookup_table %>% .$granularity
   conv_fac <- lookup_table %>% .$constant
   index_gran1 <- granularity %>% match(x = a)
-  if(g_order(a,b)==1)
+  if(g_order(a,b)==0)
   {
-    return(conv_fac[index_gran1])
+    return(1)
   }
   else
   {
-    return(conv_fac[index_gran1]*gran_convert(g_order(b,order=-1), b))
+    return(conv_fac[index_gran1]*gran_convert(g_order(a,order=1),b))
   }
 }
 
