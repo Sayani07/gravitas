@@ -47,12 +47,12 @@ relate_tbl <- function(gran1, gran2) {
   return(value)
 }
 
-parse_exp <- function(y) {
+parse_exp <- function(y,x) {
   if (y == "1") {
     value <- 1
   }
   else {
-    value <- parse(text = paste0(y, "(x)"))
+    value <- parse(text = paste0(y, "(",x,")"))
   }
   return(value)
 }

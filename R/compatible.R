@@ -15,34 +15,34 @@
 #' library(ggplot2)
 #' library(dplyr)
 #' library(tsibbledata)
-#' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) %>% compatibility.tbl_ts( "hour_day", "day_week", "Demand")
+#' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) %>% compatibility.tbl_ts("hour_day", "day_week", "Demand")
 #' @export compatibility.tbl_ts
 # compatibility <- function(.data, ...) {
 #   UseMethod("compatibility")
 # }
 
 compatibility.tbl_ts <- function(.data, gran1, gran2, response, ...) {
-#
-#   #   exprs <- enexprs(..., .named = TRUE)
-#   # if (is_empty(exprs)) {
-#   #   attr(.data, "index2") <- index(.data)
-#   #   return(.data)
-#   # }
-#   # if (is_false(has_length(exprs, 1))) {
-#   #   abort("`index_by()` only accepts one expression.")
-#   # }
-#   # expr_name <- names(exprs)[1]
-#   #
-#   # idx <- index(.data)
-#   # idx_chr <- as_string(idx)
-#   #
-#   # if (identical(idx_chr, expr_name)) {
-#   #   abort(sprintf("Column `%s` (index) can't be overwritten.", idx_chr))
-#   # }
-#   #
-#   # idx2 <- sym(expr_name)
-#   #
-#   # expr_name
+  #
+  #   #   exprs <- enexprs(..., .named = TRUE)
+  #   # if (is_empty(exprs)) {
+  #   #   attr(.data, "index2") <- index(.data)
+  #   #   return(.data)
+  #   # }
+  #   # if (is_false(has_length(exprs, 1))) {
+  #   #   abort("`index_by()` only accepts one expression.")
+  #   # }
+  #   # expr_name <- names(exprs)[1]
+  #   #
+  #   # idx <- index(.data)
+  #   # idx_chr <- as_string(idx)
+  #   #
+  #   # if (identical(idx_chr, expr_name)) {
+  #   #   abort(sprintf("Column `%s` (index) can't be overwritten.", idx_chr))
+  #   # }
+  #   #
+  #   # idx2 <- sym(expr_name)
+  #   #
+  #   # expr_name
 
 
   if (!tsibble::is_tsibble(.data)) {
@@ -58,25 +58,27 @@ compatibility.tbl_ts <- function(.data, gran1, gran2, response, ...) {
   # All possible combination that are missing
   cmbmiss <- Allcomb %>% dplyr::anti_join(combexist)
 
-  #Output <- list()
+  # Output <- list()
 
-  #Data <- .data %>% mutate(L1 = .data[[level1]], L2 = .data[[level2]])
-
-
-  #Output$Type <- Type <- dplyr::if_else(nrow(cmbmiss) != 0, "Clashes", "Harmonies")
+  # Data <- .data %>% mutate(L1 = .data[[level1]], L2 = .data[[level2]])
 
 
-  Obs_per_possible_combn <- .data %>% tibble::as_tibble() %>% dplyr::group_by(.data[[gran1]],.data[[gran2]]) %>% dplyr::summarise(count = n(), min = stats::fivenum(.data[[response]])[1],
-                                                                                                                                                      q1 = stats::fivenum(.data[[response]])[2],
-                                                                                                                                                                    median = stats::fivenum(.data[[response]])[3],
-                                                                                                                                                                                  q3 = stats::fivenum(.data[[response]])[4],
-                                                                                                                                                                                                max = stats::fivenum(.data[[response]])[5])
+  # Output$Type <- Type <- dplyr::if_else(nrow(cmbmiss) != 0, "Clashes", "Harmonies")
 
-  #Output$Missing_comb <- cmbmiss
+
+  Obs_per_possible_combn <- .data %>% tibble::as_tibble() %>% dplyr::group_by(.data[[gran1]], .data[[gran2]]) %>% dplyr::summarise(
+    count = n(), min = stats::fivenum(.data[[response]])[1],
+    q1 = stats::fivenum(.data[[response]])[2],
+    median = stats::fivenum(.data[[response]])[3],
+    q3 = stats::fivenum(.data[[response]])[4],
+    max = stats::fivenum(.data[[response]])[5]
+  )
+
+  # Output$Missing_comb <- cmbmiss
 
   combn_table <- Obs_per_possible_combn
 
-  #Output$Summary <- summary(Obs_per_possible_combn$n)
+  # Output$Summary <- summary(Obs_per_possible_combn$n)
 
   combn_table
 }
