@@ -10,16 +10,15 @@
 #' @return combination of granularities of x as a number
 #
 #' @examples
-#'library(dplyr)
-#'tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = nest("hhour", "week", start_time))
-
-nest<- function(gran1, gran2, x, ...) {
+#' library(dplyr)
+#' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = nest("hhour", "week", start_time))
+nest <- function(gran1, gran2, x, ...) {
   if (g_order(gran1, gran2) == 1) {
     return(eval(one_order(gran1, gran2)))
   } else {
     value <- nest(gran1, g_order(gran1, order = 1), x) +
       gran_convert(gran1, g_order(gran1, order = 1)) *
-      (nest(g_order(gran1, order = 1), gran2, x) - 1)
+        (nest(g_order(gran1, order = 1), gran2, x) - 1)
     return(value)
   }
 }
@@ -83,7 +82,7 @@ one_order <- function(gran1, gran2) {
     value <- parse_exp("lubridate::wday")
   } else if (gran1 == "week" & gran2 == "fortnight") {
     value <- parse_exp("week_fortnight")
-  }else if (gran1 == "month" & gran2 == "quarter") {
+  } else if (gran1 == "month" & gran2 == "quarter") {
     value <- parse_exp("month_quarter")
   }
   else if (gran1 == "quarter" & gran2 == "semester") {
@@ -117,7 +116,7 @@ hhour_hour <- function(x) {
 }
 
 week_fortnight <- function(x) {
-  dplyr::if_else((lubridate::yday(x)%/% 14 + 1) <= 14, 1, 2)
+  dplyr::if_else((lubridate::yday(x) %/% 14 + 1) <= 14, 1, 2)
 }
 
 month_quarter <- function(x) {
