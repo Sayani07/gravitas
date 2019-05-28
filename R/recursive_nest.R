@@ -1,5 +1,32 @@
+#' Get combination of granularities of a date time
+#' Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
+#' zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
+#'
+
+#' @param x a date-time object
+#' @param gran1 the lower level granularity to be paired
+#' @param gran2 the upper level granularity to be paired
+#' @param ... other arguments to be passed for appropriate labels
+#' @return combination of granularities of x as a number
+#
+#' @examples
+#'library(dplyr)
+#'tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = nest("hhour", "week", start_time))
+
+nest<- function(gran1, gran2, x, ...) {
+  if (g_order(gran1, gran2) == 1) {
+    return(eval(one_order(gran1, gran2)))
+  } else {
+    value <- nest(gran1, g_order(gran1, order = 1), x) +
+      gran_convert(gran1, g_order(gran1, order = 1)) *
+      (nest(g_order(gran1, order = 1), gran2, x) - 1)
+    return(value)
+  }
+}
+
+
 # the lookup table - this needs to be changed if other granularities are included
-lookup_table <- tibble(granularity = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"), constant = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1))
+lookup_table <- tibble::tibble(granularity = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"), constant = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1))
 
 
 # provides the order difference between two granularities, also provide the upper granularity given the order
@@ -39,16 +66,7 @@ gran_convert <- function(a, b) {
 # }
 
 
-nest<- function(gran1, gran2, x) {
-  if (g_order(gran1, gran2) == 1) {
-    return(eval(one_order(gran1, gran2)))
-  } else {
-    value <- nest(gran1, g_order(gran1, order = 1), x) +
-      gran_convert(gran1, g_order(gran1, order = 1)) *
-        (nest(g_order(gran1, order = 1), gran2, x) - 1)
-    return(value)
-  }
-}
+
 
 one_order <- function(gran1, gran2) {
   if (gran1 == "second" & gran2 == "minute") {
@@ -72,19 +90,17 @@ one_order <- function(gran1, gran2) {
 
 # all one order up functions
 
-fortnight <- function(x)
-  (yday(x) - 1) %/% 14 + 1
 
 second_minute <- function(x) {
   lubridate::second(x)
 }
 
 minute_qhour <- function(x) {
-  lubridate::minute(x) %% 15
+  lubridate::minute(x) %% 15 + 1
 }
 
 qhour_hhour <- function(x) {
-  dplyr::if_else(lubridate::minute(x) %% 30 <= 15, 1, 2)
+  dplyr::if_else((lubridate::minute(x) %% 30 + 1) <= 15, 1, 2)
 }
 
 hhour_hour <- function(x) {
@@ -92,5 +108,5 @@ hhour_hour <- function(x) {
 }
 
 week_fortnight <- function(x) {
-  dplyr::if_else(fortnight(x) <= 7, 1, 2)
+  dplyr::if_else((lubridate::yday(x)%/% 14 + 1) <= 14, 1, 2)
 }
