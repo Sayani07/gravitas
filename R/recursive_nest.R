@@ -83,7 +83,16 @@ one_order <- function(gran1, gran2) {
     value <- parse_exp("lubridate::wday")
   } else if (gran1 == "week" & gran2 == "fortnight") {
     value <- parse_exp("week_fortnight")
+  }else if (gran1 == "month" & gran2 == "quarter") {
+    value <- parse_exp("month_quarter")
   }
+  else if (gran1 == "quarter" & gran2 == "semester") {
+    value <- parse_exp("quarter_semester")
+  }
+  else if (gran1 == "semester" & gran2 == "year") {
+    value <- parse_exp("semester_year")
+  }
+
   return(value)
 }
 
@@ -119,6 +128,6 @@ quarter_semester <- function(x) {
   lubridate::quarter(x) %% 2
 }
 
-quarter_semester <- function(x) {
+semester_year <- function(x) {
   lubridate::semester(x)
 }
