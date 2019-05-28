@@ -110,3 +110,15 @@ hhour_hour <- function(x) {
 week_fortnight <- function(x) {
   dplyr::if_else((lubridate::yday(x)%/% 14 + 1) <= 14, 1, 2)
 }
+
+month_quarter <- function(x) {
+  lubridate::month(x) %% 3
+}
+
+quarter_semester <- function(x) {
+  lubridate::quarter(x) %% 2
+}
+
+quarter_semester <- function(x) {
+  lubridate::semester(x)
+}
