@@ -13,23 +13,26 @@
 #' library(dplyr)
 #' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = nest("hhour", "week", start_time))
 nest <- function(gran1, gran2, x, ...) {
+
+  gran1_ordr1 <- g_order(gran1, order = 1)
+
   if (g_order(gran1, gran2) == 1) {
     return(eval(one_order(gran1, gran2)))
   } else {
-    value <- nest(gran1, g_order(gran1, order = 1), x) +
-      gran_convert(gran1, g_order(gran1, order = 1)) *
-        (nest(g_order(gran1, order = 1), gran2, x) - 1)
+    value <- nest(gran1, gran1_ordr1, x) +
+      gran_convert(gran1, gran1_ordr1) *
+        (nest(gran1_ordr1, gran2, x) - 1)
     return(value)
   }
 }
 
 
-# the lookup table - this needs to be changed if other granularities are included
-lookup_table <- tibble::tibble(granularity = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"), constant = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1))
-
-
 # provides the order difference between two granularities, also provide the upper granularity given the order
 g_order <- function(gran1, gran2 = NULL, order = NULL) {
+
+  # the lookup table - this needs to be changed if other granularities are included
+  lookup_table <- tibble::tibble(granularity = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"), constant = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1),)
+
   granularity <- lookup_table %>% .$granularity
   index_gran1 <- granularity %>% match(x = gran1)
   if (!is.null(gran2)) {

@@ -23,8 +23,6 @@ Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zo
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
-library(ggplot2)
 library(dplyr)
-library(tsibbledata)
 tsibbledata::aus_elec \%>\% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) \%>\% compatibility.tbl_ts("hour_day", "day_week", "Demand")
 }
