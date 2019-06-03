@@ -28,6 +28,7 @@ nest <- function(gran1, gran2, x, ...) {
 }
 
 
+
 # the lookup table - this needs to be changed if other granularities are included
 lookup_table <- tibble::tibble(granularity = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"),
                                constant = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1),
@@ -132,11 +133,15 @@ week_fortnight <- function(x) {
 }
 
 month_quarter <- function(x) {
-  lubridate::month(x) %% 3
+   value = lubridate::month(x) %% 3
+   dplyr::if_else(value==0, 3,value)
+   # otherwise remainder will change the label of the largest value to zero
 }
 
 quarter_semester <- function(x) {
-  lubridate::quarter(x) %% 2
+  value = lubridate::quarter(x) %% 2
+  dplyr::if_else(value==0, 2,value)
+  # otherwise remainder will change the label of the largest value to zero
 }
 
 semester_year <- function(x) {
