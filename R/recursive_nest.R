@@ -12,12 +12,12 @@
 #' @examples
 #' library(dplyr)
 #' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = nest("hhour", "week", start_time))
-nest <- function(gran1, gran2, x, ...) {
 
+nest <- function(gran1, gran2, x, ...) { # for periodic granularities that are less than month and more than month
   gran1_ordr1 <- g_order(gran1, order = 1)
 
   if (g_order(gran1, gran2) == 1) {
-    one_order = lookup_table$convertfun[granularity %>% match(x = gran1)]
+    one_order <- lookup_table$convertfun[granularity %>% match(x = gran1)]
     return(eval(parse_exp(one_order)))
   } else {
     value <- nest(gran1, gran1_ordr1, x) +
@@ -28,11 +28,40 @@ nest <- function(gran1, gran2, x, ...) {
 }
 
 
+anest <- function(gran1, gran2, x, ...) { # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
+ if(g_order("minute", "day")>=0)
+ {
+  value = nest(gran1, "day", x) + gran_convert(gran1, "day")*(dayof("gran2", x) - 1)
+ }
+ else
+ {
+   value = ceiling(dayof("gran2", x)/gran_convert("day", gran1))
+ }
+}
+
+dayof <- function(gran,x)
+{
+ if(gran=="week")
+ {
+   return(lubridate::wday(x))
+ }
+  else if( gran=="fortnight")
+  {
+  return(day_fortnight)
+  }
+  else if(gran ==)
+  }
+}
+
+
+
 
 # the lookup table - this needs to be changed if other granularities are included
-lookup_table <- tibble::tibble(granularity = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"),
-                               constant = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1),
-                               convertfun = c("lubridate::second", "minute_qhour", "qhour_hhour", "hhour_hour", "lubridate::hour", "lubridate::wday", "week_fortnight", "fortnight_month", "month_quarter", "quarter_semester", "semester_year", 1)
+lookup_table <- tibble::tibble(
+  granularity = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"),
+  constant = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1),
+  convertfun = c("lubridate::second", "minute_qhour", "qhour_hhour", "hhour_hour", "lubridate::hour", "lubridate::wday", "week_fortnight", "fortnight_month", "month_quarter", "quarter_semester", "semester_year", 1),
+  convertday = c("second_day", "minute_day", "qhour_day", "hhour_day", "lubridate::hour",1, "lubridate::wday", "day_fortnight", "day_month", "day_quarter", "day_semester", "day_year"),
 )
 
 granularity <- lookup_table %>% .$granularity
@@ -43,7 +72,6 @@ granularity <- lookup_table %>% .$granularity
 
 # provides the order difference between two granularities, also provide the upper granularity given the order
 g_order <- function(gran1, gran2 = NULL, order = NULL) {
-
   index_gran1 <- granularity %>% match(x = gran1)
   if (!is.null(gran2)) {
     index_gran2 <- granularity %>% match(x = gran2)
@@ -133,14 +161,14 @@ week_fortnight <- function(x) {
 }
 
 month_quarter <- function(x) {
-   value = lubridate::month(x) %% 3
-   dplyr::if_else(value==0, 3,value)
-   # otherwise remainder will change the label of the largest value to zero
+  value <- lubridate::month(x) %% 3
+  dplyr::if_else(value == 0, 3, value)
+  # otherwise remainder will change the label of the largest value to zero
 }
 
 quarter_semester <- function(x) {
-  value = lubridate::quarter(x) %% 2
-  dplyr::if_else(value==0, 2,value)
+  value <- lubridate::quarter(x) %% 2
+  dplyr::if_else(value == 0, 2, value)
   # otherwise remainder will change the label of the largest value to zero
 }
 
