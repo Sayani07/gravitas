@@ -17,7 +17,8 @@ nest <- function(gran1, gran2, x, ...) {
   gran1_ordr1 <- g_order(gran1, order = 1)
 
   if (g_order(gran1, gran2) == 1) {
-    return(eval(one_order(gran1, gran2)))
+    one_order = lookup_table$convertfun[granularity %>% match(x = gran1)]
+    return(eval(parse_exp(one_order)))
   } else {
     value <- nest(gran1, gran1_ordr1, x) +
       gran_convert(gran1, gran1_ordr1) *
@@ -27,13 +28,21 @@ nest <- function(gran1, gran2, x, ...) {
 }
 
 
+# the lookup table - this needs to be changed if other granularities are included
+lookup_table <- tibble::tibble(granularity = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"),
+                               constant = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1),
+                               convertfun = c("lubridate::second", "minute_qhour", "qhour_hhour", "hhour_hour", "lubridate::hour", "lubridate::wday", "week_fortnight", "fortnight_month", "month_quarter", "quarter_semester", "semester_year", 1)
+)
+
+granularity <- lookup_table %>% .$granularity
+
+
+
+
+
 # provides the order difference between two granularities, also provide the upper granularity given the order
 g_order <- function(gran1, gran2 = NULL, order = NULL) {
 
-  # the lookup table - this needs to be changed if other granularities are included
-  lookup_table <- tibble::tibble(granularity = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"), constant = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1),)
-
-  granularity <- lookup_table %>% .$granularity
   index_gran1 <- granularity %>% match(x = gran1)
   if (!is.null(gran2)) {
     index_gran2 <- granularity %>% match(x = gran2)
@@ -70,33 +79,33 @@ gran_convert <- function(a, b) {
 
 
 
-one_order <- function(gran1, gran2) {
-  if (gran1 == "second" & gran2 == "minute") {
-    value <- parse_exp("lubridate::second")
-  } else if (gran1 == "minute" & gran2 == "qhour") {
-    value <- parse_exp("minute_qhour")
-  } else if (gran1 == "qhour" & gran2 == "hhour") {
-    value <- parse_exp("qhour_hhour")
-  } else if (gran1 == "hhour" & gran2 == "hour") {
-    value <- parse_exp("hhour_hour")
-  } else if (gran1 == "hour" & gran2 == "day") {
-    value <- parse_exp("lubridate::hour")
-  } else if (gran1 == "day" & gran2 == "week") {
-    value <- parse_exp("lubridate::wday")
-  } else if (gran1 == "week" & gran2 == "fortnight") {
-    value <- parse_exp("week_fortnight")
-  } else if (gran1 == "month" & gran2 == "quarter") {
-    value <- parse_exp("month_quarter")
-  }
-  else if (gran1 == "quarter" & gran2 == "semester") {
-    value <- parse_exp("quarter_semester")
-  }
-  else if (gran1 == "semester" & gran2 == "year") {
-    value <- parse_exp("semester_year")
-  }
-
-  return(value)
-}
+# one_order <- function(gran1, gran2) {
+#   if (gran1 == "second" & gran2 == "minute") {
+#     value <- parse_exp("lubridate::second")
+#   } else if (gran1 == "minute" & gran2 == "qhour") {
+#     value <- parse_exp("minute_qhour")
+#   } else if (gran1 == "qhour" & gran2 == "hhour") {
+#     value <- parse_exp("qhour_hhour")
+#   } else if (gran1 == "hhour" & gran2 == "hour") {
+#     value <- parse_exp("hhour_hour")
+#   } else if (gran1 == "hour" & gran2 == "day") {
+#     value <- parse_exp("lubridate::hour")
+#   } else if (gran1 == "day" & gran2 == "week") {
+#     value <- parse_exp("lubridate::wday")
+#   } else if (gran1 == "week" & gran2 == "fortnight") {
+#     value <- parse_exp("week_fortnight")
+#   } else if (gran1 == "month" & gran2 == "quarter") {
+#     value <- parse_exp("month_quarter")
+#   }
+#   else if (gran1 == "quarter" & gran2 == "semester") {
+#     value <- parse_exp("quarter_semester")
+#   }
+#   else if (gran1 == "semester" & gran2 == "year") {
+#     value <- parse_exp("semester_year")
+#   }
+#
+#   return(value)
+# }
 
 
 # all one order up functions
