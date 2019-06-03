@@ -29,30 +29,20 @@ nest <- function(gran1, gran2, x, ...) { # for periodic granularities that are l
 
 
 anest <- function(gran1, gran2, x, ...) { # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
+
+  index_gran2 <- granularity %>% match(x = gran2)
+  day_gran2 <- eval(parse_exp(lookup_table$convertday[index_gran2]))
+  c_gran1_day <- gran_convert(gran1, "day")
+
  if(g_order("minute", "day")>=0)
  {
-  value = nest(gran1, "day", x) + gran_convert(gran1, "day")*(dayof("gran2", x) - 1)
+  value = nest(gran1, "day", x) + c_gran1_day*(day_gran2 - 1)
  }
  else
  {
-   value = ceiling(dayof("gran2", x)/gran_convert("day", gran1))
+   value = ceiling(day_gran2/c_gran1_day)
  }
 }
-
-dayof <- function(gran,x)
-{
- if(gran=="week")
- {
-   return(lubridate::wday(x))
- }
-  else if( gran=="fortnight")
-  {
-  return(day_fortnight)
-  }
-  else if(gran ==)
-  }
-}
-
 
 
 
@@ -61,7 +51,7 @@ lookup_table <- tibble::tibble(
   granularity = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"),
   constant = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1),
   convertfun = c("lubridate::second", "minute_qhour", "qhour_hhour", "hhour_hour", "lubridate::hour", "lubridate::wday", "week_fortnight", "fortnight_month", "month_quarter", "quarter_semester", "semester_year", 1),
-  convertday = c("second_day", "minute_day", "qhour_day", "hhour_day", "lubridate::hour",1, "lubridate::wday", "day_fortnight", "day_month", "day_quarter", "day_semester", "day_year"),
+  convertday = c("second_day", "minute_day", "qhour_day", "hhour_day", "lubridate::hour",1, "lubridate::wday", "day_fortnight", "lubridate::mday", "lubridate::qday", "day_semester", "lubridate::yday"),
 )
 
 granularity <- lookup_table %>% .$granularity
