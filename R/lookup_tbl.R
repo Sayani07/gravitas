@@ -66,3 +66,9 @@ parse_exp <- function(y) {
   }
   return(value)
 }
+
+
+p_exp <- function(y) {
+  value <- y %>% parse(text = paste0(y, "(x)"))
+  return(value)
+}

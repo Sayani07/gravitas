@@ -13,7 +13,7 @@
 #' library(dplyr)
 #' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = nest("hhour", "week", start_time))
 
-nest <- function(gran1, gran2, x, ...) { # for periodic granularities that are less than month and more than month
+nest <- function(gran1, gran2, x, ...) { # for periodic granularities that are either strictly less than month or strictly more than month
   gran1_ordr1 <- g_order(gran1, order = 1)
 
   if (g_order(gran1, gran2) == 1) {
@@ -54,14 +54,13 @@ lookup_table <- tibble::tibble(
   convertday = c("second_day", "minute_day", "qhour_day", "hhour_day", "lubridate::hour",1, "lubridate::wday", "day_fortnight", "lubridate::mday", "lubridate::qday", "day_semester", "lubridate::yday"),
 )
 
-granularity <- lookup_table %>% .$granularity
-
 
 
 
 
 # provides the order difference between two granularities, also provide the upper granularity given the order
 g_order <- function(gran1, gran2 = NULL, order = NULL) {
+  granularity <- lookup_table$granularity
   index_gran1 <- granularity %>% match(x = gran1)
   if (!is.null(gran2)) {
     index_gran2 <- granularity %>% match(x = gran2)
@@ -164,4 +163,41 @@ quarter_semester <- function(x) {
 
 semester_year <- function(x) {
   lubridate::semester(x)
+}
+
+
+# convert day functions
+
+qhour_day <- function(x) {
+
+  # finds which quarter of the day
+  ceiling(lubridate::minute(x) / 15) + 4 * (lubridate::hour(x))
+}
+
+hhour_day <- function(x) {
+  (lubridate::hour(x) * 60 + lubridate::minute(x)) / 30
+}
+
+minute_day <- function(x) {
+  lubridate::minute(x) + (lubridate::hour(x) - 1) * 60
+}
+second_day <- function(x) {
+  lubridate::second(x) + (lubridate::hour(x) - 1) * 60 * 60
+}
+
+
+day_semester <- function(x) {
+
+  # finds day of the semester
+  which_sem <- lubridate::semester(x)
+  day_x <- lubridate::yday(x)
+  year_leap <- lubridate::leap_year(x)
+  div_indx <- dplyr::if_else(year_leap == "FALSE", 182, 183)
+  dplyr::if_else(which_sem == 1, day_x, day_x - div_indx + 1)
+}
+
+day_fortnight <- function(x)
+{
+  value = lubridate::yday(x) %/% 14
+  dplyr::if_else(value==0, 14, value)
 }
