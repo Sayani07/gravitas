@@ -28,20 +28,43 @@ nest <- function(gran1, gran2, x, ...) { # for periodic granularities that are e
 }
 
 
-anest <- function(gran1, gran2, x, ...) { # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
+nest_new <- function(gran1, gran2, x, ...) {
 
-  index_gran2 <- granularity %>% match(x = gran2)
-  day_gran2 <- eval(parse_exp(lookup_table$convertday[index_gran2]))
-  c_gran1_day <- gran_convert(gran1, "day")
+  # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
+   if(g_order(gran1, "month")>0 & g_order("month", gran2)>=0)
 
- if(g_order("minute", "day")>=0)
- {
-  value = nest(gran1, "day", x) + c_gran1_day*(day_gran2 - 1)
- }
- else
- {
-   value = ceiling(day_gran2/c_gran1_day)
- }
+  {
+    index_gran2 <- lookup_table$granularity %>% match(x = gran2)
+    day_gran2 <- eval(parse_exp(lookup_table$convertday[index_gran2]))
+    c_gran1_day <- gran_convert(gran1, "day")
+    if(g_order(gran1, "day")>0)
+    {
+      value = nest(gran1, "day", x) + c_gran1_day*(day_gran2 - 1)
+    }
+    else if(g_order(gran1, "day")==0)
+    {
+      value = day_gran2
+    }
+    else
+    {
+      value = ceiling(day_gran2/c_gran1_day)
+    }
+
+   }
+  else
+  {
+    gran1_ordr1 <- g_order(gran1, order = 1)
+    if (g_order(gran1, gran2) == 1) {
+      one_order <- lookup_table$convertfun[lookup_table$granularity %>% match(x = gran1)]
+      return(eval(parse_exp(one_order)))
+    } else {
+      value <- nest(gran1, gran1_ordr1, x) +
+        gran_convert(gran1, gran1_ordr1) *
+        (nest(gran1_ordr1, gran2, x) - 1)
+      return(value)
+  }
+
+  }
 }
 
 
@@ -84,46 +107,7 @@ gran_convert <- function(a, b) {
     return(conv_fac[index_gran1] * gran_convert(g_order(a, order = 1), b))
   }
 }
-#
-# nest <- function(gran1, gran2, x) {
-#   if (g_order(gran1, gran2) == 1) {
-#     return(one_order(gran1, gran2))
-#   } else {
-#     value <- nest(g_order(gran1, order = 1), gran2, x) + gran_convert(gran1, g_order(gran2, -1)) * (nest(g_order(gran1, order = 1), gran2, x) - 1)
-#     return(value)
-#   }
-# }
 
-
-
-
-# one_order <- function(gran1, gran2) {
-#   if (gran1 == "second" & gran2 == "minute") {
-#     value <- parse_exp("lubridate::second")
-#   } else if (gran1 == "minute" & gran2 == "qhour") {
-#     value <- parse_exp("minute_qhour")
-#   } else if (gran1 == "qhour" & gran2 == "hhour") {
-#     value <- parse_exp("qhour_hhour")
-#   } else if (gran1 == "hhour" & gran2 == "hour") {
-#     value <- parse_exp("hhour_hour")
-#   } else if (gran1 == "hour" & gran2 == "day") {
-#     value <- parse_exp("lubridate::hour")
-#   } else if (gran1 == "day" & gran2 == "week") {
-#     value <- parse_exp("lubridate::wday")
-#   } else if (gran1 == "week" & gran2 == "fortnight") {
-#     value <- parse_exp("week_fortnight")
-#   } else if (gran1 == "month" & gran2 == "quarter") {
-#     value <- parse_exp("month_quarter")
-#   }
-#   else if (gran1 == "quarter" & gran2 == "semester") {
-#     value <- parse_exp("quarter_semester")
-#   }
-#   else if (gran1 == "semester" & gran2 == "year") {
-#     value <- parse_exp("semester_year")
-#   }
-#
-#   return(value)
-# }
 
 
 # all one order up functions
