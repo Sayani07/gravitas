@@ -17,7 +17,7 @@ nest <- function(gran1, gran2, x, ...) { # for periodic granularities that are e
   gran1_ordr1 <- g_order(gran1, order = 1)
 
   if (g_order(gran1, gran2) == 1) {
-    one_order <- lookup_table$convertfun[granularity %>% match(x = gran1)]
+    one_order <- lookup_table$convertfun[lookup_table$granularity %>% match(x = gran1)]
     return(eval(parse_exp(one_order)))
   } else {
     value <- nest(gran1, gran1_ordr1, x) +
