@@ -8,6 +8,7 @@
 #' @param data a tsibble object
 #' @param gran1 the first granularity function to use
 #' @param gran2 the first granularity function to use
+#' @param ... added arguments to be passed
 #' @param response variable for which summary is desired per combination
 #' @return compatibility table providing if the two granularities are harmonies or clashes. It also provides information on the range of the number of observations per combination and variation across number of combinations and other summery statistics.
 #' @examples
@@ -33,7 +34,7 @@ compatibility<- function(.data, gran1, gran2, response = NULL, ...) {
   #L1 = parse(text = paste(var1, var2, sep  = "_"))
 
   #Have to rename
-  data_mutate <- .data %>% dplyr::mutate(L1 = nest(var1, var2, ind), L2 = nest(var3, var4, ind))
+  data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(var1, var2, ind), L2 = build_gran(var3, var4, ind))
 
   # All possible combinations that are possible
   Allcomb <- data_mutate %>% tidyr::expand(L1, L2)
