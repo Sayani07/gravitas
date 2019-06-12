@@ -45,7 +45,7 @@ compatibility<- function(.data, gran1, gran2, response = NULL, ...) {
   output <-Allcomb %>% dplyr::left_join(combexist) %>%
     select(!!quo_name(gran1) := L1,
            !!quo_name(gran2) := L2,
-           Nobs := count) %>%  mutate(Nobs = tidyr::replace_na(Nobs, 0))
+           nobs := count) %>%  mutate(nobs = tidyr::replace_na(nobs, 0))
 
   output
 }
