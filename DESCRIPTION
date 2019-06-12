@@ -17,7 +17,7 @@ Author:
              role = c("aut", "ths"),
              comment = c(ORCID = "0000-0002-3813-7155")),
 Depends:
-  R(>= 3.5.1)
+  R(>= 3.1.3)
 Imports:
   lubridate(>= 1.7.4),
   dplyr(>= 0.8.0.9009),

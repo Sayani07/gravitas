@@ -90,8 +90,8 @@ g_order <- function(gran1, gran2 = NULL, order = NULL) {
 # provides the conversion factor between two granularities
 
 gran_convert <- function(a, b) {
-  granularity <- lookup_table %>% .$granularity
-  conv_fac <- lookup_table %>% .$constant
+  granularity <- lookup_table$granularity
+  conv_fac <- lookup_table$constant
   index_gran1 <- granularity %>% match(x = a)
   if (g_order(a, b) == 0) {
     return(1)

@@ -7,6 +7,8 @@
 compatibility(.data, gran1, gran2, response = NULL, ...)
 }
 \arguments{
+\item{.data}{a tsibble object}
+
 \item{gran1}{the first granularity function to use}
 
 \item{gran2}{the first granularity function to use}
@@ -14,8 +16,6 @@ compatibility(.data, gran1, gran2, response = NULL, ...)
 \item{response}{variable for which summary is desired per combination}
 
 \item{...}{added arguments to be passed}
-
-\item{data}{a tsibble object}
 }
 \value{
 compatibility table providing if the two granularities are harmonies or clashes. It also provides information on the range of the number of observations per combination and variation across number of combinations and other summery statistics.
@@ -27,5 +27,5 @@ zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 \examples{
 library(dplyr)
 library(tsibbledata)
-aus_elec \%>\%  compatibility("hour_day", "day_week")
+aus_elec \%>\% compatibility("hour_day", "day_week")
 }

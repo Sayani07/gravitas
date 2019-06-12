@@ -5,7 +5,7 @@
 #' zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 #'
 
-#' @param data a tsibble object
+#' @param .data a tsibble object
 #' @param gran1 the first granularity function to use
 #' @param gran2 the first granularity function to use
 #' @param ... added arguments to be passed
@@ -46,8 +46,8 @@ compatibility <- function(.data, gran1, gran2, response = NULL, ...) {
   output <- Allcomb %>%
     dplyr::left_join(combexist) %>%
     dplyr::select(
-      !!quo_name(gran1) := L1,
-      !!quo_name(gran2) := L2,
+      !!rlang::quo_name(gran1) := L1,
+      !!rlang::quo_name(gran2) := L2,
       nobs := count
     ) %>%
     dplyr::mutate(nobs = tidyr::replace_na(nobs, 0))
