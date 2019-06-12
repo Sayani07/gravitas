@@ -11,10 +11,8 @@
 #
 #' @examples
 #' library(dplyr)
-#' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = nest("hhour", "week", start_time))
-
-
-
+#' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = build_gran("hhour", "week", start_time))
+#' @export build_gran
 
 # nest <- function(gran1, gran2, x, ...) { # for periodic granularities that are either strictly less than month or strictly more than month
 #   gran1_ordr1 <- g_order(gran1, order = 1)
@@ -31,7 +29,7 @@
 # }
 
 
-nest <- function(gran1, gran2, x, ...) {
+build_gran <- function(gran1, gran2, x, ...) {
 
   # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
   if (g_order(gran1, "month") > 0 & g_order("month", gran2) >= 0) {
@@ -39,7 +37,7 @@ nest <- function(gran1, gran2, x, ...) {
     day_gran2 <- eval(parse_exp(lookup_table$convertday[index_gran2]))
     c_gran1_day <- gran_convert(gran1, "day")
     if (g_order(gran1, "day") > 0) {
-      value <- nest(gran1, "day", x) + c_gran1_day * (day_gran2 - 1)
+      value <- build_gran(gran1, "day", x) + c_gran1_day * (day_gran2 - 1)
     }
     else if (g_order(gran1, "day") == 0) {
       value <- day_gran2
@@ -54,9 +52,9 @@ nest <- function(gran1, gran2, x, ...) {
       one_order <- lookup_table$convertfun[lookup_table$granularity %>% match(x = gran1)]
       return(eval(parse_exp(one_order)))
     } else {
-      value <- nest(gran1, gran1_ordr1, x) +
+      value <- build_gran(gran1, gran1_ordr1, x) +
         gran_convert(gran1, gran1_ordr1) *
-          (nest(gran1_ordr1, gran2, x) - 1)
+          (build_gran(gran1_ordr1, gran2, x) - 1)
       return(value)
     }
   }
