@@ -25,7 +25,8 @@ Imports:
   tibble(>= 2.1.1),
   rlang(>= 0.3.4),
   tidyr, 
-  stats
+  stats,
+  stringr
 Suggests:
   tsibbledata,
   purrr,

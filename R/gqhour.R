@@ -8,12 +8,7 @@
 #' @param x a date-time object
 #' @param granularity the granularity to be paired up with  quarter of an hour
 #' @return combination of the quarter hour component of x as a number
-#' @examples
-#' library(ggplot2)
-#' library(dplyr)
-#' tsibbledata::aus_elec %>% mutate(qhour_day = gqhour(Time, "hour")) %>% tail()
-#' gqhour(lubridate::now(), "day")
-#' @export gqhour
+
 gqhour <- function(x, granularity = "day") {
 
   # lookup_tbl to be used for gran qhour

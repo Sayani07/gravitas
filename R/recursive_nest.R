@@ -12,22 +12,26 @@
 #' @examples
 #' library(dplyr)
 #' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = nest("hhour", "week", start_time))
-nest <- function(gran1, gran2, x, ...) { # for periodic granularities that are either strictly less than month or strictly more than month
-  gran1_ordr1 <- g_order(gran1, order = 1)
-
-  if (g_order(gran1, gran2) == 1) {
-    one_order <- lookup_table$convertfun[lookup_table$granularity %>% match(x = gran1)]
-    return(eval(parse_exp(one_order)))
-  } else {
-    value <- nest(gran1, gran1_ordr1, x) +
-      gran_convert(gran1, gran1_ordr1) *
-        (nest(gran1_ordr1, gran2, x) - 1)
-    return(value)
-  }
-}
 
 
-nest_new <- function(gran1, gran2, x, ...) {
+
+
+# nest <- function(gran1, gran2, x, ...) { # for periodic granularities that are either strictly less than month or strictly more than month
+#   gran1_ordr1 <- g_order(gran1, order = 1)
+#
+#   if (g_order(gran1, gran2) == 1) {
+#     one_order <- lookup_table$convertfun[lookup_table$granularity %>% match(x = gran1)]
+#     return(eval(parse_exp(one_order)))
+#   } else {
+#     value <- nest(gran1, gran1_ordr1, x) +
+#       gran_convert(gran1, gran1_ordr1) *
+#         (nest(gran1_ordr1, gran2, x) - 1)
+#     return(value)
+#   }
+# }
+
+
+nest <- function(gran1, gran2, x, ...) {
 
   # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
   if (g_order(gran1, "month") > 0 & g_order("month", gran2) >= 0) {
@@ -104,60 +108,60 @@ gran_convert <- function(a, b) {
 # all one order up functions
 
 
-second_minute <- function(x,...) {
-  lubridate::second(x,...)
+second_minute <- function(x, ...) {
+  lubridate::second(x, ...)
 }
 
-minute_qhour <- function(x,...) {
-  lubridate::minute(x,...) %% 15 + 1
+minute_qhour <- function(x, ...) {
+  lubridate::minute(x, ...) %% 15 + 1
 }
 
-qhour_hhour <- function(x,...) {
-  dplyr::if_else((lubridate::minute(x,...) %% 30 + 1) <= 15, 1, 2)
+qhour_hhour <- function(x, ...) {
+  dplyr::if_else((lubridate::minute(x, ...) %% 30 + 1) <= 15, 1, 2)
 }
 
-hhour_hour <- function(x,...) {
-  dplyr::if_else(lubridate::minute(x,...) <= 30, 1, 2)
+hhour_hour <- function(x, ...) {
+  dplyr::if_else(lubridate::minute(x, ...) <= 30, 1, 2)
 }
 
-week_fortnight <- function(x,...) {
-  dplyr::if_else((lubridate::yday(x,...) %/% 14 + 1) <= 14, 1, 2)
+week_fortnight <- function(x, ...) {
+  dplyr::if_else((lubridate::yday(x, ...) %/% 14 + 1) <= 14, 1, 2)
 }
 
-month_quarter <- function(x,...) {
-  value <- lubridate::month(x,...) %% 3
+month_quarter <- function(x, ...) {
+  value <- lubridate::month(x, ...) %% 3
   dplyr::if_else(value == 0, 3, value)
   # otherwise remainder will change the label of the largest value to zero
 }
 
-quarter_semester <- function(x,...) {
-  value <- lubridate::quarter(x,...) %% 2
+quarter_semester <- function(x, ...) {
+  value <- lubridate::quarter(x, ...) %% 2
   dplyr::if_else(value == 0, 2, value)
   # otherwise remainder will change the label of the largest value to zero
 }
 
-semester_year <- function(x,...) {
-  lubridate::semester(x,...)
+semester_year <- function(x, ...) {
+  lubridate::semester(x, ...)
 }
 
 
 # convert day functions
 
-qhour_day <- function(x,...) {
+qhour_day <- function(x, ...) {
 
   # finds which quarter of the day
-  ceiling(lubridate::minute(x,...) / 15) + 4 * (lubridate::hour(x,...))
+  ceiling(lubridate::minute(x, ...) / 15) + 4 * (lubridate::hour(x, ...))
 }
 
-hhour_day <- function(x,...) {
-  (lubridate::hour(x,...) * 60 + lubridate::minute(x,...)) / 30
+hhour_day <- function(x, ...) {
+  (lubridate::hour(x, ...) * 60 + lubridate::minute(x, ...)) / 30
 }
 
-minute_day <- function(x,...) {
-  lubridate::minute(x,...) + (lubridate::hour(x,...) - 1) * 60
+minute_day <- function(x, ...) {
+  lubridate::minute(x, ...) + (lubridate::hour(x, ...) - 1) * 60
 }
-second_day <- function(x,...) {
-  lubridate::second(x,...) + (lubridate::hour(x,...) - 1) * 60 * 60
+second_day <- function(x, ...) {
+  lubridate::second(x, ...) + (lubridate::hour(x, ...) - 1) * 60 * 60
 }
 
 

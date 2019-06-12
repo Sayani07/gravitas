@@ -12,11 +12,9 @@
 #' @return compatibility table providing if the two granularities are harmonies or clashes. It also provides information on the range of the number of observations per combination and variation across number of combinations and other summery statistics.
 #'
 #' @examples
-#' \dotrun{
 #' library(dplyr)
 #' library(tsibbledata)
 #' aus_elec %>%  compatibility("hour_day", "day_week")
-#' }
 #' @export compatibility
 compatibility<- function(.data, gran1, gran2, response = NULL, ...) {
 
@@ -26,8 +24,8 @@ compatibility<- function(.data, gran1, gran2, response = NULL, ...) {
 
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
 
-  gran1_split <- str_split(gran1, "_", 2) %>% unlist()
-  gran2_split <- str_split(gran2, "_", 2) %>% unlist()
+  gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
+  gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
   var1 <- gran1_split[1]
   var2 <- gran1_split[2]
   var3 <- gran2_split[1]
@@ -36,19 +34,19 @@ compatibility<- function(.data, gran1, gran2, response = NULL, ...) {
   #L1 = parse(text = paste(var1, var2, sep  = "_"))
 
   #Have to rename
-  data_mutate <- .data %>% mutate(L1 = nest_new(var1, var2, ind), L2 = nest_new(var3, var4, ind))
+  data_mutate <- .data %>% dplyr::mutate(L1 = nest(var1, var2, ind), L2 = nest(var3, var4, ind))
 
   # All possible combinations that are possible
   Allcomb <- data_mutate %>% tidyr::expand(L1, L2)
 
 
-  combexist <- data_mutate  %>% as_tibble() %>% dplyr::group_by(L1, L2) %>% dplyr::summarise(
+  combexist <- data_mutate  %>% tibble::as_tibble() %>% dplyr::group_by(L1, L2) %>% dplyr::summarise(
     count = n())
 
-  output <-Allcomb %>% left_join(combexist) %>%
+  output <-Allcomb %>% dplyr::left_join(combexist) %>%
     select(!!quo_name(gran1) := L1,
            !!quo_name(gran2) := L2,
-           Nobs := count) %>%  mutate(Nobs = replace_na(Nobs, 0))
+           Nobs := count) %>%  mutate(Nobs = tidyr::replace_na(Nobs, 0))
 
   output
   }

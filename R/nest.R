@@ -50,4 +50,3 @@ nest <- function(x, granularity1, granularity2, ...) {
   }
   return(g_value)
 }
-

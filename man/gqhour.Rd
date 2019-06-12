@@ -18,9 +18,3 @@ combination of the quarter hour component of x as a number
 Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
-\examples{
-library(ggplot2)
-library(dplyr)
-tsibbledata::aus_elec \%>\% mutate(qhour_day = gqhour(Time, "hour")) \%>\% tail()
-gqhour(lubridate::now(), "day")
-}

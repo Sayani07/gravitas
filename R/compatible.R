@@ -10,14 +10,7 @@
 #' @param gran2 the first granularity function to use
 #' @param response variable for which summary is desired per combination
 #' @return compatibility table providing if the two granularities are harmonies or clashes. It also provides information on the range of the number of observations per combination and variation across number of combinations and other summery statistics.
-#'
-#' @examples
-#' \dotrun{
-#' library(dplyr)
-#' tsibbledata::aus_elec %>% dplyr::mutate(hour_day = ghour(Time, "day"), day_week = gday(Time, "week")) %>% compatibility.tbl_ts("hour_day", "day_week", "Demand")
-#' }
-#' @export compatibility.tbl_ts
-compatibility.tbl_ts <- function(.data, gran1, gran2, response, ...) {
+compatibility.tbl_ts <- function(.data, gran1, gran2, response = NULL, ...) {
   #
   #   #   exprs <- enexprs(..., .named = TRUE)
   #   # if (is_empty(exprs)) {
@@ -78,3 +71,7 @@ compatibility.tbl_ts <- function(.data, gran1, gran2, response, ...) {
 
   combn_table
 }
+
+
+
+

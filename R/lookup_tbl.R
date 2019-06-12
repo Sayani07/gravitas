@@ -62,7 +62,7 @@ parse_exp <- function(y) {
     value <- 1
   }
   else {
-    value <- parse(text = paste0(y, "(x)"))
+    value <- parse(text = paste0(y, "(x,...)"))
   }
   return(value)
 }
