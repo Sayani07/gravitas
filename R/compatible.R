@@ -33,7 +33,7 @@ compatibility<- function(.data, gran1, gran2, response = NULL, ...) {
   #L1 = parse(text = paste(var1, var2, sep  = "_"))
 
   #Have to rename
-  data_mutate <- .data %>% dplyr::mutate(L1 = nest_new(var1, var2, ind), L2 = nest_new(var3, var4, ind))
+  data_mutate <- .data %>% dplyr::mutate(L1 = nest(var1, var2, ind), L2 = nest(var3, var4, ind))
 
   # All possible combinations that are possible
   Allcomb <- data_mutate %>% tidyr::expand(L1, L2)
@@ -43,9 +43,9 @@ compatibility<- function(.data, gran1, gran2, response = NULL, ...) {
     count = n())
 
   output <-Allcomb %>% dplyr::left_join(combexist) %>%
-    select(!!quo_name(gran1) := L1,
+    dplyr::select(!!quo_name(gran1) := L1,
            !!quo_name(gran2) := L2,
-           nobs := count) %>%  mutate(nobs = tidyr::replace_na(nobs, 0))
+           nobs := count) %>%  dplyr::mutate(nobs = tidyr::replace_na(nobs, 0))
 
   output
 }
