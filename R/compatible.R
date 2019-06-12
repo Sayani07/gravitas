@@ -14,10 +14,9 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
-#' aus_elec %>%  compatibility("hour_day", "day_week")
+#' aus_elec %>% compatibility("hour_day", "day_week")
 #' @export compatibility
-compatibility<- function(.data, gran1, gran2, response = NULL, ...) {
-
+compatibility <- function(.data, gran1, gran2, response = NULL, ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
@@ -30,23 +29,28 @@ compatibility<- function(.data, gran1, gran2, response = NULL, ...) {
   var2 <- gran1_split[2]
   var3 <- gran2_split[1]
   var4 <- gran2_split[2]
-  #parse(paste(var1, var2, sep  = "_"))
-  #L1 = parse(text = paste(var1, var2, sep  = "_"))
+  # parse(paste(var1, var2, sep  = "_"))
+  # L1 = parse(text = paste(var1, var2, sep  = "_"))
 
-  #Have to rename
+  # Have to rename
   data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(var1, var2, ind), L2 = build_gran(var3, var4, ind))
 
   # All possible combinations that are possible
   Allcomb <- data_mutate %>% tidyr::expand(L1, L2)
 
 
-  combexist <- data_mutate  %>% tibble::as_tibble() %>% dplyr::group_by(L1, L2) %>% dplyr::summarise(
-    count = n())
+  combexist <- data_mutate %>% tibble::as_tibble() %>% dplyr::group_by(L1, L2) %>% dplyr::summarise(
+    count = n()
+  )
 
-  output <-Allcomb %>% dplyr::left_join(combexist) %>%
-    dplyr::select(!!quo_name(gran1) := L1,
-           !!quo_name(gran2) := L2,
-           nobs := count) %>%  dplyr::mutate(nobs = tidyr::replace_na(nobs, 0))
+  output <- Allcomb %>%
+    dplyr::left_join(combexist) %>%
+    dplyr::select(
+      !!quo_name(gran1) := L1,
+      !!quo_name(gran2) := L2,
+      nobs := count
+    ) %>%
+    dplyr::mutate(nobs = tidyr::replace_na(nobs, 0))
 
   output
 }
