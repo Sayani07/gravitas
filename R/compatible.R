@@ -10,13 +10,13 @@
 #' @param gran2 the first granularity function to use
 #' @param ... added arguments to be passed
 #' @param response variable for which summary is desired per combination
-#' @return compatibility table providing if the two granularities are harmonies or clashes. It also provides information on the range of the number of observations per combination and variation across number of combinations and other summery statistics.
+#' @return compatibility table providing if the two granularities are harmonies or clashes. FALSE indicates a clash. If harmony, then a tibble with desired granularities returned.
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
-#' aus_elec %>% compatibility("hour_day", "day_week")
-#' @export compatibility
-compatibility <- function(.data, gran1, gran2, response = NULL, ...) {
+#' aus_elec %>% is.harmony("hour_day", "day_week")
+#' @export is.harmony
+is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
@@ -44,7 +44,7 @@ compatibility <- function(.data, gran1, gran2, response = NULL, ...) {
   )
 
   output <- Allcomb %>%
-    dplyr::left_join(combexist) %>%
+    dplyr::left_join(combexist, by = c("L1", "L2")) %>%
     dplyr::select(
       !!rlang::quo_name(gran1) := L1,
       !!rlang::quo_name(gran2) := L2,
@@ -52,9 +52,19 @@ compatibility <- function(.data, gran1, gran2, response = NULL, ...) {
     ) %>%
     dplyr::mutate(nobs = tidyr::replace_na(nobs, 0))
 
-  output
-}
+  # All possible combination that are missing
+  cmbmiss <- Allcomb %>% dplyr::anti_join(combexist, by = c("L1", "L2"))
+   #dplyr::if_else(nrow(cmbmiss) != 0, "FALSE", output)
+   return_output <- ifelse(nrow(cmbmiss) != 0,  "FALSE", output)
 
+   if(nrow(cmbmiss) != 0)
+   {
+    return_output <- FALSE
+   }
+   else{return_output = output
+     }
+   return(return_output)
+}
 
 # compatibility.tbl_ts <- function(.data, gran1, gran2, response = NULL, ...) {
 #   #

@@ -35,15 +35,16 @@ build_gran <- function(gran1, gran2, x, ...) {
   if (g_order(gran1, "month") > 0 & g_order("month", gran2) >= 0) {
     index_gran2 <- lookup_table$granularity %>% match(x = gran2)
     day_gran2 <- eval(parse_exp(lookup_table$convertday[index_gran2]))
-    c_gran1_day <- gran_convert(gran1, "day")
     if (g_order(gran1, "day") > 0) {
+      c_gran1_day <- gran_convert(gran1, "day")
       value <- build_gran(gran1, "day", x) + c_gran1_day * (day_gran2 - 1)
     }
     else if (g_order(gran1, "day") == 0) {
       value <- day_gran2
     }
     else {
-      value <- ceiling(day_gran2 / c_gran1_day)
+      c_day_gran1 <- gran_convert("day", gran1)
+      value <- ceiling(day_gran2 / c_day_gran1)
     }
   }
   else {
@@ -188,4 +189,3 @@ parse_exp <- function(y) {
   }
   return(value)
 }
-
