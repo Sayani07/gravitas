@@ -4,12 +4,14 @@
 \alias{comp_tbl}
 \title{Get harmonies for data sets}
 \usage{
-comp_tbl(.data, prime, ...)
+comp_tbl(.data, lgran, ugran, ...)
 }
 \arguments{
 \item{.data}{a tsibble object}
 
-\item{prime}{required primary granularity}
+\item{lgran}{lower granularity}
+
+\item{ugran}{gran granularity}
 
 \item{...}{added arguments to be passed}
 }
@@ -23,5 +25,5 @@ zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 \examples{
 library(dplyr)
 library(tsibbledata)
-aus_elec \%>\% comp_tbl(prime = "day")
+aus_elec \%>\% comp_tbl(lgran = "hour", ugran = "week")
 }

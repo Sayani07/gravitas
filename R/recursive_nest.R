@@ -13,9 +13,6 @@
 #' library(dplyr)
 #' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = build_gran("hhour", "week", start_time))
 #' @export build_gran
-
-
-
 build_gran <- function(gran1, gran2, x, ...) {
 
   # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month

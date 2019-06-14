@@ -14,7 +14,9 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
+#' library(ggplot2)
 #' aus_elec %>% is.harmony("hour_day", "day_week")
+#' nyc_bikes %>% tail() %>% mutate(hour_day = build_gran("hour", "day", start_time), day_week = build_gran("day","week", start_time)) %>% ggplot(aes(x=hour_day, y=Demand)) + geom_boxplot() + facet_wrap(~day_week)
 #' @export is.harmony
 is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
   if (!tsibble::is_tsibble(.data)) {
