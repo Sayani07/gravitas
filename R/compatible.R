@@ -55,79 +55,14 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
   # All possible combination that are missing
   cmbmiss <- Allcomb %>% dplyr::anti_join(combexist, by = c("L1", "L2"))
    #dplyr::if_else(nrow(cmbmiss) != 0, "FALSE", output)
-   return_output <- ifelse(nrow(cmbmiss) != 0,  "FALSE", output)
+   return_output <- ifelse(nrow(cmbmiss) != 0,  "FALSE", "TRUE")
 
-   if(nrow(cmbmiss) != 0)
-   {
-    return_output <- FALSE
-   }
-   else{return_output = output
-     }
+   # if(nrow(cmbmiss) != 0)
+   # {
+   #  return_output <- FALSE
+   # }
+   # else{return_output = output
+   #   }
    return(return_output)
 }
 
-# compatibility.tbl_ts <- function(.data, gran1, gran2, response = NULL, ...) {
-#   #
-#   #   #   exprs <- enexprs(..., .named = TRUE)
-#   #   # if (is_empty(exprs)) {
-#   #   #   attr(.data, "index2") <- index(.data)
-#   #   #   return(.data)
-#   #   # }
-#   #   # if (is_false(has_length(exprs, 1))) {
-#   #   #   abort("`index_by()` only accepts one expression.")
-#   #   # }
-#   #   # expr_name <- names(exprs)[1]
-#   #   #
-#   #   # idx <- index(.data)
-#   #   # idx_chr <- as_string(idx)
-#   #   #
-#   #   # if (identical(idx_chr, expr_name)) {
-#   #   #   abort(sprintf("Column `%s` (index) can't be overwritten.", idx_chr))
-#   #   # }
-#   #   #
-#   #   # idx2 <- sym(expr_name)
-#   #   #
-#   #   # expr_name
-#
-#
-#   if (!tsibble::is_tsibble(.data)) {
-#     stop("must use tsibble")
-#   }
-#
-#   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
-#
-#   # All possible combinations that are possible
-#   Allcomb <- .data %>% tidyr::expand(gran1, gran2)
-#   # All possible combinations that  exist
-#   combexist <- .data %>% tidyr::expand(tidyr::nesting(gran1, gran2))
-#   # All possible combination that are missing
-#   cmbmiss <- Allcomb %>% dplyr::anti_join(combexist)
-#
-#   # Output <- list()
-#
-#   # Data <- .data %>% mutate(L1 = .data[[level1]], L2 = .data[[level2]])
-#
-#
-#   # Output$Type <- Type <- dplyr::if_else(nrow(cmbmiss) != 0, "Clashes", "Harmonies")
-#
-#
-#   Obs_per_possible_combn <- .data %>% tibble::as_tibble() %>% dplyr::group_by(.data[[gran1]], .data[[gran2]]) %>% dplyr::summarise(
-#     count = n(), min = stats::fivenum(.data[[response]])[1],
-#     q1 = stats::fivenum(.data[[response]])[2],
-#     median = stats::fivenum(.data[[response]])[3],
-#     q3 = stats::fivenum(.data[[response]])[4],
-#     max = stats::fivenum(.data[[response]])[5]
-#   )
-#
-#   # Output$Missing_comb <- cmbmiss
-#
-#   combn_table <- Obs_per_possible_combn
-#
-#   # Output$Summary <- summary(Obs_per_possible_combn$n)
-#
-#   combn_table
-# }
-#
-#
-#
-#

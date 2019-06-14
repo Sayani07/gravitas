@@ -5,14 +5,8 @@
 \alias{reexports}
 \alias{\%>\%}
 \alias{groups}
-\alias{group_vars}
-\alias{group_data}
-\alias{group_keys}
-\alias{group_rows}
-\alias{glimpse}
 \alias{as_tibble}
 \alias{tibble}
-\alias{new_tibble}
 \alias{!!}
 \alias{!!!}
 \alias{quo_name}
@@ -24,10 +18,10 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{groups}}, \code{\link[dplyr]{group_vars}}, \code{\link[dplyr]{group_data}}, \code{\link[dplyr]{group_keys}}, \code{\link[dplyr]{group_rows}}}
+  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{groups}}}
 
   \item{rlang}{\code{\link[rlang]{!!}}, \code{\link[rlang]{!!!}}, \code{\link[rlang]{quo_name}}, \code{\link[rlang]{:=}}}
 
-  \item{tibble}{\code{\link[tibble]{glimpse}}, \code{\link[tibble]{as_tibble}}, \code{\link[tibble]{tibble}}, \code{\link[tibble]{new_tibble}}}
+  \item{tibble}{\code{\link[tibble]{as_tibble}}, \code{\link[tibble]{tibble}}}
 }}
 

@@ -14,19 +14,6 @@
 #' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = build_gran("hhour", "week", start_time))
 #' @export build_gran
 
-# nest <- function(gran1, gran2, x, ...) { # for periodic granularities that are either strictly less than month or strictly more than month
-#   gran1_ordr1 <- g_order(gran1, order = 1)
-#
-#   if (g_order(gran1, gran2) == 1) {
-#     one_order <- lookup_table$convertfun[lookup_table$granularity %>% match(x = gran1)]
-#     return(eval(parse_exp(one_order)))
-#   } else {
-#     value <- nest(gran1, gran1_ordr1, x) +
-#       gran_convert(gran1, gran1_ordr1) *
-#         (nest(gran1_ordr1, gran2, x) - 1)
-#     return(value)
-#   }
-# }
 
 
 build_gran <- function(gran1, gran2, x, ...) {

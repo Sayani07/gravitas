@@ -6,31 +6,33 @@
 #'
 
 #' @param .data a tsibble object
-#' @param prime required primary granularity
+#' @param lgran lower granularity
+#' @param ugran gran granularity
 #' @param ... added arguments to be passed
 #' @return compatibility table providing if the two granularities are harmonies or clashes. FALSE indicates a clash. If harmony, then a tibble with desired granularities returned.
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
-#'aus_elec %>% comp_tbl(prime = "day")
+#'aus_elec %>% comp_tbl(lgran = "hour", ugran = "week")
 #' @export comp_tbl
-comp_tbl <- function(.data, prime, ...) {
+comp_tbl <- function(.data, lgran, ugran,  ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
 
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
   granularity <- lookup_table$granularity
-  index_gran1 <- granularity %>% match(x = prime)
-  gran2_set <- lookup_table$granularity[-(1:index_gran1)]
+  index_gran1 <- granularity %>% match(x = lgran)
+  index_gran2 <- granularity %>% match(x = ugran)
+  gran2_set <- lookup_table$granularity[index_gran1:index_gran2]
 
   set1 <- paste(gran1 = combn(gran2_set, 2)[1,], gran2 = combn(gran2_set, 2)[2,], sep = "_")
 
-  set2 <- merge(prime, gran2_set) %>% as_tibble() %>% dplyr::mutate(x_y=paste(prime, gran2_set, sep="_"))
+  #set2 <- merge(prime, gran2_set) %>% as_tibble() %>% dplyr::mutate(x_y=paste(prime, gran2_set, sep="_"))
 
-  All_set <- c(set1, set2$x_y)
+  #All_set <- c(set1, set2$x_y)
 
-  Allcomb <-t(combn(All_set, 2)) %>% as_tibble() %>% dplyr::sample_n(size = 10)
+  Allcomb <-t(combn(set1, 2)) %>% as_tibble()
   #colnames(Allcomb) = c("Category 1, Category 2")
 
   #output <- .data %>% is.harmony(gran1 = Allcomb$V1[1], gran2 = Allcomb$V2[1])
@@ -42,7 +44,7 @@ comp_tbl <- function(.data, prime, ...) {
   harmony[i] = is.harmony(.data, gran1 = Allcomb$V1[i], gran2 = Allcomb$V2[i])
   }
 
-  output <- cbind(Allcomb, harmony) %>% as_tibble()
+  output <- cbind(Allcomb, harmony) %>% as_tibble() %>% rename(granularities = V1) %>% spread(V2, harmony)
 
   output
 
