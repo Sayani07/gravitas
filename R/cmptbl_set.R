@@ -44,10 +44,34 @@ comp_tbl <- function(.data, lgran, ugran,  ...) {
   harmony[i] = is.harmony(.data, gran1 = Allcomb$V1[i], gran2 = Allcomb$V2[i])
   }
 
-  output <- cbind(Allcomb, harmony) %>% as_tibble() %>% rename(granularities = V1) %>% spread(V2, harmony)
-
+  output <- cbind(Allcomb, harmony) %>% as_tibble() %>% rename(granularities = V1)
   output
+
 
 }
 
+
+#
+# %>% spread(V2, harmony)
+#
+# output
+#
+# #output = array(0, length(md$gran1))
+#
+# for(i in 1:length(md$gran1))
+# {
+#   for(j in 1:length(md$gran2))
+#   {
+#     if(md$gran1[i] == md$gran2[i])
+#     {
+#       md$output[i] = FALSE
+#     }
+#     else if(md$gran1[i] == md$gran2[j] & md$gran2[i]==md$gran1[j])
+#     {
+#       md$output[i] = max(md$harmony[i], md$harmony[j], na.rm =TRUE)
+#       md$output[j] = max(md$harmony[i], md$harmony[j], na.rm =TRUE)
+#     }
+#
+#   }
+# }
 
