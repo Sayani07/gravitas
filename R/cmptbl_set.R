@@ -20,11 +20,18 @@ comp_tbl <- function(.data, lgran, ugran,  ...) {
     stop("must use tsibble")
   }
 
+  if (g_order(lgran, ugran)==1) {
+    stop("Only one granularity ",lgran, "_", {ugran}, " can be formed. Function requires checking compatibility for bivariate granularities" )
+  }
+
+
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
   granularity <- lookup_table$granularity
   index_gran1 <- granularity %>% match(x = lgran)
   index_gran2 <- granularity %>% match(x = ugran)
   gran2_set <- lookup_table$granularity[index_gran1:index_gran2]
+
+
 
   set1 <- paste(gran1 = combn(gran2_set, 2)[1,], gran2 = combn(gran2_set, 2)[2,], sep = "_")
 
@@ -44,34 +51,33 @@ comp_tbl <- function(.data, lgran, ugran,  ...) {
   harmony[i] = is.harmony(.data, gran1 = Allcomb$V1[i], gran2 = Allcomb$V2[i])
   }
 
-  output <- cbind(Allcomb, harmony) %>% as_tibble() %>% rename(granularities = V1)
-  output
+  harmony_mt <- cbind(Allcomb, harmony) %>% as_tibble() %>% rename(granularities = V1)
 
 
+ set1_merge <- merge(set1, set1)
+
+ united_merge <- purrr::map_dfr(set1_merge,as.character) %>% left_join(harmony_mt, by = c(x = "granularities", y = "V2"))
+
+united_merge$output = array(NA, nrow(united_merge))
+# just manipulation to put it in a matrix format
+
+for(i in 1:length(united_merge$x))
+{
+  for(j in 1:length(united_merge$y))
+  {
+    if(united_merge$x[i] == united_merge$y[i])
+    {
+      united_merge$output[i] = FALSE
+    }
+    else if(united_merge$x[i] == united_merge$y[j] & united_merge$y[i]== united_merge$x[j])
+    {
+      united_merge$output[i] = max(united_merge$harmony[i], united_merge$harmony[j], na.rm =TRUE)
+      united_merge$output[j] = max(united_merge$harmony[i], united_merge$harmony[j], na.rm =TRUE)
+    }
+
+  }
+}
+united_merge %>% select(-harmony) %>% spread(y, output) %>% rename(granularities = "x")
 }
 
-
-#
-# %>% spread(V2, harmony)
-#
-# output
-#
-# #output = array(0, length(md$gran1))
-#
-# for(i in 1:length(md$gran1))
-# {
-#   for(j in 1:length(md$gran2))
-#   {
-#     if(md$gran1[i] == md$gran2[i])
-#     {
-#       md$output[i] = FALSE
-#     }
-#     else if(md$gran1[i] == md$gran2[j] & md$gran2[i]==md$gran1[j])
-#     {
-#       md$output[i] = max(md$harmony[i], md$harmony[j], na.rm =TRUE)
-#       md$output[j] = max(md$harmony[i], md$harmony[j], na.rm =TRUE)
-#     }
-#
-#   }
-# }
 
