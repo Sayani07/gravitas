@@ -176,8 +176,7 @@ parse_exp <- function(y) {
 
 
 
-dodge <- function(x)
-{
-  value = eval(parse_exp("lubridate::hour"))
+dodge <- function(x) {
+  value <- eval(parse_exp("lubridate::hour"))
   value
 }

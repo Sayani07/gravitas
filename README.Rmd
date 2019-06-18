@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 The goal of gravitas is to ...
 
 ## Installation
-
+  
 You can install the released version of gravitas from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
@@ -37,10 +37,15 @@ devtools::install_github("Sayani07/gravitas")
 ```
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is an example which shows how to create any temporal granularity.
 
 ```{r example}
 library(gravitas)
-## basic example code
+library(dplyr)
+tsibbledata::nyc_bikes %>% 
+  tail() %>%
+  mutate(hhour_week = build_gran("hhour", "week", start_time), 
+         hour_day = build_gran("hour", "day", start_time)) %>%
+  select(bike_id, start_time, start_station, end_station, hhour_week, hour_day)
 ```
 

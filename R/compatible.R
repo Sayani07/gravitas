@@ -16,7 +16,6 @@
 #' library(tsibbledata)
 #' library(ggplot2)
 #' aus_elec %>% is.harmony("hour_day", "day_week")
-#' nyc_bikes %>% tail() %>% mutate(hour_day = build_gran("hour", "day", start_time), day_week = build_gran("day","week", start_time)) %>% ggplot(aes(x=hour_day, y=Demand)) + geom_boxplot() + facet_wrap(~day_week)
 #' @export is.harmony
 is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
   if (!tsibble::is_tsibble(.data)) {
@@ -56,15 +55,14 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
 
   # All possible combination that are missing
   cmbmiss <- Allcomb %>% dplyr::anti_join(combexist, by = c("L1", "L2"))
-   #dplyr::if_else(nrow(cmbmiss) != 0, "FALSE", output)
-   return_output <- ifelse(nrow(cmbmiss) != 0,  "FALSE", "TRUE")
+  # dplyr::if_else(nrow(cmbmiss) != 0, "FALSE", output)
+  return_output <- ifelse(nrow(cmbmiss) != 0, "FALSE", "TRUE")
 
-   # if(nrow(cmbmiss) != 0)
-   # {
-   #  return_output <- FALSE
-   # }
-   # else{return_output = output
-   #   }
-   return(return_output)
+  # if(nrow(cmbmiss) != 0)
+  # {
+  #  return_output <- FALSE
+  # }
+  # else{return_output = output
+  #   }
+  return(return_output)
 }
-

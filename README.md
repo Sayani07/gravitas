@@ -29,33 +29,31 @@ devtools::install_github("Sayani07/gravitas")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is an example which shows how to create any temporal granularity.
 
 ``` r
 library(gravitas)
-## basic example code
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+tsibbledata::nyc_bikes %>% 
+  tail() %>%
+  mutate(hhour_week = build_gran("hhour", "week", start_time), 
+         hour_day = build_gran("hour", "day", start_time)) %>%
+  select(bike_id, start_time, start_station, end_station, hhour_week, hour_day)
+#> # A tibble: 6 x 6
+#>   bike_id start_time          start_station end_station hhour_week hour_day
+#>   <fct>   <dttm>              <fct>         <fct>            <dbl>    <int>
+#> 1 33571   2018-11-01 18:52:10 3195          3210               228       18
+#> 2 33571   2018-11-02 08:50:04 3210          3640               256        8
+#> 3 33571   2018-11-02 17:52:14 3640          3196               274       17
+#> 4 33571   2018-11-04 08:12:56 3196          3269                15        8
+#> 5 33571   2018-11-04 14:27:17 3269          3202                27       14
+#> 6 33571   2018-11-04 18:37:04 3202          3187                36       18
 ```
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub\!
