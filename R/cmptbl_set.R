@@ -27,6 +27,7 @@ comp_tbl <- function(.data, lgran, ugran, ...) {
   }
 
 
+
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
   granularity <- lookup_table$granularity
   index_gran1 <- granularity %>% match(x = lgran)
@@ -76,5 +77,10 @@ comp_tbl <- function(.data, lgran, ugran, ...) {
       }
     }
   }
-  united_merge %>% dplyr::select(-harmony) %>% tidyr::spread(y, output) %>% dplyr::rename(granularities = "x")
+
+
+  united_merge$x = factor(united_merge$x, levels = set1)
+  united_merge$y = factor(united_merge$y, levels = set1)
+
+  united_merge %>% arrange(x, y) %>% dplyr::select(-harmony) %>% tidyr::spread(y, output) %>% dplyr::rename(granularities = "x")
 }
