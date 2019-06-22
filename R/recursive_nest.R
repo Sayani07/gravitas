@@ -80,9 +80,15 @@ g_order <- function(gran1, gran2 = NULL, order = NULL) {
 gran_convert <- function(a, b) {
   a = tolower(a)
   b = tolower(b)
+
+
   granularity <- lookup_table$granularity
   conv_fac <- lookup_table$constant
   index_gran1 <- granularity %>% match(x = a)
+  if(g_order(a, b) < 0)
+  {
+    stop("Second temporal resolution should be higher in order than the first one. Try reversing their position")
+  }
   if (g_order(a, b) == 0) {
     return(1)
   }
