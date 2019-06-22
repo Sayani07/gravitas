@@ -80,7 +80,10 @@ g_order <- function(gran1, gran2 = NULL, order = NULL) {
 gran_convert <- function(a, b) {
   a = tolower(a)
   b = tolower(b)
-
+  granularity = lookup_table$granularity
+  if (!a %in% granularity|!b %in% granularity) {
+    stop(paste0("granularity ", a, " and ", b, " both should be one of ", paste0(granularity, collapse = ", ")), call. = F)
+  }
 
   granularity <- lookup_table$granularity
   conv_fac <- lookup_table$constant
