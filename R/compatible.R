@@ -33,7 +33,6 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
   # parse(paste(var1, var2, sep  = "_"))
   # L1 = parse(text = paste(var1, var2, sep  = "_"))
 
-  # Have to rename
   data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(var1, var2, ind), L2 = build_gran(var3, var4, ind))
 
   # All possible combinations that are possible
