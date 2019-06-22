@@ -13,6 +13,9 @@
 #' library(dplyr)
 #' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = build_gran("hhour", "week", start_time))
 #' @export build_gran
+
+
+
 build_gran <- function(gran1, gran2, x, ...) {
 
   # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
@@ -75,6 +78,8 @@ g_order <- function(gran1, gran2 = NULL, order = NULL) {
 # provides the conversion factor between two granularities
 
 gran_convert <- function(a, b) {
+  a = tolower(a)
+  b = tolower(b)
   granularity <- lookup_table$granularity
   conv_fac <- lookup_table$constant
   index_gran1 <- granularity %>% match(x = a)
@@ -172,11 +177,4 @@ parse_exp <- function(y) {
     value <- parse(text = paste0(y, "(x,...)"))
   }
   return(value)
-}
-
-
-
-dodge <- function(x) {
-  value <- eval(parse_exp("lubridate::hour"))
-  value
 }
