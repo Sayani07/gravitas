@@ -118,11 +118,11 @@ qhour_hhour <- function(x, ...) {
 }
 
 hhour_hour <- function(x, ...) {
-  dplyr::if_else(lubridate::minute(x, ...) <= 30, 1, 2)
+  dplyr::if_else(lubridate::minute(x, ...) < 30, 1, 2)
 }
 
 week_fortnight <- function(x, ...) {
-  dplyr::if_else((lubridate::yday(x, ...) %/% 14 + 1) <= 14, 1, 2)
+  dplyr::if_else(day_fortnight(x) <= 7, 1, 2)
 }
 
 month_quarter <- function(x, ...) {
@@ -173,7 +173,7 @@ day_semester <- function(x) {
 }
 
 day_fortnight <- function(x) {
-  value <- lubridate::yday(x) %/% 14
+  value <- lubridate::yday(x) %% 14
   dplyr::if_else(value == 0, 14, value)
 }
 
