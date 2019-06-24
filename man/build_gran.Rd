@@ -6,14 +6,14 @@
 Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.}
 \usage{
-build_gran(gran1, gran2, x, ...)
+build_gran(x, gran1 = NULL, gran2 = NULL, ...)
 }
 \arguments{
+\item{x}{a date-time object}
+
 \item{gran1}{the lower level granularity to be paired}
 
 \item{gran2}{the upper level granularity to be paired}
-
-\item{x}{a date-time object}
 
 \item{...}{other arguments to be passed for appropriate labels}
 }

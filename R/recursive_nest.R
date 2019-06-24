@@ -19,14 +19,14 @@
 build_gran <- function(x, gran1 = NULL, gran2= NULL, ...) {
   # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
   if(is.null(gran1)|is.null(gran2))  {
-    stop("function requires both gran1 and gran2 to be supplied")
+    stop("function requires both gran1 and gran2 to be specified")
   }
   if (g_order(gran1, "month") > 0 & g_order("month", gran2) >= 0) {
     index_gran2 <- lookup_table$granularity %>% match(x = gran2)
     day_gran2 <- eval(parse_exp(lookup_table$convertday[index_gran2]))
     if (g_order(gran1, "day") > 0) {
       c_gran1_day <- gran_convert(gran1, "day")
-      value <- build_gran(gran1, "day", x) + c_gran1_day * (day_gran2 - 1)
+      value <- build_gran(x, gran1, "day") + c_gran1_day * (day_gran2 - 1)
     }
     else if (g_order(gran1, "day") == 0) {
       value <- day_gran2
@@ -42,9 +42,9 @@ build_gran <- function(x, gran1 = NULL, gran2= NULL, ...) {
       one_order <- lookup_table$convertfun[lookup_table$granularity %>% match(x = gran1)]
       return(eval(parse_exp(one_order)))
     } else {
-      value <- build_gran(gran1, gran1_ordr1, x) +
+      value <- build_gran(x, gran1, gran1_ordr1) +
         gran_convert(gran1, gran1_ordr1) *
-          (build_gran(gran1_ordr1, gran2, x) - 1)
+          (build_gran(x, gran1_ordr1, gran2) - 1)
       return(value)
     }
   }
@@ -168,17 +168,17 @@ second_day <- function(x, ...) {
 }
 
 
-day_semester <- function(x) {
+day_semester <- function(x,...) {
 
   # finds day of the semester
-  which_sem <- lubridate::semester(x)
-  day_x <- lubridate::yday(x)
-  year_leap <- lubridate::leap_year(x)
+  which_sem <- lubridate::semester(x,...)
+  day_x <- lubridate::yday(x,...)
+  year_leap <- lubridate::leap_year(x,...)
   div_indx <- dplyr::if_else(year_leap == "FALSE", 182, 183)
   dplyr::if_else(which_sem == 1, day_x, day_x - div_indx + 1)
 }
 
-day_fortnight <- function(x) {
+day_fortnight <- function(x,...) {
   value <- lubridate::yday(x) %% 14
   dplyr::if_else(value == 0, 14, value)
 }
