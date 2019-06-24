@@ -128,7 +128,6 @@ week_fortnight <- function(x, ...) {
 month_quarter <- function(x, ...) {
   value <- lubridate::month(x, ...) %% 3
   dplyr::if_else(value == 0, 3, value)
-  # otherwise remainder will change the label of the largest value to zero
 }
 
 quarter_semester <- function(x, ...) {
