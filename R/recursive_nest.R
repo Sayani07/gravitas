@@ -16,9 +16,11 @@
 
 
 
-build_gran <- function(gran1, gran2, x, ...) {
-
+build_gran <- function(x, gran1 = NULL, gran2= NULL, ...) {
   # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
+  if(is.null(gran1)|is.null(gran2))  {
+    stop("function requires both gran1 and gran2 to be supplied")
+  }
   if (g_order(gran1, "month") > 0 & g_order("month", gran2) >= 0) {
     index_gran2 <- lookup_table$granularity %>% match(x = gran2)
     day_gran2 <- eval(parse_exp(lookup_table$convertday[index_gran2]))
