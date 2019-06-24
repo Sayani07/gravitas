@@ -142,22 +142,27 @@ semester_year <- function(x, ...) {
 
 
 # convert day functions
+# all level starts from 0 like zero like hour_day (0, 1, 2, ....23)
 
+# goes from 0 to 95
 qhour_day <- function(x, ...) {
 
   # finds which quarter of the day
   ceiling(lubridate::minute(x, ...) / 15) + 4 * (lubridate::hour(x, ...))
 }
 
+# goes from 0 to (47
 hhour_day <- function(x, ...) {
-  (lubridate::hour(x, ...) * 60 + lubridate::minute(x, ...)) / 30
+  (lubridate::hour(x, ...)+1) *2 - 1
 }
 
+# goes from 0 to (60*24 - 1)
 minute_day <- function(x, ...) {
-  lubridate::minute(x, ...) + (lubridate::hour(x, ...) - 1) * 60
+  lubridate::minute(x, ...) + (lubridate::hour(x, ...)) * 60
 }
+# goes from 0 to (60*60*24 - 1)
 second_day <- function(x, ...) {
-  lubridate::second(x, ...) + (lubridate::hour(x, ...) - 1) * 60 * 60
+  lubridate::second(x, ...) + lubridate::minute(x, ...)*60 +  (lubridate::hour(x, ...)) * 60 * 60
 }
 
 
