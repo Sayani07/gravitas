@@ -11,9 +11,8 @@
 #
 #' @examples
 #' library(dplyr)
-#' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = build_gran("hhour", "week", start_time))
+#' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = build_gran(start_time,"hhour", "week"))
 #' @export build_gran
-
 
 
 build_gran <- function(x, gran1 = NULL, gran2= NULL, ...) {
@@ -101,7 +100,6 @@ gran_convert <- function(a, b) {
     return(conv_fac[index_gran1] * gran_convert(g_order(a, order = 1), b))
   }
 }
-
 
 
 # all one order up functions

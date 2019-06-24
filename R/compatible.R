@@ -33,7 +33,7 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
   # parse(paste(var1, var2, sep  = "_"))
   # L1 = parse(text = paste(var1, var2, sep  = "_"))
 
-  data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(var1, var2, ind), L2 = build_gran(var3, var4, ind))
+  data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(ind, var1, var2), L2 = build_gran(ind, var3, var4))
 
   # All possible combinations that are possible
   Allcomb <- data_mutate %>% tidyr::expand(L1, L2)

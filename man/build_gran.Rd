@@ -27,5 +27,5 @@ zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
 library(dplyr)
-tsibbledata::nyc_bikes \%>\% tail() \%>\% mutate(hhour_week = build_gran("hhour", "week", start_time))
+tsibbledata::nyc_bikes \%>\% tail() \%>\% mutate(hhour_week = build_gran(start_time,"hhour", "week"))
 }
