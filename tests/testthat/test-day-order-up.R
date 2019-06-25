@@ -1,14 +1,14 @@
 context("day order functions")
 
-x = lubridate::ymd_hms("2014-12-30 23:31:15 UTC")
+x <- lubridate::ymd_hms("2014-12-30 23:31:15 UTC")
 
 
 test_that("second_minute inputs", {
-  expect_is(x,c("POSIXct", "POSIXt"))
+  expect_is(x, c("POSIXct", "POSIXt"))
 })
 
 
-#day_fortnight
+# day_fortnight
 test_that("day_fortnight outputs a numeric value", {
   expect_is(day_fortnight(x), "numeric")
 })
@@ -26,7 +26,7 @@ test_that("day_fortnight error with null input", {
 })
 
 
-#day_semester
+# day_semester
 
 test_that("day_semester outputs a numeric value", {
   expect_is(day_semester(x), "numeric")
@@ -44,7 +44,7 @@ test_that("day_semester error with null input", {
   expect_error(day_semester(), "argument \"x\" is missing, with no default")
 })
 
-#qhour_day
+# qhour_day
 test_that("qhour_day outputs a numeric value", {
   expect_is(qhour_day(x), "numeric")
 })
@@ -62,7 +62,7 @@ test_that("qhour_day error with null input", {
 })
 
 
-#hhour_day
+# hhour_day
 
 test_that("hhour_day outputs a numeric value", {
   expect_is(hhour_day(x), "numeric")
@@ -81,7 +81,7 @@ test_that("hhour_day error with null input", {
 })
 
 
-#minute_day
+# minute_day
 
 
 test_that("minute_day outputs a numeric value", {
@@ -100,7 +100,7 @@ test_that("minute_day error with null input", {
   expect_error(minute_day(), "argument \"x\" is missing, with no default")
 })
 
-#second_day
+# second_day
 
 
 test_that("second_day outputs a numeric value", {
@@ -118,5 +118,3 @@ test_that("second_day output length equals input length", {
 test_that("second_day error with null input", {
   expect_error(second_day(), "argument \"x\" is missing, with no default")
 })
-
-

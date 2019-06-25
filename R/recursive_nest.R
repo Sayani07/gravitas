@@ -11,13 +11,13 @@
 #
 #' @examples
 #' library(dplyr)
-#' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = build_gran(start_time,"hhour", "week"))
+#' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = build_gran(start_time, "hhour", "week"))
 #' @export build_gran
 
 
-build_gran <- function(x, gran1 = NULL, gran2= NULL, ...) {
+build_gran <- function(x, gran1 = NULL, gran2 = NULL, ...) {
   # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
-  if(is.null(gran1)|is.null(gran2))  {
+  if (is.null(gran1) | is.null(gran2)) {
     stop("function requires both gran1 and gran2 to be specified")
   }
   if (g_order(gran1, "month") > 0 & g_order("month", gran2) >= 0) {
@@ -79,18 +79,17 @@ g_order <- function(gran1, gran2 = NULL, order = NULL) {
 # provides the conversion factor between two granularities
 
 gran_convert <- function(a, b) {
-  a = tolower(a)
-  b = tolower(b)
-  granularity = lookup_table$granularity
-  if (!a %in% granularity|!b %in% granularity) {
+  a <- tolower(a)
+  b <- tolower(b)
+  granularity <- lookup_table$granularity
+  if (!a %in% granularity | !b %in% granularity) {
     stop(paste0("granularity ", a, " and ", b, " both should be one of ", paste0(granularity, collapse = ", ")), call. = F)
   }
 
   granularity <- lookup_table$granularity
   conv_fac <- lookup_table$constant
   index_gran1 <- granularity %>% match(x = a)
-  if(g_order(a, b) < 0)
-  {
+  if (g_order(a, b) < 0) {
     stop("Second temporal resolution should be higher in order than the first one. Try reversing their position")
   }
   if (g_order(a, b) == 0) {
@@ -153,7 +152,7 @@ qhour_day <- function(x, ...) {
 
 # goes from 0 to (47
 hhour_day <- function(x, ...) {
-  (lubridate::hour(x, ...)+1) *2 - 1
+  (lubridate::hour(x, ...) + 1) * 2 - 1
 }
 
 # goes from 0 to (60*24 - 1)
@@ -162,21 +161,21 @@ minute_day <- function(x, ...) {
 }
 # goes from 0 to (60*60*24 - 1)
 second_day <- function(x, ...) {
-  lubridate::second(x, ...) + lubridate::minute(x, ...)*60 +  (lubridate::hour(x, ...)) * 60 * 60
+  lubridate::second(x, ...) + lubridate::minute(x, ...) * 60 + (lubridate::hour(x, ...)) * 60 * 60
 }
 
 
-day_semester <- function(x,...) {
+day_semester <- function(x, ...) {
 
   # finds day of the semester
-  which_sem <- lubridate::semester(x,...)
-  day_x <- lubridate::yday(x,...)
-  year_leap <- lubridate::leap_year(x,...)
+  which_sem <- lubridate::semester(x, ...)
+  day_x <- lubridate::yday(x, ...)
+  year_leap <- lubridate::leap_year(x, ...)
   div_indx <- dplyr::if_else(year_leap == "FALSE", 182, 183)
   dplyr::if_else(which_sem == 1, day_x, day_x - div_indx + 1)
 }
 
-day_fortnight <- function(x,...) {
+day_fortnight <- function(x, ...) {
   value <- lubridate::yday(x) %% 14
   dplyr::if_else(value == 0, 14, value)
 }

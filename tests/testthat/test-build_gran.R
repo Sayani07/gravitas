@@ -1,6 +1,6 @@
 context("build_gran")
 
-x = lubridate::ymd_hms("2018-11-04 18:37:04 EST")
+x <- lubridate::ymd_hms("2018-11-04 18:37:04 EST")
 
 # test_that("build_gran inputs", {
 #   expect_is(x,c("POSIXct", "POSIXt"))
@@ -40,10 +40,9 @@ test_that("build_gran expected output week_quarter", {
 })
 
 test_that("build_gran expected output week_semester", {
-  expect_equal(build_gran(x, "week", "semester"),19)
+  expect_equal(build_gran(x, "week", "semester"), 19)
 })
 
 test_that("build_gran expected output second_hhour", {
   expect_equal(build_gran(x, "second", "hhour"), 424)
 })
-
