@@ -3,7 +3,7 @@
 #' zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 #'
 
-#' @param x a date-time object
+#' @param .data a tsibble
 #' @param gran1 the lower level granularity to be paired
 #' @param gran2 the upper level granularity to be paired
 #' @param ... other arguments to be passed for appropriate labels
@@ -11,8 +11,27 @@
 #
 #' @examples
 #' library(dplyr)
-#' tsibbledata::nyc_bikes %>% tail() %>% mutate(hhour_week = build_gran(start_time, "hhour", "week"))
-#' @export build_gran
+#' library(tsibble)
+#' tsibbledata::aus_elec %>%as_tsibble() %>% tail() %>%  create_gran("hour", "week")
+#' @export create_gran
+
+
+create_gran = function(.data, gran1 = NULL, gran2 = NULL, ...)
+{
+  if (!tsibble::is_tsibble(.data)) {
+    stop("must use tsibble")
+  }
+
+  x <- .data[[rlang::as_string(tsibble::index(.data))]]
+
+  col_name <- paste(rlang::quo_name(gran1),rlang::quo_name(gran2), sep = "_")
+  data_mutate  = .data %>% dplyr::mutate(L1 = build_gran(x, gran1, gran2)) %>%
+    dplyr::mutate(
+      !!col_name := L1) %>% dplyr::select(-L1)
+
+  return(data_mutate)
+
+}
 
 
 build_gran <- function(x, gran1 = NULL, gran2 = NULL, ...) {
