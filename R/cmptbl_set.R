@@ -78,9 +78,10 @@ comp_tbl <- function(.data, lgran, ugran, ...) {
     }
   }
 
+united_merge = united_merge %>% dplyr::mutate(check_harmony = dplyr::if_else(output==FALSE, 0, 1))
 
   united_merge$x <- factor(united_merge$x, levels = set1)
   united_merge$y <- factor(united_merge$y, levels = set1)
 
-  united_merge %>% dplyr::arrange(x, y) %>% dplyr::select(-harmony) %>% tidyr::spread(y, output) %>% dplyr::rename(granularities = "x")
+  united_merge %>% dplyr::arrange(x, y) %>% dplyr::select(-c(harmony, output)) %>% tidyr::spread(y, check_harmony) %>% dplyr::rename(granularities = "x")
 }

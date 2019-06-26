@@ -21,3 +21,21 @@ addons:
     update: true
     packages:
       - cargo
+      - libprotobuf-dev
+      - libprotoc-dev
+      - protobuf-compiler
+      - libudunits2-dev
+      - libv8-dev
+      - libjq-dev
+      - libgdal1-dev
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_PAT
+  keep-history: true
+  local-dir: docs
+  on:
+    branch: master
+
+
