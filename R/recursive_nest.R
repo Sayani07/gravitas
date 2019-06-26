@@ -25,7 +25,7 @@ create_gran = function(.data, gran1 = NULL, gran2 = NULL, ...)
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
   col_name <- paste(rlang::quo_name(gran1),rlang::quo_name(gran2), sep = "_")
-  data_mutate  = .data %>% dplyr::mutate(L1 = build_gran(x, gran1, gran2)) %>%
+  data_mutate  = .data %>% dplyr::mutate(L1 = build_gran(x, gran1, gran2,...)) %>%
     dplyr::mutate(
       !!col_name := L1) %>% dplyr::select(-L1)
 
@@ -97,17 +97,22 @@ g_order <- function(gran1, gran2 = NULL, order = NULL) {
 
 # provides the conversion factor between two granularities
 
-gran_convert <- function(a, b) {
+gran_convert <- function(a, b = NULL, order = NULL) {
+
   a <- tolower(a)
-  b <- tolower(b)
   granularity <- lookup_table$granularity
+  conv_fac <- lookup_table$constant
+  index_gran1 <- granularity %>% match(x = a)
+  granularity <- lookup_table$granularity
+
+  if (!is.null(b)){
+
+  b <- tolower(b)
   if (!a %in% granularity | !b %in% granularity) {
     stop(paste0("granularity ", a, " and ", b, " both should be one of ", paste0(granularity, collapse = ", ")), call. = F)
   }
 
-  granularity <- lookup_table$granularity
-  conv_fac <- lookup_table$constant
-  index_gran1 <- granularity %>% match(x = a)
+
   if (g_order(a, b) < 0) {
     stop("Second temporal resolution should be higher in order than the first one. Try reversing their position")
   }
@@ -116,6 +121,17 @@ gran_convert <- function(a, b) {
   }
   else {
     return(conv_fac[index_gran1] * gran_convert(g_order(a, order = 1), b))
+  }
+  }
+  if (!is.null(order))
+  {
+     converter <- conv_fac[index_gran1]
+
+    while(converter <= order)
+    {
+      index_gran1 = index_gran1 + 1
+    }
+
   }
 }
 
