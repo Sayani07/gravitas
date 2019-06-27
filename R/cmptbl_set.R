@@ -13,7 +13,8 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
-#' tsibbledata::aus_elec %>% comp_tbl(lgran = "hour", ugran = "week")
+#' tsibbledata::gafa_stock %>% comp_tbl(lgran = "hour", ugran = "week")
+#' tsibbledata::aus_elec %>% comp_tbl( ugran = "week")
 #' @export comp_tbl
 comp_tbl <- function(.data, lgran = NULL, ugran = NULL, ...) {
 
@@ -25,9 +26,11 @@ comp_tbl <- function(.data, lgran = NULL, ugran = NULL, ...) {
   }
 
    if (is.null(ugran)) {
-  stop("Argument ugran missing")
+  stop("Argument ugran is missing, with no default")
    }
 
+  if(tsibble::is_regular(.data))
+  {
   interval_ts <- tsibble::interval(.data)
   data_interval <- interval_ts[interval_ts!=0]
   if(is.null(lgran))
@@ -49,6 +52,14 @@ comp_tbl <- function(.data, lgran = NULL, ugran = NULL, ...) {
         last_index = index_lgran + 1
       }
       lgran = granularity[last_index +1]
+    }
+  }
+  }
+
+  else if (!tsibble::is_regular(.data))
+  {
+    if(is.null(lgran)){
+      stop("lgran must be provided when the tsibble is irregularly spaced")
     }
   }
 
