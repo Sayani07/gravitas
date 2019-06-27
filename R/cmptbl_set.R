@@ -13,11 +13,43 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
-#' aus_elec %>% comp_tbl(lgran = "hour", ugran = "week")
+#' tsibbledata::aus_elec %>% comp_tbl(lgran = "hour", ugran = "week")
 #' @export comp_tbl
-comp_tbl <- function(.data, lgran, ugran, ...) {
+comp_tbl <- function(.data, lgran = NULL, ugran = NULL, ...) {
+
+  granularity <- lookup_table$granularity
+  constant <- lookup_table$constant
+
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
+  }
+
+   if (is.null(ugran)) {
+  stop("Argument ugran missing")
+   }
+
+  interval_ts <- tsibble::interval(.data)
+  data_interval <- interval_ts[interval_ts!=0]
+  if(is.null(lgran))
+  {
+    lgran_iden <- names(data_interval)
+    lgran_multiple <- data_interval[[1]]
+    if(lgran_multiple==1)
+    {
+      lgran = lgran_iden
+    }
+    else if (lgran_multiple > 1)
+    {
+      index_lgran <- granularity %>% match(x = lgran_iden)
+
+
+      if(constant[index_lgran]<lgran_multiple)
+      {
+        constant[index_lgran] = constant[index_lgran]* constant[index_lgran + 1]
+        last_index = index_lgran + 1
+      }
+      lgran = granularity[last_index +1]
+    }
   }
 
   if (g_order(lgran, ugran) == 1) {
@@ -26,10 +58,7 @@ comp_tbl <- function(.data, lgran, ugran, ...) {
     }, " can be formed. Function requires checking compatibility for bivariate granularities")
   }
 
-
-
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
-  granularity <- lookup_table$granularity
   index_gran1 <- granularity %>% match(x = lgran)
   index_gran2 <- granularity %>% match(x = ugran)
   gran2_set <- lookup_table$granularity[index_gran1:index_gran2]
@@ -85,3 +114,5 @@ united_merge = united_merge %>% dplyr::mutate(check_harmony = dplyr::if_else(out
 
   united_merge %>% dplyr::arrange(x, y) %>% dplyr::select(-c(harmony, output)) %>% tidyr::spread(y, check_harmony) %>% dplyr::rename(granularities = "x")
 }
+
+
