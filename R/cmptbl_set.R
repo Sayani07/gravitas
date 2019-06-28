@@ -16,7 +16,6 @@
 #' tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
 #' tsibbledata::aus_elec %>% harmony( ugran = "day")
 #' @export harmony
-
 harmony <- function(.data, ugran = NULL, lgran = NULL, ...)
 {
 
