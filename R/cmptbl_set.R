@@ -13,10 +13,12 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
-#' tsibbledata::gafa_stock %>% comp_tbl(lgran = "hour", ugran = "week")
-#' tsibbledata::aus_elec %>% comp_tbl( ugran = "week")
-#' @export comp_tbl
-comp_tbl <- function(.data, lgran = NULL, ugran = NULL, ...) {
+#' tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
+#' tsibbledata::aus_elec %>% harmony( ugran = "day")
+#' @export harmony
+
+harmony <- function(.data, ugran = NULL, lgran = NULL, ...)
+{
 
   granularity <- lookup_table$granularity
   constant <- lookup_table$constant
@@ -82,19 +84,21 @@ comp_tbl <- function(.data, lgran = NULL, ugran = NULL, ...) {
 
   # All_set <- c(set1, set2$x_y)
 
-  Allcomb <- t(combn(set1, 2)) %>% as_tibble()
+
+  Allcomb <- t(combn(set1, 2)) %>% as_tibble(name_repair = "minimal")
   # colnames(Allcomb) = c("Category 1, Category 2")
 
   # output <- .data %>% is.harmony(gran1 = Allcomb$V1[1], gran2 = Allcomb$V2[1])
 
   harmony <- array(0, nrow(Allcomb))
 
+
   for (i in 1:nrow(Allcomb))
   {
     harmony[i] <- is.harmony(.data, gran1 = Allcomb$V1[i], gran2 = Allcomb$V2[i])
   }
 
-  harmony_mt <- cbind(Allcomb, harmony) %>% as_tibble() %>% dplyr::rename(granularities = V1)
+  harmony_mt <- cbind(Allcomb, harmony) %>% as_tibble(name_repair = "minimal") %>% dplyr::rename(granularities = V1)
 
 
   set1_merge <- merge(set1, set1)
@@ -102,28 +106,37 @@ comp_tbl <- function(.data, lgran = NULL, ugran = NULL, ...) {
   united_merge <- purrr::map_dfr(set1_merge, as.character) %>% dplyr::left_join(harmony_mt, by = c(x = "granularities", y = "V2"))
 
   united_merge$output <- array(NA, nrow(united_merge))
-  # just manipulation to put it in a matrix format
+
+   #just manipulation to put it in a matrix format
 
   for (i in 1:length(united_merge$x))
-  {
-    for (j in 1:length(united_merge$y))
-    {
-      if (united_merge$x[i] == united_merge$y[i]) {
-        united_merge$output[i] <- FALSE
-      }
-      else if (united_merge$x[i] == united_merge$y[j] & united_merge$y[i] == united_merge$x[j]) {
-        united_merge$output[i] <- max(united_merge$harmony[i], united_merge$harmony[j], na.rm = TRUE)
-        united_merge$output[j] <- max(united_merge$harmony[i], united_merge$harmony[j], na.rm = TRUE)
-      }
-    }
-  }
+   {
+     for (j in 1:length(united_merge$y))
+     {
+       if (united_merge$x[i] == united_merge$y[i]) {
+         united_merge$output[i] <- FALSE
+       }
+       else if (united_merge$x[i] == united_merge$y[j] & united_merge$y[i] == united_merge$x[j]) {
+         united_merge$output[i] <- max(united_merge$harmony[i], united_merge$harmony[j], na.rm = TRUE)
+         united_merge$output[j] <- max(united_merge$harmony[i], united_merge$harmony[j], na.rm = TRUE)
+       }
+     }
+   }
 
-united_merge = united_merge %>% dplyr::mutate(check_harmony = dplyr::if_else(output==FALSE, 0, 1))
+ united_merge = united_merge %>% dplyr::mutate(check_harmony = dplyr::if_else(output==FALSE, 0, 1))
 
-  united_merge$x <- factor(united_merge$x, levels = set1)
-  united_merge$y <- factor(united_merge$y, levels = set1)
+   united_merge$x <- factor(united_merge$x, levels = set1)
+   united_merge$y <- factor(united_merge$y, levels = set1)
 
-  united_merge %>% dplyr::arrange(x, y) %>% dplyr::select(-c(harmony, output)) %>% tidyr::spread(y, check_harmony) %>% dplyr::rename(granularities = "x")
+   united_merge %>% dplyr::arrange(x, y) %>% dplyr::select(-c(harmony, output)) %>% dplyr::filter(check_harmony == 1)
+
+}
+
+
+comp_tbl <- function(.data, ugran = NULL, lgran = NULL, ...) {
+
+harmony(.data, ugran, lgran, ...) %>% tidyr::spread(y, check_harmony) %>% dplyr::rename(granularities = "x") %>% replace(., is.na(.), 0)
+
 }
 
 

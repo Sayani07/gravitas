@@ -40,7 +40,7 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
 
 
   combexist <- data_mutate %>% tibble::as_tibble() %>% dplyr::group_by(L1, L2) %>% dplyr::summarise(
-    count = n()
+    count = dplyr::n()
   )
 
   output <- Allcomb %>%
