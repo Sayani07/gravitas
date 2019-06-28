@@ -9,7 +9,7 @@ harmony(.data, ugran = NULL, lgran = NULL, ...)
 \arguments{
 \item{.data}{a tsibble object}
 
-\item{ugran}{gran granularity}
+\item{ugran}{upper granularity}
 
 \item{lgran}{lower granularity}
 

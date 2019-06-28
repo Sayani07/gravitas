@@ -7,7 +7,7 @@
 
 #' @param .data a tsibble object
 #' @param lgran lower granularity
-#' @param ugran gran granularity
+#' @param ugran upper granularity
 #' @param ... added arguments to be passed
 #' @return compatibility table providing if the two granularities are harmonies or clashes. FALSE indicates a clash. If harmony, then a tibble with desired granularities returned.
 #' @examples
@@ -15,7 +15,9 @@
 #' library(tsibbledata)
 #' tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
 #' tsibbledata::aus_elec %>% harmony( ugran = "day")
-#' @export harmony
+#' @export
+
+
 harmony <- function(.data, ugran = NULL, lgran = NULL, ...)
 {
 
