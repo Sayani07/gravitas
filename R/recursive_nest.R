@@ -6,6 +6,8 @@
 #' @param .data a tsibble
 #' @param gran1 the lower level granularity to be paired
 #' @param gran2 the upper level granularity to be paired
+#' @param label logical. TRUE will display the month as an ordered factor of character string such as "January", "February". FALSE will display the month as an ordered factor such as 1 to 12, where 1 stands for January and 12 for December.
+#' @param abbr logical. FALSE will display abbreviated labels
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of granularities of x as a number
 #
@@ -16,29 +18,91 @@
 #' @export create_gran
 
 
-create_gran = function(.data, gran1 = NULL, gran2 = NULL, ...)
+create_gran = function(.data, gran1 = NULL, gran2 = NULL, label= TRUE, abbr = TRUE,  ...)
 {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
+  if(is.null(gran2)){
+    gran2 = g_order(gran1, order = 1)
+    col_name <- paste(rlang::quo_name(gran1), gran2, sep = "_")
+  }
+
+  if(!is.null(gran2))
+  {
+    col_name <- paste(rlang::quo_name(gran1),rlang::quo_name(gran2), sep = "_")
+  }
 
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
-  col_name <- paste(rlang::quo_name(gran1),rlang::quo_name(gran2), sep = "_")
-  data_mutate  = .data %>% dplyr::mutate(L1 = build_gran(x, gran1, gran2,...)) %>%
-    dplyr::mutate(
-      !!col_name := L1) %>% dplyr::select(-L1)
 
-  return(data_mutate)
 
+  data_mutate  = .data %>% dplyr::mutate(L1 = build_gran(x, gran1, gran2,...))
+
+
+  lev = unique(data_mutate$L1)
+
+  if(label)
+  {
+  if (gran1 == "day" & gran2 == "week")
+  {
+    names <- c("Sunday", "Monday", "Tuesday", "Wednesday",
+                    "Thursday", "Friday", "Saturday")
+  }
+  else if(gran1 == "month" & gran2 == "year")
+  {
+    names <- c("January", "February", "March", "April",
+                    "May", "June", "July", "August", "September", "October", " November", "December")
+  }
+    else
+    {
+      names = as.character(1:length(unique(lev)))
+    }
+  names_abbr <- substr(names, 1, 3)
+
+  if(abbr) names_gran = names_abbr else names_gran = names
+
+  }
+  else
+  {
+      names_gran = as.character(1:length(unique(lev)))
+  }
+
+  data_mutate$L1 = factor(data_mutate$L1, labels = names_gran)
+
+    data_mutate%>%
+      dplyr::mutate(
+        !!col_name := L1) %>% dplyr::select(-L1)
 }
 
 
 build_gran <- function(x, gran1 = NULL, gran2 = NULL, ...) {
   # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
-  if (is.null(gran1) | is.null(gran2)) {
-    stop("function requires both gran1 and gran2 to be specified")
+
+#
+#   if (is.null(gran1) | is.null(gran2)) {
+#     stop("function requires both gran1 and gran2 to be specified")
+#   }
+
+
+  if (is.null(gran1)) {
+    stop("function requires gran1 to be specified")
   }
+
+
+  if (g_order(gran1, gran2)<0) {
+    stop("gran1 should have lower temporal order than gran2. Try swapping gran1 and gran2")
+  }
+
+
+
+  # if(index_gran1 > index_gran2)
+  # {
+  #   tmp <- gran1
+  #   gran1 <- gran2
+  #   gran2 <- tmp
+  # }
+
   if (g_order(gran1, "month") > 0 & g_order("month", gran2) >= 0) {
     index_gran2 <- lookup_table$granularity %>% match(x = gran2)
     day_gran2 <- eval(parse_exp(lookup_table$convertday[index_gran2]))
@@ -136,6 +200,24 @@ gran_convert <- function(a, b = NULL, order = NULL) {
 }
 
 
+
+# .shift_gran_names <- function(names, gran_start = length(gran_uniq)) {
+#   if (gran_start != length(gran_uniq)) {
+#     c(names[(gran_start + 1):length(gran_uniq)], names[1:gran_start])
+#   } else {
+#     names
+#   }
+# }
+#
+
+
+
+
+
+
+
+
+
 # all one order up functions
 
 
@@ -225,3 +307,5 @@ parse_exp <- function(y) {
   }
   return(value)
 }
+
+
