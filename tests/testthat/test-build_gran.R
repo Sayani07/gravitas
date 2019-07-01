@@ -9,10 +9,10 @@ x <- lubridate::ymd_hms("2018-11-04 18:37:04 EST")
 test_that("build_gran output length equals input length of time vector", {
   expect_length(build_gran(x, "hour", "week"), length(x))
 })
-
-test_that("build_gran error with null input", {
-  expect_error(build_gran(x, "hour"), "function requires both gran1 and gran2 to be specified")
-})
+#
+# test_that("build_gran error with null input", {
+#   expect_error(build_gran(x, "hour"), "function requires both gran1 and gran2 to be specified")
+# })
 
 test_that("build_gran outputs a numeric value", {
   expect_is(build_gran(x, "hour", "week"), "numeric")
