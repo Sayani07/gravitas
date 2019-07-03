@@ -18,10 +18,25 @@
 #' aus_elec %>% is.harmony("hour_day", "day_week")
 #' @export is.harmony
 is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
+
+
+  harmony_object <- harmony_obj(.data, gran1, gran2, response)
+  names <- names(harmony_object)
+  # All possible combination that are missing
+  cmbmiss <-  harmony_object %>% filter(nobs==0)
+  facet_nlevel <-  harmony_object[,1] %>% distinct()
+
+   if(nrow(cmbmiss) != 0 | nrow(facet_nlevel) > 31)
+     return_output <- "FALSE"
+  else return_output <- "TRUE"
+
+  return(return_output)
+}
+
+harmony_obj <- function(.data, gran1, gran2, response = NULL, ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
-
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
 
   gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
@@ -52,10 +67,7 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
     ) %>%
     dplyr::mutate(nobs = tidyr::replace_na(nobs, 0))
 
-  # All possible combination that are missing
-  cmbmiss <- Allcomb %>% dplyr::anti_join(combexist, by = c("L1", "L2"))
-  # dplyr::if_else(nrow(cmbmiss) != 0, "FALSE", output)
-  return_output <- ifelse(nrow(cmbmiss) != 0, "FALSE", "TRUE")
+
 
   # if(nrow(cmbmiss) != 0)
   # {
@@ -63,5 +75,5 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
   # }
   # else{return_output = output
   #   }
-  return(return_output)
+  return(output)
 }
