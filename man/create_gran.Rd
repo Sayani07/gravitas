@@ -33,5 +33,5 @@ zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 \examples{
 library(dplyr)
 library(tsibble)
-tsibbledata::aus_elec \%>\%as_tsibble() \%>\% tail() \%>\%  create_gran("hour", "week")
+tsibbledata::aus_elec \%>\% as_tsibble() \%>\% create_gran("hour", "week") \%>\% tail()
 }

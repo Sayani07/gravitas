@@ -46,3 +46,54 @@ granplot = function(.data, ugran = NULL, lgran = NULL, pair = 1, response = NULL
     ggplot2::ggtitle(paste0("Plot of ", gran1, " given ", gran2))
 
 }
+
+
+gran_advice <- function(.data, gran1, gran2, response = NULL, ...)
+{
+  if (!tsibble::is_tsibble(.data)) {
+    stop("must use tsibble")
+  }
+
+  proxy <- is.harmony(.data, gran1, gran2, response = NULL, ...)
+
+  if(proxy == "FALSE"){
+    stop("granularities must be harmonies")
+  }
+
+  ind <- .data[[rlang::as_string(tsibble::index(.data))]]
+
+  gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
+  gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
+  var1 <- gran1_split[1]
+  var2 <- gran1_split[2]
+  var3 <- gran2_split[1]
+  var4 <- gran2_split[2]
+
+  data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(ind, var1, var2), L2 = build_gran(ind, var3, var4))
+
+  L1_level <- data_mutate %>% dplyr::distinct(L1) %>% nrow()
+  L2_level <- data_mutate %>% dplyr::distinct(L2) %>% nrow()
+  min_facet = 12
+  min_x = 15
+  max_facet = 31
+  max_x =  1000
+
+  if(L1_level > min_facet & L2_level > min_x )
+    {
+  plots_list = c("percentile", "decile")
+    }
+else if(L1_level > min_facet & L2_level <= min_x)
+    {
+    plots_list = c("ridge", "letter-value", "box", "violin", "box-family")
+    }
+  else if (L1_level < min_facet & L2_level > min_x)
+    {
+    plots_list = c("ridge", "letter-value", "box", "violin", "box-family")
+    }
+  else
+    {
+    plots_list = c("any")
+    }
+  return(plots_list)
+
+}

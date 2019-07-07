@@ -26,5 +26,5 @@ zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 library(dplyr)
 library(tsibbledata)
 tsibbledata::gafa_stock \%>\% harmony(lgran = "hour", ugran = "week")
-tsibbledata::aus_elec \%>\% harmony( ugran = "day")
+tsibbledata::aus_elec \%>\% harmony(ugran = "day")
 }

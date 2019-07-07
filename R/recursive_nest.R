@@ -14,75 +14,72 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibble)
-#' tsibbledata::aus_elec %>%as_tsibble() %>% tail() %>%  create_gran("hour", "week")
+#' tsibbledata::aus_elec %>% as_tsibble() %>% create_gran("hour", "week") %>% tail()
 #' @export create_gran
 
 
-create_gran = function(.data, gran1 = NULL, gran2 = NULL, label= TRUE, abbr = TRUE,  ...)
-{
+create_gran <- function(.data, gran1 = NULL, gran2 = NULL, label = TRUE, abbr = TRUE, ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
-  if(is.null(gran2)){
-    gran2 = g_order(gran1, order = 1)
+  if (is.null(gran2)) {
+    gran2 <- g_order(gran1, order = 1)
     col_name <- paste(rlang::quo_name(gran1), gran2, sep = "_")
   }
 
-  if(!is.null(gran2))
-  {
-    col_name <- paste(rlang::quo_name(gran1),rlang::quo_name(gran2), sep = "_")
+  if (!is.null(gran2)) {
+    col_name <- paste(rlang::quo_name(gran1), rlang::quo_name(gran2), sep = "_")
   }
 
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
 
+  data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, gran1, gran2, ...))
 
-  data_mutate  = .data %>% dplyr::mutate(L1 = build_gran(x, gran1, gran2,...))
 
+  lev <- unique(data_mutate$L1)
 
-  lev = unique(data_mutate$L1)
-
-  if(label)
-  {
-  if (gran1 == "day" & gran2 == "week")
-  {
-    names <- c("Sunday", "Monday", "Tuesday", "Wednesday",
-                    "Thursday", "Friday", "Saturday")
-  }
-  else if(gran1 == "month" & gran2 == "year")
-  {
-    names <- c("January", "February", "March", "April",
-                    "May", "June", "July", "August", "September", "October", " November", "December")
-  }
-    else
-    {
-      names = as.character(1:length(unique(lev)))
+  if (label) {
+    if (gran1 == "day" & gran2 == "week") {
+      names <- c(
+        "Sunday", "Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday"
+      )
     }
-  names_abbr <- substr(names, 1, 3)
+    else if (gran1 == "month" & gran2 == "year") {
+      names <- c(
+        "January", "February", "March", "April",
+        "May", "June", "July", "August", "September", "October", " November", "December"
+      )
+    }
+    else {
+      names <- as.character(1:length(unique(lev)))
+    }
+    names_abbr <- substr(names, 1, 3)
 
-  if(abbr) names_gran = names_abbr else names_gran = names
-
+    if (abbr) names_gran <- names_abbr else names_gran <- names
   }
-  else
-  {
-      names_gran = as.character(1:length(unique(lev)))
+  else {
+    names_gran <- as.character(1:length(unique(lev)))
   }
 
-  data_mutate$L1 = factor(data_mutate$L1, labels = names_gran)
+  data_mutate$L1 <- factor(data_mutate$L1, labels = names_gran)
 
-    data_mutate%>%
-      dplyr::mutate(
-        !!col_name := L1) %>% dplyr::select(-L1)
+  data_mutate %>%
+    dplyr::mutate(
+      !!col_name := L1
+    ) %>%
+    dplyr::select(-L1)
 }
 
 
 build_gran <- function(x, gran1 = NULL, gran2 = NULL, ...) {
   # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
 
-#
-#   if (is.null(gran1) | is.null(gran2)) {
-#     stop("function requires both gran1 and gran2 to be specified")
-#   }
+  #
+  #   if (is.null(gran1) | is.null(gran2)) {
+  #     stop("function requires both gran1 and gran2 to be specified")
+  #   }
 
 
   if (is.null(gran1)) {
@@ -90,7 +87,7 @@ build_gran <- function(x, gran1 = NULL, gran2 = NULL, ...) {
   }
 
 
-  if (g_order(gran1, gran2)<0) {
+  if (g_order(gran1, gran2) < 0) {
     stop("gran1 should have lower temporal order than gran2. Try swapping gran1 and gran2")
   }
 
@@ -162,40 +159,35 @@ g_order <- function(gran1, gran2 = NULL, order = NULL) {
 # provides the conversion factor between two granularities
 
 gran_convert <- function(a, b = NULL, order = NULL) {
-
   a <- tolower(a)
   granularity <- lookup_table$granularity
   conv_fac <- lookup_table$constant
   index_gran1 <- granularity %>% match(x = a)
   granularity <- lookup_table$granularity
 
-  if (!is.null(b)){
-
-  b <- tolower(b)
-  if (!a %in% granularity | !b %in% granularity) {
-    stop(paste0("granularity ", a, " and ", b, " both should be one of ", paste0(granularity, collapse = ", ")), call. = F)
-  }
-
-
-  if (g_order(a, b) < 0) {
-    stop("Second temporal resolution should be higher in order than the first one. Try reversing their position")
-  }
-  if (g_order(a, b) == 0) {
-    return(1)
-  }
-  else {
-    return(conv_fac[index_gran1] * gran_convert(g_order(a, order = 1), b))
-  }
-  }
-  if (!is.null(order))
-  {
-     converter <- conv_fac[index_gran1]
-
-    while(converter <= order)
-    {
-      index_gran1 = index_gran1 + 1
+  if (!is.null(b)) {
+    b <- tolower(b)
+    if (!a %in% granularity | !b %in% granularity) {
+      stop(paste0("granularity ", a, " and ", b, " both should be one of ", paste0(granularity, collapse = ", ")), call. = F)
     }
 
+
+    if (g_order(a, b) < 0) {
+      stop("Second temporal resolution should be higher in order than the first one. Try reversing their position")
+    }
+    if (g_order(a, b) == 0) {
+      return(1)
+    }
+    else {
+      return(conv_fac[index_gran1] * gran_convert(g_order(a, order = 1), b))
+    }
+  }
+  if (!is.null(order)) {
+    converter <- conv_fac[index_gran1]
+
+    while (converter <= order) {
+      index_gran1 <- index_gran1 + 1
+    }
   }
 }
 
@@ -307,5 +299,3 @@ parse_exp <- function(y) {
   }
   return(value)
 }
-
-

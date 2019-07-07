@@ -19,14 +19,14 @@
 #' @export is.harmony
 is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
 
-
   harmony_object <- harmony_obj(.data, gran1, gran2, response)
   names <- names(harmony_object)
   # All possible combination that are missing
-  cmbmiss <-  harmony_object %>% filter(nobs==0)
-  facet_nlevel <-  harmony_object[,1] %>% distinct()
+  #cmbmiss <-  harmony_object %>% filter(nobs==0)
+  cmbmiss <- any(harmony_object$nobs==0)
+  facet_nlevel <-  harmony_object[,1] %>% dplyr::distinct()
 
-   if(nrow(cmbmiss) != 0 | nrow(facet_nlevel) > 31)
+   if(cmbmiss =="TRUE" | nrow(facet_nlevel) > 31)
      return_output <- "FALSE"
   else return_output <- "TRUE"
 
@@ -54,7 +54,7 @@ harmony_obj <- function(.data, gran1, gran2, response = NULL, ...) {
   Allcomb <- data_mutate %>% tidyr::expand(L1, L2)
 
 
-  combexist <- data_mutate %>% tibble::as_tibble() %>% dplyr::group_by(L1, L2) %>% dplyr::summarise(
+  combexist <- data_mutate %>% tibble::as_tibble(name_repair = "minimal") %>% dplyr::group_by(L1, L2) %>% dplyr::summarise(
     count = dplyr::n()
   )
 
