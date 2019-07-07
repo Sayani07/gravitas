@@ -14,13 +14,11 @@
 #' library(dplyr)
 #' library(tsibbledata)
 #' tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
-#' tsibbledata::aus_elec %>% harmony( ugran = "day")
+#' tsibbledata::aus_elec %>% harmony(ugran = "day")
 #' @export harmony
 
 
-harmony <- function(.data, ugran = NULL, lgran = NULL, ...)
-{
-
+harmony <- function(.data, ugran = NULL, lgran = NULL, ...) {
   granularity <- lookup_table$granularity
   constant <- lookup_table$constant
 
@@ -28,40 +26,34 @@ harmony <- function(.data, ugran = NULL, lgran = NULL, ...)
     stop("must use tsibble")
   }
 
-   if (is.null(ugran)) {
-  stop("Argument ugran is missing, with no default")
-   }
+  if (is.null(ugran)) {
+    stop("Argument ugran is missing, with no default")
+  }
 
-  if(tsibble::is_regular(.data))
-  {
-  interval_ts <- tsibble::interval(.data)
-  data_interval <- interval_ts[interval_ts!=0]
-  if(is.null(lgran))
-  {
-    lgran_iden <- names(data_interval)
-    lgran_multiple <- data_interval[[1]]
-    if(lgran_multiple==1)
-    {
-      lgran = lgran_iden
-    }
-    else if (lgran_multiple > 1)
-    {
-      index_lgran <- granularity %>% match(x = lgran_iden)
-
-
-      if(constant[index_lgran]<lgran_multiple)
-      {
-        constant[index_lgran] = constant[index_lgran]* constant[index_lgran + 1]
-        last_index = index_lgran + 1
+  if (tsibble::is_regular(.data)) {
+    interval_ts <- tsibble::interval(.data)
+    data_interval <- interval_ts[interval_ts != 0]
+    if (is.null(lgran)) {
+      lgran_iden <- names(data_interval)
+      lgran_multiple <- data_interval[[1]]
+      if (lgran_multiple == 1) {
+        lgran <- lgran_iden
       }
-      lgran = granularity[last_index +1]
+      else if (lgran_multiple > 1) {
+        index_lgran <- granularity %>% match(x = lgran_iden)
+
+
+        if (constant[index_lgran] < lgran_multiple) {
+          constant[index_lgran] <- constant[index_lgran] * constant[index_lgran + 1]
+          last_index <- index_lgran + 1
+        }
+        lgran <- granularity[last_index + 1]
+      }
     }
   }
-  }
 
-  else if (!tsibble::is_regular(.data))
-  {
-    if(is.null(lgran)){
+  else if (!tsibble::is_regular(.data)) {
+    if (is.null(lgran)) {
       stop("lgran must be provided when the tsibble is irregularly spaced")
     }
   }
@@ -108,36 +100,31 @@ harmony <- function(.data, ugran = NULL, lgran = NULL, ...)
 
   united_merge$output <- array(NA, nrow(united_merge))
 
-   #just manipulation to put it in a matrix format
+  # just manipulation to put it in a matrix format
 
   for (i in 1:length(united_merge$x))
-   {
-     for (j in 1:length(united_merge$y))
-     {
-       if (united_merge$x[i] == united_merge$y[i]) {
-         united_merge$output[i] <- FALSE
-       }
-       else if (united_merge$x[i] == united_merge$y[j] & united_merge$y[i] == united_merge$x[j]) {
-         united_merge$output[i] <- max(united_merge$harmony[i], united_merge$harmony[j], na.rm = TRUE)
-         united_merge$output[j] <- max(united_merge$harmony[i], united_merge$harmony[j], na.rm = TRUE)
-       }
-     }
-   }
+  {
+    for (j in 1:length(united_merge$y))
+    {
+      if (united_merge$x[i] == united_merge$y[i]) {
+        united_merge$output[i] <- FALSE
+      }
+      else if (united_merge$x[i] == united_merge$y[j] & united_merge$y[i] == united_merge$x[j]) {
+        united_merge$output[i] <- max(united_merge$harmony[i], united_merge$harmony[j], na.rm = TRUE)
+        united_merge$output[j] <- max(united_merge$harmony[i], united_merge$harmony[j], na.rm = TRUE)
+      }
+    }
+  }
 
- united_merge = united_merge %>% dplyr::mutate(check_harmony = dplyr::if_else(output==FALSE, 0, 1))
+  united_merge <- united_merge %>% dplyr::mutate(check_harmony = dplyr::if_else(output == FALSE, 0, 1))
 
-   united_merge$x <- factor(united_merge$x, levels = set1)
-   united_merge$y <- factor(united_merge$y, levels = set1)
+  united_merge$x <- factor(united_merge$x, levels = set1)
+  united_merge$y <- factor(united_merge$y, levels = set1)
 
-   united_merge %>% dplyr::arrange(x, y) %>% dplyr::select(-c(harmony, output)) %>% dplyr::filter(check_harmony == 1)
-
+  united_merge %>% dplyr::arrange(x, y) %>% dplyr::select(-c(harmony, output)) %>% dplyr::filter(check_harmony == 1)
 }
 
 
 comp_tbl <- function(.data, ugran = NULL, lgran = NULL, ...) {
-
-harmony(.data, ugran, lgran, ...) %>% tidyr::spread(y, check_harmony) %>% dplyr::rename(granularities = "x") %>% replace(., is.na(.), 0)
-
+  harmony(.data, ugran, lgran, ...) %>% tidyr::spread(y, check_harmony) %>% dplyr::rename(granularities = "x") %>% replace(., is.na(.), 0)
 }
-
-
