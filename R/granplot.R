@@ -109,11 +109,6 @@ data_count <- harmony_obj(.data, gran1, gran2, response, ...)
   gran1_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran1)) %>% dplyr::distinct() %>%  nrow()
   gran2_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran2)) %>%  dplyr::distinct() %>%  nrow()
 
-  medium_facet = 12
-  min_x = 15
-  max_facet = 31
-  max_x =  1000
-
   facet_h <- 31
   facet_m <- 15
   facet_l <- 9
