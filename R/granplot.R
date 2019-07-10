@@ -57,43 +57,99 @@ gran_advice <- function(.data, gran1, gran2, response = NULL, ...)
   proxy <- is.harmony(.data, gran1, gran2, response = NULL, ...)
 
   if(proxy == "FALSE"){
-    stop("granularities must be harmonies")
+    warning("granularities chosen are clashes")
   }
 
-  ind <- .data[[rlang::as_string(tsibble::index(.data))]]
+  #inter facet homogeneity
 
-  gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
-  gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
-  var1 <- gran1_split[1]
-  var2 <- gran1_split[2]
-  var3 <- gran2_split[1]
-  var4 <- gran2_split[2]
+data_count <- harmony_obj(.data, gran1, gran2, response, ...)
 
-  data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(ind, var1, var2), L2 = build_gran(ind, var3, var4))
+inter_facet_homogeneity <- data_count %>% dplyr::group_by(!!rlang::quo_name(gran1)) %>% dplyr::summarise(min_c = min(nobs), max_c = max(nobs)) %>% dplyr::summarise(sum = sum(dplyr::if_else(min_c==max_c, 0, 1))) %>% dplyr::mutate(inter_facet_homogeneity = dplyr::if_else(sum==0, "Yes", "No"))
 
-  L1_level <- data_mutate %>% dplyr::distinct(L1) %>% nrow()
-  L2_level <- data_mutate %>% dplyr::distinct(L2) %>% nrow()
-  min_facet = 12
+  # intra facet homogeneity
+intra_facet_homogeneity <- data_count %>% dplyr::group_by(!!rlang::quo_name(gran2)) %>% dplyr::summarise(min_c = min(nobs), max_c = max(nobs)) %>% dplyr::summarise(sum = sum(dplyr::if_else(min_c==max_c, 0, 1))) %>% dplyr::mutate(intra_facet_homogeneity = dplyr::if_else(sum==0, "TRUE", "FALSE"))
+
+
+
+
+  gran1_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran1)) %>% dplyr::distinct() %>%  nrow()
+  gran2_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran2)) %>%  dplyr::distinct() %>%  nrow()
+
+  medium_facet = 12
   min_x = 15
   max_facet = 31
   max_x =  1000
 
-  if(L1_level > min_facet & L2_level > min_x )
-    {
-  plots_list = c("percentile", "decile")
-    }
-else if(L1_level > min_facet & L2_level <= min_x)
-    {
-    plots_list = c("ridge", "letter-value", "box", "violin", "box-family")
-    }
-  else if (L1_level < min_facet & L2_level > min_x)
-    {
-    plots_list = c("ridge", "letter-value", "box", "violin", "box-family")
-    }
-  else
-    {
-    plots_list = c("any")
-    }
+  facet_h <- 31
+  facet_m <- 15
+  facet_l <- 9
+
+  x_h <- 31
+  x_m <- 15
+  x_l <- 9
+
+  # very high facet levels
+  if(gran1_level > facet_h)
+  {
+    plots_list =  "null"
+  } # high facet levels
+  else if(dplyr::between(gran1_level, facet_m, facet_h) &  gran2_level> x_h ) # (high, very high)
+  {
+    plots_list = c("percentile", "decile")
+  }
+
+  else if(dplyr::between(gran1_level, facet_m, facet_h) & dplyr::between(gran2_level, x_m, x_h ))#(high, high)
+  {
+    plots_list = c("percentile", "decile")
+  }
+
+  else if(dplyr::between(gran1_level, facet_m, facet_h) &  dplyr::between(gran2_level, x_l, x_m ))#(high, medium)
+  {
+    plots_list = c("percentile", "decile")
+  }
+  else if(dplyr::between(gran1_level, facet_m, facet_h) &  gran2_level< x_l )#(high, low)
+  {
+    plots_list = c("ridge", "violin", "lv", "density")
+  }
+  # medium facet levels
+  else if(dplyr::between(gran1_level, facet_l, facet_m) &  gran2_level> x_h )# (medium, very high)
+  {
+    plots_list = c("percentile", "decile")
+  }
+  else if(dplyr::between(gran1_level, facet_l, facet_m) & dplyr::between(gran2_level, x_m, x_h)) # (medium, high)
+  {
+    plots_list = c("percentile", "decile")
+  }
+
+  else if(dplyr::between(gran1_level, facet_l, facet_m) &  dplyr::between(gran2_level, x_l, x_m)) # (medium, medium)
+  {
+    plots_list = c("percentile", "decile")
+  }
+  else if(dplyr::between(gran1_level, facet_l, facet_m)  &  gran2_level< x_l ) # (medium, low)
+  {
+    plots_list = c("ridge", "violin", "lv", "density")
+  }
+  # low facet levels
+  else if(gran1_level < facet_l &  gran2_level> x_h ) #(low, very high)
+  {
+    plots_list = c("percentile", "decile")
+  }
+  else if(gran1_level < facet_l & dplyr::between(gran2_level, x_m, x_h)) #(low, high)
+  {
+    plots_list = c("percentile", "decile", "boxplot", "lv")
+  }
+
+  else if(gran1_level < facet_l &  dplyr::between(gran2_level, x_l, x_m)) #(low, medium)
+  {
+    plots_list = c("ridge", "violin", "lv", "density", "percentile", "decile")
+  }
+  else if(gran1_level < facet_l  &  gran2_level< x_l ) #(low, low)
+  {
+    plots_list = c("ridge", "violin", "lv", "density", "percentile", "decile")
+  }
+
   return(plots_list)
 
 }
+
+
