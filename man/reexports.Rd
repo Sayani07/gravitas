@@ -11,6 +11,11 @@
 \alias{!!!}
 \alias{quo_name}
 \alias{:=}
+\alias{xlab}
+\alias{ylab}
+\alias{scale_fill_brewer}
+\alias{aes}
+\alias{geom_lv}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -19,6 +24,10 @@ below to see their documentation.
 
 \describe{
   \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{groups}}}
+
+  \item{ggplot2}{\code{\link[ggplot2]{xlab}}, \code{\link[ggplot2]{ylab}}, \code{\link[ggplot2]{scale_fill_brewer}}, \code{\link[ggplot2]{aes}}}
+
+  \item{lvplot}{\code{\link[lvplot]{geom_lv}}}
 
   \item{rlang}{\code{\link[rlang]{!!}}, \code{\link[rlang]{!!!}}, \code{\link[rlang]{quo_name}}, \code{\link[rlang]{:=}}}
 

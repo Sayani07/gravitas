@@ -6,8 +6,8 @@
 Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.}
 \usage{
-granplot(.data, ugran = NULL, lgran = NULL, pair = 1,
-  response = NULL, ...)
+granplot(.data, ugran = NULL, lgran = NULL, response = NULL,
+  plot_type = NULL, ...)
 }
 \arguments{
 \item{.data}{a tsibble}
@@ -16,9 +16,9 @@ granplot(.data, ugran = NULL, lgran = NULL, pair = 1,
 
 \item{lgran}{the lower level granularity to be paired}
 
-\item{pair}{the harmony pair that is required to be plotted}
-
 \item{response}{response variable to be plotted}
+
+\item{plot_type}{type of distribution plot.}
 
 \item{...}{other arguments to be passed for appropriate labels}
 }

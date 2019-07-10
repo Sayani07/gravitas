@@ -6,7 +6,7 @@
 #' @param .data a tsibble
 #' @param lgran the lower level granularity to be paired
 #' @param ugran the upper level granularity to be paired
-#' @param pair the harmony pair that is required to be plotted
+#' @param plot_type type of distribution plot.
 #' @param response response variable to be plotted
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of granularities of x as a number
@@ -18,20 +18,27 @@
 #' @export granplot
 
 
-granplot = function(.data, ugran = NULL, lgran = NULL, pair = 1, response = NULL, ...)
+granplot = function(.data, ugran = NULL, lgran = NULL, response = NULL, plot_type = NULL, ...)
 {
+
+  if(is.null(response))
+  {
+   stop("requires the following missing aesthetics: response")
+  }
+
   mat = .data %>% harmony(ugran = ugran, lgran = lgran)
   mat$x = as.character(mat$x)
   mat$y = as.character(mat$y)
 
+
   for (i in nrow(mat)) {
 
-    gran1[i] = mat$x[i]
-    gran2[i] = mat$y[i]
-    advice <- gran_advice(.data, gran1[i], gran2[i], response, ...)
-    # create plot for each county in mat
-    gran1_split <- stringr::str_split(gran1[i], "_", 2) %>% unlist()
-    gran2_split <- stringr::str_split(gran2[i], "_", 2) %>% unlist()
+    gran1 = mat$x[i]
+    gran2 = mat$y[i]
+    advice <- gran_advice(.data, gran1, gran2, response, ...)
+    # create plot for each row in mat
+    gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
+    gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
     var1 <- gran1_split[1]
     var2 <- gran1_split[2]
     var3 <- gran2_split[1]
@@ -39,13 +46,28 @@ granplot = function(.data, ugran = NULL, lgran = NULL, pair = 1, response = NULL
 
     data_mutate <- .data %>% create_gran(var1, var2) %>% create_gran(var3, var4)
 
-    plot <-
-      data_mutate  %>% as_tibble(.name_repair = "minimal") %>%
-      ggplot2::ggplot(ggplot2::aes(x = data_mutate[[gran2]], y = response))+       geom_() +
-      ggplot2::theme_bw() +
-      ggplot2::facet_wrap(~ data_mutate[[gran1]]) +
-      ggplot2::ylab("Response") +
-      ggplot2::ggtitle(paste0("Plot of ", gran1, " given ", gran2))
+    if(is.null(plot_type)){
+    plot_type <- advice[1]
+    }
+
+    p = data_mutate  %>% as_tibble(.name_repair = "minimal") %>%
+      ggplot2::ggplot(ggplot2::aes(x = data_mutate[[gran2]], y = data_mutate[[response]])) +  ggplot2::facet_wrap(~ data_mutate[[gran1]]) +
+      ggplot2::ggtitle(paste0(plot_type," plot across ", gran2, " given ", gran1)) + xlab(gran2) + ylab(response) +
+      scale_fill_brewer()
+
+    if(plot_type=="boxplot"){
+    plot <- p +  ggplot2::geom_boxplot(...)
+    }
+    else if (plot_type=="violin")
+    {
+      plot <- p + ggplot2::geom_violin(...)
+    }
+
+    else if (plot_type=="lv")
+    {
+      plot <-
+         p + geom_lv(aes(fill=..LV..),outlier.colour = "red",outlier.shape = 1, k=9)
+    }
 
     print(plot)
   }
@@ -66,10 +88,10 @@ gran_advice <- function(.data, gran1, gran2, response = NULL, ...)
     warning("granularities chosen are clashes")
   }
   if(proxy_homogenous$inter_facet_homo =="FALSE"){
-    warning("Number of observations for one or more combinations vary across facets")
+    warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary across facets"))
   }
   if(proxy_homogenous$intra_facet_homo =="FALSE"){
-    warning("Number of observations for one or more combinations vary within facets")
+    warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary within facets"))
   }
   if(proxy_homogenous$decile_nobs_proxy !=0){
     warning("Decile plot not recommended as number of observations too few for one or more combinations")

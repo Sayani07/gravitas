@@ -29,3 +29,33 @@ rlang::quo_name
 #' @importFrom rlang :=
 #' @export
 rlang::`:=`
+
+
+#' @importFrom ggplot2 xlab
+#' @export
+ggplot2::xlab
+
+#' @importFrom ggplot2 ylab
+#' @export
+ggplot2::ylab
+
+
+#' @importFrom ggplot2 scale_fill_brewer
+#' @export
+ggplot2::scale_fill_brewer
+
+#' @importFrom ggplot2 aes
+#' @export
+ggplot2::aes
+
+
+
+#' @importFrom lvplot geom_lv
+#' @export
+lvplot::geom_lv
+
+
+
+
+
+
