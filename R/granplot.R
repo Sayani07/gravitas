@@ -51,13 +51,6 @@ granplot = function(.data, ugran = NULL, lgran = NULL, pair = 1, response = NULL
   }
   }
 
-  }
-
-
-
-
-}
-
 # advise function for which plots to choose depending on levels of facets and x-axis
 #gran_advice(.data, gran1="hour_week", gran2 = "day_month")
 gran_advice <- function(.data, gran1, gran2, response = NULL, ...)
@@ -79,10 +72,11 @@ gran_advice <- function(.data, gran1, gran2, response = NULL, ...)
     warning("Number of observations for one or more combinations vary within facets")
   }
   if(proxy_homogenous$decile_nobs_proxy !=0){
-    warning("Decile plot not recommended as number of observation too few for one or more combinations")
+    warning("Decile plot not recommended as number of observations too few for one or more combinations")
   }
   if(proxy_homogenous$percentile_nobs_proxy !=0){
     warning("Percentile plot not recommended as number of observations too few for one or more combinations")
+
   }
 
   #inter facet homogeneity
@@ -110,7 +104,7 @@ data_count <- harmony_obj(.data, gran1, gran2, response, ...)
   {
     warning(paste("Facetting not recommended: too many categories in ", gran1))
   } # high facet levels
-  else if(dplyr::between(gran1_level, facet_m, facet_h) &  gran2_level> x_h ) # (high, very high)
+  if(dplyr::between(gran1_level, facet_m, facet_h) &  gran2_level> x_h ) # (high, very high)
   {
     plots_list = c("percentile", "decile")
   }
@@ -165,6 +159,17 @@ data_count <- harmony_obj(.data, gran1, gran2, response, ...)
     plots_list = c("ridge", "violin", "lv", "density", "percentile", "decile")
   }
 
+  if( c("percentile" %in% plots_list & proxy_homogenous$percentile_nobs_proxy !=0))
+  {
+    plots_list <- plots_list[-which(plots_list=="percentile")]
+  }
+
+  if( c("decile" %in% plots_list & proxy_homogenous$decile_nobs_proxy !=0))
+  {
+    plots_list <- plots_list[-which(plots_list=="decile")]
+  }
+
+
   return(plots_list)
 
 }
@@ -186,8 +191,8 @@ is.homogenous <- function(.data, gran1, gran2, response = NULL, ...)
   # intra facet homogeneity
   intra_facet_homogeneity <- data_count %>% dplyr::group_by(!!rlang::quo_name(gran2)) %>% dplyr::summarise(min_c = min(nobs), max_c = max(nobs)) %>% dplyr::summarise(sum = sum(dplyr::if_else(min_c==max_c, 0, 1))) %>% dplyr::mutate(value = dplyr::if_else(sum==0, "TRUE", "FALSE"))
 
-  decile_nobs <- sum(if_else(data_count$nobs<30, 1, 0))
-  percentile_nobs <- sum(if_else(data_count$nobs<300, 1, 0))
+  decile_nobs <- sum(dplyr::if_else(data_count$nobs<30, 1, 0))
+  percentile_nobs <- sum(dplyr::if_else(data_count$nobs<300, 1, 0))
 
 value_r <- tibble(inter_facet_homo = inter_facet_homogeneity$value, intra_facet_homo = intra_facet_homogeneity$value, decile_nobs_proxy = decile_nobs, percentile_nobs_proxy = percentile_nobs)
 
