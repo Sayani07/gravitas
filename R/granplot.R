@@ -68,7 +68,70 @@ granplot = function(.data, ugran = NULL, lgran = NULL, response = NULL, plot_typ
       plot <-
          p + geom_lv(aes(fill=..LV..),outlier.colour = "red",outlier.shape = 1, k=9)
     }
+    else if(plot_type=="ridge")
+    {
+      plot <- data_mutate %>%
+        ggplot2::ggplot(aes(x = data_mutate[[response]],y=data_mutate[[response]],group=data_mutate[[gran2]])) +
+        ggridges::geom_density_ridges2() +
+        ggplot2::facet_wrap(~ data_mutate[[gran1]]) +
+        ggplot2::xlab(response) +
+        ggplot2::ylab(data_mutate[[gran2]]) +
+        ggplot2::ggtitle(paste0(plot_type," plot across ", gran2, " given ", gran1))
+    }
+    else if(plot_type=="decile")
+    {
+      d <- seq(0.1, 0.9, by = 0.1)
+      decile_names <- purrr::map_chr(d, ~paste0(.x*100, "%"))
 
+      decile_funs <- purrr::map(d, ~purrr::partial(quantile, probs = .x, na.rm = TRUE)) %>%
+        rlang::set_names(nm = decile_names)
+
+
+  data_dec <- data_mutate %>% as_tibble() %>%
+        dplyr::group_by(data_mutate[[gran1]], data_mutate[[gran2]]) %>%
+    dplyr::summarize_at(response, decile_funs) %>%
+    tidyr::gather(quantile, value, - c(`data_mutate[[gran1]]`, `data_mutate[[gran2]]`)) %>% dplyr::select(
+      !!rlang::quo_name(gran1) := `data_mutate[[gran1]]`,
+      !!rlang::quo_name(gran2) := `data_mutate[[gran2]]`,
+      quantile := quantile,
+      value := value)
+
+
+  plot <- data_dec %>%
+        ggplot2::ggplot(aes(x = data_dec[[gran2]],y=value,group=as.factor(quantile), color = as.factor(quantile)))+
+        ggplot2::geom_line() +
+        ggplot2::facet_wrap(~ data_dec[[gran1]]) +
+        ggplot2::ylab(response) +
+        ggplot2::xlab(gran1) +
+        ggplot2::ggtitle(paste0(plot_type," plot across ", gran2, " given ", gran1))
+    }
+    else if(plot_type=="percentile")
+    {
+      p <- seq(0.01, 0.99, by = 0.01)
+      percentile_names <- purrr::map_chr(p, ~paste0(.x*100, "%"))
+
+      percentile_funs <- purrr::map(p, ~purrr::partial(quantile, probs = .x, na.rm = TRUE)) %>%
+        rlang::set_names(nm = percentile_names)
+
+
+      data_pcntl <- data_mutate %>% tibble::as_tibble() %>%
+        dplyr::group_by(data_mutate[[gran1]], data_mutate[[gran2]]) %>%
+        dplyr::summarize_at(response, percentile_funs) %>%
+        tidyr::gather(quantile, value, - c(`data_mutate[[gran1]]`, `data_mutate[[gran2]]`)) %>% dplyr::select(
+          !!rlang::quo_name(gran1) := `data_mutate[[gran1]]`,
+          !!rlang::quo_name(gran2) := `data_mutate[[gran2]]`,
+          quantile := quantile,
+          value := value)
+
+
+      plot <- data_pcntl %>%
+        ggplot2::ggplot(aes(x = data_pcntl[[gran2]],y=value,group=as.factor(quantile), color = quantile))+
+        ggplot2::geom_line() +
+        ggplot2::facet_wrap(~ data_pcntl[[gran1]]) +
+        ggplot2::ylab(response) +
+        ggplot2::xlab(gran1) +
+        ggplot2::ggtitle(paste0(plot_type," plot across ", gran2, " given ", gran1)) + scale_fill_brewer()
+    }
     print(plot)
   }
   }
@@ -187,7 +250,7 @@ data_count <- harmony_obj(.data, gran1, gran2, response, ...)
   }
 
 
-  return(plots_list)
+  print(plots_list)
 
 }
 
