@@ -17,26 +17,59 @@
 #' tsibbledata::aus_elec %>%as_tsibble() %>% tail() %>%  create_gran("hour", "week")
 #' @export granplot
 
-
-granplot = function(.data, ugran = NULL, lgran = NULL, response = NULL, plot_type = NULL, ...)
+# Recommendation plot function for two granularities
+granplot = function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_type = NULL,facet_h = 31,  ...)
 {
 
-  if(is.null(response))
+ if(is.null(response))
   {
    stop("requires the following missing aesthetics: response")
   }
 
-  mat = .data %>% harmony(ugran = ugran, lgran = lgran)
-  mat$x = as.character(mat$x)
-  mat$y = as.character(mat$y)
+  # Warn if they have chosen clashes asking to look at the table of harmonies
+  proxy_harmony <- is.harmony(.data, gran1, gran2, response = NULL, ...)
 
+  if(proxy_harmony == "FALSE"){
+    warning("granularities chosen are clashes: you might be interested to look at the set of harmonies by using harmony(.data)")
+  }
 
-  for (i in nrow(mat)) {
+  proxy_homogenous <- is.homogenous(.data, gran1, gran2, response = NULL, ...)
+  # if(proxy_homogenous$inter_facet_homo =="FALSE"){
+  #   warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary across facets"))
+  # }
+  # if(proxy_homogenous$intra_facet_homo =="FALSE"){
+  #   warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary within facets"))
+  # }
+  if(proxy_homogenous$decile_nobs_proxy !=0 & plot_type == "decile"){
+    warning("Decile plot not recommended as number of observations too few for one or more combinations")
+  }
+  if(proxy_homogenous$percentile_nobs_proxy !=0 & plot_type == "percentile"){
+    warning("Percentile plot not recommended as number of observations too few for one or more combinations")
+  }
 
-    gran1 = mat$x[i]
-    gran2 = mat$y[i]
-    advice <- gran_advice(.data, gran1, gran2, response, ...)
-    # create plot for each row in mat
+    # get recommended plots list
+   advice <- gran_advice(.data, gran1, gran2, response, ...)
+    if(is.null(plot_type)){
+    plot_type <- advice[1]
+    }
+
+  data_count <- harmony_obj(.data, gran1, gran2, response, ...)
+
+  gran1_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran1)) %>% dplyr::distinct() %>%  nrow()
+  gran2_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran2)) %>%  dplyr::distinct() %>%  nrow()
+
+# Facetting not recommended for so many levels
+
+  if(gran1_level > facet_h & gran2_level > facet_h)
+  {
+    warning(paste("Facetting not recommended: too many categories in ", gran1, "and", gran2))
+  }
+  else if(gran1_level > facet_h & gran2_level <= facet_h)
+  {
+    warning(paste("Facetting not recommended: too many categories in ", gran1, ". Try using", gran2, "as the facet variable"))
+  }
+
+ # mutate those granularities using create_gran
     gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
     gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
     var1 <- gran1_split[1]
@@ -46,9 +79,6 @@ granplot = function(.data, ugran = NULL, lgran = NULL, response = NULL, plot_typ
 
     data_mutate <- .data %>% create_gran(var1, var2) %>% create_gran(var3, var4)
 
-    if(is.null(plot_type)){
-    plot_type <- advice[1]
-    }
 
     p = data_mutate  %>% as_tibble(.name_repair = "minimal") %>%
       ggplot2::ggplot(ggplot2::aes(x = data_mutate[[gran2]], y = data_mutate[[response]])) +  ggplot2::facet_wrap(~ data_mutate[[gran1]]) +
@@ -99,7 +129,7 @@ granplot = function(.data, ugran = NULL, lgran = NULL, response = NULL, plot_typ
 
   plot <- data_dec %>%
         ggplot2::ggplot(aes(x = data_dec[[gran2]],y=value,group=as.factor(quantile), color = as.factor(quantile)))+
-        ggplot2::geom_line() +
+        ggplot2::geom_line(aes(group = 1)) +
         ggplot2::facet_wrap(~ data_dec[[gran1]]) +
         ggplot2::ylab(response) +
         ggplot2::xlab(gran1) +
@@ -126,15 +156,15 @@ granplot = function(.data, ugran = NULL, lgran = NULL, response = NULL, plot_typ
 
       plot <- data_pcntl %>%
         ggplot2::ggplot(aes(x = data_pcntl[[gran2]],y=value,group=as.factor(quantile), color = quantile))+
-        ggplot2::geom_line() +
+        ggplot2::geom_line(aes(group = 1)) +
         ggplot2::facet_wrap(~ data_pcntl[[gran1]]) +
         ggplot2::ylab(response) +
         ggplot2::xlab(gran1) +
         ggplot2::ggtitle(paste0(plot_type," plot across ", gran2, " given ", gran1)) + scale_fill_brewer()
     }
     print(plot)
-  }
-  }
+
+}
 
 # advise function for which plots to choose depending on levels of facets and x-axis
 #gran_advice(.data, gran1="hour_week", gran2 = "day_month")
@@ -150,19 +180,19 @@ gran_advice <- function(.data, gran1, gran2, response = NULL, ...)
   if(proxy_harmony == "FALSE"){
     warning("granularities chosen are clashes")
   }
-  if(proxy_homogenous$inter_facet_homo =="FALSE"){
-    warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary across facets"))
-  }
-  if(proxy_homogenous$intra_facet_homo =="FALSE"){
-    warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary within facets"))
-  }
-  if(proxy_homogenous$decile_nobs_proxy !=0){
-    warning("Decile plot not recommended as number of observations too few for one or more combinations")
-  }
-  if(proxy_homogenous$percentile_nobs_proxy !=0){
-    warning("Percentile plot not recommended as number of observations too few for one or more combinations")
-
-  }
+  # if(proxy_homogenous$inter_facet_homo =="FALSE"){
+  #   warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary across facets"))
+  # }
+  # if(proxy_homogenous$intra_facet_homo =="FALSE"){
+  #   warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary within facets"))
+  # }
+  # if(proxy_homogenous$decile_nobs_proxy !=0){
+  #   warning("Decile plot not recommended as number of observations too few for one or more combinations")
+  # }
+  # if(proxy_homogenous$percentile_nobs_proxy !=0){
+  #   warning("Percentile plot not recommended as number of observations too few for one or more combinations")
+  #
+  # }
 
   #inter facet homogeneity
 
@@ -173,30 +203,32 @@ data_count <- harmony_obj(.data, gran1, gran2, response, ...)
   gran2_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran2)) %>%  dplyr::distinct() %>%  nrow()
 
   facet_h <- 31
-  facet_m <- 15
-  facet_l <- 9
+  facet_m <- 14
+  facet_l <- 7
 
   x_h <- 31
-  x_m <- 15
-  x_l <- 9
+  x_m <- 14
+  x_l <- 7
   # very high facet levels
   if(gran1_level > facet_h)
   {
+    plots_list = c("decile", "percentile")
     warning(paste("Facetting not recommended: too many categories in ", gran1))
+
   } # high facet levels
   if(dplyr::between(gran1_level, facet_m, facet_h) &  gran2_level> x_h ) # (high, very high)
   {
-    plots_list = c("percentile", "decile")
+    plots_list = c("decile", "percentile")
   }
 
   else if(dplyr::between(gran1_level, facet_m, facet_h) & dplyr::between(gran2_level, x_m, x_h ))#(high, high)
   {
-    plots_list = c("percentile", "decile")
+    plots_list = c("decile", "percentile")
   }
 
   else if(dplyr::between(gran1_level, facet_m, facet_h) &  dplyr::between(gran2_level, x_l, x_m ))#(high, medium)
   {
-    plots_list = c("percentile", "decile")
+    plots_list = c("decile", "percentile")
   }
   else if(dplyr::between(gran1_level, facet_m, facet_h) &  gran2_level< x_l )#(high, low)
   {
@@ -205,16 +237,16 @@ data_count <- harmony_obj(.data, gran1, gran2, response, ...)
   # medium facet levels
   else if(dplyr::between(gran1_level, facet_l, facet_m) &  gran2_level> x_h )# (medium, very high)
   {
-    plots_list = c("percentile", "decile")
+    plots_list = c("decile", "percentile")
   }
   else if(dplyr::between(gran1_level, facet_l, facet_m) & dplyr::between(gran2_level, x_m, x_h)) # (medium, high)
   {
-    plots_list = c("percentile", "decile")
+    plots_list = c("decile", "percentile")
   }
 
   else if(dplyr::between(gran1_level, facet_l, facet_m) &  dplyr::between(gran2_level, x_l, x_m)) # (medium, medium)
   {
-    plots_list = c("percentile", "decile")
+    plots_list = c("decile", "percentile")
   }
   else if(dplyr::between(gran1_level, facet_l, facet_m)  &  gran2_level< x_l ) # (medium, low)
   {
@@ -223,11 +255,11 @@ data_count <- harmony_obj(.data, gran1, gran2, response, ...)
   # low facet levels
   else if(gran1_level < facet_l &  gran2_level> x_h ) #(low, very high)
   {
-    plots_list = c("percentile", "decile")
+    plots_list = c("decile", "percentile")
   }
   else if(gran1_level < facet_l & dplyr::between(gran2_level, x_m, x_h)) #(low, high)
   {
-    plots_list = c("percentile", "decile", "boxplot", "lv")
+    plots_list = c( "boxplot", "lv", "percentile", "decile")
   }
 
   else if(gran1_level < facet_l &  dplyr::between(gran2_level, x_l, x_m)) #(low, medium)
@@ -239,16 +271,15 @@ data_count <- harmony_obj(.data, gran1, gran2, response, ...)
     plots_list = c("ridge", "violin", "lv", "density", "percentile", "decile")
   }
 
-  if( c("percentile" %in% plots_list & proxy_homogenous$percentile_nobs_proxy !=0))
-  {
-    plots_list <- plots_list[-which(plots_list=="percentile")]
-  }
-
-  if( c("decile" %in% plots_list & proxy_homogenous$decile_nobs_proxy !=0))
-  {
-    plots_list <- plots_list[-which(plots_list=="decile")]
-  }
-
+  # if( c("percentile" %in% plots_list & proxy_homogenous$percentile_nobs_proxy !=0))
+  # {
+  #   plots_list <- plots_list[-which(plots_list=="percentile")]
+  # }
+  #
+  # if( c("decile" %in% plots_list & proxy_homogenous$decile_nobs_proxy !=0))
+  # {
+  #   plots_list <- plots_list[-which(plots_list=="decile")]
+  # }
 
   print(plots_list)
 
