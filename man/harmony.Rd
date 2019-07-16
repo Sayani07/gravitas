@@ -4,14 +4,19 @@
 \alias{harmony}
 \title{Get possible set of harmonies for a given tsibble}
 \usage{
-harmony(.data, ugran = NULL, lgran = NULL, ...)
+harmony(.data, ugran = "year", lgran = NULL, filter_in = NULL,
+  filter_out = NULL, ...)
 }
 \arguments{
-\item{.data}{a tsibble object}
+\item{.data}{A tsibble object.}
 
-\item{ugran}{upper granularity}
+\item{ugran}{Upper temporal unit. Typically, it is set as the most coarse temporal unit required in the analysis. Default is "year".}
 
-\item{lgran}{lower granularity}
+\item{lgran}{Lowest temporal unit. For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals.}
+
+\item{filter_in}{Choices of temporal units to be kept.}
+
+\item{filter_out}{Choices of temporal units to be discarded.}
 
 \item{...}{added arguments to be passed}
 }

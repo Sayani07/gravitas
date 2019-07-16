@@ -19,7 +19,10 @@ knitr::opts_chunk$set(
 [![Travis build status](https://travis-ci.org/Sayani07/gravitas.svg?branch=master)](https://travis-ci.org/Sayani07/gravitas)
 <!-- badges: end -->
 
-The goal of gravitas is to ...
+The package **gravitas** provides a tool to examine the probability distribution of univariate time series across bivariate temporal granularities using range of graphics in `ggplot2` through the following:  
+ - create multiple-order-up circular or aperiodic temporal granularities.  
+ - Categorize pairs of granularities as either a *harmony* or *clash*, where harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis.
+ - recommending appropriate probability distribution plots of the time series variable across the bivariate granularities based on the levels of the bivariate granularties and their relationship.  
 
 ## Installation
   
@@ -35,17 +38,52 @@ And the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("Sayani07/gravitas")
 ```
-## Example
+## Get started
 
-This is an example which shows how to create any temporal granularity.
+The `vic_elec` data from tsibbledata package is employed to have a run through of this package. It is a half-hourly tsibble consisting of half hour demand for the state of Victoria. Suppose it is of interest to to examine how the univariate series `Demand` varies with different deconstructions of time.
 
-```{r example}
+
+```{r example1}
 library(gravitas)
 library(dplyr)
-tsibbledata::nyc_bikes %>% 
-  tail() %>%
-  mutate(hhour_week = build_gran("hhour", "week", start_time), 
-         hour_day = build_gran("hour", "day", start_time)) %>%
-  select(bike_id, start_time, start_station, end_station, hhour_week, hour_day)
+tsibbledata::vic_elec %>% search_gran()
 ```
+
+The default for search gran in this case,  provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarce temporal unit can be set to be "month".
+
+```{r example2}
+library(gravitas)
+library(dplyr)
+tsibbledata::vic_elec %>% search_gran(ugran = "month")
+```
+
+This looks better. However, some intermediate temporal units might not be pertinent to the analysis and we might want to  remove them from the list of granularities that we want to examine.
+
+```{r example3}
+library(gravitas)
+library(dplyr)
+tsibbledata::vic_elec %>% search_gran(ugran = "month", filter_out = c("fortnight"))
+```
+
+Now that we have the list of granularities that we want to look at, let us see which pairs form harmony/clash.
+
+```{r example4}
+library(gravitas)
+library(dplyr)
+tsibbledata::vic_elec %>% is.harmony(gran1 = "hhour_week", gran2 ="day_week")
+
+tsibbledata::vic_elec %>% is.harmony(gran1 = "hour_day", gran2 ="day_week")
+
+tsibbledata::vic_elec %>% is.harmony(gran1 = "day_month", gran2 ="hhour_week")
+
+```
+
+Or, we can find the set of harmonies all at once with the help of function `harmony`.
+
+```{r example5}
+tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "hhour")) 
+```
+
+
+
 

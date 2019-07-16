@@ -13,14 +13,14 @@ test_that("comptbl_set error for no input data", {
   expect_error(comp_tbl(ugran = "week"), "argument \".data\" is missing, with no default")
 })
 
-test_that("comptbl_set error for no ugran data", {
-  expect_error(comp_tbl(.data1), "Argument ugran is missing, with no default")
-})
+# test_that("comptbl_set error for no ugran data", {
+#   expect_error(comp_tbl(.data1), "Argument ugran is missing, with no default")
+# })
 
 
-test_that("comptbl_set error for no lgran in irregular spaced data", {
-  expect_error(comp_tbl(.data1, ugran = "week"), "lgran must be provided when the tsibble is irregularly spaced")
-})
+# test_that("comptbl_set error for no lgran in irregular spaced data", {
+#   expect_error(comp_tbl(.data1, ugran = "week"), "lgran must be provided when the tsibble is irregularly spaced")
+# })
 
 
 test_that("expected class for comptbl_set", {
