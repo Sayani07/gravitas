@@ -3,7 +3,7 @@ context("comptbl_set")
 x <- lubridate::ymd_hms("2018-11-04 18:37:04 EST")
 
 .data1 <- tsibbledata::nyc_bikes %>% tsibble::as_tsibble()
-.data2 <- tsibbledata::aus_elec %>% tsibble::as_tsibble()
+.data2 <- tsibbledata::vic_elec %>% tsibble::as_tsibble()
 
 expected <- tibble(granularities = c("hhour_hour", "hour_day", "hhour_day"), hhour_hour = c(0, 1, 1), hhour_day = c(0, 0, 0), hour_day = c(1, 0, 0))
 

@@ -1,4 +1,4 @@
-#' Get compatibility tables for two granularities
+#' check if two granularities are harmonies
 #'
 
 #' Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
@@ -15,7 +15,7 @@
 #' library(dplyr)
 #' library(tsibbledata)
 #' library(ggplot2)
-#' aus_elec %>% is.harmony("hour_day", "day_week")
+#' vic_elec %>% is.harmony("hour_day", "day_week")
 #' @export is.harmony
 is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
 

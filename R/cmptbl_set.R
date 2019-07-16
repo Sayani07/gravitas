@@ -1,4 +1,4 @@
-#' Get harmonies for data sets
+#' Get set of harmonies for a given tsibble
 #'
 
 #' Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
@@ -14,7 +14,7 @@
 #' library(dplyr)
 #' library(tsibbledata)
 #' tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
-#' tsibbledata::aus_elec %>% harmony(ugran = "day")
+#' tsibbledata::vic_elec %>% harmony(ugran = "day")
 #' @export harmony
 
 

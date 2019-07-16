@@ -6,19 +6,21 @@
 Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
 zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.}
 \usage{
-granplot(.data, ugran = NULL, lgran = NULL, response = NULL,
-  plot_type = NULL, ...)
+granplot(.data, gran1 = NULL, gran2 = NULL, response = NULL,
+  plot_type = NULL, facet_h = 31, ...)
 }
 \arguments{
 \item{.data}{a tsibble}
 
-\item{ugran}{the upper level granularity to be paired}
+\item{gran1}{the lower level granularity to be paired}
 
-\item{lgran}{the lower level granularity to be paired}
+\item{gran2}{the upper level granularity to be paired}
 
 \item{response}{response variable to be plotted}
 
 \item{plot_type}{type of distribution plot.}
+
+\item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities}
 
 \item{...}{other arguments to be passed for appropriate labels}
 }
@@ -32,6 +34,6 @@ zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 }
 \examples{
 library(dplyr)
-library(tsibble)
-tsibbledata::aus_elec \%>\%as_tsibble() \%>\% tail() \%>\%  create_gran("hour", "week")
+library(tsibbledata)
+vic_elec \%>\% granplot("hour_day", "day_week", "Demand", plot_type = "boxplot")
 }

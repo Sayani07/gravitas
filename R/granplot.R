@@ -4,17 +4,18 @@
 #'
 
 #' @param .data a tsibble
-#' @param lgran the lower level granularity to be paired
-#' @param ugran the upper level granularity to be paired
+#' @param gran1 the lower level granularity to be paired
+#' @param gran2 the upper level granularity to be paired
 #' @param plot_type type of distribution plot.
 #' @param response response variable to be plotted
+#' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities
 #' @param ... other arguments to be passed for appropriate labels
 #' @return combination of granularities of x as a number
 #
 #' @examples
 #' library(dplyr)
-#' library(tsibble)
-#' tsibbledata::aus_elec %>%as_tsibble() %>% tail() %>%  create_gran("hour", "week")
+#' library(tsibbledata)
+#' vic_elec %>% granplot("hour_day", "day_week", "Demand", plot_type = "boxplot")
 #' @export granplot
 
 # Recommendation plot function for two granularities
@@ -40,12 +41,12 @@ granplot = function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_typ
   # if(proxy_homogenous$intra_facet_homo =="FALSE"){
   #   warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary within facets"))
   # }
-  if(proxy_homogenous$decile_nobs_proxy !=0 & plot_type == "decile"){
-    warning("Decile plot not recommended as number of observations too few for one or more combinations")
-  }
-  if(proxy_homogenous$percentile_nobs_proxy !=0 & plot_type == "percentile"){
-    warning("Percentile plot not recommended as number of observations too few for one or more combinations")
-  }
+  # if(proxy_homogenous$decile_nobs_proxy !=0 & plot_type == "decile"){
+  #   warning("Decile plot not recommended as number of observations too few for one or more combinations")
+  # }
+  # if(proxy_homogenous$percentile_nobs_proxy !=0 & plot_type == "percentile"){
+  #   warning("Percentile plot not recommended as number of observations too few for one or more combinations")
+  # }
 
     # get recommended plots list
    advice <- gran_advice(.data, gran1, gran2, response, ...)
@@ -134,6 +135,10 @@ granplot = function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_typ
         ggplot2::ylab(response) +
         ggplot2::xlab(gran1) +
         ggplot2::ggtitle(paste0(plot_type," plot across ", gran2, " given ", gran1))
+
+   if(proxy_homogenous$decile_nobs_proxy !=0){
+    warning("Decile plot not recommended as number of observations too few for one or more combinations")
+  }
     }
     else if(plot_type=="percentile")
     {
@@ -161,6 +166,10 @@ granplot = function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_typ
         ggplot2::ylab(response) +
         ggplot2::xlab(gran1) +
         ggplot2::ggtitle(paste0(plot_type," plot across ", gran2, " given ", gran1)) + scale_fill_brewer()
+
+      if(proxy_homogenous$percentile_nobs_proxy !=0){
+        warning("Percentile plot not recommended as number of observations too few for one or more combinations")
+      }
     }
     print(plot)
 
@@ -176,10 +185,10 @@ gran_advice <- function(.data, gran1, gran2, response = NULL, ...)
 
   proxy_harmony <- is.harmony(.data, gran1, gran2, response = NULL, ...)
   proxy_homogenous <- is.homogenous(.data, gran1, gran2, response = NULL, ...)
-
-  if(proxy_harmony == "FALSE"){
-    warning("granularities chosen are clashes")
-  }
+#
+#   if(proxy_harmony == "FALSE"){
+#     warning("granularities chosen are clashes")
+#   }
   # if(proxy_homogenous$inter_facet_homo =="FALSE"){
   #   warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary across facets"))
   # }
@@ -213,7 +222,7 @@ data_count <- harmony_obj(.data, gran1, gran2, response, ...)
   if(gran1_level > facet_h)
   {
     plots_list = c("decile", "percentile")
-    warning(paste("Facetting not recommended: too many categories in ", gran1))
+    # warning(paste("Facetting not recommended: too many categories in ", gran1))
 
   } # high facet levels
   if(dplyr::between(gran1_level, facet_m, facet_h) &  gran2_level> x_h ) # (high, very high)

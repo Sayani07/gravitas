@@ -14,7 +14,7 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibble)
-#' tsibbledata::aus_elec %>% as_tsibble() %>% create_gran("hour", "week") %>% tail()
+#' tsibbledata::vic_elec %>% as_tsibble() %>% create_gran("hour", "week") %>% tail()
 #' @export create_gran
 
 

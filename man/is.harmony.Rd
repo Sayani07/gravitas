@@ -2,7 +2,7 @@
 % Please edit documentation in R/compatible.R
 \name{is.harmony}
 \alias{is.harmony}
-\title{Get compatibility tables for two granularities}
+\title{check if two granularities are harmonies}
 \usage{
 is.harmony(.data, gran1, gran2, response = NULL, ...)
 }
@@ -28,5 +28,5 @@ zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 library(dplyr)
 library(tsibbledata)
 library(ggplot2)
-aus_elec \%>\% is.harmony("hour_day", "day_week")
+vic_elec \%>\% is.harmony("hour_day", "day_week")
 }

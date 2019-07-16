@@ -2,7 +2,7 @@
 % Please edit documentation in R/cmptbl_set.R
 \name{harmony}
 \alias{harmony}
-\title{Get harmonies for data sets}
+\title{Get set of harmonies for a given tsibble}
 \usage{
 harmony(.data, ugran = NULL, lgran = NULL, ...)
 }
@@ -26,5 +26,5 @@ zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
 library(dplyr)
 library(tsibbledata)
 tsibbledata::gafa_stock \%>\% harmony(lgran = "hour", ugran = "week")
-tsibbledata::aus_elec \%>\% harmony(ugran = "day")
+tsibbledata::vic_elec \%>\% harmony(ugran = "day")
 }

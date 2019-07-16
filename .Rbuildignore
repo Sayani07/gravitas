@@ -4,3 +4,5 @@
 ^README\.Rmd$
 ^appveyor\.yml$
 ^codecov\.yml$
+^harmony_tbl.Rda
+
