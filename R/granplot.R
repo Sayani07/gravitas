@@ -290,7 +290,7 @@ data_count <- harmony_obj(.data, gran1, gran2, response, ...)
   #   plots_list <- plots_list[-which(plots_list=="decile")]
   # }
 
-  print(plots_list)
+  plots_list
 
 }
 
