@@ -1,16 +1,11 @@
-#' check if two granularities are harmonies
+#' Check if two temporal granularities are harmonies
 #'
-
-#' Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
-#' zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
-#'
-
-#' @param .data a tsibble object
-#' @param gran1 the first granularity function to use
-#' @param gran2 the first granularity function to use
-#' @param ... added arguments to be passed
-#' @param response variable for which summary is desired per combination
-#' @return compatibility table providing if the two granularities are harmonies or clashes. FALSE indicates a clash. If harmony, then a tibble with desired granularities returned.
+#' @param .data A tsibble object.
+#' @param gran1 One of the temporal granularities to check for harmonies.
+#' @param gran2 The second temporal granularity in the pair.
+#' @param ... Added arguments to be passed
+#' @param response Variable for which summary is desired per combination
+#' @return TRUE if two granularties are harmonies.
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
@@ -18,17 +13,18 @@
 #' vic_elec %>% is.harmony("hour_day", "day_week")
 #' @export is.harmony
 is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
-
   harmony_object <- harmony_obj(.data, gran1, gran2, response)
   names <- names(harmony_object)
   # All possible combination that are missing
-  #cmbmiss <-  harmony_object %>% filter(nobs==0)
-  cmbmiss <- any(harmony_object$nobs==0)
-  facet_nlevel <-  harmony_object[,1] %>% dplyr::distinct()
+  # cmbmiss <-  harmony_object %>% filter(nobs==0)
+  cmbmiss <- any(harmony_object$nobs == 0)
+  facet_nlevel <- harmony_object[, 1] %>% dplyr::distinct()
 
-   if(cmbmiss =="TRUE" | nrow(facet_nlevel) > 31)
-     return_output <- "FALSE"
-  else return_output <- "TRUE"
+  if (cmbmiss == "TRUE" | nrow(facet_nlevel) > 31) {
+    return_output <- "FALSE"
+  } else {
+    return_output <- "TRUE"
+  }
 
   return(return_output)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/cmptbl_set.R
 \name{harmony}
 \alias{harmony}
-\title{Get set of harmonies for a given tsibble}
+\title{Get possible set of harmonies for a given tsibble}
 \usage{
 harmony(.data, ugran = NULL, lgran = NULL, ...)
 }
@@ -19,8 +19,7 @@ harmony(.data, ugran = NULL, lgran = NULL, ...)
 compatibility table providing if the two granularities are harmonies or clashes. FALSE indicates a clash. If harmony, then a tibble with desired granularities returned.
 }
 \description{
-Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
-zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
+Get possible set of harmonies for a given tsibble
 }
 \examples{
 library(dplyr)

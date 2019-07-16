@@ -1,52 +1,52 @@
-#' Get combination of granularities of a date time
-#' Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
-#' zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
-#'
+#' Build temporal granularities
 
-#' @param .data a tsibble
-#' @param gran1 the lower level granularity to be paired
-#' @param gran2 the upper level granularity to be paired
-#' @param label logical. TRUE will display the month as an ordered factor of character string such as "January", "February". FALSE will display the month as an ordered factor such as 1 to 12, where 1 stands for January and 12 for December.
+#' @param .data A tsibble object.
+#' @param gran1 Temporal granularity required.
+#' @param label Logical. TRUE will display the month as an ordered factor of character string such as "January", "February". FALSE will display the month as an ordered factor such as 1 to 12, where 1 stands for January and 12 for December.
 #' @param abbr logical. FALSE will display abbreviated labels
-#' @param ... other arguments to be passed for appropriate labels
-#' @return combination of granularities of x as a number
+#' @param ... Other arguments passed on to individual methods.
+#' @return A tsibble with an additional column of granularity
 #
 #' @examples
 #' library(dplyr)
 #' library(tsibble)
-#' tsibbledata::vic_elec %>% as_tsibble() %>% create_gran("hour", "week") %>% tail()
+#' tsibbledata::vic_elec %>% as_tsibble() %>% create_gran("hour_week") %>% tail()
 #' @export create_gran
 
 
-create_gran <- function(.data, gran1 = NULL, gran2 = NULL, label = TRUE, abbr = TRUE, ...) {
+create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
-  if (is.null(gran2)) {
-    gran2 <- g_order(gran1, order = 1)
-    col_name <- paste(rlang::quo_name(gran1), gran2, sep = "_")
-  }
+  # if (is.null(gran2)) {
+  #   gran2 <- g_order(gran1, order = 1)
+  #   col_name <- paste(rlang::quo_name(gran1), gran2, sep = "_")
+  # }
 
-  if (!is.null(gran2)) {
-    col_name <- paste(rlang::quo_name(gran1), rlang::quo_name(gran2), sep = "_")
-  }
+  # if (!is.null(gran2)) {
+  #   col_name <- paste(rlang::quo_name(gran1), rlang::quo_name(gran2), sep = "_")
+  # }
 
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
+  gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
+  lgran <- gran1_split[1]
+  ugran <- gran1_split[2]
 
-  data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, gran1, gran2, ...))
+
+  data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, ...))
 
 
   lev <- unique(data_mutate$L1)
 
   if (label) {
-    if (gran1 == "day" & gran2 == "week") {
+    if (lgran == "day" & ugran == "week") {
       names <- c(
         "Sunday", "Monday", "Tuesday", "Wednesday",
         "Thursday", "Friday", "Saturday"
       )
     }
-    else if (gran1 == "month" & gran2 == "year") {
+    else if (lgran == "month" & ugran == "year") {
       names <- c(
         "January", "February", "March", "April",
         "May", "June", "July", "August", "September", "October", " November", "December"
@@ -67,63 +67,63 @@ create_gran <- function(.data, gran1 = NULL, gran2 = NULL, label = TRUE, abbr = 
 
   data_mutate %>%
     dplyr::mutate(
-      !!col_name := L1
+      !!gran1 := L1
     ) %>%
     dplyr::select(-L1)
 }
 
 
-build_gran <- function(x, gran1 = NULL, gran2 = NULL, ...) {
-  # for aperiodic granularities - gran1 less than month and gran2 more than or equal to month
+build_gran <- function(x, lgran = NULL, ugran = NULL, ...) {
+  # for aperiodic granularities - lgran less than month and ugran more than or equal to month
 
   #
-  #   if (is.null(gran1) | is.null(gran2)) {
-  #     stop("function requires both gran1 and gran2 to be specified")
+  #   if (is.null(lgran) | is.null(ugran)) {
+  #     stop("function requires both lgran and ugran to be specified")
   #   }
 
 
-  if (is.null(gran1)) {
-    stop("function requires gran1 to be specified")
+  if (is.null(lgran)) {
+    stop("function requires lgran to be specified")
   }
 
 
-  if (g_order(gran1, gran2) < 0) {
-    stop("gran1 should have lower temporal order than gran2. Try swapping gran1 and gran2")
+  if (g_order(lgran, ugran) < 0) {
+    stop("lgran should have lower temporal order than ugran. Try swapping lgran and ugran")
   }
 
 
 
-  # if(index_gran1 > index_gran2)
+  # if(index_lgran > index_ugran)
   # {
-  #   tmp <- gran1
-  #   gran1 <- gran2
-  #   gran2 <- tmp
+  #   tmp <- lgran
+  #   lgran <- ugran
+  #   ugran <- tmp
   # }
 
-  if (g_order(gran1, "month") > 0 & g_order("month", gran2) >= 0) {
-    index_gran2 <- lookup_table$granularity %>% match(x = gran2)
-    day_gran2 <- eval(parse_exp(lookup_table$convertday[index_gran2]))
-    if (g_order(gran1, "day") > 0) {
-      c_gran1_day <- gran_convert(gran1, "day")
-      value <- build_gran(x, gran1, "day") + c_gran1_day * (day_gran2 - 1)
+  if (g_order(lgran, "month") > 0 & g_order("month", ugran) >= 0) {
+    index_ugran <- lookup_table$granularity %>% match(x = ugran)
+    day_ugran <- eval(parse_exp(lookup_table$convertday[index_ugran]))
+    if (g_order(lgran, "day") > 0) {
+      c_lgran_day <- gran_convert(lgran, "day")
+      value <- build_gran(x, lgran, "day") + c_lgran_day * (day_ugran - 1)
     }
-    else if (g_order(gran1, "day") == 0) {
-      value <- day_gran2
+    else if (g_order(lgran, "day") == 0) {
+      value <- day_ugran
     }
     else {
-      c_day_gran1 <- gran_convert("day", gran1)
-      value <- ceiling(day_gran2 / c_day_gran1)
+      c_day_lgran <- gran_convert("day", lgran)
+      value <- ceiling(day_ugran / c_day_lgran)
     }
   }
   else {
-    gran1_ordr1 <- g_order(gran1, order = 1)
-    if (g_order(gran1, gran2) == 1) {
-      one_order <- lookup_table$convertfun[lookup_table$granularity %>% match(x = gran1)]
+    lgran_ordr1 <- g_order(lgran, order = 1)
+    if (g_order(lgran, ugran) == 1) {
+      one_order <- lookup_table$convertfun[lookup_table$granularity %>% match(x = lgran)]
       return(eval(parse_exp(one_order)))
     } else {
-      value <- build_gran(x, gran1, gran1_ordr1) +
-        gran_convert(gran1, gran1_ordr1) *
-          (build_gran(x, gran1_ordr1, gran2) - 1)
+      value <- build_gran(x, lgran, lgran_ordr1) +
+        gran_convert(lgran, lgran_ordr1) *
+          (build_gran(x, lgran_ordr1, ugran) - 1)
       return(value)
     }
   }

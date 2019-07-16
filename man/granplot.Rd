@@ -2,9 +2,7 @@
 % Please edit documentation in R/granplot.R
 \name{granplot}
 \alias{granplot}
-\title{Get combination of granularities of a date time
-Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
-zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.}
+\title{Plot probability distribution of univariate series across bivariate temporal granularities}
 \usage{
 granplot(.data, gran1 = NULL, gran2 = NULL, response = NULL,
   plot_type = NULL, facet_h = 31, ...)
@@ -25,12 +23,10 @@ granplot(.data, gran1 = NULL, gran2 = NULL, response = NULL,
 \item{...}{other arguments to be passed for appropriate labels}
 }
 \value{
-combination of granularities of x as a number
+a ggplot object
 }
 \description{
-Get combination of granularities of a date time
-Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
-zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
+Plot probability distribution of univariate series across bivariate temporal granularities
 }
 \examples{
 library(dplyr)

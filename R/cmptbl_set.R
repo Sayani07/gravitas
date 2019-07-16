@@ -1,8 +1,4 @@
-#' Get set of harmonies for a given tsibble
-#'
-
-#' Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
-#' zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
+#' Get possible set of harmonies for a given tsibble
 #'
 
 #' @param .data a tsibble object
@@ -19,7 +15,7 @@
 
 
 harmony <- function(.data, ugran = NULL, lgran = NULL, ...) {
-  set1 <- search_gran(.data, ugran, lgran,...)
+  set1 <- search_gran(.data, ugran, lgran, ...)
   # set2 <- merge(prime, gran2_set) %>% as_tibble() %>% dplyr::mutate(x_y=paste(prime, gran2_set, sep="_"))
 
   # All_set <- c(set1, set2$x_y)

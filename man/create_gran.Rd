@@ -2,36 +2,29 @@
 % Please edit documentation in R/recursive_nest.R
 \name{create_gran}
 \alias{create_gran}
-\title{Get combination of granularities of a date time
-Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
-zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.}
+\title{Build temporal granularities}
 \usage{
-create_gran(.data, gran1 = NULL, gran2 = NULL, label = TRUE,
-  abbr = TRUE, ...)
+create_gran(.data, gran1 = NULL, label = TRUE, abbr = TRUE, ...)
 }
 \arguments{
-\item{.data}{a tsibble}
+\item{.data}{A tsibble object.}
 
-\item{gran1}{the lower level granularity to be paired}
+\item{gran1}{Temporal granularity required.}
 
-\item{gran2}{the upper level granularity to be paired}
-
-\item{label}{logical. TRUE will display the month as an ordered factor of character string such as "January", "February". FALSE will display the month as an ordered factor such as 1 to 12, where 1 stands for January and 12 for December.}
+\item{label}{Logical. TRUE will display the month as an ordered factor of character string such as "January", "February". FALSE will display the month as an ordered factor such as 1 to 12, where 1 stands for January and 12 for December.}
 
 \item{abbr}{logical. FALSE will display abbreviated labels}
 
-\item{...}{other arguments to be passed for appropriate labels}
+\item{...}{Other arguments passed on to individual methods.}
 }
 \value{
-combination of granularities of x as a number
+A tsibble with an additional column of granularity
 }
 \description{
-Get combination of granularities of a date time
-Date-time must be a  POSIXct, POSIXlt, Date, Period, chron, yearmon, yearqtr, zoo,
-zooreg, timeDate, xts, its, ti, jul, timeSeries, and fts objects.
+Build temporal granularities
 }
 \examples{
 library(dplyr)
 library(tsibble)
-tsibbledata::vic_elec \%>\% as_tsibble() \%>\% create_gran("hour", "week") \%>\% tail()
+tsibbledata::vic_elec \%>\% as_tsibble() \%>\% create_gran("hour_week") \%>\% tail()
 }
