@@ -16,13 +16,16 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 
-[![Travis build status](https://travis-ci.org/Sayani07/gravitas.svg?branch=master)](https://travis-ci.org/Sayani07/gravitas)
+[![Travis-CI Build Status](https://travis-ci.org/Sayani07/gravitas.svg?branch=master)](https://travis-ci.org/Sayani07/gravitas)
 <!-- badges: end -->
 
 The package **gravitas** provides a tool to examine the probability distribution of univariate time series across bivariate temporal granularities using range of graphics in `ggplot2` through the following:  
+
  - create multiple-order-up circular or aperiodic temporal granularities.  
- - Categorize pairs of granularities as either a *harmony* or *clash*, where harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis.
- - recommending appropriate probability distribution plots of the time series variable across the bivariate granularities based on the levels of the bivariate granularties and their relationship.  
+ 
+ - categorize pairs of granularities as either  *harmony* or *clash*, where harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis.  
+ 
+ - recommending appropriate probability distribution plots of the time series variable across the bivariate granularities based on the levels of the bivariate granularties and their compatibility relationship.  
 
 ## Installation
   

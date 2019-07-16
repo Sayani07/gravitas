@@ -5,23 +5,27 @@
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.org/Sayani07/gravitas.svg?branch=master)](https://travis-ci.org/Sayani07/gravitas)
+[![Travis-CI Build
+Status](https://travis-ci.org/Sayani07/gravitas.svg?branch=master)](https://travis-ci.org/Sayani07/gravitas)
 <!-- badges: end -->
 
 The package **gravitas** provides a tool to examine the probability
 distribution of univariate time series across bivariate temporal
 granularities using range of graphics in `ggplot2` through the
-following:  
-\- create multiple-order-up circular or aperiodic temporal
-granularities.  
-\- Categorize pairs of granularities as either a *harmony* or *clash*,
-where harmonies are pairs of granularities that aid exploratory data
-analysis, and clashes are pairs that are incompatible with each other
-for exploratory analysis. - recommending appropriate probability
-distribution plots of the time series variable across the bivariate
-granularities based on the levels of the bivariate granularties and
-their relationship.
+following:
+
+  - create multiple-order-up circular or aperiodic temporal
+    granularities.
+
+  - categorize pairs of granularities as either *harmony* or *clash*,
+    where harmonies are pairs of granularities that aid exploratory data
+    analysis, and clashes are pairs that are incompatible with each
+    other for exploratory analysis.
+
+  - recommending appropriate probability distribution plots of the time
+    series variable across the bivariate granularities based on the
+    levels of the bivariate granularties and their compatibility
+    relationship.
 
 ## Installation
 
@@ -124,17 +128,17 @@ function
 
 ``` r
 tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "hhour")) 
-#> # A tibble: 10 x 3
-#>    x          y          check_harmony
-#>    <fct>      <fct>              <dbl>
-#>  1 hour_day   day_week               1
-#>  2 hour_day   day_month              1
-#>  3 hour_day   week_month             1
-#>  4 day_week   hour_day               1
-#>  5 day_week   day_month              1
-#>  6 day_week   week_month             1
-#>  7 day_month  hour_day               1
-#>  8 day_month  day_week               1
-#>  9 week_month hour_day               1
-#> 10 week_month day_week               1
+#> # A tibble: 10 x 2
+#>    granularity1 granularity2
+#>    <fct>        <fct>       
+#>  1 hour_day     day_week    
+#>  2 hour_day     day_month   
+#>  3 hour_day     week_month  
+#>  4 day_week     hour_day    
+#>  5 day_week     day_month   
+#>  6 day_week     week_month  
+#>  7 day_month    hour_day    
+#>  8 day_month    day_week    
+#>  9 week_month   hour_day    
+#> 10 week_month   day_week
 ```
