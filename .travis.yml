@@ -32,7 +32,7 @@ addons:
 deploy:
   provider: pages
   skip-cleanup: true
-  github-token: $GITHUB_PAT
+  github-token: $TOKEN
   keep-history: true
   local-dir: docs
   on:
