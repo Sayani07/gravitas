@@ -29,13 +29,13 @@ The package **gravitas** provides a tool to examine the probability distribution
 
 ## Installation
   
-You can install the released version of gravitas from [CRAN](https://CRAN.R-project.org) with:
+<!-- You can install the released version of gravitas from [CRAN](https://CRAN.R-project.org) with: -->
 
-``` r
-install.packages("gravitas")
-```
+<!-- ``` r -->
+<!-- install.packages("gravitas") -->
+<!-- ``` -->
 
-And the development version from [GitHub](https://github.com/) with:
+You can install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -99,8 +99,8 @@ the plot type that is best suitable for the number of levels in hour_day and day
 tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand")
 ```
 
-If we want to switch the facet and x-axis variable, we simply reverse the order of time granularities.
+If we want to switch the facet and x-axis variable, we simply reverse the order of time granularities. Here, granplot would output a ggplot2 object. So we are free to add any element to the default plot.
 
 ```{r example8}
-tsibbledata::vic_elec %>% granplot("day_week", "hour_day", "Demand", plot_type = "violin")
+tsibbledata::vic_elec %>% granplot("day_week", "hour_day", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1,24,2))
 ```

@@ -29,14 +29,16 @@ following:
 
 ## Installation
 
-You can install the released version of gravitas from
-[CRAN](https://CRAN.R-project.org) with:
+<!-- You can install the released version of gravitas from [CRAN](https://CRAN.R-project.org) with: -->
 
-``` r
-install.packages("gravitas")
-```
+<!-- ``` r -->
 
-And the development version from [GitHub](https://github.com/) with:
+<!-- install.packages("gravitas") -->
+
+<!-- ``` -->
+
+You can install the development version from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -163,11 +165,12 @@ tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand")
 <img src="man/figures/README-example7-1.png" width="100%" />
 
 If we want to switch the facet and x-axis variable, we simply reverse
-the order of time
-granularities.
+the order of time granularities. Here, granplot would output a ggplot2
+object. So we are free to add any element to the default
+plot.
 
 ``` r
-tsibbledata::vic_elec %>% granplot("day_week", "hour_day", "Demand", plot_type = "violin")
+tsibbledata::vic_elec %>% granplot("day_week", "hour_day", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1,24,2))
 ```
 
 <img src="man/figures/README-example8-1.png" width="100%" />
