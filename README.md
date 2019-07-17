@@ -142,3 +142,22 @@ tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "
 #>  9 week_month   hour_day    
 #> 10 week_month   day_week
 ```
+
+Now, we want to view distribution of \`Demand’ across these bivariate
+granularities through
+boxplots.
+
+``` r
+tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand", plot_type = "boxplot")
+```
+
+<img src="man/figures/README-example6-1.png" width="100%" /> Now, we
+want to view distribution of \`Demand’ across the next set of harmonies
+- hour\_day and day\_month and let the package decide the plot type that
+is best suitable for the number of levels in hour\_day and day\_month.
+
+``` r
+tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand")
+```
+
+<img src="man/figures/README-example7-1.png" width="100%" />
