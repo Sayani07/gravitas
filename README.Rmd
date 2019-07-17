@@ -99,3 +99,8 @@ the plot type that is best suitable for the number of levels in hour_day and day
 tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand")
 ```
 
+If we want to switch the facet and x-axis variable, we simply reverse the order of time granularities.
+
+```{r example8}
+tsibbledata::vic_elec %>% granplot("day_week", "hour_day", "Demand", plot_type = "violin")
+```

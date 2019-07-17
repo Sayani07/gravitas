@@ -161,3 +161,13 @@ tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand")
 ```
 
 <img src="man/figures/README-example7-1.png" width="100%" />
+
+If we want to switch the facet and x-axis variable, we simply reverse
+the order of time
+granularities.
+
+``` r
+tsibbledata::vic_elec %>% granplot("day_week", "hour_day", "Demand", plot_type = "violin")
+```
+
+<img src="man/figures/README-example8-1.png" width="100%" />

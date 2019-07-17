@@ -165,7 +165,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
       warning("Percentile plot not recommended as number of observations too few for one or more combinations")
     }
   }
-  print(plot)
+ plot  + ggplot2::theme(legend.position = "bottom",strip.text = ggplot2::element_text(size = 7, margin = ggplot2::margin()))
 }
 
 # advise function for which plots to choose depending on levels of facets and x-axis
