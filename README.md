@@ -45,6 +45,12 @@ You can install the development version from
 devtools::install_github("Sayani07/gravitas")
 ```
 
+## Quick look
+
+gravitas comes with an interactive webpage, which lets you interactively
+go through the different functionalities of this package. To try it,
+simply use gravitas::run\_app().
+
 ## Get started
 
 The `vic_elec` data from tsibbledata package is employed to have a run
