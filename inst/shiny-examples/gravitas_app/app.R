@@ -7,53 +7,73 @@ ui <- fluidPage(
 
   sidebarPanel(
     fileInput("file", "Data file (tsibble as .Rda file)"),
-    selectInput('lgran', 'lowest temporal unit', gravitas:::lookup_table$granularity, "hour"),
-    selectInput('ugran', 'highest temporal unit', gravitas:::lookup_table$granularity, "week"),
-    selectInput('facet', 'facet Variable', "<select>"), #"<needs update>"),
+    selectInput("lgran", "lowest temporal unit", gravitas:::lookup_table$granularity, "hour"),
+    selectInput("ugran", "highest temporal unit", gravitas:::lookup_table$granularity, "week"),
+    selectInput("facet", "facet Variable", "<select>"), # "<needs update>"),
     # search_gran(vic_elec, "hour", "minute")
-    selectInput('xcol', 'X Variable', "<select>"),
-    selectInput('ycol', 'Which univariate time series to plot?', "<select>"),
-    radioButtons('plot_type', 'Which distribution plot', choices =    c("boxplot","ridge", "violin", "lv", "density", "percentile", "decile"), selected = "boxplot")
-
+    selectInput("xcol", "X Variable", "<select>"),
+    selectInput("ycol", "Which univariate time series to plot?", "<select>"),
+    radioButtons("plot_type", "Which distribution plot", choices = c("boxplot", "ridge", "violin", "lv", "density", "percentile", "decile"), selected = "boxplot")
   ),
   mainPanel(
-    plotOutput('plot1')
+    tabsetPanel(
+      type = "tabs",
+      tabPanel("Plot", plotOutput("plot1")),
+      tabPanel("Harmony Table", tableOutput("table"))
+    )
   )
 )
 
 server <- function(input, output, session) {
+  fileinput <- reactive({
+    if (is.null(input$file)) return(vic_elec)
+    inFile <- isolate({
+      input$file
+    })
+    file <- inFile$datapath
+    tmp <- new.env()
+    load(file, envir = tmp)
+    tmp[[ls(tmp)[1]]] %>% tsibble::as_tsibble()
+  })
+
+  lgran <- reactive({
+    if (is.null(input$lgran)) return(NULL)
+    isolate({
+      input$lgran
+    })
+  })
 
 
-  fileinput <- reactive (
-    {
-      if (is.null(input$file)) return(vic_elec)
-      inFile <- isolate({input$file })
-      file <- inFile$datapath
-      tmp <- new.env()
-      load(file, envir = tmp)
-      tmp[[ls(tmp)[1]]]%>% tsibble::as_tsibble()
-    }
-  )
+  ugran <- reactive({
+    if (is.null(input$ugran)) return("year")
+    isolate({
+      input$ugran
+    })
+  })
+
 
 
   observe({
     updateSelectInput(session,
-                      "ycol",
-                      choices = names(fileinput()))
+      "ycol",
+      choices = names(fileinput())
+    )
   })
 
   observe({
     my_choices <- search_gran(fileinput(), input$ugran, input$lgran)
     updateSelectInput(session,
-                      "facet",
-                      choices = my_choices)
+      "facet",
+      choices = my_choices
+    )
   })
   observe({
     my_choices <- search_gran(fileinput(), input$ugran, input$lgran)
-    my_choices2 <- my_choices[-match(input$facet,my_choices)]
+    my_choices2 <- my_choices[-match(input$facet, my_choices)]
     updateSelectInput(session,
-                      "xcol",
-                      choices = rev(my_choices2))
+      "xcol",
+      choices = rev(my_choices2)
+    )
   })
 
 
@@ -65,13 +85,20 @@ server <- function(input, output, session) {
 
   output$plot1 <- renderPlot({
     suppressWarnings(
-      granplot(.data = fileinput(),
-               gran1 = input$facet,
-               gran2 = input$xcol,
-               response = input$ycol,
-               plot_type = input$plot_type)
+      granplot(
+        .data = fileinput(),
+        gran1 = input$facet,
+        gran2 = input$xcol,
+        response = input$ycol,
+        plot_type = input$plot_type
+      )
     )
   })
+
+  output$table <- renderTable({
+    gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran())
+  })
+
 
 }
 

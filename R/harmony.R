@@ -73,5 +73,5 @@ harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filte
 
 
 comp_tbl <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, ...) {
-  harmony(.data, ugran, lgran,  filter_in, filter_out, ...) %>% dplyr::mutate(check_harmony = 1) %>% tidyr::spread(granularity2, check_harmony) %>% replace(., is.na(.), 0)
+  harmony(.data, ugran, lgran,  filter_in, filter_out, ...) %>% dplyr::mutate(check_harmony = 1) %>% tidyr::spread(granularity2, check_harmony) %>% replace(., is.na(.), "")
 }
