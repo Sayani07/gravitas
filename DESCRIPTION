@@ -29,7 +29,8 @@ Imports:
   stats,
   stringr(>= 1.4.0),
   lvplot,
-  ggridges
+  ggridges,
+  shiny
 Suggests:
     tsibbledata (>= 0.0.0.9000),
     purrr (>= 0.3.2),

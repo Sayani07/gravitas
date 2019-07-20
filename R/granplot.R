@@ -93,7 +93,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
   else if (plot_type == "ridge") {
     plot <- data_mutate %>%
       ggplot2::ggplot(aes(x = data_mutate[[response]], y = data_mutate[[response]], group = data_mutate[[gran2]])) +
-      ggridges::geom_density_ridges2() +
+      ggridges::geom_density_ridges() +
       ggplot2::facet_wrap(~ data_mutate[[gran1]]) +
       ggplot2::xlab(response) +
       ggplot2::ylab(data_mutate[[gran2]]) +
