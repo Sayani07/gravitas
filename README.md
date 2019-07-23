@@ -47,9 +47,9 @@ devtools::install_github("Sayani07/gravitas")
 
 ## Quick look
 
-gravitas comes with an interactive webpage, which lets you interactively
-go through the different functionalities of this package. To try it,
-simply use gravitas::run\_app().
+gravitas comes with an interactive webpage, which lets you go through
+the different functionalities of this package. To try it, simply use
+gravitas::run\_app().
 
 ## Get started
 
@@ -151,9 +151,9 @@ tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "
 #> 10 week_month   day_week
 ```
 
-Now, we want to view distribution of \`Demand’ across these bivariate
-granularities through
-boxplots.
+Now, we want to view distribution of `Demand` across these bivariate
+granularities through boxplots using
+`granplot`.
 
 ``` r
 tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand", plot_type = "boxplot")
@@ -181,3 +181,40 @@ tsibbledata::vic_elec %>% granplot("day_week", "hour_day", "Demand", plot_type =
 ```
 
 <img src="man/figures/README-example8-1.png" width="100%" />
+
+Suppose, both the granularities chosen have too many levels, which is
+not suitable for facetting or are clashes, then warnings will be
+provided.
+
+``` r
+tsibbledata::vic_elec %>% granplot(gran1 = "hour_week",  gran2 = "day_week", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1,24,2))
+#> Warning in granplot(., gran1 = "hour_week", gran2 = "day_week", "Demand", :
+#> granularities chosen are clashes: you might be interested to look at the
+#> set of harmonies by using harmony(.data)
+#> Warning in granplot(., gran1 = "hour_week", gran2 = "day_week", "Demand", :
+#> Facetting not recommended: too many categories in hour_week . Try using
+#> day_week as the facet variable
+```
+
+<img src="man/figures/README-example9-1.png" width="100%" />
+
+The warning says : Facetting not recommended as there are too many
+categories in day\_week and also suggest using hour\_day as the facet
+variable.
+
+Moreover, the granularities chosen are clashes and one can see the set
+of harmonies using harmony(.data)
+
+Any granularity can be built using `create_gran` if any other plots are
+to explored which is not included in plot\_types of `gran_plot` or for
+extracting any other summary statistics. They can be also be used for
+exploring distribution of the time series across univariate temporal
+granularity.
+
+``` r
+library(ggplot2)
+#> Warning: package 'ggplot2' was built under R version 3.5.2
+tsibbledata::vic_elec %>% create_gran("day_fortnight") %>% ggplot(aes(x = as.factor(day_fortnight), y = Demand)) + xlab("day_fortnight")+ geom_boxplot()
+```
+
+<img src="man/figures/README-example10-1.png" width="100%" />

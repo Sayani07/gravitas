@@ -43,7 +43,7 @@ devtools::install_github("Sayani07/gravitas")
 ```
 ## Quick look
 
-gravitas comes with an interactive webpage, which lets you interactively go through the different functionalities of this package. To try it, simply use gravitas::run_app().
+gravitas comes with an interactive webpage, which lets you go through the different functionalities of this package. To try it, simply use gravitas::run_app().
 
 ## Get started
 
@@ -91,7 +91,7 @@ Or, we can find the set of harmonies all at once with the help of function `harm
 tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "hhour")) 
 ```
 
-Now, we want to view distribution of `Demand' across these bivariate granularities through boxplots.
+Now, we want to view distribution of `Demand` across these bivariate granularities through boxplots using `granplot`.
 
 ```{r example6}
 tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand", plot_type = "boxplot")
@@ -108,4 +108,25 @@ If we want to switch the facet and x-axis variable, we simply reverse the order 
 ```{r example8}
 tsibbledata::vic_elec %>% granplot("day_week", "hour_day", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1,24,2))
 ```
+
+Suppose, both the granularities chosen have too many levels, which is not suitable for facetting or are clashes, then warnings will be provided.
+
+
+```{r example9}
+tsibbledata::vic_elec %>% granplot(gran1 = "hour_week",  gran2 = "day_week", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1,24,2))
+```
+
+The warning says :  Facetting not recommended as there are too many categories in day_week and also suggest using hour_day as the facet variable.
+
+Moreover, the granularities chosen are clashes and one can see the set of harmonies using harmony(.data)
+
+Any granularity can be built using `create_gran` if any other plots are to explored which is not included in plot_types of `gran_plot` or for extracting any other summary statistics. They can be also be used for exploring distribution of the time series across univariate temporal granularity.
+
+
+```{r example10}
+library(ggplot2)
+tsibbledata::vic_elec %>% create_gran("day_fortnight") %>% ggplot(aes(x = as.factor(day_fortnight), y = Demand)) + xlab("day_fortnight")+ geom_boxplot()
+```
+
+
 
