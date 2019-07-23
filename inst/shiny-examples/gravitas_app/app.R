@@ -56,7 +56,7 @@ server <- function(input, output, session) {
   observe({
     updateSelectInput(session,
       "ycol",
-      choices = names(fileinput())
+      choices = fileinput() %>% measured_vars()
     )
   })
 

@@ -118,7 +118,7 @@ tsibbledata::vic_elec %>% granplot(gran1 = "hour_week",  gran2 = "day_week", "De
 
 The warning says :  Facetting not recommended as there are too many categories in day_week and also suggest using hour_day as the facet variable.
 
-Moreover, the granularities chosen are clashes and one can see the set of harmonies using harmony(.data)
+Moreover, the granularities chosen are clashes and one can see the set of harmonies using `harmony(.data)`
 
 Any granularity can be built using `create_gran` if any other plots are to explored which is not included in plot_types of `gran_plot` or for extracting any other summary statistics. They can be also be used for exploring distribution of the time series across univariate temporal granularity.
 

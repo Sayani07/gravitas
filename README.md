@@ -203,7 +203,7 @@ categories in day\_week and also suggest using hour\_day as the facet
 variable.
 
 Moreover, the granularities chosen are clashes and one can see the set
-of harmonies using harmony(.data)
+of harmonies using `harmony(.data)`
 
 Any granularity can be built using `create_gran` if any other plots are
 to explored which is not included in plot\_types of `gran_plot` or for
