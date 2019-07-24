@@ -31,6 +31,7 @@ search_gran_v1 <- function(.data, hierarchy_tbl = NULL, ugran = NULL, lgran = NU
   }
 
   return(c(lgran, ugran))
+
 # # Put the first element of the vector units/interval of the tsibble as the least most unit desired
 #   if (tsibble::is_regular(.data)) {
 #     interval_ts <- tsibble::interval(.data)
@@ -58,17 +59,65 @@ search_gran_v1 <- function(.data, hierarchy_tbl = NULL, ugran = NULL, lgran = NU
 
 
 
-# provides the order difference between two granularities, also provide the upper granularity given the order
-g_order <- function(, gran1, gran2 = NULL, order = NULL) {
+# provides the order difference between two granularities, also provide the upper granularity given the order (given a hierachy table)
+
+g_order <- function(hierarchy_tbl = lookup_table, lowest_unit = NULL, highest_unit = NULL, order = NULL,...){
+
+
   units <- hierarchy_tbl$units
   convert_fct <- hierarchy_tbl$convert_fct
 
-  index_gran1 <- units %>% match(x = gran1)
-  if (!is.null(gran2)) {
-    index_gran2 <- units %>% match(x = gran2)
-    return(index_gran2 - index_gran1)
+  # Put the first element of the vector units as the lowest most unit desired - default
+  if (is.null(lowest_unit)) {
+    lowest_unit = dplyr::first(hierarchy_tbl$units)
+  }
+  else if (!(lowest_unit %in% units))
+  {
+    stop("lowest unit must be listed as an element in the  hierarchy table")
+  }
+
+  index_l <- units %>% match(x = lowest_unit)
+  if (!is.null(highest_unit)) {
+    index_h <- units %>% match(x = highest_unit)
+    return(index_h - index_l)
   }
   if (!is.null(order)) {
-    return(units[index_gran1 + order])
+    return(units[index_l + order])
+  }
+
+}
+
+# provides the conversion factor between two granularities
+
+gran_convert <- function(hierarchy_tbl = NULL,lowest_unit = NULL, highest_unit = NULL, order = NULL) {
+
+  units <- hierarchy_tbl$units
+  convert_fct <- hierarchy_tbl$convert_fct
+
+  index_l <- units %>% match(x = lowest_unit)
+
+  if (!is.null(lowest_unit)) {
+    if (!lowest_unit %in% units | !highest_unit %in% units) {
+      stop(paste0("units ", lowest_unit, " and ", highest_unit, " both should be one of ", paste0(units, collapse = ", ")), call. = F)
+    }
+
+
+    if (g_order(hierarchy_tbl, lowest_unit, highest_unit) < 0) {
+      stop("Order of second unit should be larger than the first one. Try reversing their position")
+    }
+    if (g_order(hierarchy_tbl, lowest_unit, highest_unit) == 0) {
+      return(1)
+    }
+    else {
+      return(convert_fct[index_l] * gran_convert(hierarchy_tbl, g_order(hierarchy_tbl, lowest_unit, order = 1), highest_unit))
+    }
+  }
+  if (!is.null(order)) {
+    converter <- convert_fct[index_l]
+
+    while (converter <= order) {
+      index_l <- index_l + 1
+    }
   }
 }
+
