@@ -66,10 +66,10 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
   data_mutate$L1 <- factor(data_mutate$L1, labels = names_gran)
 
   data_mutate %>%
-    dplyr::mutate(
+    dplyr::select(
       !!gran1 := L1
-    ) %>%
-    dplyr::select(-L1)
+    ) #%>%
+    #dplyr::select(-L1)
 }
 
 
