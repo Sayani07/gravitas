@@ -19,8 +19,10 @@ ui <- fluidPage(
     tabsetPanel(
       type = "tabs",
       tabPanel("Data", dataTableOutput("data")),
+      tabPanel("Harmony Table", tableOutput("table")),
       tabPanel("Plot", plotOutput("plot1")),
-      tabPanel("Harmony Table", tableOutput("table"))
+      tabPanel("Granularity Table", dataTableOutput("grantbl"))
+
     )
   )
 )
@@ -106,6 +108,9 @@ observe({
     gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran())
   })
 
+  output$grantbl <- renderDataTable({
+    gravitas:::gran_tbl(fileinput(), gran1 = input$facet , gran2 = input$xcol)
+  })
 
 }
 
