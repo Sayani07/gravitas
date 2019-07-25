@@ -18,8 +18,9 @@ ui <- fluidPage(
   mainPanel(
     tabsetPanel(
       type = "tabs",
+      tabPanel("Data", verbatimTextOutput("data")),
       tabPanel("Plot", plotOutput("plot1")),
-      tabPanel("Harmony Table", tableOutput("table"))
+      tabPanel("Harmony Table", dataTableOutput("table"))
     )
   )
 )
@@ -82,6 +83,10 @@ server <- function(input, output, session) {
   #   plot(selectedData(),
   #        pch = 20, cex = 3)
   # })
+
+  output$data <- renderPrint({
+    fileinput()
+  })
 
   output$plot1 <- renderPlot({
     suppressWarnings(
