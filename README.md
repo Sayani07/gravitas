@@ -51,13 +51,22 @@ gravitas comes with an interactive webpage, which lets you go through
 the different functionalities of this package. To try it, simply use
 gravitas::run\_app().
 
+## Getting prepared
+
+This package takes tsibble as the data input. Tsibble provides a data
+class of tbl\_ts to represent tidy temporal data. It consists of a time
+index, key and other measured variables in a data-centric format, which
+makes it easier to work with temporal data. To learn more about it,
+please visit <https://tsibble.tidyverts.org/>
+
 ## Get started
 
 The `vic_elec` data from tsibbledata package is employed to have a run
-through of this package. It is a half-hourly tsibble consisting of half
-hour demand for the state of Victoria. Suppose it is of interest to to
-examine how the univariate series `Demand` varies with different
-deconstructions of time.
+through of this package. . consisting of half hour demand for the state
+of Victoria. Suppose it is of interest to to examine how the univariate
+series `Demand` varies with different deconstructions of time.
+
+#### Get set of possible temporal granularities with `search_gran()`
 
 ``` r
 library(gravitas)
@@ -84,6 +93,8 @@ tsibbledata::vic_elec %>% search_gran()
 #> [31] "month_quarter"      "month_semester"     "month_year"        
 #> [34] "quarter_semester"   "quarter_year"       "semester_year"
 ```
+
+#### Refine your search of possible temporal granularities by altering arguments in `search_gran()`
 
 The default for search gran in this case, provides temporal
 granularities ranging from half-hour to year. If these options are
@@ -114,6 +125,8 @@ tsibbledata::vic_elec %>% search_gran(ugran = "month", filter_out = c("fortnight
 #>  [6] "hour_week"   "hour_month"  "day_week"    "day_month"   "week_month"
 ```
 
+#### Check if two temporal granularities are harmonies with `is.harmony()`
+
 Now that we have the list of granularities that we want to look at, let
 us see which pairs form harmony/clash.
 
@@ -129,6 +142,8 @@ tsibbledata::vic_elec %>% is.harmony(gran1 = "hour_day", gran2 ="day_week")
 tsibbledata::vic_elec %>% is.harmony(gran1 = "day_month", gran2 ="hhour_week")
 #> [1] "TRUE"
 ```
+
+#### Get all possible harmonies with `harmony()`
 
 Or, we can find the set of harmonies all at once with the help of
 function
@@ -151,8 +166,10 @@ tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "
 #> 10 week_month   day_week
 ```
 
-Now, we want to view distribution of `Demand` across these bivariate
-granularities through boxplots using
+#### Explore probability distribution across bivariate temporal granularities with `granplot()`
+
+Now, we want to view distribution of the measured variable `Demand`
+across these bivariate granularities through boxplots using
 `granplot`.
 
 ``` r
@@ -205,6 +222,8 @@ variable.
 Moreover, the granularities chosen are clashes and one can see the set
 of harmonies using `harmony(.data)`
 
+#### Create any temporal granularity with `create_gran()`
+
 Any granularity can be built using `create_gran` if any other plots are
 to explored which is not included in plot\_types of `gran_plot` or for
 extracting any other summary statistics. They can be also be used for
@@ -214,7 +233,7 @@ granularity.
 ``` r
 library(ggplot2)
 #> Warning: package 'ggplot2' was built under R version 3.5.2
-tsibbledata::vic_elec %>% create_gran("day_fortnight") %>% ggplot(aes(x = as.factor(day_fortnight), y = Demand)) + xlab("day_fortnight")+ geom_boxplot()
+tsibbledata::vic_elec %>% create_gran("day_fortnight") %>% ggplot(aes(x = as.factor(day_fortnight), y = Demand)) + xlab("day_fortnight") + geom_boxplot()
 ```
 
 <img src="man/figures/README-example10-1.png" width="100%" />
