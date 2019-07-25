@@ -18,9 +18,9 @@ ui <- fluidPage(
   mainPanel(
     tabsetPanel(
       type = "tabs",
-      tabPanel("Data", verbatimTextOutput("data")),
+      tabPanel("Data", dataTableOutput("data")),
       tabPanel("Plot", plotOutput("plot1")),
-      tabPanel("Harmony Table", dataTableOutput("table"))
+      tabPanel("Harmony Table", tableOutput("table"))
     )
   )
 )
@@ -52,7 +52,7 @@ server <- function(input, output, session) {
     })
   })
 
-
+# dynamically update dropdown list
 
   observe({
     updateSelectInput(session,
@@ -84,7 +84,7 @@ server <- function(input, output, session) {
   #        pch = 20, cex = 3)
   # })
 
-  output$data <- renderPrint({
+  output$data <- renderDataTable({
     fileinput()
   })
 
