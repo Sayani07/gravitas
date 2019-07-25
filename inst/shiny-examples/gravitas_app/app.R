@@ -7,12 +7,12 @@ ui <- fluidPage(
 
   sidebarPanel(
     fileInput("file", "Data file (tsibble as .Rda file)"),
+    selectInput("ycol", "Which univariate time series to plot?", "<select>"),
     selectInput("lgran", "lowest temporal unit", gravitas:::lookup_table$granularity, "hour"),
     selectInput("ugran", "highest temporal unit", gravitas:::lookup_table$granularity, "week"),
     selectInput("facet", "facet Variable", "<select>"), # "<needs update>"),
     # search_gran(vic_elec, "hour", "minute")
     selectInput("xcol", "X Variable", "<select>"),
-    selectInput("ycol", "Which univariate time series to plot?", "<select>"),
     radioButtons("plot_type", "Which distribution plot", choices = c("boxplot", "ridge", "violin", "lv", "density", "percentile", "decile"), selected = "boxplot")
   ),
   mainPanel(
@@ -37,6 +37,14 @@ server <- function(input, output, session) {
     tmp[[ls(tmp)[1]]] %>% tsibble::as_tsibble()
   })
 
+observe({
+    updateSelectInput(session,
+                      "ycol",
+                      choices = fileinput() %>% measured_vars()
+    )
+  })
+
+
   lgran <- reactive({
     if (is.null(input$lgran)) return(NULL)
     isolate({
@@ -54,12 +62,6 @@ server <- function(input, output, session) {
 
 # dynamically update dropdown list
 
-  observe({
-    updateSelectInput(session,
-      "ycol",
-      choices = fileinput() %>% measured_vars()
-    )
-  })
 
   observe({
     my_choices <- search_gran(fileinput(), input$ugran, input$lgran)
