@@ -42,7 +42,7 @@ server <- function(input, output, session) {
 observe({
     updateSelectInput(session,
                       "ycol",
-                      choices = fileinput() %>% measured_vars()
+                      choices = fileinput() %>% tsibble::measured_vars()
     )
   })
 
