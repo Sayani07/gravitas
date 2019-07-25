@@ -66,7 +66,7 @@ through of this package. . consisting of half hour demand for the state
 of Victoria. Suppose it is of interest to to examine how the univariate
 series `Demand` varies with different deconstructions of time.
 
-#### Get set of possible temporal granularities with `search_gran()`
+### Get set of possible temporal granularities with `search_gran()`
 
 ``` r
 library(gravitas)
@@ -94,7 +94,7 @@ tsibbledata::vic_elec %>% search_gran()
 #> [34] "quarter_semester"   "quarter_year"       "semester_year"
 ```
 
-#### Refine your search of possible temporal granularities by altering arguments in `search_gran()`
+### Refine your search of possible temporal granularities by altering arguments in `search_gran()`
 
 The default for search gran in this case, provides temporal
 granularities ranging from half-hour to year. If these options are
@@ -125,7 +125,7 @@ tsibbledata::vic_elec %>% search_gran(ugran = "month", filter_out = c("fortnight
 #>  [6] "hour_week"   "hour_month"  "day_week"    "day_month"   "week_month"
 ```
 
-#### Check if two temporal granularities are harmonies with `is.harmony()`
+### Check if two temporal granularities are harmonies with `is.harmony()`
 
 Now that we have the list of granularities that we want to look at, let
 us see which pairs form harmony/clash.
@@ -143,7 +143,7 @@ tsibbledata::vic_elec %>% is.harmony(gran1 = "day_month", gran2 ="hhour_week")
 #> [1] "TRUE"
 ```
 
-#### Get all possible harmonies with `harmony()`
+### Get all possible harmonies with `harmony()`
 
 Or, we can find the set of harmonies all at once with the help of
 function
@@ -166,7 +166,7 @@ tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "
 #> 10 week_month   day_week
 ```
 
-#### Explore probability distribution across bivariate temporal granularities with `granplot()`
+### Explore probability distribution across bivariate temporal granularities with `granplot()`
 
 Now, we want to view distribution of the measured variable `Demand`
 across these bivariate granularities through boxplots using
@@ -222,7 +222,7 @@ variable.
 Moreover, the granularities chosen are clashes and one can see the set
 of harmonies using `harmony(.data)`
 
-#### Create any temporal granularity with `create_gran()`
+### Create any temporal granularity with `create_gran()`
 
 Any granularity can be built using `create_gran` if any other plots are
 to explored which is not included in plot\_types of `gran_plot` or for

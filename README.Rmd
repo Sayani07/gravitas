@@ -55,7 +55,7 @@ This package takes tsibble as the data input. Tsibble provides a data class of t
 
 The `vic_elec` data from tsibbledata package is employed to have a run through of this package. . consisting of half hour demand for the state of Victoria. Suppose it is of interest to to examine how the univariate series `Demand` varies with different deconstructions of time.
 
-#### Get set of possible temporal granularities with `search_gran()`
+### Get set of possible temporal granularities with `search_gran()`
 
 ```{r example1}
 library(gravitas)
@@ -63,7 +63,7 @@ library(dplyr)
 tsibbledata::vic_elec %>% search_gran()
 ```
 
-#### Refine your search of possible temporal granularities by altering arguments in `search_gran()`
+### Refine your search of possible temporal granularities by altering arguments in `search_gran()`
 
 The default for search gran in this case,  provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarce temporal unit can be set to be "month".
 
@@ -82,7 +82,7 @@ tsibbledata::vic_elec %>% search_gran(ugran = "month", filter_out = c("fortnight
 ```
 
 
-#### Check if two temporal granularities are harmonies with `is.harmony()`
+### Check if two temporal granularities are harmonies with `is.harmony()`
 
 Now that we have the list of granularities that we want to look at, let us see which pairs form harmony/clash.
 
@@ -98,7 +98,7 @@ tsibbledata::vic_elec %>% is.harmony(gran1 = "day_month", gran2 ="hhour_week")
 ```
 
 
-#### Get all possible harmonies with `harmony()`
+### Get all possible harmonies with `harmony()`
 
 Or, we can find the set of harmonies all at once with the help of function `harmony`.
 
@@ -108,7 +108,7 @@ tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "
 
 
 
-#### Explore probability distribution across bivariate temporal granularities with `granplot()`
+### Explore probability distribution across bivariate temporal granularities with `granplot()`
 
 Now, we want to view distribution of the measured variable `Demand` across these bivariate granularities through boxplots using `granplot`.
 
@@ -139,7 +139,7 @@ The warning says :  Facetting not recommended as there are too many categories i
 
 Moreover, the granularities chosen are clashes and one can see the set of harmonies using `harmony(.data)`
 
-#### Create any temporal granularity with `create_gran()`
+### Create any temporal granularity with `create_gran()`
 
 Any granularity can be built using `create_gran` if any other plots are to explored which is not included in plot_types of `gran_plot` or for extracting any other summary statistics. They can be also be used for exploring distribution of the time series across univariate temporal granularity.
 
