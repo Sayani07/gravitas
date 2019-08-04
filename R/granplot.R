@@ -48,7 +48,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
     plot_type <- advice[1]
   }
 
-  data_count <- harmony_obj(.data, gran1, gran2, response, ...)
+  data_count <- gran_tbl(.data, gran1, gran2, response, ...)
 
   gran1_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran1)) %>% dplyr::distinct() %>% nrow()
   gran2_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran2)) %>% dplyr::distinct() %>% nrow()
@@ -121,8 +121,8 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
 
 
     plot <- data_dec %>%
-      ggplot2::ggplot(aes(x = data_dec[[gran2]], y = value, group = as.factor(quantile), color = as.factor(quantile))) +
-      ggplot2::geom_line(aes(group = 1)) +
+      ggplot2::ggplot(aes(x = data_dec[[gran2]], y = value, group = quantile, color = quantile)) +
+      ggplot2::geom_line() +
       ggplot2::facet_wrap(~ data_dec[[gran1]]) +
       ggplot2::ylab(response) +
       ggplot2::xlab(gran1) +
@@ -155,7 +155,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
 
     plot <- data_pcntl %>%
       ggplot2::ggplot(aes(x = data_pcntl[[gran2]], y = value, group = as.factor(quantile), color = quantile)) +
-      ggplot2::geom_line(aes(group = 1)) +
+      ggplot2::geom_line() +
       ggplot2::facet_wrap(~ data_pcntl[[gran1]]) +
       ggplot2::ylab(response) +
       ggplot2::xlab(gran1) +
@@ -197,7 +197,7 @@ gran_advice <- function(.data, gran1, gran2, response = NULL, ...) {
 
   # inter facet homogeneity
 
-  data_count <- harmony_obj(.data, gran1, gran2, response, ...)
+  data_count <- gran_tbl(.data, gran1, gran2, response, ...)
 
 
   gran1_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran1)) %>% dplyr::distinct() %>% nrow()
@@ -292,7 +292,7 @@ is.homogenous <- function(.data, gran1, gran2, response = NULL, ...) {
 
   # inter facet homogeneity
 
-  data_count <- harmony_obj(.data, gran1, gran2, response, ...)
+  data_count <- gran_tbl(.data, gran1, gran2, response, ...)
 
   inter_facet_homogeneity <- data_count %>% dplyr::group_by(!!rlang::quo_name(gran1)) %>% dplyr::summarise(min_c = min(nobs), max_c = max(nobs)) %>% dplyr::summarise(sum = sum(dplyr::if_else(min_c == max_c, 0, 1))) %>% dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
 
