@@ -34,32 +34,45 @@ gran_tbl <- function(.data, gran1, gran2, response = NULL, ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
+  match_gran1 <- match(gran1, names(.data))
+  match_gran2 <- match(gran2, names(.data))
+
+  if(!is.null(match_gran1))
+  {
+    var1 <- gran1
+  }
+  if(!is.null(match_gran2))
+  {
+    var2 <- gran2
+  }
+
+
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
 
-  gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
-  gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
-  var1 <- gran1_split[1]
-  var2 <- gran1_split[2]
-  var3 <- gran2_split[1]
-  var4 <- gran2_split[2]
+  # gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
+  # gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
+  # var1 <- gran1_split[1]
+  # var2 <- gran1_split[2]
+  # var3 <- gran2_split[1]
+  # var4 <- gran2_split[2]
   # parse(paste(var1, var2, sep  = "_"))
   # L1 = parse(text = paste(var1, var2, sep  = "_"))
 
-  data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(ind, var1, var2), L2 = build_gran(ind, var3, var4))
+  # data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(ind, var1, var2), L2 = build_gran(ind, var3, var4))
+
+  data_mutate <- .data %>% create_gran(gran1) %>% create_gran(gran2)
 
   # All possible combinations that are possible
-  Allcomb <- data_mutate %>% tidyr::expand(L1, L2)
+  Allcomb <- data_mutate %>% tidyr::expand(.data[[gran1]], .data[[gran2]])
 
 
-  combexist <- data_mutate %>% tibble::as_tibble(name_repair = "minimal") %>% dplyr::group_by(L1, L2) %>% dplyr::summarise(
+  combexist <- data_mutate %>% tibble::as_tibble(name_repair = "minimal") %>% dplyr::group_by(.data[[gran1]], .data[[gran2]]) %>% dplyr::summarise(
     count = dplyr::n()
   )
 
   output <- Allcomb %>%
-    dplyr::left_join(combexist, by = c("L1", "L2")) %>%
-    dplyr::select(
-      !!rlang::quo_name(gran1) := L1,
-      !!rlang::quo_name(gran2) := L2,
+    dplyr::left_join(combexist, by = c(gran1, gran2)) %>%
+    dplyr::select(gran1, gran2,
       nobs := count
     ) %>%
     dplyr::mutate(nobs = tidyr::replace_na(nobs, 0))
