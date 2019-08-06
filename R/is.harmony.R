@@ -12,8 +12,9 @@
 #' library(ggplot2)
 #' vic_elec %>% is.harmony("hour_day", "day_week")
 #' @export is.harmony
+
 is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
-  harmony_object <- harmony_obj(.data, gran1, gran2, response)
+  harmony_object <- gran_tbl(.data, gran1, gran2, response)
   names <- names(harmony_object)
   # All possible combination that are missing
   # cmbmiss <-  harmony_object %>% filter(nobs==0)
@@ -29,7 +30,7 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
   return(return_output)
 }
 
-harmony_obj <- function(.data, gran1, gran2, response = NULL, ...) {
+gran_tbl <- function(.data, gran1, gran2, response = NULL, ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }

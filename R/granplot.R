@@ -6,6 +6,7 @@
 #' @param plot_type type of distribution plot.
 #' @param response response variable to be plotted
 #' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities
+#' @param start_lim,end_lim,increment the starting, end values and increment in the sequence for constructing the quantile in the quantile plot. Default is set to "Decile" plot
 #' @param ... other arguments to be passed for appropriate labels
 #' @return a ggplot object
 #
@@ -16,7 +17,7 @@
 #' @export granplot
 
 # Recommendation plot function for two granularities
-granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_type = NULL, facet_h = 31, ...) {
+granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_type = NULL,  start_lim = 0.1, end_lim = 0.9, increment = 0.1,  facet_h = 31, ...) {
   if (is.null(response)) {
     stop("requires the following missing aesthetics: response")
   }
@@ -126,24 +127,43 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
       ggplot2::facet_wrap(~ data_dec[[gran1]]) +
       ggplot2::ylab(response) +
       ggplot2::xlab(gran1) +
-      ggplot2::ggtitle(paste0(plot_type, " plot across ", gran2, " given ", gran1))
+      ggplot2::ggtitle(paste0(plot_type, " plot across ", gran2, " given ", gran1))+
+      ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_dec[[gran2]]))))
+# prettify needs to work correctly
 
     if (proxy_homogenous$decile_nobs_proxy != 0) {
       warning("Decile plot not recommended as number of observations too few for one or more combinations")
     }
   }
-  else if (plot_type == "percentile") {
-    p <- seq(0.01, 0.99, by = 0.01)
-    percentile_names <- purrr::map_chr(p, ~ paste0(.x * 100, "%"))
+  else if (plot_type == "quantile") {
 
-    percentile_funs <- purrr::map(p, ~ purrr::partial(quantile, probs = .x, na.rm = TRUE)) %>%
-      rlang::set_names(nm = percentile_names)
+    if(start_lim<0 |start_lim>1)
+    {
+      stop("start_lim should be between 0 and 1")
+    }
+
+    if(end_lim<start_lim|end_lim>1)
+    {
+      stop("end_lim should be between start_lim and 1")
+    }
+
+    if(increment>end_lim - start_lim)
+    {
+      stop("increment should be less than the difference of start_lim and end_lim")
+    }
+
+    p <- seq(from = start_lim, to = end_lim, by = increment)
+
+    quantile_names <- purrr::map_chr(p, ~ paste0(.x * 100, "%"))
+
+    quantile_funs <- purrr::map(p, ~ purrr::partial(quantile, probs = .x, na.rm = TRUE)) %>%
+      rlang::set_names(nm = quantile_names)
 
 
     data_pcntl <- data_mutate %>%
       tibble::as_tibble() %>%
       dplyr::group_by(data_mutate[[gran1]], data_mutate[[gran2]]) %>%
-      dplyr::summarize_at(response, percentile_funs) %>%
+      dplyr::summarize_at(response, quantile_funs) %>%
       tidyr::gather(quantile, value, -c(`data_mutate[[gran1]]`, `data_mutate[[gran2]]`)) %>%
       dplyr::select(
         !!rlang::quo_name(gran1) := `data_mutate[[gran1]]`,

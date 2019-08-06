@@ -2,10 +2,11 @@ library(shiny)
 library(gravitas)
 vic_elec <- tsibbledata::vic_elec
 
-ui <- fluidPage(
+ui <- fluidPage(theme = shinythemes::shinytheme("superhero"),
   headerPanel(" Explore probability distributions for bivariate temporal granularities"),
 
   sidebarPanel(
+    tags$style(".well {background-color:[red];}"),
     fileInput("file", "Data file (tsibble as .Rda file)"),
     selectInput("ycol", "Which univariate time series to plot?", "<select>"),
     selectInput("lgran", "lowest temporal unit", gravitas:::lookup_table$granularity, "hour"),
@@ -13,8 +14,9 @@ ui <- fluidPage(
     selectInput("facet", "facet Variable", "<select>"), # "<needs update>"),
     # search_gran(vic_elec, "hour", "minute")
     selectInput("xcol", "X Variable", "<select>"),
-    radioButtons("plot_type", "Which distribution plot", choices = c("boxplot", "ridge", "violin", "lv", "density", "percentile", "decile"), selected = "boxplot")
+    selectInput("plot_type", "Which distribution plot", choices = c("boxplot", "ridge", "violin", "lv", "density", "quantile"), selected = "boxplot")
   ),
+
   mainPanel(
     tabsetPanel(
       type = "tabs",
@@ -88,6 +90,30 @@ observe({
   #        pch = 20, cex = 3)
   # })
 
+
+  # start_lim <- reactive({
+  #   isolate({
+  #     input$quantile[1]
+  #   })
+  # })
+  #
+  #
+  # end_lim <- reactive({
+  #   isolate({
+  #     input$quantile[2]
+  #   })
+  # })
+
+
+  increment <- reactive({
+    if (is.null(input$step)) return(NULL)
+    isolate({
+      input$step
+    })
+  })
+
+
+
   output$data <- renderDataTable({
     fileinput()
   })
@@ -100,6 +126,9 @@ observe({
         gran2 = input$xcol,
         response = input$ycol,
         plot_type = input$plot_type
+        # start_lim,
+        # end_lim,
+        # increment
       )
     )
   })

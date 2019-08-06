@@ -15,9 +15,22 @@
 
 
 create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
+
+
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
+
+  if(is.null(gran1)){
+    stop("gran1 must be supplied")
+  }
+
+  events <- match(gran1, names(.data))
+  if(!is.na(events))
+  {
+   return(.data)
+  }
+
   # if (is.null(gran2)) {
   #   gran2 <- g_order(gran1, order = 1)
   #   col_name <- paste(rlang::quo_name(gran1), gran2, sep = "_")
@@ -66,10 +79,10 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
   data_mutate$L1 <- factor(data_mutate$L1, labels = names_gran)
 
   data_mutate %>%
-    dplyr::select(
+    dplyr::mutate(
       !!gran1 := L1
-    ) #%>%
-    #dplyr::select(-L1)
+    ) %>%
+    dplyr::select(-L1)
 }
 
 

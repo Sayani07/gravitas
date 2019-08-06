@@ -133,13 +133,13 @@ us see which pairs form harmony/clash.
 ``` r
 library(gravitas)
 library(dplyr)
-tsibbledata::vic_elec %>% is.harmony(gran1 = "hhour_week", gran2 ="day_week")
+tsibbledata::vic_elec %>% is.harmony(gran1 = "hhour_week", gran2 = "day_week")
 #> [1] "FALSE"
 
-tsibbledata::vic_elec %>% is.harmony(gran1 = "hour_day", gran2 ="day_week")
+tsibbledata::vic_elec %>% is.harmony(gran1 = "hour_day", gran2 = "day_week")
 #> [1] "TRUE"
 
-tsibbledata::vic_elec %>% is.harmony(gran1 = "day_month", gran2 ="hhour_week")
+tsibbledata::vic_elec %>% is.harmony(gran1 = "day_month", gran2 = "hhour_week")
 #> [1] "TRUE"
 ```
 
@@ -150,7 +150,7 @@ function
 `harmony`.
 
 ``` r
-tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "hhour")) 
+tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "hhour"))
 #> # A tibble: 10 x 2
 #>    granularity1 granularity2
 #>    <fct>        <fct>       
@@ -179,11 +179,10 @@ tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand", plot_type =
 <img src="man/figures/README-example6-1.png" width="100%" /> Now, we
 want to view distribution of \`Demand’ across the next set of harmonies
 - hour\_day and day\_month and let the package decide the plot type that
-is best suitable for the number of levels in hour\_day and
-day\_month.
+is best suitable for the number of levels in hour\_day and day\_month.
 
 ``` r
-tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand") + ggplot2::scale_x_discrete(breaks = seq(1,24,2))
+tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand")
 ```
 
 <img src="man/figures/README-example7-1.png" width="100%" />
@@ -194,7 +193,7 @@ object. So we are free to add any element to the default
 plot.
 
 ``` r
-tsibbledata::vic_elec %>% granplot("day_week", "hour_day", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1,24,2))
+tsibbledata::vic_elec %>% granplot("day_week", "hour_day", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1, 24, 3))
 ```
 
 <img src="man/figures/README-example8-1.png" width="100%" />
@@ -204,7 +203,7 @@ not suitable for facetting or are clashes, then warnings will be
 provided.
 
 ``` r
-tsibbledata::vic_elec %>% granplot(gran1 = "hour_week",  gran2 = "day_week", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1,24,2))
+tsibbledata::vic_elec %>% granplot(gran1 = "hour_week", gran2 = "day_week", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1, 24, 2))
 #> Warning in granplot(., gran1 = "hour_week", gran2 = "day_week", "Demand", :
 #> granularities chosen are clashes: you might be interested to look at the
 #> set of harmonies by using harmony(.data)
