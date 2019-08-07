@@ -22,12 +22,11 @@ ui <- fluidPage(theme = shinythemes::shinytheme("superhero"),
       type = "tabs",
       tabPanel("Data",
                fixedRow(
+                 column(12, "Data summary", verbatimTextOutput("summary")),
                  column(12, "Data structure",
-                      verbatimTextOutput("str_data"),
-                  column(12, "Data summary", verbatimTextOutput("summary")
-                         )
+                      verbatimTextOutput("str_data"))
                         )
-                       )),
+                       ),
                # h3("Raw Data"),
                #  dataTableOutput("data")),
                #,verbatimTextOutput("devMessage3")
