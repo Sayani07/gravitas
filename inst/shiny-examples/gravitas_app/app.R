@@ -21,10 +21,15 @@ ui <- fluidPage(theme = shinythemes::shinytheme("superhero"),
     tabsetPanel(
       type = "tabs",
       tabPanel("Data",
-               h3("Tsibble structure"),
+               fixedRow(
+                 column(12, "Data structure",
                       verbatimTextOutput("str_data"),
-               h3("Raw Data"),
-                dataTableOutput("data")),
+                  column(12, "Data summary", verbatimTextOutput("summary")
+                         )
+                        )
+                       )),
+               # h3("Raw Data"),
+               #  dataTableOutput("data")),
                #,verbatimTextOutput("devMessage3")
                # h3("Index of tsibble"),
                # textOutput("index"),
@@ -137,9 +142,9 @@ observe({
   })
 
 
-  # output$fivepointsummary <- renderDataTable({
-  #   summary(fileinput())
-  # })
+  output$summary <- renderPrint({
+    summary(fileinput())
+  })
 
 
   output$str_data <- renderPrint({
