@@ -22,12 +22,12 @@ ui <- fluidPage(theme = shinythemes::shinytheme("superhero"),
       type = "tabs",
       tabPanel("Data",
                fluidRow(
-                 column(6, h2("Data summary"), verbatimTextOutput("summary")),
-                 column(6, h2("Data structure"), verbatimTextOutput("str_data"))
-               ),
-               fluidRow(
-                 column(12, h2("Raw data"), dataTableOutput("data"))
+                 column(6, h2("Data summary"), verbatimTextOutput("summary"), style = "height:100px"),
+                 column(6, h2("Data structure"), verbatimTextOutput("str_data"), style = "height:100px")
                )),
+               # fluidRow(
+               #   column(12, h2("Raw data"), dataTableOutput("data")))
+               # ),
 
                # fixedRow(
                #   column(12, "Data summary", verbatimTextOutput("summary")),
