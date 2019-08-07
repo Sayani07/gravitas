@@ -5,8 +5,8 @@ vic_elec <- tsibbledata::vic_elec
 ui <- fluidPage(theme = shinythemes::shinytheme("superhero"),
   headerPanel(" Explore probability distributions for bivariate temporal granularities"),
 
-  sidebarPanel(
-    tags$style(".well {background-color:[red];}"),
+  sidebarPanel(width = 3,
+    #tags$style(".well {background-color:[red];}"),
     fileInput("file", "Data file (tsibble as .Rda file)"),
     selectInput("ycol", "Which univariate time series to plot?", "<select>"),
     selectInput("lgran", "lowest temporal unit", gravitas:::lookup_table$granularity, "hour"),
@@ -20,7 +20,25 @@ ui <- fluidPage(theme = shinythemes::shinytheme("superhero"),
   mainPanel(
     tabsetPanel(
       type = "tabs",
-      tabPanel("Data", dataTableOutput("data")),
+      tabPanel("Data",
+               h3("Tsibble structure"),
+                      verbatimTextOutput("str_data"),
+               h3("Raw Data"),
+                dataTableOutput("data")),
+               #,verbatimTextOutput("devMessage3")
+               # h3("Index of tsibble"),
+               # textOutput("index"),
+               # h3("Key of tsibble"),
+               # textOutput("")),
+               # # h4("Five point summary"),
+               # # tableOutput("fivepointsummary")),
+               # # h4("Raw data"),
+               # # dataTableOutput("data")),
+               # # fluidRow(
+               # #   column(2,
+               # # tableOutput("summary")
+               # # ),
+
       tabPanel("Harmony Table", tableOutput("table")),
       tabPanel("Plot", plotOutput("plot1")),
       tabPanel("Granularity Table", dataTableOutput("grantbl"))
@@ -116,6 +134,19 @@ observe({
 
   output$data <- renderDataTable({
     fileinput()
+  })
+
+
+  # output$fivepointsummary <- renderDataTable({
+  #   summary(fileinput())
+  # })
+
+
+  output$str_data <- renderPrint({
+    str(fileinput())
+    # key = tsibble::key(fileinput()),
+    # measured_vars = tsibble::measured_vars(fileinput()),
+    # interval = tsibble::interval(fileinput()))
   })
 
   output$plot1 <- renderPlot({
