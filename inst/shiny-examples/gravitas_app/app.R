@@ -130,7 +130,7 @@ observe({
     )
   })
 
-  output$table <- renderTable({
+  output$table <- renderDataTable({
     gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran())
   })
 

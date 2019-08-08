@@ -26,8 +26,7 @@ tabcreate <- tabPanel(
       selectInput("ugran", "highest temporal unit", gravitas:::lookup_table$granularity, "week")
     ),
   mainPanel(
-    fluidRow("Data with created granularities", dataTableOutput("table")
-             )
+    fluidRow(dataTableOutput("table"))
     )
   )
 )
