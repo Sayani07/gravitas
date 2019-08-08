@@ -2,68 +2,12 @@ library(shiny)
 library(gravitas)
 vic_elec <- tsibbledata::vic_elec
 
-ui <- fluidPage(theme = shinythemes::shinytheme("superhero"),
-  headerPanel(" Explore probability distributions for bivariate temporal granularities"),
 
-  sidebarPanel(width = 3,
-    #tags$style(".well {background-color:[red];}"),
-    fileInput("file", "Data file (tsibble as .Rda file)"),
-    selectInput("ycol", "Which univariate time series to plot?", "<select>"),
-    selectInput("lgran", "lowest temporal unit", gravitas:::lookup_table$granularity, "hour"),
-    selectInput("ugran", "highest temporal unit", gravitas:::lookup_table$granularity, "week"),
-    selectInput("facet", "facet Variable", "<select>"), # "<needs update>"),
-    # search_gran(vic_elec, "hour", "minute")
-    selectInput("xcol", "X Variable", "<select>"),
-    selectInput("plot_type", "Which distribution plot", choices = c("boxplot", "ridge", "violin", "lv", "density", "quantile"), selected = "boxplot")
-  ),
-
-  mainPanel(
-    tabsetPanel(
-      type = "tabs",
-      tabPanel("Data",
-               fluidRow(
-                 column(6, h2("Data summary"), verbatimTextOutput("summary"), style = "height:100px"),
-                 column(6, h2("Data structure"), verbatimTextOutput("str_data"), style = "height:100px")
-               )),
-               # fluidRow(
-               #   column(12, h2("Raw data"), dataTableOutput("data")))
-               # ),
-
-               # fixedRow(
-               #   column(12, "Data summary", verbatimTextOutput("summary")),
-               #   column(12, "Data structure",
-               #        verbatimTextOutput("str_data"))
-               #          )
-               #         ),
-
-
-
-
-               # h3("Raw Data"),
-               #  dataTableOutput("data")),
-               #,verbatimTextOutput("devMessage3")
-               # h3("Index of tsibble"),
-               # textOutput("index"),
-               # h3("Key of tsibble"),
-               # textOutput("")),
-               # # h4("Five point summary"),
-               # # tableOutput("fivepointsummary")),
-               # # h4("Raw data"),
-               # # dataTableOutput("data")),
-               # # fluidRow(
-               # #   column(2,
-               # # tableOutput("summary")
-               # # ),
-
-      tabPanel("Harmony Table", tableOutput("table")),
-      tabPanel("Plot", plotOutput("plot1")),
-      tabPanel("Granularity Table", dataTableOutput("grantbl"))
-
-    )
-  )
-)
-
+# source('inst/shiny-examples/gravitas_app/ui.R', local = TRUE)
+source('ui.R', local = TRUE)
 server <- function(input, output, session) {
+
+  # reactive file input
   fileinput <- reactive({
     if (is.null(input$file)) return(vic_elec)
     inFile <- isolate({
@@ -75,6 +19,8 @@ server <- function(input, output, session) {
     tmp[[ls(tmp)[1]]] %>% tsibble::as_tsibble()
   })
 
+  # reactive measured variable
+
 observe({
     updateSelectInput(session,
                       "ycol",
@@ -82,7 +28,7 @@ observe({
     )
   })
 
-
+# reactive lgran variable
   lgran <- reactive({
     if (is.null(input$lgran)) return(NULL)
     isolate({
@@ -91,6 +37,8 @@ observe({
   })
 
 
+  # reactive ugran variable
+
   ugran <- reactive({
     if (is.null(input$ugran)) return("year")
     isolate({
@@ -98,8 +46,7 @@ observe({
     })
   })
 
-# dynamically update dropdown list
-
+# dynamically update dropdown list for facet - reactive
 
   observe({
     my_choices <- search_gran(fileinput(), input$ugran, input$lgran)
@@ -108,6 +55,9 @@ observe({
       choices = my_choices
     )
   })
+
+  # dynamically update dropdown list for x-axis - reactive
+
   observe({
     my_choices <- search_gran(fileinput(), input$ugran, input$lgran)
     my_choices2 <- my_choices[-match(input$facet, my_choices)]
@@ -139,12 +89,12 @@ observe({
   # })
 
 
-  increment <- reactive({
-    if (is.null(input$step)) return(NULL)
-    isolate({
-      input$step
-    })
-  })
+  # increment <- reactive({
+  #   if (is.null(input$step)) return(NULL)
+  #   isolate({
+  #     input$step
+  #   })
+  # })
 
 
 
@@ -191,7 +141,6 @@ observe({
 }
 
 shinyApp(ui = ui, server = server)
-
 
 
 
