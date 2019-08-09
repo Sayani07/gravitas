@@ -132,27 +132,53 @@ observe({
   )
   })
 
-  output$plot1 <- renderPlot({
+  # output$plot1 <- renderPlot({
+  #
+  #   capture_all_problems(plot_shiny())
+  # })
 
-    capture_all_problems(plot_shiny())
+
+
+  warn_txt = reactive({
+    capture_all_problems(
+    granplot(
+      .data = fileinput(),
+      gran1 = input$facet,
+      gran2 = input$xcol,
+      response = input$ycol,
+      plot_type = input$plot_type
+    )
+    )
   })
 
-
   output$warning_text <- renderUI({
-
     #capture_all_problems(plot_shiny())$warning
-
-   warn_txt = capture_all_problems(plot_shiny())
+#
+#    warn_txt = capture_all_problems(
+#      granplot(
+#        .data = fileinput(),
+#        gran1 = input$facet,
+#        gran2 = input$xcol,
+#        response = input$ycol,
+#        plot_type = input$plot_type
+#      )
+#    )
    warn = " "
+   warn_txt = warn_txt()
    len_warn_txt <- length(warn_txt$warning)
 
    for(i in 1:len_warn_txt)
    {
-     warn = paste(warn_txt$warning[i], warn, sep = "br/")
+     warn = paste(h3(warn_txt$warning[i]), warn, sep = "<br/>")
    }
 
     HTML(warn)
   })
+
+  output$plot1 <- renderPlot({
+    warn_txt()
+  })
+
       #restore warnings, delayed so plot is completed
       # shinyjs::delay(expr =({
       #   options(warn = storeWarn)

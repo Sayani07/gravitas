@@ -18,6 +18,10 @@
 
 # Recommendation plot function for two granularities
 granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_type = NULL,  start_lim = 0.1, end_lim = 0.9, increment = 0.1,  facet_h = 31, ...) {
+  op <- options("warn")
+  on.exit(options(op))
+  options(warn=1)
+
   if (is.null(response)) {
     stop("requires the following missing aesthetics: response")
   }
@@ -26,7 +30,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
   proxy_harmony <- is.harmony(.data, gran1, gran2, response = NULL, ...)
 
   if (proxy_harmony == "FALSE") {
-    warning("granularities chosen are clashes: you might be interested to look at the set of harmonies by using harmony(.data)")
+    warning("granularities chosen are Clashes:\nyou might be interested to look at the set of harmonies in Harmony table\nRefer to Granularity table for finding out more on why chosen granularities are Clashes")
   }
 
   proxy_homogenous <- is.homogenous(.data, gran1, gran2, response = NULL, ...)
