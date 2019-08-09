@@ -10,13 +10,15 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
-#' tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
 #' tsibbledata::vic_elec %>% harmony(ugran = "day")
 #' @export harmony
-
+# tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
 
 harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, ...) {
+
   set1 <- search_gran(.data, ugran, lgran, filter_in,  filter_out, ...)
+
+
   if (length(set1) == 1) {
     stop("Only one granularity ", set1, " can be formed. Function requires checking compatibility for bivariate granularities")
   }
@@ -71,7 +73,7 @@ harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filte
   united_merge %>% dplyr::arrange(x, y) %>% dplyr::select(-c(harmony, output)) %>% dplyr::filter(check_harmony == 1) %>% dplyr::select(-check_harmony) %>% dplyr::rename(granularity1 = x, granularity2 = y)
 }
 
-
-comp_tbl <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, ...) {
-  harmony(.data, ugran, lgran,  filter_in, filter_out, ...) %>% dplyr::mutate(check_harmony = 1) %>% tidyr::spread(granularity2, check_harmony) %>% replace(., is.na(.), "")
-}
+#
+# comp_tbl <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, ...) {
+#   harmony(.data, ugran, lgran,  filter_in, filter_out, ...) %>% dplyr::mutate(check_harmony = 1) %>% tidyr::spread(granularity2, check_harmony) %>% replace(., is.na(.), "")
+# }

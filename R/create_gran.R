@@ -105,6 +105,11 @@ build_gran <- function(x, lgran = NULL, ugran = NULL, ...) {
   }
 
 
+  if (g_order(lgran, ugran) == 0) {
+    stop("lgran and ugran should be distinct")
+  }
+
+
 
   # if(index_lgran > index_ugran)
   # {

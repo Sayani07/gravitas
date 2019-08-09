@@ -40,7 +40,7 @@ tabplot <- tabPanel(
       selectInput("ycol", "Which univariate time series to plot?", "<select>"),
       selectInput("facet", "Facet Variable", "<select>"),
       selectInput("xcol", "X-axis Variable", "<select>"),
-      selectInput("plot_type", "Which distribution plot", choices = c("boxplot", "ridge", "violin", "lv", "density", "decile", "quantile"), selected = "boxplot"),
+      selectInput("plot_type", "Which distribution plot", choices = c("boxplot", "ridge", "violin", "lv",  "decile", "quantile"), selected = "boxplot"),
       textInput('vec1', 'Enter a probability vector (comma delimited) only if quantile plot is chosen', "0.1,0.5,0.9")),
     # shinyjs::useShinyjs(),
     # actionButton("btn","Click me")),
@@ -58,11 +58,11 @@ tabplot <- tabPanel(
 # Granularity table tab
 tabgranularity <- tabPanel(
   "Granularity Table", fluidPage(
-    sidebarPanel(
-      # Input csv file
-      fileInput("file", "Data file (.csv format)",
-                accept = c("text/csv", "text/comma-separated-values,text/plain", ".csv")
-      )),
+    # sidebarPanel(
+    #   # Input csv file
+    #   fileInput("file", "Data file (.csv format)",
+    #             accept = c("text/csv", "text/comma-separated-values,text/plain", ".csv")
+    #   )),
 
       mainPanel("Granularity Table", dataTableOutput("grantbl")
                 )

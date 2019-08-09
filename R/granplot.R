@@ -90,6 +90,10 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
   else if (plot_type == "violin") {
     plot <- p + ggplot2::geom_violin(...)
   }
+#
+#   else if (plot_type == "density") {
+#     plot <- p + ggplot2::geom_density(position = "stack",...)
+#   }
 
   else if (plot_type == "lv") {
     plot <-
