@@ -68,6 +68,12 @@ observe({
     )
   })
 
+  # dynamically update dropdown list for x-axis - reactive
+
+  qvec <- reactive({
+    as.numeric(unlist(strsplit(input$vec1,",")))
+  }
+  )
 
   # output$plot1 <- renderPlot({
   #   par(mar = c(5.1, 4.1, 0, 1))
@@ -118,25 +124,26 @@ observe({
   # not suppress warnings
   # storeWarn<- getOption("warn")
   # options(warn = 1)
-
-  plot_shiny <-   reactive({
-    granplot(
-    .data = fileinput(),
-    gran1 = input$facet,
-    gran2 = input$xcol,
-    response = input$ycol,
-    plot_type = input$plot_type
-    # start_lim,
-    # end_lim,
-    # increment
-  )
-  })
+#
+#   plot_shiny <-   reactive({
+#     granplot(
+#     .data = fileinput(),
+#     gran1 = input$facet,
+#     gran2 = input$xcol,
+#     response = input$ycol,
+#     plot_type = input$plot_type
+#     # start_lim,
+#     # end_lim,
+#     # increment
+#   )
+#   })
 
   # output$plot1 <- renderPlot({
   #
   #   capture_all_problems(plot_shiny())
   # })
 
+# output for probability vector
 
 
   warn_txt = reactive({
@@ -146,7 +153,8 @@ observe({
       gran1 = input$facet,
       gran2 = input$xcol,
       response = input$ycol,
-      plot_type = input$plot_type
+      plot_type = input$plot_type,
+      quantile_prob = qvec()
     )
     )
   })
