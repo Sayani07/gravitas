@@ -40,14 +40,15 @@ tabplot <- tabPanel(
       selectInput("ycol", "Which univariate time series to plot?", "<select>"),
       selectInput("facet", "Facet Variable", "<select>"),
       selectInput("xcol", "X-axis Variable", "<select>"),
-      selectInput("plot_type", "Which distribution plot", choices = c("boxplot", "ridge", "violin", "lv", "density", "quantile"), selected = "boxplot"),
-    shinyjs::useShinyjs(),
-    actionButton("btn","Click me")),
+      selectInput("plot_type", "Which distribution plot", choices = c("boxplot", "ridge", "violin", "lv", "density", "quantile"), selected = "boxplot")),
+    # shinyjs::useShinyjs(),
+    # actionButton("btn","Click me")),
 
-  mainPanel(conditionalPanel(condition = "output.warnstat == 'Error'",
-                             verbatimTextOutput("warnmsg")),
+  mainPanel(
+    # conditionalPanel(condition = "output.warnstat == 'Error'",
+    #                          verbatimTextOutput("warnmsg")),
     fluidRow(plotOutput("plot1", width = "100%"),
-             textOutput("text"))
+             htmlOutput("warning_text"))
              #"Warning", verbatimTextOutput("warning"))
     )
   )

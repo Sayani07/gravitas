@@ -133,7 +133,17 @@ observe({
   })
 
   output$plot1 <- renderPlot({
-  plot_shiny()
+
+    capture_all_problems(plot_shiny())
+  })
+
+
+  output$warning_text <- renderUI({
+
+    #capture_all_problems(plot_shiny())$warning
+    HTML(paste("Please help me",
+    "I can't find the solution",
+    "Whatever", sep = '<br/>'))
   })
       #restore warnings, delayed so plot is completed
       # shinyjs::delay(expr =({
@@ -141,16 +151,16 @@ observe({
       # }) ,ms = 100)
       #
       # plott
-
-  observeEvent(input$btn, {
-        withCallingHandlers({
-          shinyjs::html(id = "text", html = "")
-          plot_shiny()
-        },
-        warning = function(m) {
-          shinyjs::html(id = "text", html = m$message, add = TRUE)
-        })
-  })
+#
+#   observeEvent(input$btn, {
+#         withCallingHandlers({
+#           shinyjs::html(id = "text", html = "")
+#           plot_shiny()
+#         },
+#         warning = function(m) {
+#           shinyjs::html(id = "text", html = m$message, add = TRUE)
+#         })
+#   })
 
   output$table <- renderDataTable({
     gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran())
