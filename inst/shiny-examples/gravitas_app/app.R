@@ -5,6 +5,7 @@ vic_elec <- tsibbledata::vic_elec
 
 # source('inst/shiny-examples/gravitas_app/ui.R', local = TRUE)
 source('ui.R', local = TRUE)
+source('global_shiny.R', local = TRUE)
 server <- function(input, output, session) {
 
   # reactive file input
@@ -114,20 +115,41 @@ observe({
     # measured_vars = tsibble::measured_vars(fileinput()),
     # interval = tsibble::interval(fileinput()))
   })
+  # not suppress warnings
+  # storeWarn<- getOption("warn")
+  # options(warn = 1)
+
+  plot_shiny <-   reactive({
+    granplot(
+    .data = fileinput(),
+    gran1 = input$facet,
+    gran2 = input$xcol,
+    response = input$ycol,
+    plot_type = input$plot_type
+    # start_lim,
+    # end_lim,
+    # increment
+  )
+  })
 
   output$plot1 <- renderPlot({
-    suppressWarnings(
-      granplot(
-        .data = fileinput(),
-        gran1 = input$facet,
-        gran2 = input$xcol,
-        response = input$ycol,
-        plot_type = input$plot_type
-        # start_lim,
-        # end_lim,
-        # increment
-      )
-    )
+  plot_shiny()
+  })
+      #restore warnings, delayed so plot is completed
+      # shinyjs::delay(expr =({
+      #   options(warn = storeWarn)
+      # }) ,ms = 100)
+      #
+      # plott
+
+  observeEvent(input$btn, {
+        withCallingHandlers({
+          shinyjs::html(id = "text", html = "")
+          plot_shiny()
+        },
+        warning = function(m) {
+          shinyjs::html(id = "text", html = m$message, add = TRUE)
+        })
   })
 
   output$table <- renderDataTable({
