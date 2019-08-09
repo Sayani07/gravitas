@@ -141,9 +141,17 @@ observe({
   output$warning_text <- renderUI({
 
     #capture_all_problems(plot_shiny())$warning
-    HTML(paste("Please help me",
-    "I can't find the solution",
-    "Whatever", sep = '<br/>'))
+
+   warn_txt = capture_all_problems(plot_shiny())
+   warn = " "
+   len_warn_txt <- length(warn_txt$warning)
+
+   for(i in 1:len_warn_txt)
+   {
+     warn = paste(warn_txt$warning[i], warn, sep = "br/")
+   }
+
+    HTML(warn)
   })
       #restore warnings, delayed so plot is completed
       # shinyjs::delay(expr =({
