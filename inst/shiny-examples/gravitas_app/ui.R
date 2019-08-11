@@ -41,7 +41,7 @@ tabplot <- tabPanel(
       selectInput("facet", "Facet Variable", "<select>"),
       selectInput("xcol", "X-axis Variable", "<select>"),
       selectInput("plot_type", "Which distribution plot", choices = c("boxplot", "ridge", "violin", "lv",  "decile", "quantile"), selected = "boxplot"),
-      textInput('vec1', 'Enter a probability vector (comma delimited) only if quantile plot is chosen', "0.1,0.5,0.9")),
+      textInput('vec1', 'Enter a probability vector (comma delimited) only if quantile plot is chosen', "0.1, 0.5, 0.9")),
     # shinyjs::useShinyjs(),
     # actionButton("btn","Click me")),
 

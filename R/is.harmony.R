@@ -3,6 +3,7 @@
 #' @param .data A tsibble object.
 #' @param gran1 One of the temporal granularities to check for harmonies.
 #' @param gran2 The second temporal granularity in the pair.
+#' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.
 #' @param ... Added arguments to be passed
 #' @param response Variable for which summary is desired per combination
 #' @return TRUE if two granularties are harmonies.
@@ -13,7 +14,7 @@
 #' vic_elec %>% is.harmony("hour_day", "day_week")
 #' @export is.harmony
 
-is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
+is.harmony <- function(.data, gran1, gran2, response = NULL, facet_h = 31, ...) {
   harmony_object <- gran_tbl(.data, gran1, gran2, response)
   names <- names(harmony_object)
   # All possible combination that are missing
@@ -21,7 +22,7 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, ...) {
   cmbmiss <- any(harmony_object$nobs == 0)
   facet_nlevel <- harmony_object[, 1] %>% dplyr::distinct()
 
-  if (cmbmiss == "TRUE" | nrow(facet_nlevel) > 31) {
+  if (cmbmiss == "TRUE" | nrow(facet_nlevel) > facet_h) {
     return_output <- "FALSE"
   } else {
     return_output <- "TRUE"

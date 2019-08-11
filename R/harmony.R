@@ -18,6 +18,22 @@ harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filte
 
   set1 <- search_gran(.data, ugran, lgran, filter_in,  filter_out, ...)
 
+  # capturing levels of all granularities from search_gran
+  data_mutate <-  .data
+
+  for(i in 1 :length(set1))
+  {
+  data_mutate <- data_mutate %>% create_gran(set1[i])
+  }
+
+  ilevel <- array()
+  for(i in 1 : length(set1))
+  {
+    ilevel[i] <- data_mutate %>% dplyr::distinct(.data[[set1[[i]]]]) %>% nrow()
+  }
+
+  levels_tbl <- tibble::tibble(set1, ilevel)
+
 
   if (length(set1) == 1) {
     stop("Only one granularity ", set1, " can be formed. Function requires checking compatibility for bivariate granularities")
@@ -70,7 +86,7 @@ harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filte
   united_merge$x <- factor(united_merge$x, levels = set1)
   united_merge$y <- factor(united_merge$y, levels = set1)
 
-  united_merge %>% dplyr::arrange(x, y) %>% dplyr::select(-c(harmony, output)) %>% dplyr::filter(check_harmony == 1) %>% dplyr::select(-check_harmony) %>% dplyr::rename(granularity1 = x, granularity2 = y)
+  united_merge %>% dplyr::arrange(x, y) %>% dplyr::select(-c(harmony, output)) %>% dplyr::filter(check_harmony == 1) %>% dplyr::select(-check_harmony) %>% dplyr::rename(facet_variable = x, x_variable = y) %>% dplyr::left_join(levels_tbl, by = c("facet_variable" = "set1")) %>% dplyr::left_join(levels_tbl, by = c("x_variable" = "set1")) %>% dplyr::rename("facet_levels"="ilevel.x", "x_levels"="ilevel.y")
 }
 
 #

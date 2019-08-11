@@ -29,6 +29,5 @@ Get possible set of harmonies for a given tsibble
 \examples{
 library(dplyr)
 library(tsibbledata)
-tsibbledata::gafa_stock \%>\% harmony(lgran = "hour", ugran = "week")
 tsibbledata::vic_elec \%>\% harmony(ugran = "day")
 }

@@ -5,8 +5,8 @@
 \title{Plot probability distribution of univariate series across bivariate temporal granularities}
 \usage{
 granplot(.data, gran1 = NULL, gran2 = NULL, response = NULL,
-  plot_type = NULL, start_lim = 0.1, end_lim = 0.9,
-  increment = 0.1, facet_h = 31, ...)
+  plot_type = NULL, quantile_prob = seq(0.1, 0.9, 0.1), facet_h = 31,
+  ...)
 }
 \arguments{
 \item{.data}{a tsibble}
@@ -19,7 +19,7 @@ granplot(.data, gran1 = NULL, gran2 = NULL, response = NULL,
 
 \item{plot_type}{type of distribution plot.}
 
-\item{start_lim, end_lim, increment}{the starting, end values and increment in the sequence for constructing the quantile in the quantile plot. Default is set to "Decile" plot}
+\item{quantile_prob}{numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "Decile" plot}
 
 \item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities}
 

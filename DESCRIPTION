@@ -31,7 +31,8 @@ Imports:
   lvplot,
   ggridges,
   shiny,
-  shinythemes
+  shinythemes,
+  shinyjs
 Suggests:
     tsibbledata (>= 0.0.0.9000),
     purrr (>= 0.3.2),

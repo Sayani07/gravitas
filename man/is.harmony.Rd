@@ -4,7 +4,7 @@
 \alias{is.harmony}
 \title{Check if two temporal granularities are harmonies}
 \usage{
-is.harmony(.data, gran1, gran2, response = NULL, ...)
+is.harmony(.data, gran1, gran2, response = NULL, facet_h = 31, ...)
 }
 \arguments{
 \item{.data}{A tsibble object.}
@@ -14,6 +14,8 @@ is.harmony(.data, gran1, gran2, response = NULL, ...)
 \item{gran2}{The second temporal granularity in the pair.}
 
 \item{response}{Variable for which summary is desired per combination}
+
+\item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.}
 
 \item{...}{Added arguments to be passed}
 }

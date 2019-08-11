@@ -25,6 +25,7 @@ search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, f
     stop("Argument ugran is missing, with no default")
   }
 
+
   if (tsibble::is_regular(.data)) {
     interval_ts <- tsibble::interval(.data)
     data_interval <- interval_ts[interval_ts != 0]
@@ -53,6 +54,11 @@ search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, f
     }
   }
 
+  if (g_order(lgran, ugran) == 0) {
+    stop("lgran and ugran should be distinct")
+  }
+
+
   if (g_order(lgran, ugran) == 1) {
     stop("Only one granularity ", lgran, "_", {
       ugran
@@ -74,13 +80,17 @@ search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, f
     if (length(filter_in) == 1) {
       stop("Atleast two temporal units to be provided for filter_in ")
     }
-    if (!all(filter_in %in% granularity)) {
-      stop("temporal units to be filtered in not found: make sure vector contains units which are between lgran and ugran")
+
+    data_names <- names(.data)
+    exhaust_set <-  c(data_names, granularity)
+    if (!all(filter_in %in% exhaust_set)) {
+      stop("temporal units to be filtered in not found: make sure vector contains units which are between lgran and ugran or appear in the data")
     }
 
-    filter_in <- filter_in[match(granularity, filter_in)]
+    filter_in <- filter_in[match(exhaust_set, filter_in)]
     filter_in <- filter_in[!is.na(filter_in)]
     gran_split <- gran_split[match(filter_in, gran_split)]
+    # gran_split <- c(gran_split, filter_in) %>% unique()
     gran <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
   }
 

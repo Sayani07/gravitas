@@ -17,3 +17,6 @@ Runs a local shiny app that demonstrates how distributions of univariate #' time
 run_app()
 }
 }
+\author{
+Sayani Gupta
+}
