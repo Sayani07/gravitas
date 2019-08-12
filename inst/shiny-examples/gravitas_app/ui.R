@@ -48,7 +48,7 @@ tabplot <- tabPanel(
   mainPanel(
     # conditionalPanel(condition = "output.warnstat == 'Error'",
     #                          verbatimTextOutput("warnmsg")),
-    fluidRow(fillCol(plotOutput("plot1", height = "100%"),
+    fluidRow(plotOutput("plot1", width = "100%"),
              htmlOutput("warning_text"))
              #"Warning", verbatimTextOutput("warning"))
     )
