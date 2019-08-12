@@ -88,3 +88,31 @@ gran_tbl <- function(.data, gran1, gran2, response = NULL, ...) {
   #   }
   return(output)
 }
+
+clash_reason <- function(.data, gran1, gran2, response = NULL, ...) {
+
+ gran_full <-  gran_tbl(.data, gran1, gran2, response = NULL, ...)
+ if(any(gran_full$nobs==0))
+ {
+  clash_combination <- gran_full %>% filter(nobs==0) %>% select(gran1, gran2)
+
+ distinct_gran1 <- gran_full %>% distinct(gran_full[[gran1]]) %>% nrow()
+ distinct_gran2 <- gran_full %>% distinct(gran_full[[gran2]]) %>% nrow()
+
+ # inter facet homogeneity
+
+ data_count <- gran_tbl(.data, gran1, gran2, response, ...)
+
+ # inter_facet_homogeneity <- gran_full %>% dplyr::group_by(gran1) %>% dplyr::summarise(min_c = min(nobs), max_c = max(nobs), variation = sd(nobs)) %>% sum = sum(dplyr::if_else(min_c == max_c, 0, 1)) %>% dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
+ #
+ # # intra facet homogeneity
+ # intra_facet_homogeneity <- data_count %>% dplyr::group_by(!!rlang::quo_name(gran2)) %>% dplyr::summarise(min_c = min(nobs), max_c = max(nobs)) %>% dplyr::summarise(sum = sum(dplyr::if_else(min_c == max_c, 0, 1))) %>% dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
+
+
+ return(list(paste(gran1, "has", distinct_gran1, "distinct levels and", gran2, "has", distinct_gran2, "distinct levels", "with the following structurally empty combinations. They are structurally empty as the structure of calendar does not allow these combinations to appear together."), clash_combination))
+}
+ else{
+   return(paste("Good Work! You have chosen harmonies. Go ahead and save the plot from the Plot Table using your choice of distribution plot."))
+ }
+
+}

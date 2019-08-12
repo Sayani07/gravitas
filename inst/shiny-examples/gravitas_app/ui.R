@@ -48,7 +48,7 @@ tabplot <- tabPanel(
   mainPanel(
     # conditionalPanel(condition = "output.warnstat == 'Error'",
     #                          verbatimTextOutput("warnmsg")),
-    fluidRow(plotOutput("plot1", width = "100%"),
+    fluidRow(fillCol(plotOutput("plot1", height = "100%"),
              htmlOutput("warning_text"))
              #"Warning", verbatimTextOutput("warning"))
     )
@@ -64,7 +64,8 @@ tabgranularity <- tabPanel(
     #             accept = c("text/csv", "text/comma-separated-values,text/plain", ".csv")
     #   )),
 
-      mainPanel("Granularity Table", dataTableOutput("grantbl")
+      mainPanel(fluidRow(verbatimTextOutput("clash_txt"),
+                         dataTableOutput("grantbl"))
                 )
     )
 )

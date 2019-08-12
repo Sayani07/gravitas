@@ -208,9 +208,17 @@ observe({
     gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran())
   })
 
-  output$grantbl <- renderDataTable({
-    gravitas:::gran_tbl(fileinput(), gran1 = input$facet , gran2 = input$xcol)
+
+  clash_reason <- reactive(gravitas:::clash_reason(fileinput(), gran1 = input$facet , gran2 = input$xcol))
+
+  output$clash_txt <- renderText({
+    clash_reason()[[1]]
   })
+
+  output$grantbl <- renderDataTable({
+    clash_reason()[[2]]
+  })
+
 
 }
 
