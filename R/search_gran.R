@@ -76,24 +76,81 @@ search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, f
   gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
 
 
+  # if (!is.null(filter_in)) {
+  #   if (length(filter_in) == 1) {
+  #     stop("Atleast two temporal units to be provided for filter_in ")
+  #   }
   if (!is.null(filter_in)) {
-    if (length(filter_in) == 1) {
-      stop("Atleast two temporal units to be provided for filter_in ")
-    }
-
     data_names <- names(.data)
     exhaust_set <-  c(data_names, granularity)
     if (!all(filter_in %in% exhaust_set)) {
       stop("temporal units to be filtered in not found: make sure vector contains units which are between lgran and ugran or appear in the data")
     }
+#if all filter_in are column variables
+ if(all(filter_in %in% data_names)==TRUE)
+ {
+    gran_sub <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
 
-    filter_in <- filter_in[match(exhaust_set, filter_in)]
-    filter_in <- filter_in[!is.na(filter_in)]
-    gran_split <- gran_split[match(filter_in, gran_split)]
-    # gran_split <- c(gran_split, filter_in) %>% unique()
-    gran <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
-  }
+    gran <- c(gran_sub, filter_in)
+ }
 
+# if all filter_in are not column variables
+
+      else
+      {
+           filter_in_sub <- filter_in[match(granularity, filter_in)]
+           filter_in_sub <- filter_in_sub[!is.na(filter_in_sub)]
+           gran_split <- c(filter_in_sub, gran_split) %>% unique()
+           gran_sub <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
+
+        #all are temporal units
+        if(all(filter_in %in% granularity)==TRUE)
+{
+         gran <-  gran_sub
+}
+
+        else{
+          filter_in_sub1 <- filter_in[match(data_names, filter_in)]
+          filter_in_sub2 <- filter_in_sub1[!is.na(filter_in_sub1)]
+        gran <- c(gran_sub, filter_in_sub2)
+        }
+      }
+    }
+
+  # if(all(filter_in %in% data_names)==TRUE){
+  #       gran_input <- filter_in[!is.na(match(filter_in, data_names))]
+  #       gran2 <- c(gran, gran_input)
+  #       gran <- gran2
+  #     }
+  #
+
+ #   {
+ #    filter_in <- filter_in[match(granularity, filter_in)]
+ #    filter_in <- filter_in[!is.na(filter_in)]
+ #    gran_split <- gran_split[match(filter_in, gran_split)]
+ #    gran1 <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
+ #    gran <- gran1
+ # }
+# if all filter_in are column variables
+      # if(all(filter_in %in% data_names)==TRUE){
+      # gran_input <- filter_in[!is.na(match(filter_in, data_names))]
+      # gran2 <- c(gran, gran_input)
+      # gran <- gran2
+      # }
+# if some filter_in are temporal units and others are column variables
+  #     else{
+  #       gran <- c(gran1, gran2)
+  #       filter_in <- filter_in[match(granularity, filter_in)]
+  #       filter_in <- filter_in[!is.na(filter_in)]
+  #       gran_split <- gran_split[match(filter_in, gran_split)]
+  #       # gran_split <- c(gran_split, filter_in) %>% unique()
+  #       gran1 <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
+  #
+  #     }
+  #
+  #
+  #   }
+  # }
   else if (!is.null(filter_out)) {
     if (!all(filter_out %in% granularity)) {
       stop("temporal units to be filtered out not found: make sure vector contains units which are between lgran and ugran")
