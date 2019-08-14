@@ -16,6 +16,7 @@
 
 harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, ...) {
 
+
   set1 <- search_gran(.data, ugran, lgran, filter_in,  filter_out, ...)
 
   # capturing levels of all granularities from search_gran
@@ -32,7 +33,7 @@ harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filte
     ilevel[i] <- data_mutate %>% dplyr::distinct(.data[[set1[[i]]]]) %>% nrow()
   }
 
-  levels_tbl <- tibble::tibble(set1, ilevel)
+  levels_tbl <- tibble::tibble(set1, ilevel, .name_repair = "minimal")
 
 
   if (length(set1) == 1) {

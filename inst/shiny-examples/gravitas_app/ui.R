@@ -23,7 +23,8 @@ tabcreate <- tabPanel(
     sidebarPanel(
       # Input csv file
       selectInput("lgran", "lowest temporal unit", gravitas:::lookup_table$granularity, "hour"),
-      selectInput("ugran", "highest temporal unit", gravitas:::lookup_table$granularity, "week")
+      selectInput("ugran", "highest temporal unit", gravitas:::lookup_table$granularity, "week"),
+      selectInput("filter_in", "Any other temporal events like Public Holidays/Special Events/Weekends (logical/character vector)", "<select>")
     ),
   mainPanel(
     fluidRow(dataTableOutput("table"))

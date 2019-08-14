@@ -15,6 +15,12 @@
 #' @export is.harmony
 
 is.harmony <- function(.data, gran1, gran2, response = NULL, facet_h = 31, ...) {
+
+  if(gran1==gran2)
+  {
+    stop("the two granularities should be distinct")
+  }
+
   harmony_object <- gran_tbl(.data, gran1, gran2, response)
   names <- names(harmony_object)
   # All possible combination that are missing
@@ -94,10 +100,10 @@ clash_reason <- function(.data, gran1, gran2, response = NULL, ...) {
  gran_full <-  gran_tbl(.data, gran1, gran2, response = NULL, ...)
  if(any(gran_full$nobs==0))
  {
-  clash_combination <- gran_full %>% filter(nobs==0) %>% select(gran1, gran2)
+  clash_combination <- gran_full %>% dplyr::filter(nobs==0) %>% dplyr::select(gran1, gran2)
 
- distinct_gran1 <- gran_full %>% distinct(gran_full[[gran1]]) %>% nrow()
- distinct_gran2 <- gran_full %>% distinct(gran_full[[gran2]]) %>% nrow()
+ distinct_gran1 <- gran_full %>% dplyr::distinct(gran_full[[gran1]]) %>% nrow()
+ distinct_gran2 <- gran_full %>% dplyr::distinct(gran_full[[gran2]]) %>% nrow()
 
  # inter facet homogeneity
 

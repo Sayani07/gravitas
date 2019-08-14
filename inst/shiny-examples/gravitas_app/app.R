@@ -47,6 +47,18 @@ observe({
     })
   })
 
+
+  # reactive filter_in variable
+
+  observe({
+    updateSelectInput(session,
+                      "filter_in",
+                      choices = fileinput() %>% tsibble::measured_vars()
+                      #select_if(is.logical, is.character) if revision is required for selecting all logical or character vector from teh data
+    )
+  })
+
+
 # dynamically update dropdown list for facet - reactive
 
   observe({
@@ -205,7 +217,7 @@ observe({
 #   })
 
   output$table <- renderDataTable({
-    gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran())
+    gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran(), filter_in =  input$filter_in)
   })
 
 
