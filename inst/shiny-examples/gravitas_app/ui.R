@@ -4,10 +4,10 @@ tabInput <- tabPanel(
   "Input", fluidPage(
     sidebarPanel(
       # Input csv file
-      fileInput("file", "Data file (tsibble as .Rda file)")
-      ),
+      fileInput("file", "Data file (tsibble as .Rda file)"),
+      wellPanel(helpText(HTML("Tsibble provides a data class of tbl_ts to represent tidy temporal data.","It consists of a <b><i>time index</i></b>, <b><i>key</i></b> and other <b><i>measured variables</i></b> in a data-centric format, which makes it easier to work with temporal data.", "To learn more about it, please visit"), a("tsibble", href = "https://tsibble.tidyverts.org/", target = "_blank")
+      ))),
     mainPanel(
-    "Data",
        fluidRow(
          column(6, h2("Data summary"), verbatimTextOutput("summary"), style = "height:100px"),
          column(6, h2("Data structure"), verbatimTextOutput("str_data"), style = "height:100px")

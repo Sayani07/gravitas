@@ -129,7 +129,7 @@ observe({
 
 
   output$str_data <- renderPrint({
-    str(fileinput())
+    fileinput()
     # key = tsibble::key(fileinput()),
     # measured_vars = tsibble::measured_vars(fileinput()),
     # interval = tsibble::interval(fileinput()))
