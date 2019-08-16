@@ -79,7 +79,7 @@ tabgranularity <- tabPanel(
 
 
 ### Combined tabs
-ui <- fluidPage(theme = shinythemes::shinytheme("superhero"),
+ui <- fluidPage(theme = shinythemes::shinytheme("united"),
                 tabsetPanel(
                   type = "tabs",
                     tabInput,
