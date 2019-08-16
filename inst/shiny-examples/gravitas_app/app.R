@@ -81,40 +81,37 @@ observe({
     )
   })
 
+  # facet <- reactive({
+  #   input$facet
+  # })
+  #
+  #
+  # xcol <- reactive({
+  #   input$xcol
+  # })
+
+  # flip granularities if checkbox is checked
+
+  observeEvent(input$flip_axis, {
+    updateSelectInput(session,
+                      "xcol",
+                      selected = input$facet
+    )
+    updateSelectInput(session,
+                      "facet",
+                      selected = input$xcol
+    )
+#     temp = facet()
+#       facet() = xcol()
+#       xcol() = temp()
+  })
+
   # dynamically update dropdown list for x-axis - reactive
 
   qvec <- reactive({
     as.numeric(unlist(strsplit(input$vec1,",")))
   }
   )
-
-  # output$plot1 <- renderPlot({
-  #   par(mar = c(5.1, 4.1, 0, 1))
-  #   plot(selectedData(),
-  #        pch = 20, cex = 3)
-  # })
-
-
-  # start_lim <- reactive({
-  #   isolate({
-  #     input$quantile[1]
-  #   })
-  # })
-  #
-  #
-  # end_lim <- reactive({
-  #   isolate({
-  #     input$quantile[2]
-  #   })
-  # })
-
-
-  # increment <- reactive({
-  #   if (is.null(input$step)) return(NULL)
-  #   isolate({
-  #     input$step
-  #   })
-  # })
 
 
 
@@ -137,19 +134,24 @@ observe({
   # not suppress warnings
   # storeWarn<- getOption("warn")
   # options(warn = 1)
+
+
+  # swap values of facet and x-axis if check box is checked
+
+
 #
-  plot_shiny <-   reactive({
-    granplot(
-    .data = fileinput(),
-    gran1 = input$facet,
-    gran2 = input$xcol,
-    response = input$ycol,
-    plot_type = input$plot_type
-    # start_lim,
-    # end_lim,
-    # increment
-  )
-  })
+#   plot_shiny <-   reactive({
+#     granplot(
+#     .data = fileinput(),
+#     gran1 = input$facet,
+#     gran2 = input$xcol,
+#     response = input$ycol,
+#     plot_type = input$plot_type
+#     # start_lim,
+#     # end_lim,
+#     # increment
+#   )
+#   })
 
   # output$plot1 <- renderPlot({
   #
