@@ -24,7 +24,8 @@ tabcreate <- tabPanel(
       # Input csv file
       selectInput("lgran", "lowest temporal unit", gravitas:::lookup_table$granularity, "hour"),
       selectInput("ugran", "highest temporal unit", gravitas:::lookup_table$granularity, "week"),
-      selectInput("filter_in", "Any other temporal events like Public Holidays/Special Events/Weekends (logical/character vector)", "<select>")
+      selectInput("filter_in", "Any other temporal events like Public Holidays/Special Events/Weekends (logical/character vector)", "<select>"),
+      wellPanel(helpText(HTML(" Combinations of circular granularities which promote the exploratory analysis through visualization are referred to as <b><i>harmonies</i></b> and the ones which impede the analysis are referred to as <b><i>clashes.</i></b> ", "<br>", "<br>", "<br>", "Have a look at the possible harmonies given the lowest and highest temporal unit that you have chosen.","<br>", "<br>", "Is there any Holidays/ Public Events that needs to be checked for Harmonies or Clashes? Add the column which refers to them. Make sure they are logical/categorical" )))
     ),
   mainPanel(
     fluidRow(dataTableOutput("table"))
@@ -47,9 +48,8 @@ tabplot <- tabPanel(
       shinyalert::useShinyalert(),  # Set up shinyalert
       actionButton("preview", "Check for warnings/messages"),
       # downloadButton('downloadData', 'Download Data'),
-      downloadButton('downloadPlot', 'Download Plot')),
-    # shinyjs::useShinyjs(),
-    # actionButton("btn","Click me")),
+      downloadButton('downloadPlot', 'Download Plot'),
+    wellPanel(helpText(HTML("Explore the distribution of the time series variables across bivariate granularities. Choose the distribution plot that best satisfy your contexual needs.", "<br>", "<br>", "Have a look at the messages window to see recommendations on how to improve your choice of granularities.", "<br>","<br>", "<br>", "Does the plot look interesting to you? Go ahead and save it in your workspace.")))),
 
   mainPanel(
     # conditionalPanel(condition = "output.warnstat == 'Error'",
@@ -70,7 +70,7 @@ tabgranularity <- tabPanel(
     #             accept = c("text/csv", "text/comma-separated-values,text/plain", ".csv")
     #   )),
 
-      mainPanel(fluidRow(verbatimTextOutput("clash_txt"),
+      mainPanel(fluidRow(#verbatimTextOutput("clash_txt"),
                          dataTableOutput("grantbl"))
                 )
     )
@@ -84,8 +84,8 @@ ui <- fluidPage(theme = shinythemes::shinytheme("united"),
                   type = "tabs",
                     tabInput,
                     tabcreate,
-                    tabplot,
-                    tabgranularity
+                    tabplot
+                    #tabgranularity
   )
 )
 
