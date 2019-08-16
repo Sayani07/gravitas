@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyalert)
 library(gravitas)
 vic_elec <- tsibbledata::vic_elec
 
@@ -171,26 +172,40 @@ observe({
     )
   })
 
-  output$warning_text <- renderUI({
-    #capture_all_problems(plot_shiny())$warning
+#   output$warning_text <- renderUI({
+#     #capture_all_problems(plot_shiny())$warning
+# #
+# #    warn_txt = capture_all_problems(
+# #      granplot(
+# #        .data = fileinput(),
+# #        gran1 = input$facet,
+# #        gran2 = input$xcol,
+# #        response = input$ycol,
+# #        plot_type = input$plot_type
+# #      )
+# #    )
+#    warn = " "
+#    warn_txt = warn_txt()
+#    len_warn_txt <- length(warn_txt$warning)
 #
-#    warn_txt = capture_all_problems(
-#      granplot(
-#        .data = fileinput(),
-#        gran1 = input$facet,
-#        gran2 = input$xcol,
-#        response = input$ycol,
-#        plot_type = input$plot_type
-#      )
-#    )
-   warn = " "
-   warn_txt = warn_txt()
-   len_warn_txt <- length(warn_txt$warning)
+#    for(i in 1:len_warn_txt)
+#    {
+#      warn = paste(h3(warn_txt$warning[i]), warn, sep = "<br/>")
+#    }
+#
+#     HTML(warn)
+#   })
 
-   for(i in 1:len_warn_txt)
-   {
-     warn = paste(h3(warn_txt$warning[i]), warn, sep = "<br/>")
-   }
+  warning_text <- reactive({
+
+    warn = " "
+    warn_txt = warn_txt()
+    len_warn_txt <- length(warn_txt$warning)
+
+    for(i in 1:len_warn_txt)
+    {
+      warn = paste(h3(warn_txt$warning[i]), warn, sep = "<br/>")
+    }
 
     HTML(warn)
   })
@@ -198,6 +213,19 @@ observe({
   output$plot1 <- renderPlot({
     warn_txt()
   })
+
+
+
+
+  output$plot1 <- renderPlot({
+    warn_txt()
+  })
+
+
+
+
+
+
 
       #restore warnings, delayed so plot is completed
       # shinyjs::delay(expr =({
@@ -223,14 +251,17 @@ observe({
 
   clash_reason <- reactive(gravitas:::clash_reason(fileinput(), gran1 = input$facet , gran2 = input$xcol))
 
+  # show the reason table with 0 observation combination
   output$clash_txt <- renderText({
     clash_reason()[[1]]
   })
 
+  # show the granularity table with 0 observation combination
   output$grantbl <- renderDataTable({
     clash_reason()[[2]]
   })
 
+  # download the desired plot
   output$downloadPlot <- downloadHandler(
     filename = function() { paste(input$file, '.png', sep='') },
     content = function(file) {
@@ -238,7 +269,10 @@ observe({
     }
   )
 
-
+  observeEvent(input$preview, {
+    # Show a modal when the button is pressed
+    shinyalert(title = "Check for messages", text = warning_text())
+  })
   # output$downloadData <- downloadHandler(
   #   filename = function() { paste(input$file, '.csv', sep='') },
   #   content = function(file) {
