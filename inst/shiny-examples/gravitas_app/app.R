@@ -202,12 +202,19 @@ observe({
     warn_txt = warn_txt()
     len_warn_txt <- length(warn_txt$warning)
 
+    if(len_warn_txt!=0)
+    {
     for(i in 1:len_warn_txt)
     {
-      warn = paste(h3(warn_txt$warning[i]), warn, sep = "<br/>")
+      warn = paste(warn_txt$warning[i], warn, sep = '\n')
+    }
+    }
+    else{
+      warn = NULL
     }
 
-    HTML(warn)
+
+    warn
   })
 
   output$plot1 <- renderPlot({
@@ -252,7 +259,7 @@ observe({
   clash_reason <- reactive(gravitas:::clash_reason(fileinput(), gran1 = input$facet , gran2 = input$xcol))
 
   # show the reason table with 0 observation combination
-  output$clash_txt <- renderText({
+  clash_txt <- reactive({
     clash_reason()[[1]]
   })
 
@@ -260,6 +267,8 @@ observe({
   output$grantbl <- renderDataTable({
     clash_reason()[[2]]
   })
+
+
 
   # download the desired plot
   output$downloadPlot <- downloadHandler(
@@ -271,14 +280,10 @@ observe({
 
   observeEvent(input$preview, {
     # Show a modal when the button is pressed
-    shinyalert(title = "Check for messages", text = warning_text())
+    shinyalert(title = "Check for warnings/messages",
+               text = dplyr::if_else(is.null(warning_text()), clash_txt(), warning_text()))
   })
-  # output$downloadData <- downloadHandler(
-  #   filename = function() { paste(input$file, '.csv', sep='') },
-  #   content = function(file) {
-  #     write.csv(fileinput(), file)
-  #   }
-  # )
+
 
 }
 

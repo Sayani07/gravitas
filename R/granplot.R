@@ -64,7 +64,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
     warning(paste("Facetting not recommended: too many categories in ", gran1, "and", gran2))
   }
   else if (gran1_level > facet_h & gran2_level <= facet_h) {
-    warning(paste("Facetting not recommended: too many categories in ", gran1, ". Try using", gran2, "as the facet variable"))
+    warning(paste("Facetting not recommended: too many categories in ", gran1, ". Try using", gran2, "as the facet variable."))
   }
 
   # mutate those granularities using create_gran
