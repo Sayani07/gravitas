@@ -137,18 +137,18 @@ observe({
   # storeWarn<- getOption("warn")
   # options(warn = 1)
 #
-#   plot_shiny <-   reactive({
-#     granplot(
-#     .data = fileinput(),
-#     gran1 = input$facet,
-#     gran2 = input$xcol,
-#     response = input$ycol,
-#     plot_type = input$plot_type
-#     # start_lim,
-#     # end_lim,
-#     # increment
-#   )
-#   })
+  plot_shiny <-   reactive({
+    granplot(
+    .data = fileinput(),
+    gran1 = input$facet,
+    gran2 = input$xcol,
+    response = input$ycol,
+    plot_type = input$plot_type
+    # start_lim,
+    # end_lim,
+    # increment
+  )
+  })
 
   # output$plot1 <- renderPlot({
   #
@@ -231,6 +231,20 @@ observe({
     clash_reason()[[2]]
   })
 
+  output$downloadPlot <- downloadHandler(
+    filename = function() { paste(input$file, '.png', sep='') },
+    content = function(file) {
+      ggsave(file, plot = warn_txt()[[1]], device = "png")
+    }
+  )
+
+
+  # output$downloadData <- downloadHandler(
+  #   filename = function() { paste(input$file, '.csv', sep='') },
+  #   content = function(file) {
+  #     write.csv(fileinput(), file)
+  #   }
+  # )
 
 }
 
