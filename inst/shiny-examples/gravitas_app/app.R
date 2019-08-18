@@ -77,7 +77,7 @@ observe({
     my_choices2 <- my_choices[-match(input$facet, my_choices)]
     updateSelectInput(session,
       "xcol",
-      choices = rev(my_choices2)
+      choices = my_choices2
     )
   })
 
@@ -92,19 +92,29 @@ observe({
 
   # flip granularities if checkbox is checked
 
-  observeEvent(input$flip_axis, {
-    updateSelectInput(session,
-                      "xcol",
-                      selected = input$facet
-    )
-    updateSelectInput(session,
-                      "facet",
-                      selected = input$xcol
-    )
-#     temp = facet()
-#       facet() = xcol()
-#       xcol() = temp()
-  })
+#
+#   observeEvent(input$flip_axis, {
+#
+#     # values <- reactiveValues()
+#     # values$xcol <- input$xcol
+#     # values$facet <-  input$facet
+#
+#      updateSelectInput(session,
+#     "facet",
+#     selected = input$xcol)
+#
+#      updateSelectInput(session,
+#                        "xcol",
+#                        selected = input$facet)
+#
+#
+#
+#       # temp = input$facet
+#       # input$facet = input$xcol
+#       # input$xcol = temp
+#
+#
+#   })
 
   # dynamically update dropdown list for x-axis - reactive
 
@@ -162,11 +172,21 @@ observe({
 
 
   warn_txt = reactive({
+
+    if(input$flip_axis)
+      {
+      gran1 = input$facet
+      gran2 = input$xcol
+    }
+    else {
+      gran1 = input$xcol
+      gran2 = input$facet
+    }
     capture_all_problems(
-    granplot(
+     granplot(
       .data = fileinput(),
-      gran1 = input$facet,
-      gran2 = input$xcol,
+       gran1 = gran1,
+      gran2 = gran2,
       response = input$ycol,
       plot_type = input$plot_type,
       quantile_prob = qvec()
@@ -174,6 +194,20 @@ observe({
     )
   })
 
+  observeEvent(input$flip_axis, {
+  warn_txt = reactive({
+    capture_all_problems(
+      granplot(
+        .data = fileinput(),
+        gran1 = input$facet,
+        gran2 = input$xcol,
+        response = input$ycol,
+        plot_type = input$plot_type,
+        quantile_prob = qvec()
+      )
+    )
+  })
+})
 #   output$warning_text <- renderUI({
 #     #capture_all_problems(plot_shiny())$warning
 # #
