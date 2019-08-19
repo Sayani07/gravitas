@@ -55,7 +55,7 @@ tabplot <- tabPanel(
     # conditionalPanel(condition = "output.warnstat == 'Error'",
     #                          verbatimTextOutput("warnmsg")),
     fluidRow(plotOutput("plot1", width = "100%")),
-    textOutput("code")
+    htmlOutput("code")
   #   aceEditor(
   #     outputId = "ace",
   #     selectionId = "selection",

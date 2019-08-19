@@ -286,7 +286,7 @@ observe({
   })
 
 
-  output$code <- renderPrint({
+  output$code <- renderUI({
     # if(input$flip_axis)
     # {
     #   gran_f = input$facet
@@ -296,13 +296,22 @@ observe({
     #   gran_f = input$xcol
     #   gran_x = input$facet
     # }
-    expr(granplot(
-      .data = !!input$file,
+
+    HTML(
+      "library(gravitas)",
+
+
+      expr(
+      gravitas_data <- load(!!input$file$name)),
+
+
+      expr(
+      gravitas_data %>% granplot(
       gran1 = !!input$facet,
       gran2 = !!input$xcol,
       response = !!input$ycol,
       plot_type = !!input$plot_type,
-      quantile_prob = !!qvec()))
+      quantile_prob = !!qvec())))
 
   })
 
