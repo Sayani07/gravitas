@@ -1,4 +1,4 @@
-
+source('global_shiny.R', local = TRUE)
 # Input Data Tab
 tabInput <- tabPanel(
   "Input", fluidPage(
@@ -54,12 +54,21 @@ tabplot <- tabPanel(
   mainPanel(
     # conditionalPanel(condition = "output.warnstat == 'Error'",
     #                          verbatimTextOutput("warnmsg")),
-    fluidRow(plotOutput("plot1", width = "100%"))
-             # htmlOutput("warning_text"))
-             #"Warning", verbatimTextOutput("warning"))
-    )
+    fluidRow(plotOutput("plot1", width = "100%")),
+    textOutput("code")
+  #   aceEditor(
+  #     outputId = "ace",
+  #     selectionId = "selection",
+  #     value = "code",
+  #     placeholder = "show nothing"
+  #            # htmlOutput("warning_text"))
+  #            #"Warning", verbatimTextOutput("warning"))
+  #   )
+  # )
+  )
   )
 )
+
 
 # Granularity table tab
 tabgranularity <- tabPanel(
@@ -72,9 +81,9 @@ tabgranularity <- tabPanel(
 
       mainPanel(fluidRow(#verbatimTextOutput("clash_txt"),
                          dataTableOutput("grantbl"))
+                        )
                 )
     )
-)
 
 
 

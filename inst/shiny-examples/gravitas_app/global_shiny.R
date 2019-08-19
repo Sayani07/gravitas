@@ -49,3 +49,16 @@ capture_all_problems <- function(expr){
 }
 
 capture_all_problems(so_many_problems())
+
+
+
+modes <- getAceModes()
+themes <- getAceThemes()
+
+init <-
+"library(shiny)
+library(shinyAce)
+library(gravitas)
+
+granplot(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_type = NULL, quantile_prob = seq(0.1,0.9,0.1),  facet_h = 31, ...)"
+

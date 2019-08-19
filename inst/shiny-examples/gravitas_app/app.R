@@ -1,6 +1,7 @@
 library(shiny)
 library(shinyalert)
 library(gravitas)
+library(shinyAce)
 vic_elec <- tsibbledata::vic_elec
 
 
@@ -194,20 +195,6 @@ observe({
     )
   })
 
-  observeEvent(input$flip_axis, {
-  warn_txt = reactive({
-    capture_all_problems(
-      granplot(
-        .data = fileinput(),
-        gran1 = input$facet,
-        gran2 = input$xcol,
-        response = input$ycol,
-        plot_type = input$plot_type,
-        quantile_prob = qvec()
-      )
-    )
-  })
-})
 #   output$warning_text <- renderUI({
 #     #capture_all_problems(plot_shiny())$warning
 # #
@@ -252,12 +239,6 @@ observe({
 
     warn
   })
-
-  output$plot1 <- renderPlot({
-    warn_txt()
-  })
-
-
 
 
   output$plot1 <- renderPlot({
@@ -305,6 +286,26 @@ observe({
   })
 
 
+  output$code <- renderPrint({
+    # if(input$flip_axis)
+    # {
+    #   gran_f = input$facet
+    #   gran_x = input$xcol
+    # }
+    # else {
+    #   gran_f = input$xcol
+    #   gran_x = input$facet
+    # }
+    expr(granplot(
+      .data = !!input$file,
+      gran1 = !!input$facet,
+      gran2 = !!input$xcol,
+      response = !!input$ycol,
+      plot_type = !!input$plot_type,
+      quantile_prob = !!qvec()))
+
+  })
+
 
   # download the desired plot
   output$downloadPlot <- downloadHandler(
@@ -319,6 +320,38 @@ observe({
     shinyalert(title = "Check for warnings/messages",
                text = dplyr::if_else(is.null(warning_text()), clash_txt(), warning_text()))
   })
+
+
+
+
+
+#
+# # showing an editor
+#   observe({
+#     # print all editor content to the R console
+#     cat(input$ace, "\n")
+#   })
+#
+#   cdata <- session$clientData
+#
+#   output$myplot <- renderText({
+#     hist(rnorm(input$facet), main = "Generated in renderPlot()")
+#   })
+#
+#   observe({
+#     # print only selected editor content to the R console
+#     # to access content of `selectionId` use `ace_selection`
+#     # i.e., the outputId is prepended to the selectionId for
+#     # use with Shiny modules
+#
+#         .data = fileinput()
+#         gran1 = input$facet
+#         gran2 = input$xcol
+#         response = input$ycol
+#         plot_type = input$plot_type
+#         quantile_prob = qvec()
+#   })
+
 
 
 }
