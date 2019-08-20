@@ -25,7 +25,7 @@ tabcreate <- tabPanel(
       selectInput("lgran", "lowest temporal unit", gravitas:::lookup_table$granularity, "hour"),
       selectInput("ugran", "highest temporal unit", gravitas:::lookup_table$granularity, "week"),
       numericInput("facet_h", "Maximum number of facets allowed", value = 31, min = 1),
-      selectInput("filter_in", "Any other temporal events like Public Holidays/Special Events/Weekends (logical/character vector)", "<select>"),
+      selectInput("filter_in", "Any other temporal events like Public Holidays/Special Events/Weekends (logical/character vector)", "<select>", multiple = TRUE),
       wellPanel(helpText(HTML(" Combinations of circular granularities which promote the exploratory analysis through visualization are referred to as <b><i>harmonies</i></b> and the ones which impede the analysis are referred to as <b><i>clashes.</i></b> ", "<br>", "<br>", "<br>", "Have a look at the possible harmonies given the lowest and highest temporal unit that you have chosen.","<br>", "<br>", "Is there any Holidays/ Public Events that needs to be checked for Harmonies or Clashes? Add the column which refers to them. Make sure they are logical/categorical" )))
     ),
   mainPanel(
