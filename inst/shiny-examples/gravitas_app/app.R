@@ -86,7 +86,8 @@ observe({
     my_choices <- search_gran(fileinput(), input$ugran, input$lgran)
     updateSelectInput(session,
       "facet",
-      choices = c(my_choices, input$filter_in)
+      choices = c(my_choices, input$filter_in),
+      selected = harmony_table()$facet_variable[1]
     )
   })
 
@@ -97,7 +98,8 @@ observe({
     my_choices2 <- my_choices[-match(input$facet, my_choices)]
     updateSelectInput(session,
       "xcol",
-      choices = c(my_choices2, input$filter_in)
+      choices = c(my_choices2, input$filter_in),
+      selected = harmony_table()$x_variable[1]
     )
   })
 
@@ -286,8 +288,13 @@ observe({
 #         })
 #   })
 
-  output$table <- renderDataTable({
+
+  harmony_table <- reactive({
     gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran(), filter_in =  input$filter_in, facet_h = input$facet_h)
+  })
+
+  output$table <- renderDataTable({
+    harmony_table
   })
 
 
