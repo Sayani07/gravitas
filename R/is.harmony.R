@@ -14,7 +14,7 @@
 #' vic_elec %>% is.harmony("hour_day", "day_week")
 #' @export is.harmony
 
-is.harmony <- function(.data, gran1, gran2, response = NULL, facet_h = 31, ...) {
+is.harmony <- function(.data, gran1, gran2, response = NULL, facet_h = NULL, ...) {
 
   if(gran1==gran2)
   {
@@ -27,6 +27,11 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, facet_h = 31, ...) 
   # cmbmiss <-  harmony_object %>% filter(nobs==0)
   cmbmiss <- any(harmony_object$nobs == 0)
   facet_nlevel <- harmony_object[, 1] %>% dplyr::distinct()
+
+  if(is.null(facet_h))
+  {
+    facet_h = 31
+  }
 
   if (cmbmiss == "TRUE" | nrow(facet_nlevel) > facet_h) {
     return_output <- "FALSE"

@@ -4,7 +4,7 @@
 \alias{is.harmony}
 \title{Check if two temporal granularities are harmonies}
 \usage{
-is.harmony(.data, gran1, gran2, response = NULL, facet_h = 31, ...)
+is.harmony(.data, gran1, gran2, response = NULL, facet_h = NULL, ...)
 }
 \arguments{
 \item{.data}{A tsibble object.}

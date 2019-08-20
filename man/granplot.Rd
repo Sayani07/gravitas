@@ -5,8 +5,8 @@
 \title{Plot probability distribution of univariate series across bivariate temporal granularities}
 \usage{
 granplot(.data, gran1 = NULL, gran2 = NULL, response = NULL,
-  plot_type = NULL, quantile_prob = seq(0.1, 0.9, 0.1), facet_h = 31,
-  ...)
+  plot_type = NULL, quantile_prob = seq(0.1, 0.9, 0.1),
+  facet_h = NULL, ...)
 }
 \arguments{
 \item{.data}{a tsibble}

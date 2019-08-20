@@ -17,10 +17,16 @@
 #' @export granplot
 
 # Recommendation plot function for two granularities
-granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_type = NULL, quantile_prob = seq(0.1,0.9,0.1),  facet_h = 31, ...) {
+granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_type = NULL, quantile_prob = seq(0.1,0.9,0.1),  facet_h = NULL, ...) {
   # op <- options("warn")
   # on.exit(options(op))
   # options(warn=1)
+
+
+  if(is.null(facet_h))
+  {
+    facet_h = 31
+  }
 
   if (is.null(response)) {
     stop("requires the following missing aesthetics: response")

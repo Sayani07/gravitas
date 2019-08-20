@@ -11,15 +11,17 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
-#' tsibbledata::vic_elec %>% harmony(ugran = "day")
 #' @export harmony
 # tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
-
+#' tsibbledata::vic_elec %>% harmony(ugran = "day")
 harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, facet_h, ...) {
 
+  set1 <- search_gran(.data, ugran = ugran, lgran = lgran, filter_in,  filter_out, ...)
 
-  set1 <- search_gran(.data, ugran, lgran, filter_in,  filter_out, ...)
-
+  if(is.null(facet_h))
+  {
+    facet_h = 31
+  }
   if (length(set1) == 1) {
     stop("Only one granularity ", set1, " can be formed. Function requires checking compatibility for bivariate granularities")
   }
@@ -47,16 +49,16 @@ harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filte
 
   ## In a matrix storing if each pair is harmony or clash
 
-  harmony <- array(0, nrow(set1_merge))
+  har_data <- array(0, nrow(set1_merge))
 
   for (i in 1:nrow(set1_merge))
   {
-    harmony[i] = is.harmony(.data, gran1 = set1_merge$x[i], gran2 = set1_merge$y[i], facet_h)
+    har_data[i] = is.harmony(.data, gran1 = set1_merge$x[i], gran2 = set1_merge$y[i], facet_h = facet_h)
   }
 
 
   return_output <- set1_merge %>%
-    dplyr::mutate(harmony = harmony)%>%
+    dplyr::mutate(harmony = har_data)%>%
     dplyr::filter(harmony == "TRUE") %>%
     dplyr::rename(facet_variable = x, x_variable = y) %>%
     dplyr::left_join(levels_tbl, by = c("facet_variable" = "set1")) %>%
