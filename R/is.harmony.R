@@ -18,7 +18,7 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, facet_h = 31, ...) 
 
   if(gran1==gran2)
   {
-    stop("the two granularities should be distinct")
+    warning("the two granularities should be distinct")
   }
 
   harmony_object <- gran_tbl(.data, gran1, gran2, response)
@@ -32,6 +32,10 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, facet_h = 31, ...) 
     return_output <- "FALSE"
   } else {
     return_output <- "TRUE"
+  }
+  if(gran1==gran2)
+  {
+   return_output <- "FALSE"
   }
 
   return(return_output)
