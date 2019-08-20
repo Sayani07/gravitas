@@ -65,8 +65,17 @@ observe({
   observe({
     updateSelectInput(session,
                       "filter_in",
-                      choices = fileinput() %>% tsibble::measured_vars()
-                      #select_if(is.logical, is.character) if revision is required for selecting all logical or character vector from teh data
+                      choices =
+                        fileinput() %>%
+                        as_tibble() %>%
+                          select_if(~!is.POSIXlt(.)) %>%
+                          select_if(~!is.POSIXct(.)) %>%
+                          select_if(~!is.POSIXt(.)) %>%
+                          select_if(~!is.Date(.)) %>%
+                          select_if(~!is.numeric(.)) %>%
+                          names()%>%
+                          unique()
+                      #  if revision is required for selecting all logical or character vector from teh data
     )
   })
 
