@@ -86,7 +86,7 @@ observe({
     my_choices <- search_gran(fileinput(), input$ugran, input$lgran)
     updateSelectInput(session,
       "facet",
-      choices = my_choices
+      choices = c(my_choices, input$filter_in)
     )
   })
 
@@ -97,7 +97,7 @@ observe({
     my_choices2 <- my_choices[-match(input$facet, my_choices)]
     updateSelectInput(session,
       "xcol",
-      choices = my_choices2
+      choices = c(my_choices2, input$filter_in)
     )
   })
 
