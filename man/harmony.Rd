@@ -5,7 +5,7 @@
 \title{Get possible set of harmonies for a given tsibble}
 \usage{
 harmony(.data, ugran = "year", lgran = NULL, filter_in = NULL,
-  filter_out = NULL, ...)
+  filter_out = NULL, facet_h, ...)
 }
 \arguments{
 \item{.data}{A tsibble object.}
@@ -18,7 +18,9 @@ harmony(.data, ugran = "year", lgran = NULL, filter_in = NULL,
 
 \item{filter_out}{Choices of temporal units to be discarded.}
 
-\item{...}{added arguments to be passed}
+\item{facet_h}{highest level of facets allowed.}
+
+\item{...}{added arguments to be passed.}
 }
 \value{
 compatibility table providing if the two granularities are harmonies or clashes. FALSE indicates a clash. If harmony, then a tibble with desired granularities returned.

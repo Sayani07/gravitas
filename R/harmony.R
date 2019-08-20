@@ -3,9 +3,10 @@
 #' @param .data A tsibble object.
 #' @param ugran Upper temporal unit. Typically, it is set as the most coarse temporal unit required in the analysis. Default is "year".
 #' @param lgran Lowest temporal unit. For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals.
+#' @param facet_h highest level of facets allowed.
 #' @param filter_in Choices of temporal units to be kept.
 #' @param filter_out Choices of temporal units to be discarded.
-#' @param ... added arguments to be passed
+#' @param ... added arguments to be passed.
 #' @return compatibility table providing if the two granularities are harmonies or clashes. FALSE indicates a clash. If harmony, then a tibble with desired granularities returned.
 #' @examples
 #' library(dplyr)
@@ -14,7 +15,7 @@
 #' @export harmony
 # tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
 
-harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, ...) {
+harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, facet_h, ...) {
 
 
   set1 <- search_gran(.data, ugran, lgran, filter_in,  filter_out, ...)
@@ -44,25 +45,25 @@ harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filte
   # All_set <- c(set1, set2$x_y)
 
 
-  Allcomb <- t(combn(set1, 2)) %>% as_tibble(name_repair = "minimal")
-  # colnames(Allcomb) = c("Category 1, Category 2")
+  Allcomb <- t(combn(set1, 2))
+  colnames(Allcomb) <- c("gran1", "gran2")
+  Allcomb <- as_tibble(Allcomb)
 
-  # output <- .data %>% is.harmony(gran1 = Allcomb$V1[1], gran2 = Allcomb$V2[1])
 
   harmony <- array(0, nrow(Allcomb))
 
 
   for (i in 1:nrow(Allcomb))
   {
-    harmony[i] <- is.harmony(.data, gran1 = Allcomb$V1[i], gran2 = Allcomb$V2[i])
+    harmony[i] <- is.harmony(.data, gran1 = Allcomb$gran1[i], gran2 = Allcomb$gran2[i], facet_h)
   }
 
-  harmony_mt <- cbind(Allcomb, harmony) %>% as_tibble(name_repair = "minimal") %>% dplyr::rename(granularities = V1)
+  harmony_mt <- cbind(Allcomb, harmony) %>% as_tibble(name_repair = "minimal") %>% dplyr::rename(granularities = gran1)
 
 
   set1_merge <- merge(set1, set1)
 
-  united_merge <- purrr::map_dfr(set1_merge, as.character) %>% dplyr::left_join(harmony_mt, by = c(x = "granularities", y = "V2"))
+  united_merge <- purrr::map_dfr(set1_merge, as.character) %>% dplyr::left_join(harmony_mt, by = c(x = "granularities", y = "gran2"))
 
   united_merge$output <- array(NA, nrow(united_merge))
 

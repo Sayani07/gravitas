@@ -49,6 +49,16 @@ observe({
     })
   })
 
+  # reactive filter_in variable
+
+  observe({
+    updateNumericInput(session,
+                      "facet_h", value = 31
+                      #select_if(is.logical, is.character) if revision is required for selecting all logical or character vector from teh data
+    )
+  })
+
+
 
   # reactive filter_in variable
 
@@ -123,7 +133,6 @@ observe({
     as.numeric(unlist(strsplit(input$vec1,",")))
   }
   )
-
 
 
   output$data <- renderDataTable({
@@ -269,7 +278,7 @@ observe({
 #   })
 
   output$table <- renderDataTable({
-    gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran(), filter_in =  input$filter_in)
+    gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran(), filter_in =  input$filter_in, facet_h = input$facet_h)
   })
 
 
@@ -298,15 +307,16 @@ observe({
     # }
 
     HTML(
-      "library(gravitas)",
+       "library(gravitas)",
+
+#
+#       expr(
+#       gravitas_data <- load(!!input$file$name)),
 
 
       expr(
-      gravitas_data <- load(!!input$file$name)),
-
-
-      expr(
-      gravitas_data %>% granplot(
+      granplot(
+      .data = !!input$file$name,
       gran1 = !!input$facet,
       gran2 = !!input$xcol,
       response = !!input$ycol,
