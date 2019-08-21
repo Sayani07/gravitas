@@ -2,6 +2,8 @@ library(shiny)
 library(shinyalert)
 library(gravitas)
 library(shinyAce)
+library(lubridate)
+
 vic_elec <- tsibbledata::vic_elec
 
 
@@ -65,7 +67,7 @@ observe({
   observe({
     updateSelectInput(session,
                       "filter_in",
-                      choices =
+                      choices =c(
                         fileinput() %>%
                         as_tibble() %>%
                           select_if(~!is.POSIXlt(.)) %>%
@@ -74,7 +76,7 @@ observe({
                           select_if(~!is.Date(.)) %>%
                           select_if(~!is.numeric(.)) %>%
                           names()%>%
-                          unique()
+                          unique(), "wknd_wday")
                       #  if revision is required for selecting all logical or character vector from teh data
     )
   })
@@ -154,6 +156,10 @@ observe({
   output$summary <- renderPrint({
     summary(fileinput())
   })
+#
+#   output$glimpse <- renderPrint({
+#     glimpse(fileinput())
+#   })
 
 
   output$str_data <- renderPrint({
@@ -294,7 +300,7 @@ observe({
   })
 
   output$table <- renderDataTable({
-    harmony_table
+    harmony_table()
   })
 
 

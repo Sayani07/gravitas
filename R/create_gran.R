@@ -31,6 +31,7 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
    return(.data)
   }
 
+
   # if (is.null(gran2)) {
   #   gran2 <- g_order(gran1, order = 1)
   #   col_name <- paste(rlang::quo_name(gran1), gran2, sep = "_")
@@ -41,6 +42,21 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
   # }
 
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
+
+
+  if(gran1=="wknd_wday")
+
+  {
+    data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran = "day", ugran= "week", ...)) %>% dplyr::mutate(wknd_wday =
+                                                                                                                      dplyr::if_else(L1 %in% c(6,7), "Weekend", "Weekday")
+    )
+
+
+    data_mutate %>%
+      dplyr::select(-L1)
+
+  }
+  else{
 
   gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
   lgran <- gran1_split[1]
@@ -83,6 +99,7 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
       !!gran1 := L1
     ) %>%
     dplyr::select(-L1)
+  }
 }
 
 

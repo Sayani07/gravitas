@@ -11,6 +11,8 @@ tabInput <- tabPanel(
        fluidRow(
          column(6, h2("Data summary"), verbatimTextOutput("summary"), style = "height:100px"),
          column(6, h2("Data structure"), verbatimTextOutput("str_data"), style = "height:100px")
+         # h2("Data structure"), verbatimTextOutput("str_data"), style = "height:100px"),
+
        )
     )
   )

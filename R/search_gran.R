@@ -82,12 +82,12 @@ search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, f
   #   }
   if (!is.null(filter_in)) {
     data_names <- names(.data)
-    exhaust_set <-  c(data_names, granularity)
+    exhaust_set <-  c(data_names, granularity, "wknd_wday")
     if (!all(filter_in %in% exhaust_set)) {
       stop("temporal units to be filtered in not found: make sure vector contains units which are between lgran and ugran or appear in the data")
     }
 #if all filter_in are column variables
- if(all(filter_in %in% data_names)==TRUE)
+ if(all(filter_in %in% c("wknd_wday",data_names)==TRUE))
  {
     gran_sub <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
 

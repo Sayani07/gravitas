@@ -11,9 +11,9 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
-#' @export harmony
 # tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
 #' tsibbledata::vic_elec %>% harmony(ugran = "day")
+#' @export harmony
 harmony <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, facet_h, ...) {
 
   set1 <- search_gran(.data, ugran = ugran, lgran = lgran, filter_in,  filter_out, ...)
