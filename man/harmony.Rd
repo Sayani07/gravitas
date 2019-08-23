@@ -5,7 +5,7 @@
 \title{Get possible set of harmonies for a given tsibble}
 \usage{
 harmony(.data, ugran = "year", lgran = NULL, filter_in = NULL,
-  filter_out = NULL, facet_h, ...)
+  filter_out = NULL, facet_h = NULL, ...)
 }
 \arguments{
 \item{.data}{A tsibble object.}

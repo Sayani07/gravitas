@@ -59,6 +59,19 @@ index, key and other measured variables in a data-centric format, which
 makes it easier to work with temporal data. To learn more about it,
 please visit <https://tsibble.tidyverts.org/>
 
+View the vignette to get started\!
+
+``` r
+library("gravitas")
+vignette("gravitas_vignette")
+#> Warning: vignette 'gravitas_vignette' not found
+```
+
+## Reporting and issues
+
+Please submit all bug reports, errors, and feature requests to
+<https://github.com/Sayani07/gravitas/issues>
+
 ## Get started
 
 The `vic_elec` data from tsibbledata package is employed to have a run
@@ -151,19 +164,22 @@ function
 
 ``` r
 tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "hhour"))
-#> # A tibble: 10 x 2
-#>    granularity1 granularity2
-#>    <fct>        <fct>       
-#>  1 hour_day     day_week    
-#>  2 hour_day     day_month   
-#>  3 hour_day     week_month  
-#>  4 day_week     hour_day    
-#>  5 day_week     day_month   
-#>  6 day_week     week_month  
-#>  7 day_month    hour_day    
-#>  8 day_month    day_week    
-#>  9 week_month   hour_day    
-#> 10 week_month   day_week
+#> # A tibble: 13 x 4
+#>    facet_variable x_variable facet_levels x_levels
+#>    <chr>          <chr>             <int>    <int>
+#>  1 day_week       hour_day              7       24
+#>  2 day_month      hour_day             31       24
+#>  3 week_month     hour_day              5       24
+#>  4 day_month      hour_week            31      168
+#>  5 week_month     hour_week             5      168
+#>  6 day_week       hour_month            7      744
+#>  7 hour_day       day_week             24        7
+#>  8 day_month      day_week             31        7
+#>  9 week_month     day_week              5        7
+#> 10 hour_day       day_month            24       31
+#> 11 day_week       day_month             7       31
+#> 12 hour_day       week_month           24        5
+#> 13 day_week       week_month            7        5
 ```
 
 ### Explore probability distribution across bivariate temporal granularities with `granplot()`
@@ -204,12 +220,12 @@ provided.
 
 ``` r
 tsibbledata::vic_elec %>% granplot(gran1 = "hour_week", gran2 = "day_week", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1, 24, 2))
-#> Warning in granplot(., gran1 = "hour_week", gran2 = "day_week", "Demand", :
-#> granularities chosen are clashes: you might be interested to look at the
-#> set of harmonies by using harmony(.data)
+#> Warning in granplot(., gran1 = "hour_week", gran2 = "day_week", "Demand", : Granularities chosen are Clashes. 
+#> You might be interested to look at the set of harmonies in Harmony table.
+#> Refer to Granularity table for finding out more on why chosen granularities are Clashes.
 #> Warning in granplot(., gran1 = "hour_week", gran2 = "day_week", "Demand", :
 #> Facetting not recommended: too many categories in hour_week . Try using
-#> day_week as the facet variable
+#> day_week as the facet variable.
 ```
 
 <img src="man/figures/README-example9-1.png" width="100%" />

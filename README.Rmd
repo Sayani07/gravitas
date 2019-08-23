@@ -50,6 +50,15 @@ gravitas comes with an interactive webpage, which lets you go through the differ
 
 This package takes tsibble as the data input. Tsibble provides a data class of tbl_ts to represent tidy temporal data. It consists of a time index, key and other measured variables in a data-centric format, which makes it easier to work with temporal data. To learn more about it, please visit [https://tsibble.tidyverts.org/](https://tsibble.tidyverts.org/)
 
+View the vignette to get started!
+
+```{r}
+library("gravitas")
+vignette("gravitas_vignette")
+```
+
+## Reporting and issues
+Please submit all bug reports, errors, and feature requests to https://github.com/Sayani07/gravitas/issues
 
 ## Get started
 
