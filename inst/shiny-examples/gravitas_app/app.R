@@ -209,6 +209,11 @@ observe({
       gran1 = input$xcol
       gran2 = input$facet
     }
+
+
+    if(input$flip_coord)
+    {
+
     capture_all_problems(
      granplot(
       .data = fileinput(),
@@ -216,9 +221,20 @@ observe({
       gran2 = gran2,
       response = input$ycol,
       plot_type = input$plot_type,
-      quantile_prob = qvec()
+      quantile_prob = qvec()) + coord_flip()
     )
-    )
+    }
+    else
+    {
+      capture_all_problems(
+        granplot(
+          .data = fileinput(),
+          gran1 = gran1,
+          gran2 = gran2,
+          response = input$ycol,
+          plot_type = input$plot_type,
+          quantile_prob = qvec()))
+    }
   })
 
 #   output$warning_text <- renderUI({
@@ -268,7 +284,9 @@ observe({
 
 
   output$plot1 <- renderPlot({
+
     warn_txt()
+
   })
 
 

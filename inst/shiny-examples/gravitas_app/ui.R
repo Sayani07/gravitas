@@ -46,6 +46,7 @@ tabplot <- tabPanel(
       selectInput("facet", "Facet Variable", "<select>"),
       selectInput("xcol", "X-axis Variable", "<select>"),
       checkboxInput("flip_axis", "Flipped display", value = FALSE),
+      checkboxInput("flip_coord", "Flipped coordinates", value = FALSE),
       selectInput("plot_type", "Which distribution plot", choices = c("boxplot", "ridge", "violin", "lv",  "decile", "quantile"), selected = "boxplot"),
       textInput('vec1', 'Enter a probability vector (comma delimited) only if quantile plot is chosen', "0.1, 0.5, 0.9"),
       shinyalert::useShinyalert(),  # Set up shinyalert
