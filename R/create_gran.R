@@ -70,9 +70,8 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
 
   if (label) {
     if (lgran == "day" & ugran == "week") {
-      names <- c(
-        "Sunday", "Monday", "Tuesday", "Wednesday",
-        "Thursday", "Friday", "Saturday"
+      names <- c("Monday", "Tuesday", "Wednesday",
+        "Thursday", "Friday", "Saturday", "Sunday"
       )
     }
     else if (lgran == "month" & ugran == "year") {
