@@ -3,8 +3,11 @@ library(shinyalert)
 library(gravitas)
 library(shinyAce)
 library(lubridate)
+library(readr)
+library(dplyr)
 
 vic_elec <- tsibbledata::vic_elec
+harmony_tbl<- read_csv("harmony_table.csv")
 
 
 # source('inst/shiny-examples/gravitas_app/ui.R', local = TRUE)
@@ -314,7 +317,12 @@ observe({
 
 
   harmony_table <- reactive({
-    gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran(), filter_in =  input$filter_in, facet_h = input$facet_h)
+
+    data_search_gran <- search_gran(fileinput(), input$ugran, input$lgran)
+
+    harmony_tbl %>% filter(facet_variable %in% data_search_gran) %>% filter(x_variable %in% data_search_gran)
+
+    #gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran(), filter_in =  input$filter_in, facet_h = input$facet_h)
   })
 
   output$table <- renderDataTable({

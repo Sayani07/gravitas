@@ -36,7 +36,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
   proxy_harmony <- is.harmony(.data, gran1, gran2, response = NULL, facet_h,  ...)
 
   if (proxy_harmony == "FALSE") {
-    warning("Granularities chosen are Clashes. \nYou might be interested to look at the set of harmonies in Harmony table.\nRefer to Granularity table for finding out more on why chosen granularities are Clashes.")
+    warning("Granularities chosen are Clashes. \nYou might be interested to look at the set of harmonies in Harmony table.")
   }
 
   proxy_homogenous <- is.homogenous(.data, gran1, gran2, response = NULL, ...)
