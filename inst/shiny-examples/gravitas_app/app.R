@@ -355,7 +355,7 @@ observe({
     # }
 
     HTML(
-      "<hr>",
+      "<hr >",
       "<strong>View R Code</strong>",
       "<br>",
       "<i>(Recommended when above ggplot object needs modification)</i>",

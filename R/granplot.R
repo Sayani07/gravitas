@@ -81,7 +81,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
   var3 <- gran2_split[1]
   var4 <- gran2_split[2]
 
-  data_mutate <- .data %>% create_gran(gran1) %>% create_gran(gran2)
+  data_mutate <- .data %>% create_gran(gran1,...) %>% create_gran(gran2,...)
 
 
   p <- data_mutate %>%
