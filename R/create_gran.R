@@ -77,15 +77,15 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
       )
     }
     else if (lgran == "month" & ugran == "year") {
-      names <- c(
-        "January", "February", "March", "April",
-        "May", "June", "July", "August", "September", "October", " November", "December"
-      )
+      data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, label = TRUE))
+      names <- lev
     }
     else {
       names <- as.character(1:length(unique(lev)))
     }
+
     names_abbr <- substr(names, 1, 3)
+
 
     if (abbr) names_gran <- names_abbr else names_gran <- names
   }
