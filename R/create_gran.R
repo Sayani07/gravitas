@@ -77,8 +77,14 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
       )
     }
     else if (lgran == "month" & ugran == "year") {
-      data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, label = TRUE))
-      names <- lev
+      # data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, label = TRUE))
+      # names <- unique(data_mutate$L1)
+#
+#       should correct it later
+#
+       data_mutate <- .data %>% dplyr::mutate(L1 = lubridate::month(x, label = TRUE))
+       names <- unique(data_mutate$L1)
+
     }
     else {
       names <- as.character(1:length(unique(lev)))
