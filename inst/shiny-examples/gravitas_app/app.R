@@ -318,7 +318,7 @@ observe({
 
   harmony_table <- reactive({
 
-    data_search_gran <- search_gran(fileinput(), input$ugran, input$lgran)
+    data_search_gran <- search_gran(fileinput(), input$ugran, input$lgran, filter_in = input$filter_in)
 
     harmony_tbl %>% filter(facet_variable %in% data_search_gran) %>% filter(x_variable %in% data_search_gran)
 
@@ -355,8 +355,13 @@ observe({
     # }
 
     HTML(
+      "<hr>",
+      "<strong>View R Code</strong>",
+      "<br>",
+      "<i>(Recommended when above ggplot object needs modification)</i>",
+      "<br><br><br>",
        "library(gravitas)",
-       "<br><br>",
+       "<br>",
 
 #       expr(
 #       gravitas_data <- load(!!input$file$name)),
@@ -380,6 +385,7 @@ observe({
     content = function(file) {
       ggsave(file, plot = warn_txt()[[1]], device = "png")
     }
+
   )
 
   observeEvent(input$preview, {
