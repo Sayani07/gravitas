@@ -91,7 +91,9 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
     }
     # if not day_week or month_year
     else {
-      names <- as.character(1:length(unique(lev)))
+      #names <- as.character(1:length(unique(lev)))
+      data_mutate$L1 = factor(data_mutate$L1)
+      names <- levels(data_mutate$L1)
     }
 
     names_abbr <- substr(names, 1, 3)
@@ -102,11 +104,15 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
 
 #if not label
   else {
-    names_gran <- as.character(1:length(unique(lev)))
+
+    data_mutate$L1 = factor(data_mutate$L1)
+    names <- levels(data_mutate$L1)
+    # names_gran <- as.character(1:length(unique(lev)))
+    # data_mutate$L1 <- factor(data_mutate$L1, levels = names_gran)
   }
 
 
-  data_mutate$L1 <- factor(data_mutate$L1, levels = names_gran)
+
 
   data_mutate %>%
     dplyr::mutate(
