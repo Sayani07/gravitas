@@ -100,11 +100,13 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
     if (abbr) names_gran <- names_abbr else names_gran <- names
   }
 
+#if not label
   else {
     names_gran <- as.character(1:length(unique(lev)))
-
-  data_mutate$L1 <- factor(data_mutate$L1, labels = names_gran)
   }
+
+
+  data_mutate$L1 <- factor(data_mutate$L1, levels = names_gran)
 
   data_mutate %>%
     dplyr::mutate(
