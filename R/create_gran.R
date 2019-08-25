@@ -70,11 +70,10 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
 
   if (label) {
     if (lgran == "day" & ugran == "week") {
-      data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, week_start = getOption("lubridate.week.start", 1)))
 
-      names <- c("Monday", "Tuesday", "Wednesday",
-        "Thursday", "Friday", "Saturday", "Sunday"
-      )
+      data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, week_start = getOption("lubridate.week.start", 1),...))
+      names <- unique(data_mutate$L1)
+
     }
     else if (lgran == "month" & ugran == "year") {
       # data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, label = TRUE))
@@ -82,7 +81,7 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
 #
 #       should correct it later
 #
-       data_mutate <- .data %>% dplyr::mutate(L1 = lubridate::month(x, label = TRUE))
+       data_mutate <- .data %>% dplyr::mutate(L1 = lubridate::month(x, ...))
        names <- unique(data_mutate$L1)
 
     }
