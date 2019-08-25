@@ -103,7 +103,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
 
   else if (plot_type == "lv") {
     plot <-
-      p + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1, k = 9)
+      p + geom_lv(aes(fill = ..LV..), outlier.colour = "red", outlier.shape = 1, k = 5)
   }
   else if (plot_type == "ridge") {
     plot <- data_mutate %>%
