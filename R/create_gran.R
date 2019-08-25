@@ -43,6 +43,7 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
 
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
+  # wkday weekend treatment open
 
   if(gran1=="wknd_wday")
 
@@ -56,6 +57,9 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
       dplyr::select(-L1)
 
   }
+
+  # wkday weekend treatment open
+
   else{
 
   gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
@@ -71,8 +75,8 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
   if (label) {
     if (lgran == "day" & ugran == "week") {
 
-      data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, week_start = getOption("lubridate.week.start", 1),...))
-      names <- unique(data_mutate$L1)
+      data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, week_start = getOption("lubridate.week.start", 1),label = TRUE))
+      names <- levels(data_mutate$L1)
 
     }
     else if (lgran == "month" & ugran == "year") {
@@ -81,24 +85,26 @@ create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
 #
 #       should correct it later
 #
-       data_mutate <- .data %>% dplyr::mutate(L1 = lubridate::month(x, ...))
-       names <- unique(data_mutate$L1)
+       data_mutate <- .data %>% dplyr::mutate(L1 = lubridate::month(x,label = TRUE))
+       names <- levels(data_mutate$L1)
 
     }
+    # if not day_week or month_year
     else {
       names <- as.character(1:length(unique(lev)))
     }
 
     names_abbr <- substr(names, 1, 3)
 
-
+    # What to do with the name if abbreviation
     if (abbr) names_gran <- names_abbr else names_gran <- names
   }
+
   else {
     names_gran <- as.character(1:length(unique(lev)))
-  }
 
   data_mutate$L1 <- factor(data_mutate$L1, labels = names_gran)
+  }
 
   data_mutate %>%
     dplyr::mutate(
@@ -164,7 +170,7 @@ build_gran <- function(x, lgran = NULL, ugran = NULL, ...) {
     } else {
       value <- build_gran(x, lgran, lgran_ordr1) +
         gran_convert(lgran, lgran_ordr1) *
-          (build_gran(x, lgran_ordr1, ugran) - 1)
+        (build_gran(x, lgran_ordr1, ugran) - 1)
       return(value)
     }
   }
