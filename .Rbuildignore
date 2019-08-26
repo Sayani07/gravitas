@@ -5,6 +5,7 @@
 ^appveyor\.yml$
 ^codecov\.yml$
 ^harmony_tbl.Rda
+^.gravitas_vignette.Rmd$
 
 ^doc$
 ^Meta$
