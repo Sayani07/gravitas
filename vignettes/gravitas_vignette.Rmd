@@ -14,8 +14,8 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.height = 4,
-  fig.width  = 6,
+  fig.height = 5,
+  fig.width  = 8,
   fig.align  = "center",
   cache      = FALSE
 )
@@ -33,7 +33,7 @@ The package **gravitas** provides a tool to examine the probability distribution
  
  - recommending appropriate probability distribution plots of the time series variable across the bivariate granularities based on the levels of the bivariate granularties and their compatibility relationship.  
 
-## <h>style="color:blue;"> Get started</h>
+##  Get started
 
 One of the [customer trials](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter) conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney providing customer wise data is employed to have a run through of this package. The data consists of half-hourly demand `general_supply_kwh` for more than 40k households across these places. Suppose we want to explore the probability distribution of the energy consumption for these households across different time granularities and identify their behavioral patterns. Data for the year 2013 for one household is used for illustration purposes. 
 
@@ -66,7 +66,7 @@ This looks better. However, some intermediate temporal units might not be pertin
 
 ```{r example3, echo=TRUE}
 
-smart_meter_nsw %>% search_gran(ugran = "month", filter_out = "fortnight", filter_in = "wknd_wday")
+smart_meter_nsw %>% search_gran(ugran = "month", filter_out = "fortnight")
 ```
 
 
@@ -89,40 +89,75 @@ smart_meter_nsw %>% is.harmony(gran1 = "day_month", gran2 = "hhour_week")
 Or, we can find the set of harmonies all at once with the help of function `harmony`.
 
 ```{r example5, echo=TRUE}
-smart_meter_nsw  %>% harmony(ugran = "month", filter_out = c("fortnight", "hhour"))
+smart_meter_nsw  %>% harmony(ugran = "month",
+                             filter_out = c("fortnight", "hhour"),
+                             filter_in = "wknd_wday")
 ```
 
 
 ### Explore probability distribution across bivariate temporal granularities with `granplot()`
 
-Now, we want to view distribution of the measured variable `general_supply_kwh` across these bivariate granularities through boxplots using `granplot`.
+Now, we want to view distribution of the measured variable `general_supply_kwh` across these bivariate granularities through different distribution plots using `granplot`.
 
-```{r example6, echo=TRUE}
-smart_meter_nsw  %>% granplot("hour_day", "day_week", "general_supply_kwh", plot_type = "boxplot")
-```
-Now, we want to view distribution of `general_supply_kwh` across the next set of harmonies - hour_day and day_month and let the package decide 
-the plot type that is best suitable for the number of levels in hour_day and day_month.
-
-```{r example7, echo=TRUE}
-smart_meter_nsw  %>% granplot("hour_day", "day_week", "general_supply_kwh")
-```
-
-If we want to switch the facet and x-axis variable, we simply reverse the order of time granularities. Here, granplot would output a ggplot2 object. So we are free to add any element to the default plot.
 
 ```{r example8, echo=TRUE}
-smart_meter_nsw  %>% granplot("day_week", "hour_day", "general_supply_kwh", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1, 24, 3))
+smart_meter_nsw  %>%
+  granplot("day_week",
+           "hour_day",
+           "general_supply_kwh",
+           plot_type = "violin") + 
+  ggplot2::scale_x_discrete(breaks = seq(1, 24, 3))
 ```
+
+Suppose, we want a quantile plot, instead of a violin plot for viewing the distribution of energy consumption across similar temporal granularities.
+
+```{r example6, echo=TRUE}
+smart_meter_nsw  %>% granplot("day_week",
+                              "hour_day",
+                              "general_supply_kwh",
+                              plot_type = "quantile", quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
+```
+
+This provides an useful warning suggesting quantiles should be computed with caution as number of observations might not be enough for reliable estimates.
+
+
+<br>
+
+Now, we want to view distribution of `general_supply_kwh` across the another set of harmonies - month_year and hour_day and let the package decide 
+the plot type that is best suitable.
+
+```{r example7, echo=TRUE}
+smart_meter_nsw  %>%   
+    granplot("month_year", "hour_day", 
+           response = "general_supply_kwh", 
+           #plot_type = "quantile", 
+           quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
+  ggtitle("Quantile plot across hour-of-day by month-of-year for Household 1") +
+  scale_y_continuous(breaks = seq(0, 1.5, 0.25)) 
+```
+
+
+
+Moving on, if we want to switch the facet and x-axis variable, we simply reverse the order of time granularities. Here, granplot would output a ggplot2 object. So we are free to add any element to the default plot.
+
+<br>
 
 Suppose, both the granularities chosen have too many levels, which is not suitable for facetting or are clashes, then warnings will be provided.
 
 
 ```{r example9, echo=TRUE}
-smart_meter_nsw  %>% granplot(gran1 = "hour_week", gran2 = "day_week", "general_supply_kwh", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1, 24, 2))
+smart_meter_nsw  %>%
+  granplot(gran1 = "day_quarter",
+           gran2 = "day_week", 
+           "general_supply_kwh", 
+           plot_type = "violin") 
 ```
 
-The warning says :  Facetting not recommended as there are too many categories in day_week and also suggest using hour_day as the facet variable.
+The warning says :  Facetting not recommended as there are too many categories in day_quarter and also suggest using day_week as the facet variable.
 
 Moreover, the granularities chosen are clashes and one can see the set of harmonies using `harmony(.data)`
+
+Want to browse through a similar analysis and get insights about the energy behavior of few households? Consider looking at [https://github.com/Sayani07/gsoc2019/blob/master/smart_meter.pdf].
 
 ### Create any temporal granularity with `create_gran()`
 
@@ -130,70 +165,21 @@ Any granularity can be built using `create_gran` if any other plots are to explo
 
 
 ```{r example10, echo=TRUE}
-smart_meter_nsw  %>% create_gran("day_fortnight") %>% ggplot2::ggplot(aes(x = as.factor(day_fortnight), y = general_supply_kwh)) + xlab("day_fortnight") + geom_boxplot()
+smart_meter_nsw  %>%
+  create_gran("day_fortnight") %>%
+  ggplot2::ggplot(aes(x = as.factor(day_fortnight),
+                      y = general_supply_kwh)) + 
+  xlab("day_fortnight") + 
+  geom_boxplot()
 ```
 
 ### How granplot works
 
-Recommendations for distribution plots depend on the levels(very high/high/medium/low) of the two granularities plotted. They will vary depending on which granularity is placed on the x-axis and which one across facets. Assumptions are made to ensure display is not too cluttered by the space occupied by various kinds of distribution plots. Moreover, the recommendation system ensures that there are just enough observations before choosing a distribution plot.
+Recommendations for distribution plots depend on the levels of the two granularities plotted. They will vary depending on which granularity is placed on the x-axis and which one across facets. Assumptions are made to ensure display is not too cluttered by the space occupied by various kinds of distribution plots. Moreover, the recommendation system ensures that there are just enough observations before choosing a distribution plot.
 
-Levels are categorized as very high/high/medium/low each for the facet variable and the x-axis variable. Default values for these levels are based on levels of common temporal granularities like day of the month, day of a fortnight or day of a week. For example, any levels above 31 is considered as very high, any levels between 14 to 31 are taken as high and that between 7 to 14 is taken as medium and below 7 is low. 31, 14 and 7 are the levels of days-of-month, days-of-fortnight and days-of week respectively. These default values are decided based on usual cognitive power while comparing across facets and display size available to us. Let us consider case by case and see which plots are better suitable in which scenarios.
+Levels are categorized as very high/high/medium/low each for the facet variable and the x-axis variable. Default values for these levels are based on levels of common temporal granularities like day of the month, day of a fortnight or day of a week. For example, any levels above 31 is considered as very high, any levels between 14 to 31 are taken as high and that between 7 to 14 is taken as medium and below 7 is low. 31, 14 and 7 are the levels of days-of-month, days-of-fortnight and days-of week respectively. These default values are decided based on usual cognitive power while comparing across facets and display size available to us. 
 
-
-  - very high (facet) and any levels of x-axis
-
-    plots_list <- c("decile", "percentile")
- 
-  - high (facet) and very high(x-axis)
-   
-    plots_list <- c("decile", "percentile")
- 
-  - high (facet) and high(x-axis)
-
-    plots_list <- c("decile", "percentile")
-   
-  - high(facet) and medium(x-axis)
-  
-    plots_list <- c("decile", "percentile")   
-
-  - high(facet), low(x-axis)
-  
-    plots_list <- c("ridge", "violin", "lv", "density")
-  
-  - medium(facet), very high (x-axis)
-
-    plots_list <- c("decile", "percentile") 
-   
-  - medium(facet), high (x-axis)
-  
-    plots_list <- c("decile", "percentile")
-  }
-  
-  - medium(facet), medium (x-axis)
-  
-    plots_list <- c("decile", "percentile")
- 
-  
-   - medium(facet), low (x-axis)
-   
-     plots_list <- c("ridge", "violin", "lv", "density")
-    
-  - low(facet), very high (x-axis)
-  
-     plots_list <- c("boxplot", "lv", "percentile", "decile")
-  
-  - low(facet), medium (x-axis)
- 
-    plots_list <- c("ridge", "violin", "lv", "density", "percentile", "decile")
-    
-   - low(facet), low (x-axis)
-
-     plots_list <- c("ridge", "violin", "lv", "boxplot", density", "percentile", "decile")
- 
-
-`granplot` choose the recommended plots if plot_type = NULL.
-
-Now the user might want to plot two temporal granularities that are clashes, they are free to do so however, they will be shown a warning that they are plotting clashes. Warnings will also be shown if number of levels of facet variable too high (inappropriate for facetting).
+`granplot` choose the recommended plots only if plot_type = NULL. Warnings are generated if users try to plot clashes, number of facet variables are too high or number of observations used to compute statistical summaries for distribution are not large enough.
 
 
 ## Acknowledgements
