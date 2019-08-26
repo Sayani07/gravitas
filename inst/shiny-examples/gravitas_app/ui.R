@@ -5,12 +5,20 @@ tabInput <- tabPanel(
     sidebarPanel(
       # Input csv file
       fileInput("file", "Data file (tsibble as .Rda file)"),
-      wellPanel(helpText(HTML("Tsibble provides a data class of tbl_ts to represent tidy temporal data.","It consists of a <b><i>time index</i></b>, <b><i>key</i></b> and other <b><i>measured variables</i></b> in a data-centric format, which makes it easier to work with temporal data.", "To learn more about it, please visit"), a("tsibble", href = "https://tsibble.tidyverts.org/", target = "_blank")
-      ))),
+      wellPanel(helpText(HTML(" Load a data(tsibble) in a .Rda file and have a glance of your data before moving ahead with your exploratory journey.",
+                              "<hr>",
+"<b>Statistical Summary</b>: Provides the five point summary of all the variables in your data.",
+"<br>",
+"<hr>",
+"<b>Temporal structure</b>: Provides the temporal structure of the data through a <i>tsibble</i> summary. It consists of a <i>time index</i>, <i>key</i> and other <i>measured variables</i>. The print display gives information on data dimension, time interval(within third brackets), keys(if any) and the number of time-based units.",
+"<br>",
+"<br>",
+"<i>Caution</i>: Re-confirm the time interval of your data before proceeding with your analysis."
+      )))),
     mainPanel(
        fluidRow(
-         column(6, h2("Data summary"), verbatimTextOutput("summary"), style = "height:100px"),
-         column(6, h2("Data structure"), verbatimTextOutput("str_data"), style = "height:100px")
+         column(6, h2("Statistical Summary"), verbatimTextOutput("summary"), style = "height:100px"),
+         column(6, h2("Temporal structure"), verbatimTextOutput("str_data"), style = "height:100px")
          # h2("Data structure"), verbatimTextOutput("str_data"), style = "height:100px"),
 
        )

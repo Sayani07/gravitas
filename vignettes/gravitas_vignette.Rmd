@@ -180,11 +180,11 @@ Levels are categorized as very high/high/medium/low each for the facet variable 
   
    - medium(facet), low (x-axis)
    
-    plots_list <- c("ridge", "violin", "lv", "density")
+     plots_list <- c("ridge", "violin", "lv", "density")
     
   - low(facet), very high (x-axis)
   
-    plots_list <- c("boxplot", "lv", "percentile", "decile")
+     plots_list <- c("boxplot", "lv", "percentile", "decile")
   
   - low(facet), medium (x-axis)
  
