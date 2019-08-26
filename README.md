@@ -78,6 +78,7 @@ View the vignette to get started\!
 ``` r
 library("gravitas")
 #vignette("gravitas_vignette")
+download.file("https://raw.githubusercontent.com/Sayani07/gravitas/master/vignettes/gravitas_vignette.html", destfile = "gravitas_vignette.html")
 ```
 
 You can force building the vignettes with
