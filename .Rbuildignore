@@ -6,3 +6,5 @@
 ^codecov\.yml$
 ^harmony_tbl.Rda
 
+^doc$
+^Meta$

@@ -1,0 +1,205 @@
+---
+title: "gravitas"
+author: "Sayani Gupta"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+vignette: >
+  %\VignetteIndexEntry{gravitas}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+<!-- #Example vignette: 
+https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-naniar.Rmd -->
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo       = TRUE,   # code
+  include    = TRUE,   # plots
+  results    = "hide", # text: "hide", "show"
+  eval       = TRUE,   # chunk
+  message    = FALSE,
+  warning    = FALSE,
+  error      = FALSE,
+  collapse   = TRUE,
+  comment    = "#>",
+  fig.height = 4,
+  fig.width  = 6,
+  fig.align  = "center",
+  cache      = FALSE
+)
+library(gravitas)
+```
+
+# Introduction
+
+The package **gravitas** provides a tool to examine the probability distribution of univariate time series across bivariate temporal granularities using range of graphics in `ggplot2` through the following:  
+
+ - create multiple-order-up circular or aperiodic temporal granularities.  
+ 
+ - categorize pairs of granularities as either  *harmony* or *clash*, where harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis.  
+ 
+ - recommending appropriate probability distribution plots of the time series variable across the bivariate granularities based on the levels of the bivariate granularties and their compatibility relationship.  
+
+## Get started
+
+The `vic_elec` data from tsibbledata package is employed to have a run through of this package. . consisting of half hour demand for the state of Victoria. Suppose it is of interest to to examine how the univariate series `Demand` varies with different deconstructions of time.
+
+### Get set of possible temporal granularities with `search_gran()`
+
+```{r example1}
+library(gravitas)
+library(dplyr)
+tsibbledata::vic_elec %>% search_gran()
+```
+
+### Refine your search of possible temporal granularities by altering arguments in `search_gran()`
+
+The default for search gran in this case,  provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarce temporal unit can be set to be "month".
+
+```{r example2}
+library(gravitas)
+library(dplyr)
+tsibbledata::vic_elec %>% search_gran(ugran = "month")
+```
+
+This looks better. However, some intermediate temporal units might not be pertinent to the analysis and we might want to  remove them from the list of granularities that we want to examine.
+
+```{r example3}
+library(gravitas)
+library(dplyr)
+tsibbledata::vic_elec %>% search_gran(ugran = "month", filter_out = c("fortnight"))
+```
+
+
+### Check if two temporal granularities are harmonies with `is.harmony()`
+
+Now that we have the list of granularities that we want to look at, let us see which pairs form harmony/clash.
+
+```{r example4}
+library(gravitas)
+library(dplyr)
+tsibbledata::vic_elec %>% is.harmony(gran1 = "hhour_week", gran2 = "day_week")
+
+tsibbledata::vic_elec %>% is.harmony(gran1 = "hour_day", gran2 = "day_week")
+
+tsibbledata::vic_elec %>% is.harmony(gran1 = "day_month", gran2 = "hhour_week")
+```
+
+
+### Get all possible harmonies with `harmony()`
+
+Or, we can find the set of harmonies all at once with the help of function `harmony`.
+
+```{r example5}
+tsibbledata::vic_elec %>% harmony(ugran = "month", filter_out = c("fortnight", "hhour"))
+```
+
+
+
+### Explore probability distribution across bivariate temporal granularities with `granplot()`
+
+Now, we want to view distribution of the measured variable `Demand` across these bivariate granularities through boxplots using `granplot`.
+
+```{r example6}
+tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand", plot_type = "boxplot")
+```
+Now, we want to view distribution of `Demand' across the next set of harmonies - hour_day and day_month and let the package decide 
+the plot type that is best suitable for the number of levels in hour_day and day_month.
+
+```{r example7}
+tsibbledata::vic_elec %>% granplot("hour_day", "day_week", "Demand")
+```
+
+If we want to switch the facet and x-axis variable, we simply reverse the order of time granularities. Here, granplot would output a ggplot2 object. So we are free to add any element to the default plot.
+
+```{r example8}
+tsibbledata::vic_elec %>% granplot("day_week", "hour_day", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1, 24, 3))
+```
+
+Suppose, both the granularities chosen have too many levels, which is not suitable for facetting or are clashes, then warnings will be provided.
+
+
+```{r example9}
+tsibbledata::vic_elec %>% granplot(gran1 = "hour_week", gran2 = "day_week", "Demand", plot_type = "violin") + ggplot2::scale_x_discrete(breaks = seq(1, 24, 2))
+```
+
+The warning says :  Facetting not recommended as there are too many categories in day_week and also suggest using hour_day as the facet variable.
+
+Moreover, the granularities chosen are clashes and one can see the set of harmonies using `harmony(.data)`
+
+### Create any temporal granularity with `create_gran()`
+
+Any granularity can be built using `create_gran` if any other plots are to explored which is not included in plot_types of `gran_plot` or for extracting any other summary statistics. They can be also be used for exploring distribution of the time series across univariate temporal granularity.
+
+
+```{r example10}
+library(ggplot2)
+tsibbledata::vic_elec %>% create_gran("day_fortnight") %>% ggplot(aes(x = as.factor(day_fortnight), y = Demand)) + xlab("day_fortnight") + geom_boxplot()
+```
+
+### How granplot works
+
+Recommendations for distribution plots depend on the levels(very high/high/medium/low) of the two granularities plotted. They will vary depending on which granularity is placed on the x-axis and which one across facets. Assumptions are made to ensure display is not too cluttered by the space occupied by various kinds of distribution plots. Moreover, the recommendation system ensures that there are just enough observations before choosing a distribution plot.
+
+Levels are categorized as very high/high/medium/low each for the facet variable and the x-axis variable. Default values for these levels are based on levels of common temporal granularities like day of the month, day of a fortnight or day of a week. For example, any levels above 31 is considered as very high, any levels between 14 to 31 are taken as high and that between 7 to 14 is taken as medium and below 7 is low. 31, 14 and 7 are the levels of days-of-month, days-of-fortnight and days-of week respectively. These default values are decided based on usual cognitive power while comparing across facets and display size available to us. Let us consider case by case and see which plots are better suitable in which scenarios.
+
+
+  - very high (facet) and any levels of x-axis
+
+    plots_list <- c("decile", "percentile")
+ 
+  - high (facet) and very high(x-axis)
+   
+    plots_list <- c("decile", "percentile")
+ 
+  - high (facet) and high(x-axis)
+
+    plots_list <- c("decile", "percentile")
+   
+  - high(facet) and medium(x-axis)
+  
+    plots_list <- c("decile", "percentile")   
+
+  - high(facet), low(x-axis)
+  
+    plots_list <- c("ridge", "violin", "lv", "density")
+  
+  - medium(facet), very high (x-axis)
+
+    plots_list <- c("decile", "percentile") 
+   
+  - medium(facet), high (x-axis)
+  
+    plots_list <- c("decile", "percentile")
+  }
+  
+  - medium(facet), medium (x-axis)
+  
+    plots_list <- c("decile", "percentile")
+ 
+  
+   - medium(facet), low (x-axis)
+   
+    plots_list <- c("ridge", "violin", "lv", "density")
+    
+  - low(facet), very high (x-axis)
+  
+    plots_list <- c("boxplot", "lv", "percentile", "decile")
+  
+  - low(facet), medium (x-axis)
+ 
+    plots_list <- c("ridge", "violin", "lv", "density", "percentile", "decile")
+    
+   - low(facet), low (x-axis)
+
+     plots_list <- c("ridge", "violin", "lv", "boxplot", density", "percentile", "decile")
+ 
+
+`granplot` choose the recommended plots if plot_type = NULL.
+
+Now the user might want to plot two temporal granularities that are clashes, they are free to do so however, they will be shown a warning that they are plotting clashes. Warnings will also be shown if number of levels of facet variable too high (inappropriate for facetting).
+
+
+## Acknowledgements
+
+Thanks to Prof. Rob J Hyndman, Prof. Dianne Cook and Prof. Antony Unwin for their support and always leading by example. The fine balance of encouraging me to work on my ideas and stepping in to help when I need has made the devlopment of this package a great learning experience for me.
