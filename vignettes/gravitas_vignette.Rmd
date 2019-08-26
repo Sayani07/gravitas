@@ -1,10 +1,10 @@
 ---
-title: "gravitas: exploring probability distributions for bivariate temporal granularities"
+title: "Exploring probability distributions for bivariate temporal granularities with gravitas"
 author: "<i>Sayani Gupta</i <br> <hr>"
 output: 
   rmarkdown::html_vignette:
 vignette: >
-  %\VignetteIndexEntry{gravitas}
+  %\VignetteIndexEntry{Exploring probability distributions for bivariate temporal granularities with gravitas}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

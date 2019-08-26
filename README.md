@@ -80,6 +80,12 @@ library("gravitas")
 #vignette("gravitas_vignette")
 ```
 
+You can force building the vignettes with
+
+``` r
+#devtools::install_github("Sayani07/gravitas", build_vignettes = TRUE)
+```
+
 This package takes tsibble as the data input. Tsibble provides a data
 class of tbl\_ts to represent tidy temporal data. It consists of a time
 index, key and other measured variables in a data-centric format, which

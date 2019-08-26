@@ -40,6 +40,7 @@ You can install the development version from [GitHub](https://github.com/) with:
 ``` r
 # install.packages("devtools")
 devtools::install_github("Sayani07/gravitas")
+
 ```
 ## Quick look
 
@@ -63,13 +64,18 @@ gravitas comes with an interactive webpage, which lets you go through the differ
   
 ## More information
 
-View the vignette to get started!
+View the vignette to get started! 
 
 ```{r}
 library("gravitas")
 #vignette("gravitas_vignette")
 ```
 
+You can force building the vignettes with 
+
+```{r}
+#devtools::install_github("Sayani07/gravitas", build_vignettes = TRUE)
+```
 This package takes tsibble as the data input. Tsibble provides a data class of tbl_ts to represent tidy temporal data. It consists of a time index, key and other measured variables in a data-centric format, which makes it easier to work with temporal data. To learn more about it, please visit [https://tsibble.tidyverts.org/](https://tsibble.tidyverts.org/)
 
 ## Reporting and issues
