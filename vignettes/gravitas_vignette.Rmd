@@ -28,6 +28,8 @@ knitr::opts_chunk$set(
   cache      = FALSE
 )
 library(gravitas)
+library(dplyr)
+library(ggplot2)
 ```
 
 # Introduction
@@ -42,13 +44,12 @@ The package **gravitas** provides a tool to examine the probability distribution
 
 ## Get started
 
-The `vic_elec` data from tsibbledata package is employed to have a run through of this package. . consisting of half hour demand for the state of Victoria. Suppose it is of interest to to examine how the univariate series `Demand` varies with different deconstructions of time.
+The `vic_elec` data from tsibbledata package is employed to have a run through of this package. The data consists of half hour demand for the state of Victoria. Suppose it is of interest to examine how the univariate series `Demand` varies with different deconstructions of time.
 
 ### Get set of possible temporal granularities with `search_gran()`
 
 ```{r example1}
-library(gravitas)
-library(dplyr)
+
 tsibbledata::vic_elec %>% search_gran()
 ```
 
@@ -57,16 +58,14 @@ tsibbledata::vic_elec %>% search_gran()
 The default for search gran in this case,  provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarce temporal unit can be set to be "month".
 
 ```{r example2}
-library(gravitas)
-library(dplyr)
+
 tsibbledata::vic_elec %>% search_gran(ugran = "month")
 ```
 
 This looks better. However, some intermediate temporal units might not be pertinent to the analysis and we might want to  remove them from the list of granularities that we want to examine.
 
 ```{r example3}
-library(gravitas)
-library(dplyr)
+
 tsibbledata::vic_elec %>% search_gran(ugran = "month", filter_out = c("fortnight"))
 ```
 
@@ -76,8 +75,7 @@ tsibbledata::vic_elec %>% search_gran(ugran = "month", filter_out = c("fortnight
 Now that we have the list of granularities that we want to look at, let us see which pairs form harmony/clash.
 
 ```{r example4}
-library(gravitas)
-library(dplyr)
+
 tsibbledata::vic_elec %>% is.harmony(gran1 = "hhour_week", gran2 = "day_week")
 
 tsibbledata::vic_elec %>% is.harmony(gran1 = "hour_day", gran2 = "day_week")
@@ -133,8 +131,7 @@ Any granularity can be built using `create_gran` if any other plots are to explo
 
 
 ```{r example10}
-library(ggplot2)
-tsibbledata::vic_elec %>% create_gran("day_fortnight") %>% ggplot(aes(x = as.factor(day_fortnight), y = Demand)) + xlab("day_fortnight") + geom_boxplot()
+tsibbledata::vic_elec %>% create_gran("day_fortnight") %>% ggplot2::ggplot(aes(x = as.factor(day_fortnight), y = Demand)) + xlab("day_fortnight") + geom_boxplot()
 ```
 
 ### How granplot works

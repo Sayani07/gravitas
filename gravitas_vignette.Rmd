@@ -1,0 +1,90 @@
+---
+title: "gravitas"
+author: "Sayani Gupta"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+vignette: >
+  %\VignetteIndexEntry{gravitas}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+<!-- #Example vignette: 
+https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-naniar.Rmd -->
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo       = TRUE,   # code
+  include    = TRUE,   # plots
+  results    = "hide", # text: "hide", "show"
+  eval       = TRUE,   # chunk
+  message    = FALSE,
+  warning    = FALSE,
+  error      = FALSE,
+  collapse   = TRUE,
+  comment    = "#>",
+  fig.height = 4,
+  fig.width  = 6,
+  fig.align  = "center",
+  cache      = FALSE
+)
+library(gravitas)
+```
+
+# Introduction
+
+
+## Dynamic projections of high dimensional data, tours
+
+*Tours* are a class of dynamic orthogonal (linear) projections that embed $p-$dimensional (Euclidean) space into a $d-$dimensional subspace and animates many such projections as the projection basis (orientation) is rotated. Tours are useful in identify clustering, outliers, and structure held within numeric multivariate data. 
+
+
+## Notation
+
+
+
+# Usage
+
+
+
+## Example 1 - Rotate an arbitrary basis (& utility functions)
+
+
+
+```{r view-basis}
+
+```
+
+
+
+```{r view-manip-space}
+
+```
+
+
+
+```{r, eval=F}
+
+```
+
+*plotly animation not rendered in this vignette, but will display in viewer*
+
+## Example 2 - Rotating a glyph map
+
+
+
+## Example 3 - Rotation after holes guided tour
+
+
+# Summary
+
+
+
+## Namesake 
+
+
+
+## Acknowledgements
+
+This package and vignette were made in *R* with much support from `devtools` and `roxygen2`.
+
+Thanks to Prof. Dianne Cook for providing focus, namesake, and the groundwork underpinning this work. Thanks to Dr. Ursula Laa for use-cases and applications.

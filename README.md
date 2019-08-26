@@ -53,7 +53,7 @@ gravitas::run\_app().
 
 ## Features
 
-  - Get set of possible temporal granularities with `create_gran`
+  - Build any temporal granularity with `create_gran`
 
   - Get set of possible temporal granularities with `search_gran()`
     

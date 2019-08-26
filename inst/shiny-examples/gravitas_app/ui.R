@@ -1,7 +1,7 @@
 source('global_shiny.R', local = TRUE)
 # Input Data Tab
 tabInput <- tabPanel(
-  "Input", fluidPage(
+  "Data summary", fluidPage(
     sidebarPanel(
       # Input csv file
       fileInput("file", "Data file (tsibble as .Rda file)"),

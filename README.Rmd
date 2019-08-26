@@ -48,7 +48,7 @@ gravitas comes with an interactive webpage, which lets you go through the differ
 
 ## Features
 
-  -  Get set of possible temporal granularities with `create_gran` 
+  -  Build any temporal granularity with `create_gran` 
 
   - Get set of possible temporal granularities with `search_gran()`
     - Refine your search of possible temporal granularities by altering arguments in `search_gran()`
