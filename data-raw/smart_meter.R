@@ -1,6 +1,9 @@
 library(tidyverse)
 library(lubridate)
 library(tsibble)
+
+library(lubridate)
+
 library(gravitas)
 library(readr)
 library(HadoopStreaming)
@@ -82,8 +85,23 @@ smart_meter_data <- fread("data/CD_INTERVAL_READING_ALL_NO_QUOTES-3.csv")
 # #
 
 
-## to be run in di's computer
+## Run in Di's computer
 
-smart_meter_data <- read_csv("data/CD_INTERVAL_READING_ALL_NO_QUOTES-3.csv")
-smart_meter_ts <- as_tsibble(smart_meter_data, index = ` READING_DATETIME `, key = `CUSTOMER_ID`)
+smart_meter_data <- read_csv("data/CD_INTERVAL_READING_ALL_NO_QUOTES.csv")
+
+smart_meter_customers <- smart_meter_data %>% distinct(CUSTOMER_ID)
+smart_customer_50 <- smart_meter_customers %>% head(n = 50)
+
+
+smart_meter_50 <- smart_meter_data %>%
+                  filter(CUSTOMER_ID %in% smart_customer_50$CUSTOMER_ID) %>%
+                  rename_all(tolower) %>%
+                  mutate(reading_datetime = case_when(
+                    duplicated(reading_datetime) ~ reading_datetime + hours(1),
+                    TRUE ~ reading_datetime
+                    )) %>%
+  arrange(customer_id, reading_datetime)
+write_rds(smart_meter_50, "data/smart_meter_50_tbl.rds", compress = "xz")
+
+smart_meter_50 <- tsibble(smart_meter_50, index = reading_datetime, key = id(customer_id), validate = FALSE)
 
