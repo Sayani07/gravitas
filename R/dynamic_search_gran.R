@@ -46,11 +46,11 @@ dynamic_search_gran <- function(.data, hierarchy_tbl = NULL, lowest_unit = NULL,
   }
 
 
-  if (g_order(hierarchy_tbl, lowest_unit, highest_unit) == 1) {
-    stop("Only one units ", lowest_unit, "_", {
-      highest_unit
-    }, " can be formed. Function requires checking compatibility for bivariate granularities")
-  }
+  # if (g_order(hierarchy_tbl, lowest_unit, highest_unit) == 1) {
+  #   stop("Only one unit ", lowest_unit, "_", {
+  #     highest_unit
+  #   }, " can be formed. Function requires checking compatibility for bivariate granularities")
+  # }
 
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
   index_gran1 <- units %>% match(x = lowest_unit)
