@@ -1,18 +1,3 @@
-#' Get set of possible temporal granularities for a given tsibble
-#'
-#' @param .data A tsibble object.
-#' @param highest_unit Highest unit in the hierarchy table. Typically, it is set as the most coarse temporal unit required in the analysis. Default is "year".
-#' @param lowest_unit Lowest unit in the hierarchy table. For "regular" tsibble, lowest_unit is the interval of the tsibble. It needs to be specified for "irregular" time intervals.
-#' @param filter_in Choices of temporal units to be kept.
-#' @param filter_out Choices of temporal units to be discarded.
-#' @param ... Other arguments to be passed.
-#' @return Set of possible granularities.
-#' @examples
-#' library(dplyr)
-#' library(tsibbledata)
-#' tsibbledata::vic_elec %>% search_gran(highest_unit = "month", filter_out = c("hhour", "fortnight"))
-#' tsibbledata::gafa_stock %>% search_gran(highest_unit = "month", lowest_unit = "week")
-
 dynamic_search_gran <- function(.data, hierarchy_tbl = NULL, lowest_unit = NULL, highest_unit = NULL, filter_in = NULL, filter_out = NULL, ...) {
 
   units <- hierarchy_tbl$units
@@ -41,12 +26,12 @@ dynamic_search_gran <- function(.data, hierarchy_tbl = NULL, lowest_unit = NULL,
 
 
 
-  if (g_order(hierarchy_tbl, lowest_unit, highest_unit) == 0) {
+  if (dynamic_g_order(hierarchy_tbl, lowest_unit, highest_unit) == 0) {
     stop("lowest_unit and highest_unit should be distinct")
   }
 
 
-  # if (g_order(hierarchy_tbl, lowest_unit, highest_unit) == 1) {
+  # if (dynamic_g_order(hierarchy_tbl, lowest_unit, highest_unit) == 1) {
   #   stop("Only one unit ", lowest_unit, "_", {
   #     highest_unit
   #   }, " can be formed. Function requires checking compatibility for bivariate granularities")
@@ -119,7 +104,7 @@ dynamic_search_gran <- function(.data, hierarchy_tbl = NULL, lowest_unit = NULL,
 
 
 
-g_order <- function(hierarchy_tbl = NULL, lower_gran =NULL, upper_gran = NULL, order = NULL,...){
+dynamic_g_order <- function(hierarchy_tbl = NULL, lower_gran =NULL, upper_gran = NULL, order = NULL,...){
 
 
   units <- hierarchy_tbl$units
@@ -143,7 +128,7 @@ g_order <- function(hierarchy_tbl = NULL, lower_gran =NULL, upper_gran = NULL, o
 
 # provides the conversion factor between two granularities
 
-gran_convert <- function(hierarchy_tbl = NULL,lower_gran = NULL, upper_gran = NULL, order = NULL) {
+dynamic_gran_convert <- function(hierarchy_tbl = NULL,lower_gran = NULL, upper_gran = NULL, order = NULL) {
 
   units <- hierarchy_tbl$units
   convert_fct <- hierarchy_tbl$convert_fct
@@ -156,14 +141,15 @@ gran_convert <- function(hierarchy_tbl = NULL,lower_gran = NULL, upper_gran = NU
     }
 
 
-    if (g_order(hierarchy_tbl, lower_gran, upper_gran) < 0) {
+
+    if (dynamic_g_order(hierarchy_tbl, lower_gran, upper_gran) < 0) {
       stop("Order of second unit should be larger than the first one. Try reversing their position")
     }
-    if (g_order(hierarchy_tbl, lower_gran, upper_gran) == 0) {
+    if (dynamic_g_order(hierarchy_tbl, lower_gran, upper_gran) == 0) {
       return(1)
     }
     else {
-      return(convert_fct[index_l] * gran_convert(hierarchy_tbl, g_order(hierarchy_tbl, lower_gran, order = 1), upper_gran))
+      return(convert_fct[index_l] * dynamic_gran_convert(hierarchy_tbl, dynamic_g_order(hierarchy_tbl, lower_gran, order = 1), upper_gran))
     }
   }
   if (!is.null(order)) {

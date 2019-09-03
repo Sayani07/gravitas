@@ -29,7 +29,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
   }
 
   if (is.null(response)) {
-    stop("requires the following missing aesthetics: response")
+    response <- tsibble::measured_vars(.data)[1]
   }
 
   # Warn if they have chosen clashes asking to look at the table of harmonies

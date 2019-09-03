@@ -4,8 +4,12 @@
 ^README\.Rmd$
 ^appveyor\.yml$
 ^codecov\.yml$
-^harmony_tbl.Rda
+^harmony_tbl\.Rda
 ^.gravitas_vignette.Rmd$
-
+^data/smart_meter\.RData$
+^data/cricket\.RData$
 ^doc$
 ^Meta$
+^data-raw$
+^\.csv$
+^data-raw/$
