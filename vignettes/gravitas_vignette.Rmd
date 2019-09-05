@@ -39,11 +39,13 @@ One of the [customer trials](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-46
 
 
 ```{r data_load, echo=FALSE}
-load("../data/smart13_cust2.rda")
+load("../data/sm_cust1.RData")
 ```
 
 ```{r data_store, echo=TRUE}
-smart_meter_nsw <- smart_meter_13_cust2 %>% as_tsibble()
+smart_meter_nsw <- sm_cust1 %>% 
+  ungroup() %>% 
+  as_tsibble()
 ```
 
 ### Get set of possible temporal granularities with `search_gran()`
