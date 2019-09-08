@@ -32,11 +32,13 @@ else
 
 }
 
-dynamic_create_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL)
+dynamic_create_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL,...)
 {
 
-  if(class(x) %in% c("POSIXct", "POSIXt"))
-    value = create_gran(.data, hierarchy_tbl = lookup_table, gran, ...)
+  x = .data[[index(.data)]] # index column
+
+  if(any(class(x) %in% c("POSIXct", "POSIXt")))
+    value = create_gran(.data, gran,...)
   else
   {
   gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
@@ -59,51 +61,3 @@ if (dynamic_g_order(hierarchy_tbl, lgran, gran_split[2]) == 1) {
 }
 return(value)
 }
-
-#
-# single_odr_gran <- function(.data, hierarchy_tbl = NULL, lower_gran = NULL, aperiodic_col = NULL, base_col = NULL,...) {
-#
-#   units <- hierarchy_tbl$units
-#   convert_fct <- hierarchy_tbl$convert_fct
-#
-# # only oen aperiodic elements considered
-#   index_aperiodic <- match(convert_fct, NA)
-#   index_aperiodic <-  index_aperiodic[!is.na(index_aperiodic)]
-#
-#   if(all(is.na(index_aperiodic)))
-#   {
-#     denom <- dynamic_gran_convert(hierarchy_tbl,
-#                                                        lower_gran,
-#                                                        upper_gran = dynamic_g_order(hierarchy_tbl, lower_gran, order = 1))
-#     value = .data[[base_col]] %% denom
-#
-#     value = dplyr::if_else(value!=0, value,denom)
-#
-#
-#   }
-#   else
-#   {
-#
-# # index of lower gran in the hierarchy table
-#     index_lower_gran <- match(lower_gran, units)
-#
-#
-#
-#
-#
-#     if(index_lower_gran==index_aperiodic)
-#     {
-#     value = .data[[aperiodic_col]]
-#     }
-#     else if(index_lower_gran > index_aperiodic)
-#     {
-#
-#     denom <- dynamic_gran_convert(hierarchy_tbl, units[index_aperiodic+1], lower_gran)
-#
-#     value = .data[[base_col]] %% denom
-#
-#     value = dplyr::if_else(value!=0, value,denom)
-#     }
-#   }
-#     return(value)
-#   }
