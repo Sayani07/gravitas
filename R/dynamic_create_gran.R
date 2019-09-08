@@ -1,17 +1,3 @@
-# data = read_rds("data/smart_meter_50_tbl.rds")
-# smart_meter_50 <- data %>%
-#   filter(lubridate::year(reading_datetime)==2013) %>%
-#   mutate(reading_datetime = case_when(
-#     duplicated(reading_datetime) ~ reading_datetime + lubridate::minutes(1),
-#     TRUE ~ reading_datetime
-#   ))
-#
-# smart_meter_50 %>% as_tsibble(index = reading_datetime, key = customer_id)
-
-
-hierarchy <- tibble(units = c("index", "ball", "over", "inning", "match"), convert_fct  = c(1, 6, 20, 2, 1))
-hierarchy
-
 create_single_gran <- function(.data, hierarchy_tbl = NULL, gran = NULL)
 {
  x = .data[[index(.data)]] # index column
@@ -48,6 +34,11 @@ else
 
 dynamic_create_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL)
 {
+
+  if(class(x) %in% c("POSIXct", "POSIXt"))
+    value = create_gran(.data, hierarchy_tbl = lookup_table, gran, ...)
+  else
+  {
   gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
   lgran = gran_split[1]
   ugran = gran_split[2]
@@ -65,6 +56,7 @@ if (dynamic_g_order(hierarchy_tbl, lgran, gran_split[2]) == 1) {
     dynamic_gran_convert(hierarchy, lgran, lgran_ordr1) *
     (dynamic_create_gran(.data, hierarchy_tbl, gran_final) - 1)
  }
+}
 return(value)
 }
 
