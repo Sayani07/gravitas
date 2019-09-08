@@ -7,7 +7,40 @@
 #   ))
 #
 # smart_meter_50 %>% as_tsibble(index = reading_datetime, key = customer_id)
-#
+
+
+hierarchy <- tibble(units = c("index", "ball", "over", "inning", "match"), convert_fct  = c(1, 6, 20, 2, 1))
+hierarchy
+
+dynamic_create_gran <- function(.data, hierarchy_tbl = NULL, gran = NULL)
+{
+ x = .data[[index(.data)]] # index column
+
+ if(class(x) %in% c("POSIXct", "POSIXt"))
+   value = create_gran(.data, hierarchy_tbl, gran, ...)
+else
+{
+  units <- hierarchy_tbl$units
+  convert_fct <- hierarchy_tbl$convert_fct
+
+  index_lower_gran <- match(gran, units)
+  if(all(is.na(index_lower_gran)))
+  {
+    stop("linear granularity to be created should be one of the units present in the hierarchy table.")
+  }
+
+  gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
+
+
+  linear_gran <- ceiling(x/(dynamic_gran_convert(hierarchy_tbl, units[1], gran_split[1])))
+
+  circular_gran <-  linear_gran %% dynamic_gran_convert(hierarchy_tbl, gran_split[1], gran_split[2])
+
+
+}
+
+}
+
 
 
 single_odr_gran <- function(.data, hierarchy_tbl = NULL, lower_gran = NULL, aperiodic_col = NULL, base_col = NULL,...) {
