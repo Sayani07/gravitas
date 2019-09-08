@@ -32,7 +32,7 @@ else
 
 }
 
-dynamic_create_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL,...)
+dynamic_create_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, verify_col = FALSE, ...)
 {
 
   x = .data[[index(.data)]] # index column
@@ -60,4 +60,30 @@ if (dynamic_g_order(hierarchy_tbl, lgran, gran_split[2]) == 1) {
  }
 }
 return(value)
+
 }
+
+
+validate_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, validate_col = NULL, ...)
+{
+  all_gran <- dynamic_search_gran(.data, hierarchy_tbl)
+
+  if(!(gran %in% all_gran))# which granularity needs to be checked
+     {
+       stop("granularity to be validated needs to be one that can be formed from the hierarchy table.")
+  }
+  if(!(validate_col %in% names(.data)))  # column of data which has the granularity
+  {
+       stop("validate_col should be one of the columns of the data")
+  }
+
+  gran_data <- dynamic_create_gran(.data, hierarchy_tbl, gran)
+
+  data_col <- .data[[validate_col]]
+
+  if(all.equal(data_col, gran_data)==TRUE)
+    return(TRUE)
+  else(FALSE)
+}
+
+
