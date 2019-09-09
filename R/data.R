@@ -33,18 +33,3 @@
 #' @usage data(sm_cust50)
 "sm_cust50"
 
-
-#' Smart meter data for NSW households for the year 2013
-#'
-#' Customer Trial data conducted as part of
-#' Smart Grid Smart City (SGSC) project
-#' (2010-2014) based in Newcastle,
-#' New South Wales
-#' and areas in Sydney.
-#' It contains half hourly interval meter readings (KWh)
-#' of electricity consumption
-#' and generation of households.
-#' The data is obtained from url{https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter}
-#'
-#' @usage data(smart_meter13)
-"smart_meter13"

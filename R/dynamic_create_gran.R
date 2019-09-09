@@ -1,11 +1,28 @@
+#' Build temporal granularities
+
+#' @param .data A tsibble object.
+#' @param gran the required granularity.
+#' @param hierarchy_tbl A hierarchy table
+#' @param ... Other arguments passed on to individual methods.
+#' @return A tsibble with an additional column of granularity
+#
+#' @examples
+#' library(dplyr)
+#' library(tsibble)
+#' tsibbledata::vic_elec %>% as_tsibble() %>% create_gran("hour_week") %>% tail()
+#' @export dynamic_create_gran
+#'  @export validate_gran
+
+
+
 create_single_gran <- function(.data, hierarchy_tbl = NULL, gran = NULL)
 {
- x = .data[[index(.data)]] # index column
-
- if(class(x) %in% c("POSIXct", "POSIXt"))
-   value = create_gran(.data, hierarchy_tbl, gran, ...)
-else
-{
+#  x = .data[[tsibble::index(.data)]] # index column
+#
+#  if(class(x) %in% c("POSIXct", "POSIXt"))
+#    value = create_gran(.data, gran, ...)
+# else
+# {
   units <- hierarchy_tbl$units
   convert_fct <- hierarchy_tbl$convert_fct
 
@@ -26,16 +43,15 @@ else
   denom = dynamic_gran_convert(hierarchy_tbl, lgran, ugran)
 
 
-  circular_gran <-  if_else(linear_gran %% denom == 0, denom, linear_gran %% denom)
+  circular_gran <-  dplyr::if_else(linear_gran %% denom == 0, denom, linear_gran %% denom)
 
-}
 
 }
 
 dynamic_create_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, verify_col = FALSE, ...)
 {
 
-  x = .data[[index(.data)]] # index column
+  x = .data[[tsibble::index(.data)]] # index column
 
   if(any(class(x) %in% c("POSIXct", "POSIXt")))
     value = create_gran(.data, gran,...)
@@ -55,7 +71,7 @@ if (dynamic_g_order(hierarchy_tbl, lgran, gran_split[2]) == 1) {
 }
  else {
   value <- dynamic_create_gran(.data, hierarchy_tbl, gran_init) +
-    dynamic_gran_convert(hierarchy, lgran, lgran_ordr1) *
+    dynamic_gran_convert(hierarchy_tbl, lgran, lgran_ordr1) *
     (dynamic_create_gran(.data, hierarchy_tbl, gran_final) - 1)
  }
 }
