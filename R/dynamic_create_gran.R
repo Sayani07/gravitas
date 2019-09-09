@@ -11,7 +11,6 @@
 #' library(tsibble)
 #' tsibbledata::vic_elec %>% as_tsibble() %>% create_gran("hour_week") %>% tail()
 #' @export dynamic_create_gran
-#'  @export validate_gran
 
 
 
