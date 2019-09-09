@@ -11,8 +11,10 @@
 #' library(tsibble)
 #' tsibbledata::vic_elec %>% as_tsibble() %>% create_gran("hour_week") %>% tail()
 #' @export dynamic_create_gran
-#'
-dynamic_create_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, verify_col = FALSE, ...)
+
+
+
+dynamic_create_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, ...)
 {
 
   x = .data[[tsibble::index(.data)]] # index column
