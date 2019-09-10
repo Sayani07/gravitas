@@ -14,9 +14,11 @@
 
 
 
-dynamic_create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
+dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, label = TRUE, abbr = TRUE, ...) {
 
-  if (!tsibble::is_tsibble(.data)) {
+
+
+   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
 
@@ -25,88 +27,108 @@ dynamic_create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE,
   }
 
 
-  gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
-  lgran <- gran1_split[1]
-  ugran <- gran1_split[2]
+  if(any(class(x) %in% c("POSIXct", "POSIXt")))
 
-  x <- .data[[rlang::as_string(tsibble::index(.data))]]
-
-
-
-  events <- match(gran1, names(.data))
-  if(!is.na(events))
+    create_gran(.data, gran1,...)
+  else
   {
-    return(.data)
+
+     gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
+     lgran <- gran1_split[1]
+     ugran <- gran1_split[2]
+     data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(.data, hierarchy_tbl,  lgran, ugran, ...))
+
+     data_mutate$L1 = factor(data_mutate$L1)
+     names <- levels(data_mutate$L1)
+
+   data_mutate %>%
+       dplyr::mutate(
+         !!gran1 := L1
+       ) %>%
+       dplyr::select(-L1)
+
   }
 
 
-  # wkday weekend treatment open
-
-  if(gran1=="wknd_wday")
-
-  {
-    data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(.data, lgran = "day", ugran= "week", ...)) %>% dplyr::mutate(wknd_wday = dplyr::if_else(L1 %in% c(6,7), "Weekend", "Weekday")
-    )
-
-    data_mutate %>%
-      dplyr::select(-L1)
-
-  }
-
-  # wkday weekend treatment open
-
-  else{
-
-    data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(.data, lgran, ugran, ...))
-
-    lev <- unique(data_mutate$L1)
-
-    if (label) {
-      if (lgran == "day" & ugran == "week") {
-
-        data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(.data, lgran, ugran, week_start = getOption("lubridate.week.start", 1),label = TRUE))
-        names <- levels(data_mutate$L1)
-
-      }
-      else if (lgran == "month" & ugran == "year") {
-        # data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, label = TRUE))
-        # names <- unique(data_mutate$L1)
-        #
-        #       should correct it later
-        #
-        data_mutate <- .data %>% dplyr::mutate(L1 = lubridate::month(x,label = TRUE))
-        names <- levels(data_mutate$L1)
-
-      }
-      # if not day_week or month_year
-      else {
-        #names <- as.character(1:length(unique(lev)))
-        data_mutate$L1 = factor(data_mutate$L1)
-        names <- levels(data_mutate$L1)
-      }
-
-      names_abbr <- substr(names, 1, 3)
-
-      # What to do with the name if abbreviation
-      if (abbr) names_gran <- names_abbr else names_gran <- names
-    }
-
-    #if not label
-    else {
-
-      data_mutate$L1 = factor(data_mutate$L1)
-      names <- levels(data_mutate$L1)
-      # names_gran <- as.character(1:length(unique(lev)))
-      # data_mutate$L1 <- factor(data_mutate$L1, levels = names_gran)
-    }
-
-
-    data_mutate %>%
-      dplyr::mutate(
-        !!gran1 := L1
-      ) %>%
-      dplyr::select(-L1)
-  }
+  #
+  # x <- .data[[rlang::as_string(tsibble::index(.data))]]
+  #
+  #
+  #
+  # events <- match(gran1, names(.data))
+  # if(!is.na(events))
+  # {
+  #   return(.data)
+  # }
+  #
+  #
+  # # wkday weekend treatment open
+  #
+  # if(gran1=="wknd_wday")
+  #
+  # {
+  #   data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(.data, lgran = "day", ugran= "week", ...)) %>% dplyr::mutate(wknd_wday = dplyr::if_else(L1 %in% c(6,7), "weekend", "weekday")
+  #   )
+  #
+  #   data_mutate %>%
+  #     dplyr::select(-L1)
+  #
+  # }
+  #
+  # # wkday weekend treatment open
+  #
+  # else{
+  #
+  #   data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(.data, lgran, ugran, ...))
+  #
+  #   lev <- unique(data_mutate$L1)
+  #
+  #   if (label) {
+  #     if (lgran == "day" & ugran == "week") {
+  #
+  #       data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(.data, lgran, ugran, week_start = getOption("lubridate.week.start", 1),label = TRUE))
+  #       names <- levels(data_mutate$L1)
+  #
+  #     }
+  #     else if (lgran == "month" & ugran == "year") {
+  #       # data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, label = TRUE))
+  #       # names <- unique(data_mutate$L1)
+  #       #
+  #       #       should correct it later
+  #       #
+  #       data_mutate <- .data %>% dplyr::mutate(L1 = lubridate::month(x,label = TRUE))
+  #       names <- levels(data_mutate$L1)
+  #
+  #     }
+  #     # if not day_week or month_year
+  #     else {
+  #       #names <- as.character(1:length(unique(lev)))
+  #       data_mutate$L1 = factor(data_mutate$L1)
+  #       names <- levels(data_mutate$L1)
+  #     }
+  #
+  #     names_abbr <- substr(names, 1, 3)
+  #
+  #     # What to do with the name if abbreviation
+  #     if (abbr) names_gran <- names_abbr else names_gran <- names
+  #   }
+  #
+  #   #if not label
+  #   else {
+  #
+  #     data_mutate$L1 = factor(data_mutate$L1)
+  #     names <- levels(data_mutate$L1)
+  #     # names_gran <- as.character(1:length(unique(lev)))
+  #     # data_mutate$L1 <- factor(data_mutate$L1, levels = names_gran)
+  #   }
+  #
+  #
+  #   data_mutate %>%
+  #     dplyr::mutate(
+  #       !!gran1 := L1
+  #     ) %>%
+  #     dplyr::select(-L1)
+  # }
 }
 
 
