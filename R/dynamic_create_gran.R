@@ -41,18 +41,12 @@ dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, labe
      gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
      lgran <- gran1_split[1]
      ugran <- gran1_split[2]
-     data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(x, hierarchy_tbl,  lgran, ugran, ...))
 
-     data_mutate$L1 = factor(data_mutate$L1)
-     names <- levels(data_mutate$L1)
+   dynamic_build_gran(x, hierarchy_tbl,  lgran, ugran, ...)
+#
+#      data_mutate$L1 = factor(data_mutate$L1)
+#      names <- levels(data_mutate$L1)
 
-   data_mutate %>%
-     tibble::as_tibble() %>%
-       dplyr::mutate(
-         !!gran1 := L1
-       ) %>%
-       dplyr::select(L1) %>%
-     slice(1) %>% .$L1
 
   }
 
@@ -123,9 +117,9 @@ validate_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, validate_co
 
 
 
-create_single_gran <- function(.data, hierarchy_tbl = NULL, lgran = NULL,...)
+create_single_gran <- function(x, hierarchy_tbl = NULL, lgran = NULL,...)
 {
- x = .data[[tsibble::index(.data)]] # index column
+ # x = .data[[tsibble::index(.data)]] # index column
  units <- hierarchy_tbl$units
  convert_fct <- hierarchy_tbl$convert_fct
 
@@ -133,7 +127,7 @@ create_single_gran <- function(.data, hierarchy_tbl = NULL, lgran = NULL,...)
  if(any(class(x) %in% c("POSIXct", "POSIXt"))){
 
    ugran <- g_order(lgran, order = 1)
-   value = build_gran(.data, lgran = lgran, ugran = ugran,  ...)
+   value = build_gran(x, lgran = lgran, ugran = ugran,  ...)
  }
 else
 {
