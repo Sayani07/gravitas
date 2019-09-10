@@ -16,7 +16,7 @@
 
 dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, label = TRUE, abbr = TRUE, ...) {
 
-
+  x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
    if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
@@ -33,102 +33,31 @@ dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, labe
   else
   {
 
+    if(is.null(hierarchy_tbl))
+    {
+      stop("Hierarchy table must be provided when class of index of the tsibble is not date-time")
+    }
+
      gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
      lgran <- gran1_split[1]
      ugran <- gran1_split[2]
-     data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(.data, hierarchy_tbl,  lgran, ugran, ...))
+     data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(x, hierarchy_tbl,  lgran, ugran, ...))
 
      data_mutate$L1 = factor(data_mutate$L1)
      names <- levels(data_mutate$L1)
 
    data_mutate %>%
+     tibble::as_tibble() %>%
        dplyr::mutate(
          !!gran1 := L1
        ) %>%
-       dplyr::select(-L1)
+       dplyr::select(L1) %>%
+     slice(1) %>% .$L1
 
   }
 
 
-  #
-  # x <- .data[[rlang::as_string(tsibble::index(.data))]]
-  #
-  #
-  #
-  # events <- match(gran1, names(.data))
-  # if(!is.na(events))
-  # {
-  #   return(.data)
-  # }
-  #
-  #
-  # # wkday weekend treatment open
-  #
-  # if(gran1=="wknd_wday")
-  #
-  # {
-  #   data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(.data, lgran = "day", ugran= "week", ...)) %>% dplyr::mutate(wknd_wday = dplyr::if_else(L1 %in% c(6,7), "weekend", "weekday")
-  #   )
-  #
-  #   data_mutate %>%
-  #     dplyr::select(-L1)
-  #
-  # }
-  #
-  # # wkday weekend treatment open
-  #
-  # else{
-  #
-  #   data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(.data, lgran, ugran, ...))
-  #
-  #   lev <- unique(data_mutate$L1)
-  #
-  #   if (label) {
-  #     if (lgran == "day" & ugran == "week") {
-  #
-  #       data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(.data, lgran, ugran, week_start = getOption("lubridate.week.start", 1),label = TRUE))
-  #       names <- levels(data_mutate$L1)
-  #
-  #     }
-  #     else if (lgran == "month" & ugran == "year") {
-  #       # data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, label = TRUE))
-  #       # names <- unique(data_mutate$L1)
-  #       #
-  #       #       should correct it later
-  #       #
-  #       data_mutate <- .data %>% dplyr::mutate(L1 = lubridate::month(x,label = TRUE))
-  #       names <- levels(data_mutate$L1)
-  #
-  #     }
-  #     # if not day_week or month_year
-  #     else {
-  #       #names <- as.character(1:length(unique(lev)))
-  #       data_mutate$L1 = factor(data_mutate$L1)
-  #       names <- levels(data_mutate$L1)
-  #     }
-  #
-  #     names_abbr <- substr(names, 1, 3)
-  #
-  #     # What to do with the name if abbreviation
-  #     if (abbr) names_gran <- names_abbr else names_gran <- names
-  #   }
-  #
-  #   #if not label
-  #   else {
-  #
-  #     data_mutate$L1 = factor(data_mutate$L1)
-  #     names <- levels(data_mutate$L1)
-  #     # names_gran <- as.character(1:length(unique(lev)))
-  #     # data_mutate$L1 <- factor(data_mutate$L1, levels = names_gran)
-  #   }
-  #
-  #
-  #   data_mutate %>%
-  #     dplyr::mutate(
-  #       !!gran1 := L1
-  #     ) %>%
-  #     dplyr::select(-L1)
-  # }
+
 }
 
 
@@ -136,10 +65,10 @@ dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, labe
 
 
 
-dynamic_build_gran <-  function(.data, hierarchy_tbl = NULL, lgran = NULL, ugran = NULL ,  ...)
+dynamic_build_gran <-  function(x, hierarchy_tbl = NULL, lgran = NULL, ugran = NULL ,  ...)
 {
 
-  x = .data[[tsibble::index(.data)]] # index column
+  # x = .data[[tsibble::index(.data)]] # index column
 #
 #   gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
 #   lgran = gran_split[1]
@@ -147,7 +76,7 @@ dynamic_build_gran <-  function(.data, hierarchy_tbl = NULL, lgran = NULL, ugran
 
   if(any(class(x) %in% c("POSIXct", "POSIXt")))
 
-    value = build_gran(.data, lgran = lgran, ugran = ugran,...)
+    value = build_gran(x, lgran = lgran, ugran = ugran,...)
   else
   {
     lgran_ordr1 <- dynamic_g_order(hierarchy_tbl, lgran, order = 1)
@@ -159,9 +88,9 @@ dynamic_build_gran <-  function(.data, hierarchy_tbl = NULL, lgran = NULL, ugran
       value =  create_single_gran(.data, hierarchy_tbl, lgran)
     }
     else {
-      value <- dynamic_build_gran(.data, hierarchy_tbl, lgran, lgran_ordr1) +
+      value <- dynamic_build_gran(x, hierarchy_tbl, lgran, lgran_ordr1) +
         dynamic_gran_convert( hierarchy_tbl, lgran, lgran_ordr1) *
-        (dynamic_build_gran(.data, hierarchy_tbl, lgran_ordr1, ugran) - 1)
+        (dynamic_build_gran(x, hierarchy_tbl, lgran_ordr1, ugran) - 1)
     }
   }
   return(value)
@@ -182,7 +111,7 @@ validate_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, validate_co
     stop("validate_col should be one of the columns of the data")
   }
 
-  gran_data <- dynamic_build_gran(.data, hierarchy_tbl, gran)
+  gran_data <- dynamic_build_gran(x, hierarchy_tbl, gran)
 
   data_col <- .data[[validate_col]]
 
