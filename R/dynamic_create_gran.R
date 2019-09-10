@@ -79,7 +79,7 @@ dynamic_build_gran <-  function(x, hierarchy_tbl = NULL, lgran = NULL, ugran = N
 #     gran_final <- paste(lgran_ordr1, gran_split[2], sep="_")
 
     if (dynamic_g_order(hierarchy_tbl, lgran, ugran) == 1) {
-      value =  create_single_gran(.data, hierarchy_tbl, lgran)
+      value =  create_single_gran(x, hierarchy_tbl, lgran)
     }
     else {
       value <- dynamic_build_gran(x, hierarchy_tbl, lgran, lgran_ordr1) +
