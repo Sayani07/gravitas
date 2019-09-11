@@ -37,7 +37,6 @@ harmony <- function(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL, f
 
   for(i in 1 :length(set1))
   {
-    browser()
     data_mutate <- data_mutate %>% dynamic_create_gran(set1[i], hierarchy_tbl)
   }
 

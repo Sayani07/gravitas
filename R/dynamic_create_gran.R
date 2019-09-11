@@ -39,7 +39,10 @@ dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, labe
      gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
      lgran <- gran1_split[1]
      ugran <- gran1_split[2]
+
      data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(x,  lgran, ugran, hierarchy_tbl, ...))
+
+     browser()
 
        data_mutate$L1 = factor(data_mutate$L1)
        #names <- levels(data_mutate$L1)

@@ -156,7 +156,7 @@ build_gran <- function(x, lgran = NULL, ugran = NULL, ...) {
   # }
 
   if (g_order(lgran, "month") > 0 & g_order("month", ugran) >= 0) {
-    index_ugran <- lookup_table$granularity %>% match(x = ugran)
+    index_ugran <- lookup_table$units %>% match(x = ugran)
     day_ugran <- eval(parse_exp(lookup_table$convertday[index_ugran]))
     if (g_order(lgran, "day") > 0) {
       c_lgran_day <- gran_convert(lgran, "day")
@@ -173,7 +173,7 @@ build_gran <- function(x, lgran = NULL, ugran = NULL, ...) {
   else {
     lgran_ordr1 <- g_order(lgran, order = 1)
     if (g_order(lgran, ugran) == 1) {
-      one_order <- lookup_table$convertfun[lookup_table$granularity %>% match(x = lgran)]
+      one_order <- lookup_table$convertfun[lookup_table$units %>% match(x = lgran)]
       return(eval(parse_exp(one_order)))
     } else {
       value <- build_gran(x, lgran, lgran_ordr1) +
@@ -188,8 +188,8 @@ build_gran <- function(x, lgran = NULL, ugran = NULL, ...) {
 
 # the lookup table - this needs to be changed if other granularities are included
 lookup_table <- tibble::tibble(
-  granularity = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"),
-  constant = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1),
+  units = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"),
+  convert_fct = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1),
   convertfun = c("lubridate::second", "minute_qhour", "qhour_hhour", "hhour_hour", "lubridate::hour", "lubridate::wday", "week_fortnight", "fortnight_month", "month_quarter", "quarter_semester", "semester_year", 1),
   convertday = c("second_day", "minute_day", "qhour_day", "hhour_day", "lubridate::hour", 1, "lubridate::wday", "day_fortnight", "lubridate::mday", "lubridate::qday", "day_semester", "lubridate::yday"),
 )
@@ -200,7 +200,7 @@ lookup_table <- tibble::tibble(
 
 # provides the order difference between two granularities, also provide the upper granularity given the order
 g_order <- function(gran1, gran2 = NULL, order = NULL) {
-  granularity <- lookup_table$granularity
+  granularity <- lookup_table$units
   index_gran1 <- granularity %>% match(x = gran1)
   if (!is.null(gran2)) {
     index_gran2 <- granularity %>% match(x = gran2)
@@ -215,10 +215,10 @@ g_order <- function(gran1, gran2 = NULL, order = NULL) {
 
 gran_convert <- function(a, b = NULL, order = NULL) {
   a <- tolower(a)
-  granularity <- lookup_table$granularity
-  conv_fac <- lookup_table$constant
+  granularity <- lookup_table$units
+  conv_fac <- lookup_table$convert_fct
   index_gran1 <- granularity %>% match(x = a)
-  granularity <- lookup_table$granularity
+  granularity <- lookup_table$units
 
   if (!is.null(b)) {
     b <- tolower(b)
