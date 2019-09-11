@@ -1,7 +1,9 @@
 #' Build dynamic temporal granularities
 
 #' @param .data A tsibble object.
-#' @param gran the required granularity.
+#' @param gran1 the granularity to be created
+#' @param label Logical. TRUE will display the month as an ordered factor of character string such as "January", "February". FALSE will display the month as an ordered factor such as 1 to 12, where 1 stands for January and 12 for December.
+#' @param abbr logical. FALSE will display abbreviated labels
 #' @param hierarchy_tbl A hierarchy table
 #' @param ... Other arguments passed on to individual methods.
 #' @return A tsibble with an additional column of granularity
@@ -10,10 +12,7 @@
 #' library(dplyr)
 #' library(tsibble)
 #' tsibbledata::vic_elec %>% as_tsibble() %>% create_gran("hour_week") %>% tail()
-#' @export dynamic_build_gran
-
-
-
+#' @export
 dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, label = TRUE, abbr = TRUE, ...) {
 
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
@@ -41,25 +40,19 @@ dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, labe
      gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
      lgran <- gran1_split[1]
      ugran <- gran1_split[2]
+browser()
+     data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(x,  lgran, ugran, hierarchy_tbl, ...))
 
-   dynamic_build_gran(x, hierarchy_tbl,  lgran, ugran, ...)
-#
-#      data_mutate$L1 = factor(data_mutate$L1)
-#      names <- levels(data_mutate$L1)
+       data_mutate$L1 = factor(data_mutate$L1)
+       names <- levels(data_mutate$L1)
 
 
   }
 
-
-
 }
 
 
-
-
-
-
-dynamic_build_gran <-  function(x, hierarchy_tbl = NULL, lgran = NULL, ugran = NULL ,  ...)
+dynamic_build_gran <-  function(x, lgran = NULL, ugran = NULL , hierarchy_tbl = NULL, ...)
 {
 
   # x = .data[[tsibble::index(.data)]] # index column
@@ -67,7 +60,6 @@ dynamic_build_gran <-  function(x, hierarchy_tbl = NULL, lgran = NULL, ugran = N
 #   gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
 #   lgran = gran_split[1]
 #   ugran = gran_split[2]
-
   if(any(class(x) %in% c("POSIXct", "POSIXt")))
 
     value = build_gran(x, lgran = lgran, ugran = ugran,...)
@@ -79,12 +71,12 @@ dynamic_build_gran <-  function(x, hierarchy_tbl = NULL, lgran = NULL, ugran = N
 #     gran_final <- paste(lgran_ordr1, gran_split[2], sep="_")
 
     if (dynamic_g_order(hierarchy_tbl, lgran, ugran) == 1) {
-      value =  create_single_gran(x, hierarchy_tbl, lgran)
+      value =  create_single_gran(x, lgran, hierarchy_tbl)
     }
     else {
-      value <- dynamic_build_gran(x, hierarchy_tbl, lgran, lgran_ordr1) +
+      value <- dynamic_build_gran(x, lgran, lgran_ordr1, hierarchy_tbl) +
         dynamic_gran_convert( hierarchy_tbl, lgran, lgran_ordr1) *
-        (dynamic_build_gran(x, hierarchy_tbl, lgran_ordr1, ugran) - 1)
+        (dynamic_build_gran(x, lgran_ordr1, ugran, hierarchy_tbl) - 1)
     }
   }
   return(value)
@@ -92,9 +84,32 @@ dynamic_build_gran <-  function(x, hierarchy_tbl = NULL, lgran = NULL, ugran = N
 }
 
 
+#' Validate created granularities with existing columns
+
+#' @param .data A tsibble object.
+#' @param gran the granularity to be created for validation.
+#' @param hierarchy_tbl A hierarchy table
+#' @param validate_col A column in the data which acts as validator
+#' @param ... Other arguments passed on to individual methods.
+#' @return A tsibble with an additional column of granularity
+#
+#' @examples
+#' library(dplyr)
+#' library(tsibble)
+#' tsibbledata::vic_elec %>% as_tsibble() %>% create_gran("hour_week") %>% tail()
+
+#' @export
 validate_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, validate_col = NULL, ...)
 {
+
+
+  x <- .data[[rlang::as_string(tsibble::index(.data))]]
   all_gran <- dynamic_search_gran(.data, hierarchy_tbl)
+
+  gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
+    lgran = gran_split[1]
+    ugran = gran_split[2]
+
 
   if(!(gran %in% all_gran))# which granularity needs to be checked
   {
@@ -105,7 +120,7 @@ validate_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, validate_co
     stop("validate_col should be one of the columns of the data")
   }
 
-  gran_data <- dynamic_build_gran(x, hierarchy_tbl, gran)
+  gran_data <- dynamic_build_gran(x, hierarchy_tbl, lgran, ugran)
 
   data_col <- .data[[validate_col]]
 
@@ -117,7 +132,7 @@ validate_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, validate_co
 
 
 
-create_single_gran <- function(x, hierarchy_tbl = NULL, lgran = NULL,...)
+create_single_gran <- function(x,lgran = NULL,hierarchy_tbl = NULL,...)
 {
  # x = .data[[tsibble::index(.data)]] # index column
  units <- hierarchy_tbl$units
