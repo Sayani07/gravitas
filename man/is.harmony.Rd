@@ -4,7 +4,8 @@
 \alias{is.harmony}
 \title{Check if two temporal granularities are harmonies}
 \usage{
-is.harmony(.data, gran1, gran2, response = NULL, facet_h = NULL, ...)
+is.harmony(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL,
+  facet_h = NULL, ...)
 }
 \arguments{
 \item{.data}{A tsibble object.}
@@ -12,6 +13,8 @@ is.harmony(.data, gran1, gran2, response = NULL, facet_h = NULL, ...)
 \item{gran1}{One of the temporal granularities to check for harmonies.}
 
 \item{gran2}{The second temporal granularity in the pair.}
+
+\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships}
 
 \item{response}{Variable for which summary is desired per combination}
 

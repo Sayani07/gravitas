@@ -3,6 +3,7 @@
 #' @param .data a tsibble
 #' @param gran1 the lower level granularity to be paired
 #' @param gran2 the upper level granularity to be paired
+#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
 #' @param plot_type type of distribution plot.
 #' @param response response variable to be plotted
 #' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities
@@ -36,7 +37,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, re
   proxy_harmony <- is.harmony(.data, gran1, gran2, hierarchy_tbl,response = NULL, facet_h,  ...)
 
   if (proxy_harmony == "FALSE") {
-    warning("Granularities chosen are Clasheså. \nYou might be interested to look at the set of harmonies in Harmony table.")
+    warning("Granularities chosen are Clashes. \nYou might be interested to look at the set of harmonies in Harmony table.")
   }
 
   proxy_homogenous <- is.homogenous(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...)

@@ -3,6 +3,7 @@
 #' @param .data A tsibble object.
 #' @param ugran Upper temporal unit. Typically, it is set as the most coarse temporal unit required in the analysis. Default is "year".
 #' @param lgran Lowest temporal unit. For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals.
+ #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
 #' @param facet_h highest level of facets allowed.
 #' @param filter_in Choices of temporal units to be kept.
 #' @param filter_out Choices of temporal units to be discarded.
@@ -12,7 +13,6 @@
 #' library(dplyr)
 #' library(tsibbledata)
 # tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
-#' tsibbledata::vic_elec %>% harmony(ugran = "day")
 #' @export harmony
 harmony <- function(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL, filter_in = NULL, filter_out = NULL, facet_h = NULL, ...) {
 

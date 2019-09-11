@@ -4,9 +4,9 @@
 \alias{granplot}
 \title{Plot probability distribution of univariate series across bivariate temporal granularities}
 \usage{
-granplot(.data, gran1 = NULL, gran2 = NULL, response = NULL,
-  plot_type = NULL, quantile_prob = seq(0.1, 0.9, 0.1),
-  facet_h = NULL, ...)
+granplot(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL,
+  response = NULL, plot_type = NULL, quantile_prob = seq(0.1, 0.9,
+  0.1), facet_h = NULL, ...)
 }
 \arguments{
 \item{.data}{a tsibble}
@@ -14,6 +14,8 @@ granplot(.data, gran1 = NULL, gran2 = NULL, response = NULL,
 \item{gran1}{the lower level granularity to be paired}
 
 \item{gran2}{the upper level granularity to be paired}
+
+\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships}
 
 \item{response}{response variable to be plotted}
 

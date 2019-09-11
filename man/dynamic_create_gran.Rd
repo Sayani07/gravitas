@@ -4,14 +4,19 @@
 \alias{dynamic_create_gran}
 \title{Build dynamic temporal granularities}
 \usage{
-dynamic_create_gran(.data, hierarchy_tbl = NULL, gran = NULL, ...)
+dynamic_create_gran(.data, gran1 = NULL, hierarchy_tbl = NULL,
+  label = TRUE, abbr = TRUE, ...)
 }
 \arguments{
 \item{.data}{A tsibble object.}
 
-\item{hierarchy_tbl}{A hierarchy table}
+\item{gran1}{the granularity to be created}
 
-\item{gran}{the required granularity.}
+\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships}
+
+\item{label}{Logical. TRUE will display the month as an ordered factor of character string such as "January", "February". FALSE will display the month as an ordered factor such as 1 to 12, where 1 stands for January and 12 for December.}
+
+\item{abbr}{logical. FALSE will display abbreviated labels}
 
 \item{...}{Other arguments passed on to individual methods.}
 }
