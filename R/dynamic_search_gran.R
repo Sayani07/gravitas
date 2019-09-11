@@ -26,7 +26,7 @@ dynamic_search_gran <- function(.data, hierarchy_tbl = NULL, lowest_unit = NULL,
 
 
 
-  if (dynamic_g_order(hierarchy_tbl, lowest_unit, highest_unit) == 0) {
+  if (dynamic_g_order(lowest_unit, highest_unit, hierarchy_tbl) == 0) {
     stop("lowest_unit and highest_unit should be distinct")
   }
 
@@ -104,7 +104,7 @@ dynamic_search_gran <- function(.data, hierarchy_tbl = NULL, lowest_unit = NULL,
 
 
 
-dynamic_g_order <- function(hierarchy_tbl = NULL, lower_gran =NULL, upper_gran = NULL, order = NULL,...){
+dynamic_g_order <- function(lower_gran = NULL, upper_gran = NULL, hierarchy_tbl = NULL, order = NULL,  ...){
 
 
   units <- hierarchy_tbl$units
@@ -128,7 +128,7 @@ dynamic_g_order <- function(hierarchy_tbl = NULL, lower_gran =NULL, upper_gran =
 
 # provides the conversion factor between two granularities
 
-dynamic_gran_convert <- function(hierarchy_tbl = NULL,lower_gran = NULL, upper_gran = NULL, order = NULL) {
+dynamic_gran_convert <- function(lower_gran = NULL, upper_gran = NULL, hierarchy_tbl = NULL,order = NULL) {
 
   units <- hierarchy_tbl$units
   convert_fct <- hierarchy_tbl$convert_fct
@@ -142,14 +142,14 @@ dynamic_gran_convert <- function(hierarchy_tbl = NULL,lower_gran = NULL, upper_g
 
 
 
-    if (dynamic_g_order(hierarchy_tbl, lower_gran, upper_gran) < 0) {
+    if (dynamic_g_order(lower_gran, upper_gran, hierarchy_tbl) < 0) {
       stop("Order of second unit should be larger than the first one. Try reversing their position")
     }
-    if (dynamic_g_order(hierarchy_tbl, lower_gran, upper_gran) == 0) {
+    if (dynamic_g_order(lower_gran, upper_gran, hierarchy_tbl) == 0) {
       return(1)
     }
     else {
-      return(convert_fct[index_l] * dynamic_gran_convert(hierarchy_tbl, dynamic_g_order(hierarchy_tbl, lower_gran, order = 1), upper_gran))
+      return(convert_fct[index_l] * dynamic_gran_convert(dynamic_g_order(lower_gran, hierarchy_tbl = hierarchy_tbl, order = 1), upper_gran ,hierarchy_tbl))
     }
   }
   if (!is.null(order)) {
