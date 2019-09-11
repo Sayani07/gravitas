@@ -1,34 +1,50 @@
-dynamic_search_gran <- function(.data, hierarchy_tbl = NULL, lowest_unit = NULL, highest_unit = NULL, filter_in = NULL, filter_out = NULL, ...) {
+dynamic_search_gran <- function(.data, lowest_unit = NULL, highest_unit = NULL, hierarchy_tbl = NULL, filter_in = NULL, filter_out = NULL, ...) {
 
-  units <- hierarchy_tbl$units
-  convert_fct <- hierarchy_tbl$convert_fct
+  x <- .data[[rlang::as_string(tsibble::index(.data))]]
+
 
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
 
-  # Put the last element of the vector units as the upper most unit desired - default
   if (is.null(highest_unit)) {
     highest_unit = dplyr::last(hierarchy_tbl$units)
   }
-  else if (!(highest_unit %in% units))
+
+  if (is.null(lowest_unit)) {
+    lowest_unit = dplyr::first(hierarchy_tbl$units)
+  }
+
+  if(any(class(x) %in% c("POSIXct", "POSIXt")))
+  {
+    hierarchy_tbl = lookup_table
+  }
+  units <- hierarchy_tbl$units
+  convert_fct <- hierarchy_tbl$convert_fct
+
+  # Put the last element of the vector units as the upper most unit desired - default
+  if (!(highest_unit %in% units))
   {
     stop("upper unit must be listed as an element in the  hierarchy table")
   }
 
   # Put the first element of the vector units as the lowest most unit desired - default
-  if (is.null(lowest_unit)) {
-    lowest_unit = dplyr::first(hierarchy_tbl$units)
-  } else if (!(lowest_unit %in% units))
+
+  if (!(lowest_unit %in% units))
   {
     stop("lower unit must be listed as an element in the hierarchy table")
   }
 
 
-
   if (dynamic_g_order(lowest_unit, highest_unit, hierarchy_tbl) == 0) {
     stop("lowest_unit and highest_unit should be distinct")
   }
+
+else if (dynamic_g_order(lowest_unit, highest_unit, hierarchy_tbl) < 0) {
+    stop("granularities should be of the form finer to coarser. Try swapping the order of the units.")
+}
+
+else{
 
 
   # if (dynamic_g_order(hierarchy_tbl, lowest_unit, highest_unit) == 1) {
@@ -101,6 +117,7 @@ dynamic_search_gran <- function(.data, hierarchy_tbl = NULL, lowest_unit = NULL,
 
   return(gran)
 }
+}
 
 
 
@@ -129,6 +146,8 @@ dynamic_g_order <- function(lower_gran = NULL, upper_gran = NULL, hierarchy_tbl 
 # provides the conversion factor between two granularities
 
 dynamic_gran_convert <- function(lower_gran = NULL, upper_gran = NULL, hierarchy_tbl = NULL,order = NULL) {
+
+
 
   units <- hierarchy_tbl$units
   convert_fct <- hierarchy_tbl$convert_fct
