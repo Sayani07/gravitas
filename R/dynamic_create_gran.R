@@ -136,8 +136,6 @@ validate_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, validate_co
 }
 
 
-
-
 create_single_gran <- function(x,lgran = NULL,hierarchy_tbl = NULL,...)
 {
  # x = .data[[tsibble::index(.data)]] # index column
