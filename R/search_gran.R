@@ -14,8 +14,8 @@
 #' tsibbledata::gafa_stock %>% search_gran(ugran = "month", lgran = "week")
 #' @export search_gran
 search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, ...) {
-  granularity <- lookup_table$granularity
-  constant <- lookup_table$constant
+  granularity <- lookup_table$units
+  constant <- lookup_table$convert_fct
 
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
@@ -68,7 +68,7 @@ search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, f
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
   index_gran1 <- granularity %>% match(x = lgran)
   index_gran2 <- granularity %>% match(x = ugran)
-  gran2_set <- lookup_table$granularity[index_gran1:index_gran2]
+  gran2_set <- lookup_table$units[index_gran1:index_gran2]
 
 
   gran <- paste(gran1 = combn(gran2_set, 2)[1, ], gran2 = combn(gran2_set, 2)[2, ], sep = "_")
