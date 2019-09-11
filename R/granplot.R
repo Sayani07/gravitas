@@ -17,10 +17,7 @@
 #' @export granplot
 
 # Recommendation plot function for two granularities
-granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_type = NULL, quantile_prob = seq(0.1,0.9,0.1),  facet_h = NULL, ...) {
-  # op <- options("warn")
-  # on.exit(options(op))
-  # options(warn=1)
+granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, response = NULL, plot_type = NULL, quantile_prob = seq(0.1,0.9,0.1),  facet_h = NULL, ...) {
 
 
   if(is.null(facet_h))
@@ -28,38 +25,29 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
     facet_h = 31
   }
 
-  if (is.null(response)) {
-    response <- tsibble::measured_vars(.data)[1]
-  }
 
+  if(is.null(response))
+  {
+    response <- tsibble::measured_vars(.data)[1]
+    message("The first measured variable plotted since no response variable specified")
+  }
   # Warn if they have chosen clashes asking to look at the table of harmonies
-  proxy_harmony <- is.harmony(.data, gran1, gran2, response = NULL, facet_h,  ...)
+
+  proxy_harmony <- is.harmony(.data, gran1, gran2, hierarchy_tbl,response = NULL, facet_h,  ...)
 
   if (proxy_harmony == "FALSE") {
-    warning("Granularities chosen are Clashes. \nYou might be interested to look at the set of harmonies in Harmony table.")
+    warning("Granularities chosen are Clasheså. \nYou might be interested to look at the set of harmonies in Harmony table.")
   }
 
-  proxy_homogenous <- is.homogenous(.data, gran1, gran2, response = NULL, ...)
-  # if(proxy_homogenous$inter_facet_homo =="FALSE"){
-  #   warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary across facets"))
-  # }
-  # if(proxy_homogenous$intra_facet_homo =="FALSE"){
-  #   warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary within facets"))
-  # }
-  # if(proxy_homogenous$decile_nobs_proxy !=0 & plot_type == "decile"){
-  #   warning("Decile plot not recommended as number of observations too few for one or more combinations")
-  # }
-  # if(proxy_homogenous$percentile_nobs_proxy !=0 & plot_type == "percentile"){
-  #   warning("Percentile plot not recommended as number of observations too few for one or more combinations")
-  # }
+  proxy_homogenous <- is.homogenous(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...)
 
   # get recommended plots list
-  advice <- gran_advice(.data, gran1, gran2, response, ...)
+  advice <- gran_advice(.data, gran1, gran2, hierarchy_tbl, response, ...)
   if (is.null(plot_type)) {
     plot_type <- advice[1]
   }
 
-  data_count <- gran_tbl(.data, gran1, gran2, response, ...)
+  data_count <- gran_tbl(.data, gran1, gran2, hierarchy_tbl, response, ...)
 
   gran1_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran1)) %>% dplyr::distinct() %>% nrow()
   gran2_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran2)) %>% dplyr::distinct() %>% nrow()
@@ -74,14 +62,15 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
   }
 
   # mutate those granularities using create_gran
-  gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
-  gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
-  var1 <- gran1_split[1]
-  var2 <- gran1_split[2]
-  var3 <- gran2_split[1]
-  var4 <- gran2_split[2]
+  # gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
+  # gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
+  # var1 <- gran1_split[1]
+  # var2 <- gran1_split[2]
+  # var3 <- gran2_split[1]
+  # var4 <- gran2_split[2]
 
-  data_mutate <- .data %>% create_gran(gran1,...) %>% create_gran(gran2,...)
+
+  data_mutate <- .data %>% dynamic_create_gran(gran1, hierarchy_tbl =  hierarchy_tbl,...) %>% dynamic_create_gran(gran2, hierarchy_tbl = hierarchy_tbl, ...)
 
 
   p <- data_mutate %>%
@@ -205,34 +194,16 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, response = NULL, plot_ty
 
 # advise function for which plots to choose depending on levels of facets and x-axis
 # gran_advice(.data, gran1="hour_week", gran2 = "day_month")
-gran_advice <- function(.data, gran1, gran2, response = NULL, ...) {
+gran_advice <- function(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
 
-  proxy_harmony <- is.harmony(.data, gran1, gran2, response = NULL, ...)
-  proxy_homogenous <- is.homogenous(.data, gran1, gran2, response = NULL, ...)
-  #
-  #   if(proxy_harmony == "FALSE"){
-  #     warning("granularities chosen are clashes")
-  #   }
-  # if(proxy_homogenous$inter_facet_homo =="FALSE"){
-  #   warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary across facets"))
-  # }
-  # if(proxy_homogenous$intra_facet_homo =="FALSE"){
-  #   warning(paste("Number of observations for one or more combinations of",gran1, "and", gran2, "vary within facets"))
-  # }
-  # if(proxy_homogenous$decile_nobs_proxy !=0){
-  #   warning("Decile plot not recommended as number of observations too few for one or more combinations")
-  # }
-  # if(proxy_homogenous$percentile_nobs_proxy !=0){
-  #   warning("Percentile plot not recommended as number of observations too few for one or more combinations")
-  #
-  # }
+  proxy_harmony <- is.harmony(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...)
+  proxy_homogenous <- is.homogenous(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...)
 
-  # inter facet homogeneity
 
-  data_count <- gran_tbl(.data, gran1, gran2, response, ...)
+  data_count <- gran_tbl(.data, gran1, gran2,hierarchy_tbl, response, ...)
 
 
   gran1_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran1)) %>% dplyr::distinct() %>% nrow()
@@ -320,14 +291,14 @@ gran_advice <- function(.data, gran1, gran2, response = NULL, ...) {
 
 
 
-is.homogenous <- function(.data, gran1, gran2, response = NULL, ...) {
+is.homogenous <- function(.data, gran1, gran2,hierarchy_tbl = NULL, response = NULL, ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
 
   # inter facet homogeneity
 
-  data_count <- gran_tbl(.data, gran1, gran2, response, ...)
+  data_count <- gran_tbl(.data, gran1, gran2, hierarchy_tbl, response, ...)
 
   inter_facet_homogeneity <- data_count %>% dplyr::group_by(!!rlang::quo_name(gran1)) %>% dplyr::summarise(min_c = min(nobs), max_c = max(nobs)) %>% dplyr::summarise(sum = sum(dplyr::if_else(min_c == max_c, 0, 1))) %>% dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
 
