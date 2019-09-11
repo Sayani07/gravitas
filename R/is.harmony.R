@@ -14,14 +14,20 @@
 #' vic_elec %>% is.harmony("hour_day", "day_week")
 #' @export is.harmony
 
-is.harmony <- function(.data, gran1, gran2, response = NULL, facet_h = NULL, ...) {
+is.harmony <- function(.data, gran1, gran2, hierarchy_tbl= NULL, response = NULL, facet_h = NULL, ...) {
 
   if(gran1==gran2)
   {
     warning("the two granularities should be distinct")
   }
 
-  harmony_object <- gran_tbl(.data, gran1, gran2, response)
+  # if(is.null(response))
+  # {
+  #   response <- tsibble::measured_vars(.data)[1]
+  #   message("The first measured variable plotted since no response specified")
+  # }
+
+  harmony_object <- gran_tbl(.data, gran1, gran2, hierarchy_tbl, response)
   names <- names(harmony_object)
   # All possible combination that are missing
   # cmbmiss <-  harmony_object %>% filter(nobs==0)
@@ -46,7 +52,8 @@ is.harmony <- function(.data, gran1, gran2, response = NULL, facet_h = NULL, ...
   return(return_output)
 }
 
-gran_tbl <- function(.data, gran1, gran2, response = NULL, ...) {
+
+gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL, ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
@@ -76,7 +83,7 @@ gran_tbl <- function(.data, gran1, gran2, response = NULL, ...) {
 
   # data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(ind, var1, var2), L2 = build_gran(ind, var3, var4))
 
-  data_mutate <- .data %>% create_gran(gran1) %>% create_gran(gran2)
+  data_mutate <- .data %>% dynamic_create_gran(gran1, hierarchy_tbl) %>% dynamic_create_gran(gran2, hierarchy_tbl)
 
   # All possible combinations that are possible
   Allcomb <- data_mutate %>% tidyr::expand(.data[[gran1]], .data[[gran2]])
@@ -106,7 +113,7 @@ gran_tbl <- function(.data, gran1, gran2, response = NULL, ...) {
 
 clash_reason <- function(.data, gran1, gran2, response = NULL, ...) {
 
- gran_full <-  gran_tbl(.data, gran1, gran2, response = NULL, ...)
+ gran_full <-  gran_tbl(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...)
  if(any(gran_full$nobs==0))
  {
   clash_combination <- gran_full %>% dplyr::filter(nobs==0) %>% dplyr::select(gran1, gran2)
@@ -116,7 +123,7 @@ clash_reason <- function(.data, gran1, gran2, response = NULL, ...) {
 
  # inter facet homogeneity
 
- data_count <- gran_tbl(.data, gran1, gran2, response, ...)
+ data_count <- gran_tbl(.data, gran1, gran2, hierarchy_tbl, response, ...)
 
  # inter_facet_homogeneity <- gran_full %>% dplyr::group_by(gran1) %>% dplyr::summarise(min_c = min(nobs), max_c = max(nobs), variation = sd(nobs)) %>% sum = sum(dplyr::if_else(min_c == max_c, 0, 1)) %>% dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
  #
