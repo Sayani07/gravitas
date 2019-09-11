@@ -57,26 +57,30 @@ dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, labe
 dynamic_build_gran <-  function(x, lgran = NULL, ugran = NULL , hierarchy_tbl = NULL, ...)
 {
 
-  # x = .data[[tsibble::index(.data)]] # index column
-#
-#   gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
-#   lgran = gran_split[1]
-#   ugran = gran_split[2]
+
+  if (dynamic_g_order(lgran, ugran, hierarchy_tbl) < 0) {
+    stop("granularities should be of the form finer to coarser. Try swapping the order of the units.")
+  }
+
+
+  if (dynamic_g_order(lgran, ugran, hierarchy_tbl) == 0) {
+    stop("Units should be distinct to form a granularity.")
+  }
+
+
   if(any(class(x) %in% c("POSIXct", "POSIXt")))
+    {
 
     value = build_gran(x, lgran = lgran, ugran = ugran,...)
+  }
   else
   {
-    lgran_ordr1 <- dynamic_g_order(lgran = lgran, hierarchy_tbl = hierarchy_tbl, order = 1)
-#
-#     gran_init <- paste(gran_split[1], lgran_ordr1, sep="_")
-#     gran_final <- paste(lgran_ordr1, gran_split[2], sep="_")
-
     if (dynamic_g_order(lgran, ugran, hierarchy_tbl) == 1) {
       value =  create_single_gran(x, lgran, hierarchy_tbl)
     }
     else {
-      value <- dynamic_build_gran(x, lgran, lgran_ordr1, hierarchy_tbl) +
+      lgran_ordr1 <- dynamic_g_order(lgran, hierarchy_tbl = hierarchy_tbl, order = 1)
+      value <- dynamic_build_gran(x, lgran, ugran = lgran_ordr1, hierarchy_tbl) +
         dynamic_gran_convert(lgran, lgran_ordr1, hierarchy_tbl) *
         (dynamic_build_gran(x, lgran_ordr1, ugran, hierarchy_tbl) - 1)
     }
