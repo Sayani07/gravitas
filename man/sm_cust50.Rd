@@ -4,7 +4,7 @@
 \name{sm_cust50}
 \alias{sm_cust50}
 \title{Smart meter data for 50 households}
-\format{An object of class \code{tbl_ts} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 36061 rows and 8 columns.}
+\format{An object of class \code{tbl_ts} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 1278870 rows and 8 columns.}
 \usage{
 data(sm_cust50)
 }

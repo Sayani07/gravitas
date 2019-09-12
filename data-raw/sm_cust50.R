@@ -3,10 +3,10 @@ library(tidyverse)
 library(lubridate)
 library(tsibble)
 
- # smart_meter_data_raw <- read_csv("data/CD_INTERVAL_READING_ALL_NO_QUOTES.csv", n_max = 1.5e6)
- # sm_cust <- smart_meter_data_raw$CUSTOMER_ID %>%head(50)
- # smart_meter_data_raw <- smart_meter_data_raw %>% dplyr::filter(CUSTOMER_ID %in% sm_cust)
- # write_rds(smart_meter_data_raw, "data/smart_meter_data_raw.rds", compress = "xz")
+  #  smart_meter_data_raw <- read_csv("data/CD_INTERVAL_READING_ALL_NO_QUOTES.csv", n_max = 1.5e6)
+  #  sm_cust <- smart_meter_data_raw %>% distinct(CUSTOMER_ID) %>% head(50)
+  # smart_meter_data_raw <- smart_meter_data_raw %>% dplyr::filter(CUSTOMER_ID %in% sm_cust$CUSTOMER_ID)
+ #  write_rds(smart_meter_data_raw, "data/smart_meter_data_raw.rds", compress = "xz")
 
 smart_meter_data_raw <- read_rds("inst/extdata/smart_meter_data_raw.rds")
 
