@@ -11,7 +11,12 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibble)
-#' tsibbledata::vic_elec %>% as_tsibble() %>% create_gran("hour_week") %>% tail()
+#' cricket_tsibble <- cricketdata %>%
+#' mutate(data_index = row_number()) %>%
+#' as_tsibble(index = data_index)
+#' hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"),
+#' convert_fct  = c(1, 6, 20, 2, 1))
+#' cricket_tsibble %>% dynamic_create_gran("ball_over", hierarchy_model)
 #' @export
 dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, label = TRUE, abbr = TRUE, ...) {
 
