@@ -26,9 +26,3 @@ Set of possible granularities.
 \description{
 Get set of possible temporal granularities for a given tsibble
 }
-\examples{
-library(dplyr)
-library(tsibbledata)
-tsibbledata::vic_elec \%>\% search_gran(ugran = "month", filter_out = c("hhour", "fortnight"))
-tsibbledata::gafa_stock \%>\% search_gran(ugran = "month", lgran = "week")
-}

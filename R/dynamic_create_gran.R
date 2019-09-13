@@ -117,19 +117,33 @@ dynamic_build_gran <-  function(x, lgran = NULL, ugran = NULL , hierarchy_tbl = 
 #' @examples
 #' library(dplyr)
 #' library(tsibble)
-#' tsibbledata::vic_elec %>% as_tsibble() %>% create_gran("hour_week") %>% tail()
+#' cricket_tsibble <- cricketdata %>%
+#' mutate(data_index = row_number()) %>%
+#' as_tsibble(index = data_index)
+#'
+#' hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"),
+#' convert_fct  = c(1, 6, 20, 2, 1))
+#'
+#' cricket_tsibble %>% validate_gran(gran = "ball_over",
+#' hierarchy_tbl = hierarchy_model,
+#' validate_col = "ball")
+#' cricket_tsibble %>% validate_gran(gran = "over_inning",
+#'  hierarchy_tbl = hierarchy_model,
+#'   validate_col = "over")
+
 
 #' @export
-validate_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, validate_col = NULL, ...)
+validate_gran <-  function(.data,  gran = NULL, hierarchy_tbl = NULL, validate_col = NULL, ...)
 {
 
 
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
-  all_gran <- dynamic_search_gran(.data, hierarchy_tbl)
 
   gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
-    lgran = gran_split[1]
-    ugran = gran_split[2]
+  lgran = gran_split[1]
+  ugran = gran_split[2]
+
+  all_gran <- dynamic_search_gran(.data, hierarchy_tbl = hierarchy_tbl)
 
 
   if(!(gran %in% all_gran))# which granularity needs to be checked
@@ -141,7 +155,7 @@ validate_gran <-  function(.data, hierarchy_tbl = NULL, gran = NULL, validate_co
     stop("validate_col should be one of the columns of the data")
   }
 
-  gran_data <- dynamic_build_gran(x, hierarchy_tbl, lgran, ugran)
+  gran_data <- dynamic_build_gran(x, lgran, ugran, hierarchy_tbl)
 
   data_col <- .data[[validate_col]]
 

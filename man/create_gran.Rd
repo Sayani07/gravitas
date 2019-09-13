@@ -23,8 +23,3 @@ A tsibble with an additional column of granularity
 \description{
 Build temporal granularities
 }
-\examples{
-library(dplyr)
-library(tsibble)
-tsibbledata::vic_elec \%>\% as_tsibble() \%>\% create_gran("hour_week") \%>\% tail()
-}

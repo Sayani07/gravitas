@@ -6,14 +6,6 @@
 #' @param abbr logical. FALSE will display abbreviated labels
 #' @param ... Other arguments passed on to individual methods.
 #' @return A tsibble with an additional column of granularity
-#
-#' @examples
-#' library(dplyr)
-#' library(tsibble)
-#' tsibbledata::vic_elec %>% as_tsibble() %>% create_gran("hour_week") %>% tail()
-#' @export create_gran
-
-
 create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
 
 

@@ -7,12 +7,7 @@
 #' @param filter_out Choices of temporal units to be discarded.
 #' @param ... Other arguments to be passed.
 #' @return Set of possible granularities.
-#' @examples
-#' library(dplyr)
-#' library(tsibbledata)
-#' tsibbledata::vic_elec %>% search_gran(ugran = "month", filter_out = c("hhour", "fortnight"))
-#' tsibbledata::gafa_stock %>% search_gran(ugran = "month", lgran = "week")
-#' @export search_gran
+
 search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, ...) {
   granularity <- lookup_table$units
   constant <- lookup_table$convert_fct

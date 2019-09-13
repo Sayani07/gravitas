@@ -4,15 +4,15 @@
 \alias{validate_gran}
 \title{Validate created granularities with existing columns}
 \usage{
-validate_gran(.data, hierarchy_tbl = NULL, gran = NULL,
+validate_gran(.data, gran = NULL, hierarchy_tbl = NULL,
   validate_col = NULL, ...)
 }
 \arguments{
 \item{.data}{A tsibble object.}
 
-\item{hierarchy_tbl}{A hierarchy table}
-
 \item{gran}{the granularity to be created for validation.}
+
+\item{hierarchy_tbl}{A hierarchy table}
 
 \item{validate_col}{A column in the data which acts as validator}
 
@@ -27,5 +27,17 @@ Validate created granularities with existing columns
 \examples{
 library(dplyr)
 library(tsibble)
-tsibbledata::vic_elec \%>\% as_tsibble() \%>\% create_gran("hour_week") \%>\% tail()
+cricket_tsibble <- cricketdata \%>\%
+mutate(data_index = row_number()) \%>\%
+as_tsibble(index = data_index)
+
+hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"),
+convert_fct  = c(1, 6, 20, 2, 1))
+
+cricket_tsibble \%>\% validate_gran(gran = "ball_over",
+hierarchy_tbl = hierarchy_model,
+validate_col = "ball")
+cricket_tsibble \%>\% validate_gran(gran = "over_inning",
+ hierarchy_tbl = hierarchy_model,
+  validate_col = "over")
 }
