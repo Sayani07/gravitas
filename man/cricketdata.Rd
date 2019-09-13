@@ -3,7 +3,21 @@
 \docType{data}
 \name{cricketdata}
 \alias{cricketdata}
-\title{Cricket data for IPL 2008}
+\title{#' Smart meter data for 50 households
+#'
+#' Customer Trial data conducted as part of
+#' Smart Grid Smart City (SGSC) project
+#' (2010-2014) based in Newcastle,
+#' New South Wales
+#' and areas in Sydney.
+#' It contains half hourly interval meter readings (KWh)
+#' of electricity consumption
+#' and generation of households.
+#' The data is obtained from url{https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter}
+#'
+#' @usage data(sm_cust50)
+"sm_cust50"
+Cricket data for IPL 2008}
 \format{An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 56640 rows and 24 columns.}
 \usage{
 data(cricketdata)

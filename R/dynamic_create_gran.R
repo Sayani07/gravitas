@@ -20,6 +20,14 @@
 #' @export
 dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, label = TRUE, abbr = TRUE, ...) {
 
+  # column treated as granularities
+  events <- match(gran1, names(.data))
+  if(!is.na(events))
+  {
+    .data[[gran1]] = as.factor(.data[[gran1]])
+    return(.data)
+  }
+
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
    if (!tsibble::is_tsibble(.data)) {
