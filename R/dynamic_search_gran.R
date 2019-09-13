@@ -11,6 +11,7 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
+#' vic_elec %>% dynamic_search_gran(.data, lowest_unit = "hour", highest_unit =  "month")
 #' @export
 dynamic_search_gran <- function(.data, lowest_unit = NULL, highest_unit = NULL, hierarchy_tbl = NULL, filter_in = NULL, filter_out = NULL, ...) {
 

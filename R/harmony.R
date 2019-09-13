@@ -12,7 +12,7 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
-# tsibbledata::gafa_stock %>% harmony(lgran = "hour", ugran = "week")
+# tsibbledata::vic_elec %>% harmony(lgran = "hour", ugran = "week")
 #' @export harmony
 harmony <- function(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL, filter_in = NULL, filter_out = NULL, facet_h = NULL, ...) {
 

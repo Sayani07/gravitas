@@ -19,7 +19,7 @@ granplot(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL,
 
 \item{response}{response variable to be plotted}
 
-\item{plot_type}{type of distribution plot.}
+\item{plot_type}{type of distribution plot}
 
 \item{quantile_prob}{numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "Decile" plot}
 
@@ -34,7 +34,24 @@ a ggplot object
 Plot probability distribution of univariate series across bivariate temporal granularities
 }
 \examples{
-library(dplyr)
+library(gravitas)
 library(tsibbledata)
-vic_elec \%>\% granplot("hour_day", "day_week", "Demand", plot_type = "boxplot")
+library(dplyr)
+library(tsibble)
+library(ggplot2)
+vic_elec \%>\% granplot("hour_day", "day_week", response = "Demand", plot_type = "boxplot")
+
+cricket_tsibble <- cricketdata \%>\%
+mutate(data_index = row_number()) \%>\%
+as_tsibble(index = data_index)
+
+hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"),
+convert_fct  = c(1, 6, 20, 2, 1))
+
+cricket_tsibble \%>\% granplot("inning_match", "ball_inning",
+hierarchy_model,
+response = "total_runs",
+plot_type = "quantile",
+quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))+
+scale_x_discrete(breaks = seq(1,120,5))
 }

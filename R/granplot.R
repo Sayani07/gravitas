@@ -4,7 +4,7 @@
 #' @param gran1 the lower level granularity to be paired
 #' @param gran2 the upper level granularity to be paired
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
-#' @param plot_type type of distribution plot.
+#' @param plot_type type of distribution plot
 #' @param response response variable to be plotted
 #' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities
 #' @param quantile_prob numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "Decile" plot
@@ -12,9 +12,27 @@
 #' @return a ggplot object
 #
 #' @examples
-#' library(dplyr)
+#' library(gravitas)
 #' library(tsibbledata)
-#' vic_elec %>% granplot("hour_day", "day_week", "Demand", plot_type = "boxplot")
+#' library(dplyr)
+#' library(tsibble)
+#' library(ggplot2)
+#' vic_elec %>% granplot("hour_day", "day_week", response = "Demand", plot_type = "boxplot")
+#'
+#' cricket_tsibble <- cricketdata %>%
+#' mutate(data_index = row_number()) %>%
+#' as_tsibble(index = data_index)
+#'
+#' hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"),
+#' convert_fct  = c(1, 6, 20, 2, 1))
+#'
+#'cricket_tsibble %>% granplot("inning_match", "ball_inning",
+#'hierarchy_model,
+#'response = "total_runs",
+#'plot_type = "quantile",
+#'quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))+
+#'scale_x_discrete(breaks = seq(1,120,5))
+
 #' @export granplot
 
 # Recommendation plot function for two granularities
