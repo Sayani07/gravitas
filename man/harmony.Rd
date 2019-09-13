@@ -10,9 +10,9 @@ harmony(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL,
 \arguments{
 \item{.data}{A tsibble object.}
 
-\item{ugran}{Upper temporal unit. Typically, it is set as the most coarse temporal unit required in the analysis. Default is "year".}
+\item{ugran}{Typically set as the most coarse unit required in the analysis. Default is "year".}
 
-\item{lgran}{Lowest temporal unit. For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals.}
+\item{lgran}{For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals. Typically serves as the finest unit required for analysis.}
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships}
 

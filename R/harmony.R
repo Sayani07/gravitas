@@ -1,8 +1,8 @@
 #' Get possible set of harmonies for a given tsibble
 #'
 #' @param .data A tsibble object.
-#' @param ugran Upper temporal unit. Typically, it is set as the most coarse temporal unit required in the analysis. Default is "year".
-#' @param lgran Lowest temporal unit. For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals.
+#' @param ugran Typically set as the most coarse unit required in the analysis. Default is "year".
+#' @param lgran For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals. Typically serves as the finest unit required for analysis.
  #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
 #' @param facet_h highest level of facets allowed.
 #' @param filter_in Choices of temporal units to be kept.
