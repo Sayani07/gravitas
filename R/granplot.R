@@ -325,7 +325,7 @@ is.homogenous <- function(.data, gran1, gran2,hierarchy_tbl = NULL, response = N
   intra_facet_homogeneity <- data_count %>% dplyr::group_by(!!rlang::quo_name(gran2)) %>% dplyr::summarise(min_c = min(nobs), max_c = max(nobs)) %>% dplyr::summarise(sum = sum(dplyr::if_else(min_c == max_c, 0, 1))) %>% dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
 
   decile_nobs <- sum(dplyr::if_else(data_count$nobs < 30, 1, 0))
-  percentile_nobs <- sum(dplyr::if_else(data_count$nobs < 300, 1, 0))
+  percentile_nobs <- sum(dplyr::if_else(data_count$nobs < 100, 1, 0))
 
   value_r <- tibble(inter_facet_homo = inter_facet_homogeneity$value, intra_facet_homo = intra_facet_homogeneity$value, decile_nobs_proxy = decile_nobs, percentile_nobs_proxy = percentile_nobs)
 
