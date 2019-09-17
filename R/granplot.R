@@ -35,9 +35,9 @@
 #'     hierarchy_model,
 #'     response = "total_runs",
 #'     plot_type = "quantile",
-#'     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
-#'   ) +
-#'   scale_x_discrete(breaks = seq(1, 120, 5))
+#'     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
+#'     overlay = FALSE)
+#'
 #'
 #' granplot(
 #'   .data = tsibbledata::vic_elec,
@@ -221,6 +221,9 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, re
         ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_mutate_obj[[gran2]]))))
     }
     else {
+
+      # no overlay - simple line graphs for quantiles
+
       data_pcntl <- data_mutate %>%
         tibble::as_tibble() %>%
         dplyr::group_by(data_mutate[[gran1]], data_mutate[[gran2]]) %>%
@@ -239,7 +242,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, re
         ggplot2::ggplot(aes(x = data_pcntl[[gran2]], y = value, group = as.factor(quantile), color = quantile)) +
         ggplot2::geom_line() +
         ggplot2::facet_wrap(~ data_pcntl[[gran1]]) +
-        ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_dec[[gran2]]))))
+        ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_pcntl[[gran2]]))))
     }
 
     plot <- plot +
