@@ -17,6 +17,7 @@
 \alias{aes}
 \alias{geom_lv}
 \alias{quantile}
+\alias{median}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -32,7 +33,7 @@ below to see their documentation.
 
   \item{rlang}{\code{\link[rlang]{!!}}, \code{\link[rlang]{!!!}}, \code{\link[rlang]{quo_name}}, \code{\link[rlang]{:=}}}
 
-  \item{stats}{\code{\link[stats]{quantile}}}
+  \item{stats}{\code{\link[stats]{quantile}}, \code{\link[stats]{median}}}
 
   \item{tibble}{\code{\link[tibble]{as_tibble}}, \code{\link[tibble]{tibble}}}
 }}

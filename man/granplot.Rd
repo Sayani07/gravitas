@@ -5,8 +5,8 @@
 \title{Plot probability distribution of univariate series across bivariate temporal granularities}
 \usage{
 granplot(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL,
-  response = NULL, plot_type = NULL, quantile_prob = seq(0.1, 0.9,
-  0.1), facet_h = NULL, ...)
+  response = NULL, plot_type = NULL, quantile_prob = c(0.1, 0.25,
+  0.5, 0.75, 0.9), facet_h = NULL, overlay = TRUE, alpha = 0.8, ...)
 }
 \arguments{
 \item{.data}{a tsibble}
@@ -25,6 +25,10 @@ granplot(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL,
 
 \item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities}
 
+\item{overlay}{If FALSE, only lines are drawn for quantiles. If TRUE, area is drawn instead of lines}
+
+\item{alpha}{level of transperancy for the quantile area}
+
 \item{...}{other arguments to be passed for appropriate labels}
 }
 \value{
@@ -42,16 +46,29 @@ library(ggplot2)
 vic_elec \%>\% granplot("hour_day", "day_week", response = "Demand", plot_type = "boxplot")
 
 cricket_tsibble <- cricketdata \%>\%
-mutate(data_index = row_number()) \%>\%
-as_tsibble(index = data_index)
+  mutate(data_index = row_number()) \%>\%
+  as_tsibble(index = data_index)
 
-hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"),
-convert_fct  = c(1, 6, 20, 2, 1))
+hierarchy_model <- tibble::tibble(
+  units = c("index", "ball", "over", "inning", "match"),
+  convert_fct = c(1, 6, 20, 2, 1)
+)
 
-cricket_tsibble \%>\% granplot("inning_match", "ball_inning",
-hierarchy_model,
-response = "total_runs",
-plot_type = "quantile",
-quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))+
-scale_x_discrete(breaks = seq(1,120,5))
+cricket_tsibble \%>\%
+  granplot("inning_match", "ball_inning",
+    hierarchy_model,
+    response = "total_runs",
+    plot_type = "quantile",
+    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+  ) +
+  scale_x_discrete(breaks = seq(1, 120, 5))
+
+granplot(
+  .data = tsibbledata::vic_elec,
+  gran1 = "day_week",
+  gran2 = "hour_day",
+  response = "Demand",
+  plot_type = "quantile",
+  quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+)
 }
