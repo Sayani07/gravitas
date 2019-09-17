@@ -8,6 +8,8 @@
 #' @param response response variable to be plotted
 #' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities
 #' @param quantile_prob numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "Decile" plot
+#' @param overlay If FALSE, only lines are drawn for quantiles. If TRUE, area is drawn instead of lines
+#' @param alpha level of transperancy for the quantile area
 #' @param ... other arguments to be passed for appropriate labels
 #' @return a ggplot object
 #
@@ -20,39 +22,46 @@
 #' vic_elec %>% granplot("hour_day", "day_week", response = "Demand", plot_type = "boxplot")
 #'
 #' cricket_tsibble <- cricketdata %>%
-#' mutate(data_index = row_number()) %>%
-#' as_tsibble(index = data_index)
+#'   mutate(data_index = row_number()) %>%
+#'   as_tsibble(index = data_index)
 #'
-#' hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"),
-#' convert_fct  = c(1, 6, 20, 2, 1))
+#' hierarchy_model <- tibble::tibble(
+#'   units = c("index", "ball", "over", "inning", "match"),
+#'   convert_fct = c(1, 6, 20, 2, 1)
+#' )
 #'
-#'cricket_tsibble %>% granplot("inning_match", "ball_inning",
-#'hierarchy_model,
-#'response = "total_runs",
-#'plot_type = "quantile",
-#'quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))+
-#'scale_x_discrete(breaks = seq(1,120,5))
-
+#' cricket_tsibble %>%
+#'   granplot("inning_match", "ball_inning",
+#'     hierarchy_model,
+#'     response = "total_runs",
+#'     plot_type = "quantile",
+#'     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+#'   ) +
+#'   scale_x_discrete(breaks = seq(1, 120, 5))
+#'
+#' granplot(
+#'   .data = tsibbledata::vic_elec,
+#'   gran1 = "day_week",
+#'   gran2 = "hour_day",
+#'   response = "Demand",
+#'   plot_type = "quantile",
+#'   quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+#' )
 #' @export granplot
-
 # Recommendation plot function for two granularities
-granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, response = NULL, plot_type = NULL, quantile_prob = seq(0.1,0.9,0.1),  facet_h = NULL, ...) {
-
-
-  if(is.null(facet_h))
-  {
-    facet_h = 31
+granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, response = NULL, plot_type = NULL, quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9), facet_h = NULL, overlay = TRUE, alpha = 0.8, ...) {
+  if (is.null(facet_h)) {
+    facet_h <- 31
   }
 
 
-  if(is.null(response))
-  {
+  if (is.null(response)) {
     response <- tsibble::measured_vars(.data)[1]
     message("The first measured variable plotted since no response variable specified")
   }
   # Warn if they have chosen clashes asking to look at the table of harmonies
 
-  proxy_harmony <- is.harmony(.data, gran1, gran2, hierarchy_tbl,response = NULL, facet_h,  ...)
+  proxy_harmony <- is.harmony(.data, gran1, gran2, hierarchy_tbl, response = NULL, facet_h, ...)
 
   if (proxy_harmony == "FALSE") {
     warning("Granularities chosen are Clashes. \nYou might be interested to look at the set of harmonies in Harmony table.")
@@ -80,16 +89,9 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, re
     warning(paste("Facetting not recommended: too many categories in ", gran1, ". Try using", gran2, "as the facet variable."))
   }
 
-  # mutate those granularities using create_gran
-  # gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
-  # gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
-  # var1 <- gran1_split[1]
-  # var2 <- gran1_split[2]
-  # var3 <- gran2_split[1]
-  # var4 <- gran2_split[2]
 
 
-  data_mutate <- .data %>% dynamic_create_gran(gran1, hierarchy_tbl =  hierarchy_tbl,...) %>% dynamic_create_gran(gran2, hierarchy_tbl = hierarchy_tbl, ...)
+  data_mutate <- .data %>% dynamic_create_gran(gran1, hierarchy_tbl = hierarchy_tbl, ...) %>% dynamic_create_gran(gran2, hierarchy_tbl = hierarchy_tbl, ...)
 
 
   p <- data_mutate %>%
@@ -104,10 +106,10 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, re
   else if (plot_type == "violin") {
     plot <- p + ggplot2::geom_violin(...)
   }
-#
-#   else if (plot_type == "density") {
-#     plot <- p + ggplot2::geom_density(position = "stack",...)
-#   }
+  #
+  #   else if (plot_type == "density") {
+  #     plot <- p + ggplot2::geom_density(position = "stack",...)
+  #   }
 
   else if (plot_type == "lv") {
     plot <-
@@ -149,32 +151,15 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, re
       ggplot2::facet_wrap(~ data_dec[[gran1]]) +
       ggplot2::ylab(response) +
       ggplot2::xlab(gran1) +
-      ggplot2::ggtitle(paste0(plot_type, " plot across ", gran2, " given ", gran1))+
+      ggplot2::ggtitle(paste0(plot_type, " plot across ", gran2, " given ", gran1)) +
       ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_dec[[gran2]]))))
-# prettify needs to work correctly
+    # prettify needs to work correctly
 
     if (proxy_homogenous$decile_nobs_proxy != 0) {
       warning("Decile plot not recommended as number of observations too few for one or more combinations")
     }
   }
   else if (plot_type == "quantile") {
-#
-#     if(start_lim<0 |start_lim>1)
-#     {
-#       stop("start_lim should be between 0 and 1")
-#     }
-#
-#     if(end_lim<start_lim|end_lim>1)
-#     {
-#       stop("end_lim should be between start_lim and 1")
-#     }
-#
-#     if(increment>end_lim - start_lim)
-#     {
-#       stop("increment should be less than the difference of start_lim and end_lim")
-#     }
-
-
     p <- quantile_prob
 
     quantile_names <- purrr::map_chr(p, ~ paste0(.x * 100, "%"))
@@ -182,33 +167,92 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, re
     quantile_funs <- purrr::map(p, ~ purrr::partial(quantile, probs = .x, na.rm = TRUE)) %>%
       rlang::set_names(nm = quantile_names)
 
-
-    data_pcntl <- data_mutate %>%
-      tibble::as_tibble() %>%
-      dplyr::group_by(data_mutate[[gran1]], data_mutate[[gran2]]) %>%
-      dplyr::summarize_at(response, quantile_funs) %>%
-      tidyr::gather(quantile, value, -c(`data_mutate[[gran1]]`, `data_mutate[[gran2]]`)) %>%
-      dplyr::select(
-        !!rlang::quo_name(gran1) := `data_mutate[[gran1]]`,
-        !!rlang::quo_name(gran2) := `data_mutate[[gran2]]`,
-        quantile := quantile,
-        value := value
-      )
+    if (overlay) {
+      data_mutate <- .data %>%
+        dynamic_create_gran(gran1,
+                            hierarchy_tbl = hierarchy_tbl
+        ) %>%
+        dynamic_create_gran(gran2,
+                            hierarchy_tbl = hierarchy_tbl
+        )
 
 
-    plot <- data_pcntl %>%
-      ggplot2::ggplot(aes(x = data_pcntl[[gran2]], y = value, group = as.factor(quantile), color = quantile)) +
-      ggplot2::geom_line() +
-      ggplot2::facet_wrap(~ data_pcntl[[gran1]]) +
+      data_mutate_obj <- data_mutate %>%
+        tibble::as_tibble() %>%
+        dplyr::group_by(data_mutate[[gran1]], data_mutate[[gran2]]) %>%
+        dplyr::summarize_at(response, quantile_funs) %>%
+        dplyr::rename(
+          !!rlang::quo_name(gran1) := `data_mutate[[gran1]]`,
+          !!rlang::quo_name(gran2) := `data_mutate[[gran2]]`
+        )
+
+      if (length(quantile_names) %% 2 == 0) {
+        stop("Provide an odd number of probabilities")
+      }
+      if (length(quantile_names) %% 2 != 0) {
+        y_mid <- stats::median(quantile_names)
+      }
+      mid_pos <- p %>% match(x = median(p))
+
+      # how many colors needed
+      color_l <- ceiling(length(quantile_names) / 2)
+      color_set <- RColorBrewer::brewer.pal(color_l, "Dark2")
+
+      ymin <- array()
+      ymax <- array()
+
+      for (i in 1:(mid_pos - 1))
+      {
+        ymin[i] <- quantile_names[i]
+        ymax[mid_pos - i] <- quantile_names[length(p) - mid_pos + i + 1]
+      }
+
+
+      l <- purrr::map(1:(mid_pos - 1), ~ ribbon_function(., ymin, ymax, x, gran1, gran2, group, color_set, alpha))
+
+
+      plot <- eval(sum_expr(l)) + ggplot2::geom_line(aes(
+        x = data_mutate_obj[[!!gran2]], y = data_mutate_obj[[quantile_names[mid_pos]]],
+        group = data_mutate_obj[[!!gran1]]
+      ),
+      size = 1
+      ) +
+        ggplot2::facet_wrap(~ data_mutate_obj[[gran1]]) +
+        ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_mutate_obj[[gran2]]))))
+    }
+    else {
+      data_pcntl <- data_mutate %>%
+        tibble::as_tibble() %>%
+        dplyr::group_by(data_mutate[[gran1]], data_mutate[[gran2]]) %>%
+        dplyr::summarize_at(response, quantile_funs) %>%
+        tidyr::gather(quantile, value, -c(`data_mutate[[gran1]]`, `data_mutate[[gran2]]`)) %>%
+        dplyr::select(
+          !!rlang::quo_name(gran1) := `data_mutate[[gran1]]`,
+          !!rlang::quo_name(gran2) := `data_mutate[[gran2]]`,
+          quantile := quantile,
+          value := value
+        )
+
+
+
+      plot <- data_pcntl %>%
+        ggplot2::ggplot(aes(x = data_pcntl[[gran2]], y = value, group = as.factor(quantile), color = quantile)) +
+        ggplot2::geom_line() +
+        ggplot2::facet_wrap(~ data_pcntl[[gran1]]) +
+        ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_dec[[gran2]]))))
+    }
+
+    plot <- plot +
       ggplot2::ylab(response) +
       ggplot2::xlab(gran1) +
-      ggplot2::ggtitle(paste0(plot_type, " plot across ", gran2, " given ", gran1)) + scale_fill_brewer()
+      ggplot2::ggtitle(paste0(plot_type, " plot across ", gran2, " given ", gran1)) +
+      scale_fill_brewer(palette = "Dark2")
 
     if (proxy_homogenous$percentile_nobs_proxy != 0) {
       warning("Percentile plot not recommended as number of observations too few for one or more combinations")
     }
   }
- plot  + ggplot2::theme(legend.position = "bottom",strip.text = ggplot2::element_text(size = 7, margin = ggplot2::margin()))
+  plot + ggplot2::theme(legend.position = "bottom", strip.text = ggplot2::element_text(size = 7, margin = ggplot2::margin()))
 }
 
 # advise function for which plots to choose depending on levels of facets and x-axis
@@ -222,7 +266,7 @@ gran_advice <- function(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...
   proxy_homogenous <- is.homogenous(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...)
 
 
-  data_count <- gran_tbl(.data, gran1, gran2,hierarchy_tbl, response, ...)
+  data_count <- gran_tbl(.data, gran1, gran2, hierarchy_tbl, response, ...)
 
 
   gran1_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran1)) %>% dplyr::distinct() %>% nrow()
@@ -310,7 +354,7 @@ gran_advice <- function(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...
 
 
 
-is.homogenous <- function(.data, gran1, gran2,hierarchy_tbl = NULL, response = NULL, ...) {
+is.homogenous <- function(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL, ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
@@ -331,3 +375,41 @@ is.homogenous <- function(.data, gran1, gran2,hierarchy_tbl = NULL, response = N
 
   value_r
 }
+
+
+ribbon_function =  function(i, ymin, ymax, x, gran1, gran2,  group, color_set, alpha)
+{
+
+  rlang::expr(
+    ggplot2::geom_ribbon(aes(ymin = data_mutate_obj[[!!ymin[i]]],
+                    ymax =  data_mutate_obj[[!!ymax[i]]],
+                    x = data_mutate_obj[[!!gran2]],
+                    group = data_mutate_obj[[!!gran1]]),
+                colour= !!color_set[i],
+                fill = !!color_set[i],
+                alpha = !!alpha))
+}
+
+
+
+sum_expr =   function(v = NULL)
+{
+
+  if(length(v)==1)
+  {
+    count = rlang::expr(ggplot2::ggplot(data_mutate_obj) + !!v[[1]])
+  }
+  else
+  {
+    count = rlang::expr(ggplot2::ggplot(data_mutate_obj) + !!v[[1]])
+    for(i in 2:length(v))
+    {
+      count = rlang::expr(!!count + !!v[[i]] )
+    }
+  }
+
+  return(count)
+}
+
+
+
