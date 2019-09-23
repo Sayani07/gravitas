@@ -112,6 +112,33 @@ gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL,
   return(output)
 }
 
+
+#' Cross tabulation of granularities
+#' useful for validating if number of observations are sufficient to compute probability distributions
+#'
+#' @param .data A tsibble object.
+#' @param gran1 One of the temporal granularities to check for harmonies.
+#' @param gran2 The second temporal granularity in the pair.
+#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
+#' @param ... Added arguments to be passed
+#' @return TRUE if two granularties are harmonies.
+#' @examples
+#' library(dplyr)
+#' library(tsibbledata)
+#' library(ggplot2)
+#' vic_elec %>% is.harmony("hour_day", "day_week")
+#' @export gran_obs
+
+
+gran_obs <- function(.data, gran1, gran2, hierarchy_tbl = NULL,  ...) {
+
+
+ gran_tbl(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL, ...) %>%
+    tidyr::spread(key = !!gran1,
+           value = nobs)
+
+  }
+
 clash_reason <- function(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...) {
 
  gran_full <-  gran_tbl(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...)
