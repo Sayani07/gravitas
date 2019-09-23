@@ -59,9 +59,8 @@ cricket_tsibble \%>\%
     hierarchy_model,
     response = "total_runs",
     plot_type = "quantile",
-    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
-  ) +
-  scale_x_discrete(breaks = seq(1, 120, 5))
+    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
+
 
 granplot(
   .data = tsibbledata::vic_elec,
@@ -69,6 +68,7 @@ granplot(
   gran2 = "hour_day",
   response = "Demand",
   plot_type = "quantile",
-  quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+  quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99),
+  overlay = FALSE
 )
 }

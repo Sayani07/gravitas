@@ -35,8 +35,7 @@
 #'     hierarchy_model,
 #'     response = "total_runs",
 #'     plot_type = "quantile",
-#'     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-#'     overlay = FALSE)
+#'     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
 #'
 #'
 #' granplot(
@@ -45,7 +44,8 @@
 #'   gran2 = "hour_day",
 #'   response = "Demand",
 #'   plot_type = "quantile",
-#'   quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+#'   quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99),
+#'   overlay = FALSE
 #' )
 #' @export granplot
 # Recommendation plot function for two granularities
