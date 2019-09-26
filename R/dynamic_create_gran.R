@@ -16,9 +16,9 @@
 #' as_tsibble(index = data_index)
 #' hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"),
 #' convert_fct  = c(1, 6, 20, 2, 1))
-#' cricket_tsibble %>% dynamic_create_gran("ball_over", hierarchy_model)
+#' cricket_tsibble %>% create_gran("ball_over", hierarchy_model)
 #' @export
-dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, label = TRUE, abbr = TRUE, ...) {
+create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, label = TRUE, abbr = TRUE, ...) {
 
   # column treated as granularities
   events <- match(gran1, names(.data))
@@ -41,7 +41,7 @@ dynamic_create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, labe
 
   if(any(class(x) %in% c("POSIXct", "POSIXt")))
 
-    create_gran(.data, gran1,...)
+    temp_create_gran(.data, gran1,...)
   else
   {
 

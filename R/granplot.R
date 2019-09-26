@@ -91,7 +91,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, re
 
 
 
-  data_mutate <- .data %>% dynamic_create_gran(gran1, hierarchy_tbl = hierarchy_tbl, ...) %>% dynamic_create_gran(gran2, hierarchy_tbl = hierarchy_tbl, ...)
+  data_mutate <- .data %>% create_gran(gran1, hierarchy_tbl = hierarchy_tbl, ...) %>% create_gran(gran2, hierarchy_tbl = hierarchy_tbl, ...)
 
 
   p <- data_mutate %>%
@@ -150,7 +150,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, re
       ggplot2::geom_line() +
       ggplot2::facet_wrap(~ data_dec[[gran1]]) +
       ggplot2::ylab(response) +
-      ggplot2::xlab(gran1) +
+      ggplot2::xlab(gran2) +
       ggplot2::ggtitle(paste0(plot_type, " plot across ", gran2, " given ", gran1)) +
       ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_dec[[gran2]]))))
     # prettify needs to work correctly
@@ -169,10 +169,10 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, re
 
     if (overlay) {
       data_mutate <- .data %>%
-        dynamic_create_gran(gran1,
+        create_gran(gran1,
                             hierarchy_tbl = hierarchy_tbl
         ) %>%
-        dynamic_create_gran(gran2,
+        create_gran(gran2,
                             hierarchy_tbl = hierarchy_tbl
         )
 
@@ -247,7 +247,7 @@ granplot <- function(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL, re
 
     plot <- plot +
       ggplot2::ylab(response) +
-      ggplot2::xlab(gran1) +
+      ggplot2::xlab(gran2) +
       ggplot2::ggtitle(paste0(plot_type, " plot across ", gran2, " given ", gran1)) +
       scale_fill_brewer(palette = "Dark2")
 

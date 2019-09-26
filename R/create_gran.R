@@ -1,12 +1,4 @@
-#' Build temporal granularities
-
-#' @param .data A tsibble object.
-#' @param gran1 Temporal granularity required.
-#' @param label Logical. TRUE will display the month as an ordered factor of character string such as "January", "February". FALSE will display the month as an ordered factor such as 1 to 12, where 1 stands for January and 12 for December.
-#' @param abbr logical. FALSE will display abbreviated labels
-#' @param ... Other arguments passed on to individual methods.
-#' @return A tsibble with an additional column of granularity
-create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
+temp_create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ...) {
 
 
   if (!tsibble::is_tsibble(.data)) {

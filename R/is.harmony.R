@@ -84,7 +84,7 @@ gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL,
 
   # data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(ind, var1, var2), L2 = build_gran(ind, var3, var4))
 
-  data_mutate <- .data %>% dynamic_create_gran(gran1, hierarchy_tbl) %>% dynamic_create_gran(gran2, hierarchy_tbl)
+  data_mutate <- .data %>% create_gran(gran1, hierarchy_tbl) %>% create_gran(gran2, hierarchy_tbl)
 
   # All possible combinations that are possible
   Allcomb <- data_mutate %>% tidyr::expand(.data[[gran1]], .data[[gran2]])
