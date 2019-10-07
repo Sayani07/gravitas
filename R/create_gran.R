@@ -24,7 +24,7 @@ create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, label = TRUE
   events <- match(gran1, names(.data))
   if(!is.na(events))
   {
-    .data[[gran1]] = as.factor(.data[[gran1]])
+    .data[[gran1]] <-  as.factor(.data[[gran1]])
     return(.data)
   }
 
@@ -56,7 +56,7 @@ create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, label = TRUE
      data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(x,  lgran, ugran, hierarchy_tbl, ...))
 
 
-       data_mutate$L1 = factor(data_mutate$L1)
+       data_mutate$L1 <- factor(data_mutate$L1)
        #names <- levels(data_mutate$L1)
        data_mutate %>%
          dplyr::mutate(
@@ -86,12 +86,12 @@ dynamic_build_gran <-  function(x, lgran = NULL, ugran = NULL , hierarchy_tbl = 
   if(any(class(x) %in% c("POSIXct", "POSIXt")))
     {
 
-    value = build_gran(x, lgran = lgran, ugran = ugran,...)
+    value <- build_gran(x, lgran = lgran, ugran = ugran,...)
   }
   else
   {
     if (dynamic_g_order(lgran, ugran, hierarchy_tbl) == 1) {
-      value =  create_single_gran(x, lgran, hierarchy_tbl)
+      value <- create_single_gran(x, lgran, hierarchy_tbl)
     }
     else {
       lgran_ordr1 <- dynamic_g_order(lgran, hierarchy_tbl = hierarchy_tbl, order = 1)
@@ -140,8 +140,8 @@ validate_gran <-  function(.data,  gran = NULL, hierarchy_tbl = NULL, validate_c
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
   gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
-  lgran = gran_split[1]
-  ugran = gran_split[2]
+  lgran <- gran_split[1]
+  ugran <- gran_split[2]
 
   all_gran <- search_gran(.data, hierarchy_tbl = hierarchy_tbl)
 
@@ -175,7 +175,7 @@ create_single_gran <- function(x,lgran = NULL,hierarchy_tbl = NULL,...)
  if(any(class(x) %in% c("POSIXct", "POSIXt"))){
 
    ugran <- g_order(lgran, order = 1)
-   value = build_gran(x, lgran = lgran, ugran = ugran,  ...)
+   value <- build_gran(x, lgran = lgran, ugran = ugran,  ...)
  }
 else
 {
@@ -191,7 +191,7 @@ else
 
   linear_gran <- ceiling(x/(dynamic_gran_convert(units[1], lgran , hierarchy_tbl)))
 
-  denom = dynamic_gran_convert(lgran, ugran, hierarchy_tbl)
+  denom <- dynamic_gran_convert(lgran, ugran, hierarchy_tbl)
 
   circular_gran <-  dplyr::if_else(linear_gran %% denom == 0, denom, linear_gran %% denom)
 
