@@ -7,12 +7,12 @@ library(readr)
 library(dplyr)
 
 vic_elec <- tsibbledata::vic_elec
-harmony_tbl<- read_csv("harmony_table.csv")
+harmony_tbl <- read_csv("harmony_table.csv")
 
 
 # source('inst/shiny-examples/gravitas_app/ui.R', local = TRUE)
-source('ui.R', local = TRUE)
-source('global_shiny.R', local = TRUE)
+source("ui.R", local = TRUE)
+source("global_shiny.R", local = TRUE)
 server <- function(input, output, session) {
 
   # reactive file input
@@ -29,14 +29,15 @@ server <- function(input, output, session) {
 
   # reactive measured variable
 
-observe({
+  observe({
     updateSelectInput(session,
-                      "ycol",
-                      choices = fileinput() %>% tsibble::measured_vars()
+      "ycol",
+      choices = fileinput() %>%
+        tsibble::measured_vars()
     )
   })
 
-# reactive lgran variable
+  # reactive lgran variable
   lgran <- reactive({
     if (is.null(input$lgran)) return(NULL)
     isolate({
@@ -58,8 +59,8 @@ observe({
 
   observe({
     updateNumericInput(session,
-                      "facet_h", value = 31
-                      #select_if(is.logical, is.character) if revision is required for selecting all logical or character vector from teh data
+      "facet_h",
+      value = 31
     )
   })
 
@@ -69,33 +70,35 @@ observe({
 
   observe({
     updateSelectInput(session,
-                      "filter_in",
-                      choices =c(
-                        fileinput() %>%
-                        as_tibble() %>%
-                          select_if(~!is.POSIXlt(.)) %>%
-                          select_if(~!is.POSIXct(.)) %>%
-                          select_if(~!is.POSIXt(.)) %>%
-                          select_if(~!is.Date(.)) %>%
-                          select_if(~!is.numeric(.)) %>%
-                          names()%>%
-                          unique(), "wknd_wday")
-                      #  if revision is required for selecting all logical or character vector from teh data
+      "filter_in",
+      choices = c(
+        fileinput() %>%
+          as_tibble() %>%
+          select_if(~ !is.POSIXlt(.)) %>%
+          select_if(~ !is.POSIXct(.)) %>%
+          select_if(~ !is.POSIXt(.)) %>%
+          select_if(~ !is.Date(.)) %>%
+          select_if(~ !is.numeric(.)) %>%
+          names() %>%
+          unique(), "wknd_wday"
+      )
     )
   })
 
 
-# dynamically update dropdown list for facet - reactive
+  # dynamically update dropdown list for facet - reactive
 
   observe({
-    my_choices <- search_gran(fileinput(), input$ugran, input$lgran)
+    my_choices <- search_gran(fileinput(),
+                              input$ugran,
+                              input$lgran)
 
     isolate({
-     updateSelectInput(session,
-      "facet",
-      choices = c(my_choices, input$filter_in),
-      selected = harmony_table()$facet_variable[1]
-    )
+      updateSelectInput(session,
+        "facet",
+        choices = c(my_choices, input$filter_in),
+        selected = harmony_table()$facet_variable[1]
+      )
     })
   })
 
@@ -105,12 +108,12 @@ observe({
     my_choices <- search_gran(fileinput(), input$ugran, input$lgran)
     my_choices2 <- my_choices[-match(input$facet, my_choices)]
     isolate({
-    updateSelectInput(session,
-      "xcol",
-      choices = c(my_choices2, input$filter_in),
-      selected = harmony_table()$x_variable[1]
-    )}
-    )
+      updateSelectInput(session,
+        "xcol",
+        choices = c(my_choices2, input$filter_in),
+        selected = harmony_table()$x_variable[1]
+      )
+    })
   })
 
   # facet <- reactive({
@@ -124,36 +127,35 @@ observe({
 
   # flip granularities if checkbox is checked
 
-#
-#   observeEvent(input$flip_axis, {
-#
-#     # values <- reactiveValues()
-#     # values$xcol <- input$xcol
-#     # values$facet <-  input$facet
-#
-#      updateSelectInput(session,
-#     "facet",
-#     selected = input$xcol)
-#
-#      updateSelectInput(session,
-#                        "xcol",
-#                        selected = input$facet)
-#
-#
-#
-#       # temp = input$facet
-#       # input$facet = input$xcol
-#       # input$xcol = temp
-#
-#
-#   })
+  #
+  #   observeEvent(input$flip_axis, {
+  #
+  #     # values <- reactiveValues()
+  #     # values$xcol <- input$xcol
+  #     # values$facet <-  input$facet
+  #
+  #      updateSelectInput(session,
+  #     "facet",
+  #     selected = input$xcol)
+  #
+  #      updateSelectInput(session,
+  #                        "xcol",
+  #                        selected = input$facet)
+  #
+  #
+  #
+  #       # temp = input$facet
+  #       # input$facet = input$xcol
+  #       # input$xcol = temp
+  #
+  #
+  #   })
 
   # dynamically update dropdown list for x-axis - reactive
 
   qvec <- reactive({
-    as.numeric(unlist(strsplit(input$vec1,",")))
-  }
-  )
+    as.numeric(unlist(strsplit(input$vec1, ",")))
+  })
 
 
   output$data <- renderDataTable({
@@ -164,10 +166,10 @@ observe({
   output$summary <- renderPrint({
     summary(fileinput())
   })
-#
-#   output$glimpse <- renderPrint({
-#     glimpse(fileinput())
-#   })
+  #
+  #   output$glimpse <- renderPrint({
+  #     glimpse(fileinput())
+  #   })
 
 
   output$str_data <- renderPrint({
@@ -184,56 +186,40 @@ observe({
   # swap values of facet and x-axis if check box is checked
 
 
-#
-#   plot_shiny <-   reactive({
-#     granplot(
-#     .data = fileinput(),
-#     gran1 = input$facet,
-#     gran2 = input$xcol,
-#     response = input$ycol,
-#     plot_type = input$plot_type
-#     # start_lim,
-#     # end_lim,
-#     # increment
-#   )
-#   })
+  #
+  #   plot_shiny <-   reactive({
+  #     granplot(
+  #     .data = fileinput(),
+  #     gran1 = input$facet,
+  #     gran2 = input$xcol,
+  #     response = input$ycol,
+  #     plot_type = input$plot_type
+  #     # start_lim,
+  #     # end_lim,
+  #     # increment
+  #   )
+  #   })
 
   # output$plot1 <- renderPlot({
   #
   #   capture_all_problems(plot_shiny())
   # })
 
-# output for probability vector
+  # output for probability vector
 
 
-  warn_txt = reactive({
-
-    if(input$flip_axis)
-      {
-      gran1 = input$facet
-      gran2 = input$xcol
+  warn_txt <- reactive({
+    if (input$flip_axis) {
+      gran1 <- input$facet
+      gran2 <- input$xcol
     }
     else {
-      gran1 = input$xcol
-      gran2 = input$facet
+      gran1 <- input$xcol
+      gran2 <- input$facet
     }
 
 
-    if(input$flip_coord)
-    {
-
-    capture_all_problems(
-     granplot(
-      .data = fileinput(),
-       gran1 = gran1,
-      gran2 = gran2,
-      response = input$ycol,
-      plot_type = input$plot_type,
-      quantile_prob = qvec()) + coord_flip()
-    )
-    }
-    else
-    {
+    if (input$flip_coord) {
       capture_all_problems(
         granplot(
           .data = fileinput(),
@@ -241,49 +227,61 @@ observe({
           gran2 = gran2,
           response = input$ycol,
           plot_type = input$plot_type,
-          quantile_prob = qvec()))
+          quantile_prob = qvec()
+        ) + coord_flip()
+      )
+    }
+    else {
+      capture_all_problems(
+        granplot(
+          .data = fileinput(),
+          gran1 = gran1,
+          gran2 = gran2,
+          response = input$ycol,
+          plot_type = input$plot_type,
+          quantile_prob = qvec()
+        )
+      )
     }
   })
 
-#   output$warning_text <- renderUI({
-#     #capture_all_problems(plot_shiny())$warning
-# #
-# #    warn_txt = capture_all_problems(
-# #      granplot(
-# #        .data = fileinput(),
-# #        gran1 = input$facet,
-# #        gran2 = input$xcol,
-# #        response = input$ycol,
-# #        plot_type = input$plot_type
-# #      )
-# #    )
-#    warn = " "
-#    warn_txt = warn_txt()
-#    len_warn_txt <- length(warn_txt$warning)
-#
-#    for(i in 1:len_warn_txt)
-#    {
-#      warn = paste(h3(warn_txt$warning[i]), warn, sep = "<br/>")
-#    }
-#
-#     HTML(warn)
-#   })
+  #   output$warning_text <- renderUI({
+  #     #capture_all_problems(plot_shiny())$warning
+  # #
+  # #    warn_txt = capture_all_problems(
+  # #      granplot(
+  # #        .data = fileinput(),
+  # #        gran1 = input$facet,
+  # #        gran2 = input$xcol,
+  # #        response = input$ycol,
+  # #        plot_type = input$plot_type
+  # #      )
+  # #    )
+  #    warn = " "
+  #    warn_txt = warn_txt()
+  #    len_warn_txt <- length(warn_txt$warning)
+  #
+  #    for(i in 1:len_warn_txt)
+  #    {
+  #      warn = paste(h3(warn_txt$warning[i]), warn, sep = "<br/>")
+  #    }
+  #
+  #     HTML(warn)
+  #   })
 
   warning_text <- reactive({
-
-    warn = " "
-    warn_txt = warn_txt()
+    warn <- " "
+    warn_txt <- warn_txt()
     len_warn_txt <- length(warn_txt$warning)
 
-    if(len_warn_txt!=0)
-    {
-    for(i in 1:len_warn_txt)
-    {
-      warn = paste(warn_txt$warning[i], warn, sep = '\n')
+    if (len_warn_txt != 0) {
+      for (i in 1:len_warn_txt)
+      {
+        warn <- paste(warn_txt$warning[i], warn, sep = "\n")
+      }
     }
-    }
-    else{
-      warn = NULL
+    else {
+      warn <- NULL
     }
 
 
@@ -292,9 +290,7 @@ observe({
 
 
   output$plot1 <- renderPlot({
-
     warn_txt()
-
   })
 
 
@@ -303,31 +299,33 @@ observe({
 
 
 
-      #restore warnings, delayed so plot is completed
-      # shinyjs::delay(expr =({
-      #   options(warn = storeWarn)
-      # }) ,ms = 100)
-      #
-      # plott
-#
-#   observeEvent(input$btn, {
-#         withCallingHandlers({
-#           shinyjs::html(id = "text", html = "")
-#           plot_shiny()
-#         },
-#         warning = function(m) {
-#           shinyjs::html(id = "text", html = m$message, add = TRUE)
-#         })
-#   })
+  # restore warnings, delayed so plot is completed
+  # shinyjs::delay(expr =({
+  #   options(warn = storeWarn)
+  # }) ,ms = 100)
+  #
+  # plott
+  #
+  #   observeEvent(input$btn, {
+  #         withCallingHandlers({
+  #           shinyjs::html(id = "text", html = "")
+  #           plot_shiny()
+  #         },
+  #         warning = function(m) {
+  #           shinyjs::html(id = "text", html = m$message, add = TRUE)
+  #         })
+  #   })
 
 
   harmony_table <- reactive({
+    data_search_gran <- search_gran(fileinput(),
+                                    input$ugran,
+                                    input$lgran,
+                                    filter_in = input$filter_in)
 
-    data_search_gran <- search_gran(fileinput(), input$ugran, input$lgran, filter_in = input$filter_in)
-
-    harmony_tbl %>% filter(facet_variable %in% data_search_gran) %>% filter(x_variable %in% data_search_gran)
-
-    #gravitas:::harmony(fileinput(), ugran = ugran() , lgran = lgran(), filter_in =  input$filter_in, facet_h = input$facet_h)
+    harmony_tbl %>%
+      filter(facet_variable %in% data_search_gran) %>%
+      filter(x_variable %in% data_search_gran)
   })
 
   output$table <- renderDataTable({
@@ -335,7 +333,9 @@ observe({
   })
 
 
-  clash_reason <- reactive(gravitas:::clash_reason(fileinput(), gran1 = input$facet , gran2 = input$xcol))
+  clash_reason <- reactive(gravitas:::clash_reason(fileinput(),
+                                                   gran1 = input$facet,
+                                                   gran2 = input$xcol))
 
   # show the reason table with 0 observation combination
   clash_txt <- reactive({
@@ -365,73 +365,79 @@ observe({
       "<br>",
       "<i>(Recommended when above ggplot object needs modification)</i>",
       "<br><br><br>",
-       "library(gravitas)",
-       "<br>",
+      "library(gravitas)",
+      "<br>",
 
-#       expr(
-#       gravitas_data <- load(!!input$file$name)),
+      #       expr(
+      #       gravitas_data <- load(!!input$file$name)),
 
 
       expr(
-      granplot(
-      .data = !!input$file$name,
-      gran1 = !!input$facet,
-      gran2 = !!input$xcol,
-      response = !!input$ycol,
-      plot_type = !!input$plot_type,
-      quantile_prob = !!qvec())))
-
+        granplot(
+          .data = !!input$file$name,
+          gran1 = !!input$facet,
+          gran2 = !!input$xcol,
+          response = !!input$ycol,
+          plot_type = !!input$plot_type,
+          quantile_prob = !!qvec()
+        )
+      )
+    )
   })
 
 
   # download the desired plot
   output$downloadPlot <- downloadHandler(
-    filename = function() { paste(input$file, '.png', sep='') },
+    filename = function() {
+      paste(input$file, ".png",
+            sep = "")
+    },
     content = function(file) {
-      ggsave(file, plot = warn_txt()[[1]], device = "png")
+      ggsave(file, plot = warn_txt()[[1]],
+             device = "png")
     }
-
   )
 
   observeEvent(input$preview, {
     # Show a modal when the button is pressed
-    shinyalert(title = "Check for warnings/messages",
-               text = dplyr::if_else(is.null(warning_text()), clash_txt(), warning_text()))
+    shinyalert(
+      title = "Check for warnings/messages",
+      text = dplyr::if_else(is.null(warning_text()),
+                            clash_txt(),
+                            warning_text())
+    )
   })
 
 
 
 
 
-#
-# # showing an editor
-#   observe({
-#     # print all editor content to the R console
-#     cat(input$ace, "\n")
-#   })
-#
-#   cdata <- session$clientData
-#
-#   output$myplot <- renderText({
-#     hist(rnorm(input$facet), main = "Generated in renderPlot()")
-#   })
-#
-#   observe({
-#     # print only selected editor content to the R console
-#     # to access content of `selectionId` use `ace_selection`
-#     # i.e., the outputId is prepended to the selectionId for
-#     # use with Shiny modules
-#
-#         .data = fileinput()
-#         gran1 = input$facet
-#         gran2 = input$xcol
-#         response = input$ycol
-#         plot_type = input$plot_type
-#         quantile_prob = qvec()
-#   })
-
-
-
+  #
+  # # showing an editor
+  #   observe({
+  #     # print all editor content to the R console
+  #     cat(input$ace, "\n")
+  #   })
+  #
+  #   cdata <- session$clientData
+  #
+  #   output$myplot <- renderText({
+  #     hist(rnorm(input$facet), main = "Generated in renderPlot()")
+  #   })
+  #
+  #   observe({
+  #     # print only selected editor content to the R console
+  #     # to access content of `selectionId` use `ace_selection`
+  #     # i.e., the outputId is prepended to the selectionId for
+  #     # use with Shiny modules
+  #
+  #         .data = fileinput()
+  #         gran1 = input$facet
+  #         gran2 = input$xcol
+  #         response = input$ycol
+  #         plot_type = input$plot_type
+  #         quantile_prob = qvec()
+  #   })
 }
 
 shinyApp(ui = ui, server = server)
