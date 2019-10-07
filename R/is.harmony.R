@@ -126,7 +126,7 @@ gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL,
 #' library(dplyr)
 #' library(tsibbledata)
 #' library(ggplot2)
-#' vic_elec %>% is.harmony("hour_day", "day_week")
+#' vic_elec %>% gran_obs("hour_day", "day_week")
 #' @export gran_obs
 
 
