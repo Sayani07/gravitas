@@ -4,15 +4,17 @@
 \alias{search_gran}
 \title{Get set of possible temporal granularities for a given tsibble}
 \usage{
-search_gran(.data, ugran = "year", lgran = NULL, filter_in = NULL,
-  filter_out = NULL, ...)
+search_gran(.data, lowest_unit = NULL, highest_unit = NULL,
+  hierarchy_tbl = NULL, filter_in = NULL, filter_out = NULL, ...)
 }
 \arguments{
 \item{.data}{A tsibble object.}
 
-\item{ugran}{Upper temporal unit. Typically, it is set as the most coarse temporal unit required in the analysis. Default is "year".}
+\item{lowest_unit}{Typically set as the finest unit required for analysis. For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals.For non-temporal data, default is the first unit specified in the hierarchy table.}
 
-\item{lgran}{Lowest temporal unit. For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals.}
+\item{highest_unit}{Typically set as the most coarse unit required for analysis.For temporal data, default is "year" and for non-temporal data, default is set as the last unit specified in the hierarchy table}
+
+\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships}
 
 \item{filter_in}{Choices of temporal units to be kept.}
 
@@ -25,4 +27,9 @@ Set of possible granularities.
 }
 \description{
 Get set of possible temporal granularities for a given tsibble
+}
+\examples{
+library(dplyr)
+library(tsibbledata)
+vic_elec \%>\% search_gran(.data, lowest_unit = "hour", highest_unit =  "month")
 }

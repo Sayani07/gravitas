@@ -16,7 +16,7 @@
 #' @export harmony
 harmony <- function(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL, filter_in = NULL, filter_out = NULL, facet_h = NULL, ...) {
 
-  set1 <- dynamic_search_gran(.data,  lowest_unit = lgran, highest_unit = ugran, hierarchy_tbl, filter_in,  filter_out, ...)
+  set1 <- search_gran(.data,  lowest_unit = lgran, highest_unit = ugran, hierarchy_tbl, filter_in,  filter_out, ...)
 
 
   if(is.null(facet_h))
