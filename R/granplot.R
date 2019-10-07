@@ -71,7 +71,7 @@ granplot <- function(.data,
   }
   # Warn if they have chosen clashes asking to look at the table of harmonies
 
-  proxy_harmony <- is.harmony(.data,
+  proxy_harmony <- is_harmony(.data,
                               gran1,
                               gran2,
                               hierarchy_tbl,
@@ -356,7 +356,7 @@ gran_advice <- function(.data,
     stop("must use tsibble")
   }
 
-  proxy_harmony <- is.harmony(.data,
+  proxy_harmony <- is_harmony(.data,
                               gran1,
                               gran2,
                               hierarchy_tbl,
@@ -375,12 +375,12 @@ gran_advice <- function(.data,
 
 
   gran1_level <- data_count %>%
-    dplyr::select(!!rlang::quo_name(gran1))
-  %>% dplyr::distinct() %>% nrow()
+    dplyr::select(!!rlang::quo_name(gran1))%>%
+    dplyr::distinct() %>% nrow()
 
   gran2_level <- data_count %>%
-    dplyr::select(!!rlang::quo_name(gran2))
-  %>% dplyr::distinct() %>% nrow()
+    dplyr::select(!!rlang::quo_name(gran2)) %>%
+    dplyr::distinct() %>% nrow()
 
   facet_h <- 31
   facet_m <- 14

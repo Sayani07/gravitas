@@ -12,10 +12,10 @@
 #' library(dplyr)
 #' library(tsibbledata)
 #' library(ggplot2)
-#' vic_elec %>% is.harmony("hour_day", "day_week")
-#' @export is.harmony
+#' vic_elec %>% is_harmony("hour_day", "day_week")
+#' @export is_harmony
 
-is.harmony <- function(.data, gran1, gran2, hierarchy_tbl= NULL, response = NULL, facet_h = NULL, ...) {
+is_harmony <- function(.data, gran1, gran2, hierarchy_tbl= NULL, response = NULL, facet_h = NULL, ...) {
 
   if(gran1==gran2)
   {

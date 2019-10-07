@@ -54,7 +54,7 @@ harmony <- function(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL, f
 
   for (i in 1:nrow(set1_merge))
   {
-    har_data[i] = is.harmony(.data, gran1 = set1_merge$x[i], gran2 = set1_merge$y[i], hierarchy_tbl, facet_h = facet_h)
+    har_data[i] = is_harmony(.data, gran1 = set1_merge$x[i], gran2 = set1_merge$y[i], hierarchy_tbl, facet_h = facet_h)
   }
 
 
