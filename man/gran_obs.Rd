@@ -29,5 +29,5 @@ useful for validating if number of observations are sufficient to compute probab
 library(dplyr)
 library(tsibbledata)
 library(ggplot2)
-vic_elec \%>\% is.harmony("hour_day", "day_week")
+vic_elec \%>\% gran_obs("hour_day", "day_week")
 }
