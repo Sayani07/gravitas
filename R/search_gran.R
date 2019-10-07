@@ -11,78 +11,113 @@
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)
-#' vic_elec %>% search_gran(.data, lowest_unit = "hour", highest_unit =  "month")
+#' vic_elec %>% search_gran(lowest_unit = "hour", highest_unit =  "month")
 #' @export
 search_gran <- function(.data, lowest_unit = NULL, highest_unit = NULL, hierarchy_tbl = NULL, filter_in = NULL, filter_out = NULL, ...) {
-
-  x <- .data[[rlang::as_string(tsibble::index(.data))]]
-
 
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
 
-  if (is.null(highest_unit)) {
-    highest_unit = dplyr::last(hierarchy_tbl$units)
-  }
 
-  if (is.null(lowest_unit)) {
-    lowest_unit = dplyr::first(hierarchy_tbl$units)
-  }
+  x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
+
+# if class is timestamp, then use predefined lookup table, have to state hierarchy table for non-temporal data
   if(any(class(x) %in% c("POSIXct", "POSIXt")))
   {
     hierarchy_tbl = lookup_table
   }
+  else if(is.null(hierarchy_tbl))
+  {
+    stop("Hierarchy table must be provided when class of index of the tsibble is not date-time")
+  }
+
   units <- hierarchy_tbl$units
   convert_fct <- hierarchy_tbl$convert_fct
 
+
   # Put the last element of the vector units as the upper most unit desired - default
-  if (!(highest_unit %in% units))
-  {
-    stop("upper unit must be listed as an element in the  hierarchy table")
+  if (is.null(highest_unit)) {
+    highest_unit = dplyr::last( hierarchy_tbl$units)
   }
+  # check if input for highest and lowest units are in the list of units in hierarchy table
+
+  else if (!(highest_unit %in%  hierarchy_tbl$units))
+  {
+    stop("highest unit must be listed as an element in the  hierarchy table")
+  }
+
 
   # Put the first element of the vector units as the lowest most unit desired - default
+  if (is.null(lowest_unit)) {
 
-  if (!(lowest_unit %in% units))
+    if(any(class(x) %in% c("POSIXct", "POSIXt")))
+    {
+    # put the interval of the tsibble as default of lowest_unit if it is missing
+    if (tsibble::is_regular(.data))
+      {
+      interval_ts <- tsibble::interval(.data)
+      data_interval <- interval_ts[interval_ts != 0]
+        lgran_iden <- names(data_interval)
+        lgran_multiple <- data_interval[[1]]
+        if (lgran_multiple == 1) {
+          lowest_unit <- lgran_iden
+        }
+        else if (lgran_multiple > 1) {
+          index_lgran <- units %>% match(x = lgran_iden)
+
+          if (convert_fct[index_lgran] < lgran_multiple) {
+            convert_fct[index_lgran] <- convert_fct[index_lgran] * convert_fct[index_lgran + 1]
+            last_index <- index_lgran + 1
+          }
+          lowest_unit <- units[last_index + 1]
+        }
+      }
+
+    else if (!tsibble::is_regular(.data)) {
+        stop("lowest_unit must be provided when the tsibble is irregularly spaced")
+    }
+    }
+    else
+    {
+      lowest_unit = dplyr::first(units)
+    }
+  }
+
+  # check if input for lowest unit is allowed
+  else if (!(lowest_unit %in% units))
   {
-    stop("lower unit must be listed as an element in the hierarchy table")
+    stop("lowest unit must be listed as an element in the hierarchy table")
   }
 
 
+  # check if input for highest and lowest units are distinct
   if (dynamic_g_order(lowest_unit, highest_unit, hierarchy_tbl) == 0) {
     stop("lowest_unit and highest_unit should be distinct")
   }
+
+  # check if input for highest and lowest units are reversed
 
 else if (dynamic_g_order(lowest_unit, highest_unit, hierarchy_tbl) < 0) {
     stop("granularities should be of the form finer to coarser. Try swapping the order of the units.")
 }
 
+  # if input for highest and lowest units are distinct and in the right order
 else{
 
 
-  # if (dynamic_g_order(hierarchy_tbl, lowest_unit, highest_unit) == 1) {
-  #   stop("Only one unit ", lowest_unit, "_", {
-  #     highest_unit
-  #   }, " can be formed. Function requires checking compatibility for bivariate granularities")
-  # }
-
-  ind <- .data[[rlang::as_string(tsibble::index(.data))]]
   index_gran1 <- units %>% match(x = lowest_unit)
   index_gran2 <- units %>% match(x = highest_unit)
   gran2_set <-   units[index_gran1:index_gran2]
 
-
+# all possible granularities from lowest to highest units except ones that have been filtered in separately
   gran <- paste(gran1 = combn(gran2_set, 2)[1, ], gran2 = combn(gran2_set, 2)[2, ], sep = "_")
 
   gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
 
+# to join units in the list of gran which are either columns from data or wknd_wday
 
-  # if (!is.null(filter_in)) {
-  #   if (length(filter_in) == 1) {
-  #     stop("Atleast two temporal units to be provided for filter_in ")
-  #   }
   if (!is.null(filter_in)) {
     data_names <- names(.data)
     exhaust_set <-  c(data_names, units, "wknd_wday")
@@ -120,6 +155,7 @@ else{
     }
   }
 
+# # to remove units in the list of gran which are mentioned in filter_out
   else if (!is.null(filter_out)) {
     if (!all(filter_out %in% units)) {
       stop("temporal units to be filtered out not found: make sure vector contains units which are between lowest_unit and highest_unit")
