@@ -207,7 +207,7 @@ gran_convert <- function(a, b = NULL, order = NULL) {
   if (!is.null(b)) {
     b <- tolower(b)
     if (!a %in% granularity | !b %in% granularity) {
-      stop(paste0("granularity ", a, " and ", b, " both should be one of ", paste0(granularity, collapse = ", ")), call. = F)
+      stop(paste0("granularity ", a, " and ", b, " both should be one of ", paste0(granularity, collapse = ", ")), call. = FALSE)
     }
 
 

@@ -63,3 +63,14 @@ stats::quantile
 #' @importFrom stats median
 #' @export
 stats::median
+
+
+#' @importFrom shinythemes shinytheme
+#' @export
+shinythemes::shinytheme
+
+
+#' @importFrom shinyalert useShinyalert
+#' @export
+shinyalert::useShinyalert
+

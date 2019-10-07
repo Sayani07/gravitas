@@ -171,7 +171,7 @@ dynamic_gran_convert <- function(lower_gran = NULL, upper_gran = NULL, hierarchy
 
   if (!is.null(lower_gran)) {
     if (!lower_gran %in% units | !upper_gran %in% units) {
-      stop(paste0("units ", lower_gran, " and ", upper_gran, " both should be one of ", paste0(units, collapse = ", ")), call. = F)
+      stop(paste0("units ", lower_gran, " and ", upper_gran, " both should be one of ", paste0(units, collapse = ", ")), call. = FALSE)
     }
 
 

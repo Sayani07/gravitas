@@ -33,7 +33,6 @@ Imports:
   shiny,
   shinythemes,
   shinyalert,
-  shinyAce,
   RColorBrewer
 Suggests:
     tsibbledata (>= 0.0.0.9000),

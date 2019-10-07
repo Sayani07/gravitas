@@ -18,6 +18,8 @@
 \alias{geom_lv}
 \alias{quantile}
 \alias{median}
+\alias{shinytheme}
+\alias{useShinyalert}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -32,6 +34,10 @@ below to see their documentation.
   \item{lvplot}{\code{\link[lvplot]{geom_lv}}}
 
   \item{rlang}{\code{\link[rlang]{!!}}, \code{\link[rlang]{!!!}}, \code{\link[rlang]{quo_name}}, \code{\link[rlang]{:=}}}
+
+  \item{shinyalert}{\code{\link[shinyalert]{useShinyalert}}}
+
+  \item{shinythemes}{\code{\link[shinythemes]{shinytheme}}}
 
   \item{stats}{\code{\link[stats]{quantile}}, \code{\link[stats]{median}}}
 
