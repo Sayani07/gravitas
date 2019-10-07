@@ -35,13 +35,13 @@ harmony <- function(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL, f
   # getting the levels of facets and x-axis and storing them
   data_mutate <-  .data
 
-  for(i in 1 :length(set1))
+  for(i in seq_along(set1))
   {
     data_mutate <- data_mutate %>% create_gran(set1[i], hierarchy_tbl)
   }
 
   ilevel <- array()
-  for(i in 1 : length(set1))
+  for(i in seq_along(set1))
   {
     ilevel[i] <- data_mutate %>% dplyr::distinct(.data[[set1[[i]]]]) %>% nrow()
   }
@@ -52,7 +52,7 @@ harmony <- function(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL, f
 
   har_data <- array(0, nrow(set1_merge))
 
-  for (i in 1:nrow(set1_merge))
+  for (i in seq_len(nrow(set1_merge)))
   {
     har_data[i] = is_harmony(.data, gran1 = set1_merge$x[i], gran2 = set1_merge$y[i], hierarchy_tbl, facet_h = facet_h)
   }
