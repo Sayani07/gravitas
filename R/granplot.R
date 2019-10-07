@@ -102,8 +102,13 @@ granplot <- function(.data,
 
   data_count <- gran_tbl(.data, gran1, gran2, hierarchy_tbl, response, ...)
 
-  gran1_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran1)) %>% dplyr::distinct() %>% nrow()
-  gran2_level <- data_count %>% dplyr::select(!!rlang::quo_name(gran2)) %>% dplyr::distinct() %>% nrow()
+  gran1_level <- data_count %>%
+    dplyr::select(!!rlang::quo_name(gran1)) %>%
+    dplyr::distinct() %>% nrow()
+
+  gran2_level <- data_count %>%
+    dplyr::select(!!rlang::quo_name(gran2)) %>%
+    dplyr::distinct() %>% nrow()
 
   # Facetting not recommended for so many levels
 
@@ -203,7 +208,10 @@ granplot <- function(.data,
 
 
     plot <- data_dec %>%
-      ggplot2::ggplot(aes(x = data_dec[[gran2]], y = value, group = quantile, color = quantile)) +
+      ggplot2::ggplot(aes(x = data_dec[[gran2]],
+                          y = value,
+                          group = quantile,
+                          color = quantile)) +
       ggplot2::geom_line() +
       ggplot2::facet_wrap(~ data_dec[[gran1]]) +
       ggplot2::ylab(response) +
@@ -239,8 +247,10 @@ granplot <- function(.data,
 
       data_mutate_obj <- data_mutate %>%
         tibble::as_tibble() %>%
-        dplyr::group_by(data_mutate[[gran1]], data_mutate[[gran2]]) %>%
-        dplyr::summarize_at(response, quantile_funs) %>%
+        dplyr::group_by(data_mutate[[gran1]],
+                        data_mutate[[gran2]]) %>%
+        dplyr::summarize_at(response,
+                            quantile_funs) %>%
         dplyr::rename(
           !!rlang::quo_name(gran1) := `data_mutate[[gran1]]`,
           !!rlang::quo_name(gran2) := `data_mutate[[gran2]]`
@@ -271,9 +281,10 @@ granplot <- function(.data,
       l <- purrr::map(1:(mid_pos - 1), ~ ribbon_function(., ymin, ymax, x, gran1, gran2, group, color_set, alpha))
 
 
-      plot <- eval(sum_expr(l)) + ggplot2::geom_line(aes(
-        x = data_mutate_obj[[!!gran2]], y = data_mutate_obj[[quantile_names[mid_pos]]],
-        group = data_mutate_obj[[!!gran1]]
+      plot <- eval(sum_expr(l)) +
+        ggplot2::geom_line(aes(x = data_mutate_obj[[!!gran2]],
+                               y = data_mutate_obj[[quantile_names[mid_pos]]],
+                               group = data_mutate_obj[[!!gran1]]
       ),
       size = 1
       ) +
@@ -286,9 +297,14 @@ granplot <- function(.data,
 
       data_pcntl <- data_mutate %>%
         tibble::as_tibble() %>%
-        dplyr::group_by(data_mutate[[gran1]], data_mutate[[gran2]]) %>%
-        dplyr::summarize_at(response, quantile_funs) %>%
-        tidyr::gather(quantile, value, -c(`data_mutate[[gran1]]`, `data_mutate[[gran2]]`)) %>%
+        dplyr::group_by(data_mutate[[gran1]],
+                        data_mutate[[gran2]]) %>%
+        dplyr::summarize_at(response,
+                            quantile_funs) %>%
+        tidyr::gather(quantile,
+                      value,
+                      -c(`data_mutate[[gran1]]`,
+                         `data_mutate[[gran2]]`)) %>%
         dplyr::select(
           !!rlang::quo_name(gran1) := `data_mutate[[gran1]]`,
           !!rlang::quo_name(gran2) := `data_mutate[[gran2]]`,
@@ -299,7 +315,10 @@ granplot <- function(.data,
 
 
       plot <- data_pcntl %>%
-        ggplot2::ggplot(aes(x = data_pcntl[[gran2]], y = value, group = as.factor(quantile), color = quantile)) +
+        ggplot2::ggplot(aes(x = data_pcntl[[gran2]],
+                            y = value,
+                            group = as.factor(quantile),
+                            color = quantile)) +
         ggplot2::geom_line() +
         ggplot2::facet_wrap(~ data_pcntl[[gran1]]) +
         ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_pcntl[[gran2]]))))
@@ -308,11 +327,17 @@ granplot <- function(.data,
     plot <- plot +
       ggplot2::ylab(response) +
       ggplot2::xlab(gran2) +
-      ggplot2::ggtitle(paste0(plot_type, " plot across ", gran2, " given ", gran1)) +
+      ggplot2::ggtitle(paste0(plot_type,
+                              " plot across ",
+                              gran2,
+                              " given ",
+                              gran1)) +
       scale_fill_brewer(palette = "Dark2")
 
     if (proxy_homogenous$percentile_nobs_proxy != 0) {
-      warning("Percentile plot not recommended as number of observations too few for one or more combinations")
+      warning("Percentile plot not recommended as
+              number of observations too few for
+              one or more combinations")
     }
   }
   plot + ggplot2::theme(legend.position = "bottom",
