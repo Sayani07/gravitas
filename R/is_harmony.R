@@ -44,7 +44,7 @@ is_harmony <- function(.data, gran1, gran2, hierarchy_tbl= NULL, response = NULL
 
   if(is.null(facet_h))
   {
-    facet_h = 31
+    facet_h <-  31
   }
 
   if (cmbmiss == "TRUE" | nrow(facet_nlevel) > facet_h) {

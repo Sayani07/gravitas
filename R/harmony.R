@@ -21,7 +21,7 @@ harmony <- function(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL, f
 
   if(is.null(facet_h))
   {
-    facet_h = 31
+    facet_h <-  31
   }
   if (length(set1) == 1) {
     stop("Only one granularity ", set1, " can be formed. Function requires checking compatibility for bivariate granularities")
@@ -54,7 +54,7 @@ harmony <- function(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL, f
 
   for (i in seq_len(nrow(set1_merge)))
   {
-    har_data[i] = is_harmony(.data, gran1 = set1_merge$x[i], gran2 = set1_merge$y[i], hierarchy_tbl, facet_h = facet_h)
+    har_data[i] <-  is_harmony(.data, gran1 = set1_merge$x[i], gran2 = set1_merge$y[i], hierarchy_tbl, facet_h = facet_h)
   }
 
 

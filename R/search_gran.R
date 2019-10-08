@@ -26,7 +26,7 @@ search_gran <- function(.data, lowest_unit = NULL, highest_unit = NULL, hierarch
 # if class is timestamp, then use predefined lookup table, have to state hierarchy table for non-temporal data
   if(any(class(x) %in% c("POSIXct", "POSIXt")))
   {
-    hierarchy_tbl = lookup_table
+    hierarchy_tbl <-  lookup_table
   }
   else if(is.null(hierarchy_tbl))
   {
@@ -39,7 +39,7 @@ search_gran <- function(.data, lowest_unit = NULL, highest_unit = NULL, hierarch
 
   # Put the last element of the vector units as the upper most unit desired - default
   if (is.null(highest_unit)) {
-    highest_unit = dplyr::last( hierarchy_tbl$units)
+    highest_unit <-  dplyr::last( hierarchy_tbl$units)
   }
   # check if input for highest and lowest units are in the list of units in hierarchy table
 
@@ -81,7 +81,7 @@ search_gran <- function(.data, lowest_unit = NULL, highest_unit = NULL, hierarch
     }
     else
     {
-      lowest_unit = dplyr::first(units)
+      lowest_unit <-  dplyr::first(units)
     }
   }
 
