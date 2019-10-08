@@ -1,0 +1,49 @@
+context("screening list of harmonies")
+library(tidyverse)
+
+x <- tsibbledata::vic_elec
+
+cricket_tsibble <- cricketdata %>%
+  dplyr::mutate(data_index = row_number()) %>%
+  tsibble::as_tsibble(index = data_index)
+
+hierarchy_model <- tibble::tibble(units = c("index",
+                                            "ball",
+                                            "over",
+                                            "inning",
+                                            "match"),
+                                  convert_fct  = c(1, 6, 20, 2, 1))
+
+# common tests for temporal and non-temporal data
+
+test_that("tsibble input", {
+  expect_is(x, c("tbl_ts", "tbl_df", "tbl",  "data.frame"))
+})
+
+
+test_that("tibble output", {
+  expect_is(x, c("tbl_df", "tbl",  "data.frame"))
+})
+
+
+test_that("harmony error with null input", {
+  expect_error(harmony(), "argument \".data\" is missing, with no default")
+})
+
+test_that("harmony throws error when only one granularity can be formed.", {
+  expect_error(harmony(x, lgran = "hour", ugran = "day"), "Only one granularity hour_day can be formed. Function requires checking compatibility for bivariate granularities")
+})
+
+test_that("harmony throws error when no hierarchy table provided for non-temporal data.", {
+  expect_error(harmony(cricket_tsibble), "Hierarchy table must be provided when class of index of the tsibble is not date-time")
+})
+
+
+test_that("harmony throws error when incorrect lgran provided.", {
+  expect_error(harmony(x, lgran = "hours", ugran = "day"), "lowest unit must be listed as an element in the hierarchy table")
+})
+
+test_that("harmony throws error when incorrect ugran provided.", {
+  expect_error(harmony(x, lgran = "hour", ugran = "daysu"), "highest unit must be listed as an element in the  hierarchy table")
+})
+
