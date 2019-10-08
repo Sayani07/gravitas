@@ -59,6 +59,18 @@ granplot <- function(.data,
                      facet_h = NULL,
                      overlay = TRUE,
                      alpha = 0.8, ...) {
+
+  # data must be tsibble
+  if (!tsibble::is_tsibble(.data)) {
+    stop("must use tsibble")
+  }
+
+
+  if(is.null(gran1)|is.null(gran2))
+  {
+    stop("Specify the granularities that are to be plotted")
+  }
+
   if (is.null(facet_h)) {
     facet_h <- 31
   }
