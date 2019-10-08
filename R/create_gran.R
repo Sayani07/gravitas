@@ -20,6 +20,21 @@
 #' @export
 create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, label = TRUE, abbr = TRUE, ...) {
 
+# data must be tsibble
+  if (!tsibble::is_tsibble(.data)) {
+    stop("must use tsibble")
+  }
+
+
+# gran1 must be provided
+
+
+  if(is.null(gran1))
+  {
+    stop("Provide the granularity that needs to be computed")
+  }
+
+
   # column treated as granularities
   events <- match(gran1, names(.data))
   if(!is.na(events))
@@ -49,9 +64,23 @@ create_gran <- function(.data, gran1 = NULL,  hierarchy_tbl = NULL, label = TRUE
     {
       stop("Hierarchy table must be provided when class of index of the tsibble is not date-time")
     }
+
+    units <- hierarchy_tbl$units
+    convert_fct <- hierarchy_tbl$convert_fct
+
+
      gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
      lgran <- gran1_split[1]
      ugran <- gran1_split[2]
+
+     if (!(lgran %in% units))
+     {
+     stop("lower part of granularity must be listed as an element in the hierarchy table")
+     }
+     if (!(ugran %in% units))
+     {
+       stop("upper part of granularity must be listed as an element in the hierarchy table")
+     }
 
      data_mutate <- .data %>% dplyr::mutate(L1 = dynamic_build_gran(x,  lgran, ugran, hierarchy_tbl, ...))
 

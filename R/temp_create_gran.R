@@ -51,6 +51,17 @@ temp_create_gran <- function(.data, gran1 = NULL,  label = TRUE, abbr = TRUE, ..
   ugran <- gran1_split[2]
 
 
+
+  if (!(lgran %in% lookup_table$units))
+  {
+    stop("lower part of granularity must be listed as an element in the hierarchy table")
+  }
+  if (!(ugran %in% lookup_table$units))
+  {
+    stop("upper part of granularity must be listed as an element in the hierarchy table")
+  }
+
+
   data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, ...))
 
 
