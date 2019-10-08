@@ -16,3 +16,4 @@
 ^inst/extdata$
 ^data/cricketdata$
 ^docs$
+^tic\.R$
