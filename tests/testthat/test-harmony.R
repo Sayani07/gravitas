@@ -1,5 +1,4 @@
 context("screening list of harmonies")
-library(tidyverse)
 
 x <- tsibbledata::vic_elec
 

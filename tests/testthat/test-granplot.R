@@ -1,5 +1,4 @@
 context("creates plot")
-library(tidyverse)
 
 x <- tsibbledata::vic_elec
 

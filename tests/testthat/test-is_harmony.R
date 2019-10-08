@@ -1,5 +1,4 @@
 context("check if two granularities are harmonies")
-library(tidyverse)
 
 x <- tsibbledata::vic_elec
 

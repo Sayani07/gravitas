@@ -1,5 +1,4 @@
 context("create granularities")
-library(tidyverse)
 
 x <- tsibbledata::vic_elec
 
