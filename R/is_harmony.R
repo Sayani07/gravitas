@@ -17,6 +17,13 @@
 
 is_harmony <- function(.data, gran1, gran2, hierarchy_tbl= NULL, response = NULL, facet_h = NULL, ...) {
 
+  # data must be tsibble
+  if (!tsibble::is_tsibble(.data)) {
+    stop("must use tsibble")
+  }
+
+
+
   if(gran1==gran2)
   {
     warning("the two granularities should be distinct")

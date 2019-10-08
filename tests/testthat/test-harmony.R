@@ -22,7 +22,7 @@ test_that("tsibble input", {
 
 
 test_that("tibble output", {
-  expect_is(x, c("tbl_df", "tbl",  "data.frame"))
+  expect_is(harmony(x, lgran  = "hour", ugran  = "week"), c("tbl_df", "tbl",  "data.frame"))
 })
 
 
