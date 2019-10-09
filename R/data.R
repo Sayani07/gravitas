@@ -1,4 +1,4 @@
-#' Smart meter data for an household
+#' Smart meter data for a household
 #'
 #' Customer Trial data conducted as part of
 #' Smart Grid Smart City (SGSC) project
