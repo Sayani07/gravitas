@@ -2,7 +2,7 @@ Package: gravitas
 Type: Package
 Title: Granularity visualisation of temporal and spatial data
 Version: 0.0.0.9000
-Author: 
+Authors@R: 
     c(person(given = "Sayani",
              family = "Gupta",
              role = c("aut", "cre"),
@@ -49,6 +49,7 @@ Description: Functions for algebraic manipulation of date-time objects. It compl
   of the day, that combines two or more level up components of date-time data.  
 BugReports: https://github.com/Sayani07/gravitas/issues
 License: GPL-3
+URL: https://github.com/Sayani07/gravitas
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
