@@ -18,6 +18,10 @@ knitr::opts_chunk$set(
 
 [![Travis-CI Build Status](https://travis-ci.org/Sayani07/gravitas.svg?branch=master)](https://travis-ci.org/Sayani07/gravitas)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/Sayani07/gravitas?branch=master&svg=true)](https://ci.appveyor.com/project/Sayani07/gravitas)
+[![Codecov test coverage](https://codecov.io/gh/Sayani07/gravitas/branch/master/graph/badge.svg)](https://codecov.io/gh/Sayani07/gravitas?branch=master)
+
+
+
 <!-- badges: end -->
 
 The package **gravitas** provides a tool to examine the probability distribution of univariate time series across bivariate temporal granularities using range of graphics in `ggplot2` through the following:  
