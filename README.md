@@ -7,6 +7,8 @@
 
 [![Travis-CI Build
 Status](https://travis-ci.org/Sayani07/gravitas.svg?branch=master)](https://travis-ci.org/Sayani07/gravitas)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/Sayani07/gravitas?branch=master&svg=true)](https://ci.appveyor.com/project/Sayani07/gravitas)
 <!-- badges: end -->
 
 The package **gravitas** provides a tool to examine the probability
@@ -78,7 +80,6 @@ View the vignette to get started\!
 ``` r
 library("gravitas")
 #vignette("gravitas_vignette")
-download.file("https://raw.githubusercontent.com/Sayani07/gravitas/master/vignettes/gravitas_vignette.html", destfile = "gravitas_vignette.html")
 ```
 
 You can force building the vignettes with
