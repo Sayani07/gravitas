@@ -3,7 +3,6 @@
 #' @param .data a tsibble
 #' @param gran1,gran2 granularities
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
-#' @param response response variable to be plotted
 #' @param ... other arguments to be passed for appropriate labels
 #' @return a list of summary check points before visualizing distribution across bivariate granularities
 #
@@ -11,46 +10,37 @@
 #' library(gravitas)
 #' library(tsibbledata)
 #' library(tsibble)
-#' vic_elec %>% gran_advice(.data, gran1="hour_week",
-#' gran2 = "day_month")
+#' vic_elec %>% gran_advice(.data,
+#'   gran1 = "hour_day",
+#'   gran2 = "day_month"
+#' )
 #' @export
 gran_advice <- function(.data,
                         gran1,
                         gran2,
                         hierarchy_tbl = NULL,
-                        response = NULL, ...) {
+                        ...) {
 
   # checking if input data is tsibble
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
   # checking if input data is harmony
-  harmony <- is_harmony(.data,
+  harmony <- is_harmony(
+    .data,
     gran1,
     gran2,
-    hierarchy_tbl,
-    response, ...
+    hierarchy_tbl
   )
 
 
-  homogenous <- is_homogenous(.data,
+  homogenous <- is_homogenous(
+    .data,
     gran1,
     gran2,
-    hierarchy_tbl,
-    response, ...
+    hierarchy_tbl
   )
 
-
-
-  # if( c("percentile" %in% plots_list & proxy_homogenous$percentile_nobs_proxy !=0))
-  # {
-  #   plots_list <- plots_list[-which(plots_list=="percentile")]
-  # }
-  #
-  # if( c("decile" %in% plots_list & proxy_homogenous$decile_nobs_proxy !=0))
-  # {
-  #   plots_list <- plots_list[-which(plots_list=="decile")]
-  # }
 
   plot_choices <- plot_choices(.data,
     gran1,
@@ -66,7 +56,8 @@ gran_advice <- function(.data,
   )
 
 
-  gran_obs <- gran_obs(.data,
+  gran_obs <- gran_obs(
+    .data,
     gran1,
     gran2,
     hierarchy_tbl,
@@ -84,21 +75,19 @@ gran_warn <- function(.data,
                       gran1,
                       gran2,
                       hierarchy_tbl = NULL,
-                      response = NULL,
                       facet_h = NULL, ...) {
-
-  gran_advice <- gran_advice(.data,
+  gran_advice <- gran_advice(
+    .data,
     gran1,
     gran2,
-    hierarchy_tbl,
-    response, ...
+    hierarchy_tbl
   )
 
-  gran_tbl <- gran_tbl(.data,
+  gran_tbl <- gran_tbl(
+    .data,
     gran1,
     gran2,
-    hierarchy_tbl,
-    response, ...
+    hierarchy_tbl
   )
 
   gran1_level <- gran_tbl %>%
@@ -169,20 +158,17 @@ plot_choices <- function(.data,
                          gran1,
                          gran2,
                          hierarchy_tbl = NULL,
-                         response = NULL,
                          facet_h = 31,
                          facet_m = 14,
                          facet_l = 7,
                          x_h = 31,
                          x_m = 14,
-                         x_l = 7,
-                         ...) {
+                         x_l = 7) {
   data_count <- gran_tbl(
     .data,
     gran1,
     gran2,
-    hierarchy_tbl,
-    response, ...
+    hierarchy_tbl
   )
 
 
@@ -212,24 +198,24 @@ plot_choices <- function(.data,
   }
 
   if (dplyr::between(gran1_level, facet_m, facet_h) &
-      gran2_level > x_h) # (high, very high)
+    gran2_level > x_h) # (high, very high)
   {
-    plots_list <-  c("quantile")
+    plots_list <- c("quantile")
   }
 
   else if (dplyr::between(gran1_level, facet_m, facet_h) &
-           dplyr::between(gran2_level, x_m, x_h)) # (high, high)
+    dplyr::between(gran2_level, x_m, x_h)) # (high, high)
   {
-    plots_list <-  c("quantile")
+    plots_list <- c("quantile")
   }
 
   else if (dplyr::between(gran1_level, facet_m, facet_h) &
-           dplyr::between(gran2_level, x_l, x_m)) # (high, medium)
+    dplyr::between(gran2_level, x_l, x_m)) # (high, medium)
   {
-    plots_list <-c("quantile")
-   }
+    plots_list <- c("quantile")
+  }
   else if (dplyr::between(gran1_level, facet_m, facet_h) &
-           gran2_level < x_l) # (high, low)
+    gran2_level < x_l) # (high, low)
   {
     plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
   }
@@ -296,11 +282,7 @@ plot_choices <- function(.data,
 is_homogenous <- function(.data,
                           gran1,
                           gran2,
-                          hierarchy_tbl = NULL,
-                          response = NULL, ...) {
-  if (!tsibble::is_tsibble(.data)) {
-    stop("must use tsibble")
-  }
+                          hierarchy_tbl = NULL) {
 
   # inter facet homogeneity
 
@@ -308,8 +290,7 @@ is_homogenous <- function(.data,
     .data,
     gran1,
     gran2,
-    hierarchy_tbl,
-    response, ...
+    hierarchy_tbl
   )
 
   inter_facet_homogeneity <- data_count %>%
@@ -328,17 +309,15 @@ is_homogenous <- function(.data,
     dplyr::summarise(sum = sum(dplyr::if_else(min_c == max_c, 0, 1))) %>%
     dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
 
-  # decile_nobs <- sum(dplyr::if_else(data_count$nobs < 30, 1, 0))
-  # percentile_nobs <- sum(dplyr::if_else(data_count$nobs < 100, 1, 0))
 
-  value_r <- tibble(inter_facet = inter_facet_homogeneity$value, intra_facet = intra_facet_homogeneity$value) # decile_nobs_proxy = decile_nobs, percentile_nobs_proxy = percentile_nobs)
+  value_r <- tibble(inter_facet = inter_facet_homogeneity$value, intra_facet = intra_facet_homogeneity$value)
 
   value_r
 }
 
-##----gran_tbl
+## ----gran_tbl
 
-gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL, ...) {
+gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
@@ -352,29 +331,24 @@ gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL,
     var2 <- gran2
   }
 
-
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]
 
-  # gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
-  # gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
-  # var1 <- gran1_split[1]
-  # var2 <- gran1_split[2]
-  # var3 <- gran2_split[1]
-  # var4 <- gran2_split[2]
-  # parse(paste(var1, var2, sep  = "_"))
-  # L1 = parse(text = paste(var1, var2, sep  = "_"))
 
-  # data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(ind, var1, var2), L2 = build_gran(ind, var3, var4))
-
-  data_mutate <- .data %>% create_gran(gran1, hierarchy_tbl) %>% create_gran(gran2, hierarchy_tbl)
+  data_mutate <- .data %>%
+    create_gran(gran1, hierarchy_tbl) %>%
+    create_gran(gran2, hierarchy_tbl)
 
   # All possible combinations that are possible
-  Allcomb <- data_mutate %>% tidyr::expand(.data[[gran1]], .data[[gran2]])
+  Allcomb <- data_mutate %>%
+    tidyr::expand(.data[[gran1]], .data[[gran2]])
 
 
-  combexist <- data_mutate %>% tibble::as_tibble(name_repair = "minimal") %>% dplyr::group_by(.data[[gran1]], .data[[gran2]]) %>% dplyr::summarise(
-    count = dplyr::n()
-  )
+  combexist <- data_mutate %>%
+    tibble::as_tibble(name_repair = "minimal") %>%
+    dplyr::group_by(.data[[gran1]], .data[[gran2]]) %>%
+    dplyr::summarise(
+      count = dplyr::n()
+    )
 
   output <- Allcomb %>%
     dplyr::left_join(combexist, by = c(gran1, gran2)) %>%
@@ -385,14 +359,34 @@ gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL,
     dplyr::mutate(nobs = tidyr::replace_na(nobs, 0))
 
 
-
-  # if(nrow(cmbmiss) != 0)
-  # {
-  #  return_output <- FALSE
-  # }
-  # else{return_output = output
-  #   }
   return(output)
 }
+##----gran_obs
 
 
+
+#' Cross tabulation of granularities
+#' useful for validating if number of observations are sufficient to compute probability distributions
+#'
+#' @param .data A tsibble object.
+#' @param gran1 One of the temporal granularities to check for harmonies.
+#' @param gran2 The second temporal granularity in the pair.
+#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
+#' @param ... Added arguments to be passed
+#' @return TRUE if two granularties are harmonies.
+#' @examples
+#' library(dplyr)
+#' library(tsibbledata)
+#' library(ggplot2)
+#' vic_elec %>% gran_obs("hour_day", "day_week")
+#' @export gran_obs
+
+
+
+gran_obs <- function(.data, gran1, gran2, hierarchy_tbl = NULL) {
+  gran_tbl(.data, gran1, gran2, hierarchy_tbl) %>%
+    tidyr::spread(
+      key = !!gran1,
+      value = nobs
+    )
+}
