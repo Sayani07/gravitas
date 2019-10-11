@@ -3,7 +3,7 @@
 \docType{data}
 \name{sm_cust1}
 \alias{sm_cust1}
-\title{Smart meter data for an household}
+\title{Smart meter data for a household}
 \format{A tsibble with 3 variables
 \describe{
   \item{customer_id}{household ID}

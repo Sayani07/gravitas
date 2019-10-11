@@ -6,22 +6,26 @@ cricket_tsibble <- cricketdata %>%
   dplyr::mutate(data_index = row_number()) %>%
   tsibble::as_tsibble(index = data_index)
 
-hierarchy_model <- tibble::tibble(units = c("index",
-                                            "ball",
-                                            "over",
-                                            "inning",
-                                            "match"),
-                                  convert_fct  = c(1, 6, 20, 2, 1))
+hierarchy_model <- tibble::tibble(
+  units = c(
+    "index",
+    "ball",
+    "over",
+    "inning",
+    "match"
+  ),
+  convert_fct = c(1, 6, 20, 2, 1)
+)
 
 # common tests for temporal and non-temporal data
 
 test_that("tsibble input", {
-  expect_is(x, c("tbl_ts", "tbl_df", "tbl",  "data.frame"))
+  expect_is(x, c("tbl_ts", "tbl_df", "tbl", "data.frame"))
 })
 
 
 test_that("tibble output", {
-  expect_is(harmony(x, lgran  = "hour", ugran  = "week"), c("tbl_df", "tbl",  "data.frame"))
+  expect_is(harmony(x, lgran = "hour", ugran = "week"), c("tbl_df", "tbl", "data.frame"))
 })
 
 
@@ -45,4 +49,3 @@ test_that("harmony throws error when incorrect lgran provided.", {
 test_that("harmony throws error when incorrect ugran provided.", {
   expect_error(harmony(x, lgran = "hour", ugran = "daysu"), "highest unit must be listed as an element in the  hierarchy table")
 })
-

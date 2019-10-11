@@ -28,4 +28,3 @@
 #'
 #' @usage data(cricketdata)
 "cricketdata"
-

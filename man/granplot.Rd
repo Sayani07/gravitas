@@ -33,20 +33,15 @@ granplot(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL,
 }
 \value{
 a ggplot object
-}
-\description{
-Plot probability distribution of univariate series across bivariate temporal granularities
-}
-\examples{
 library(gravitas)
 library(tsibbledata)
 library(dplyr)
 library(tsibble)
 library(ggplot2)
-vic_elec \%>\% granplot("hour_day", "day_week", response = "Demand", plot_type = "boxplot")
+vic_elec %>% granplot("hour_day", "day_week", response = "Demand", plot_type = "boxplot")
 
-cricket_tsibble <- cricketdata \%>\%
-  mutate(data_index = row_number()) \%>\%
+cricket_tsibble <- cricketdata %>%
+  mutate(data_index = row_number()) %>%
   as_tsibble(index = data_index)
 
 hierarchy_model <- tibble::tibble(
@@ -54,12 +49,13 @@ hierarchy_model <- tibble::tibble(
   convert_fct = c(1, 6, 20, 2, 1)
 )
 
-cricket_tsibble \%>\%
+cricket_tsibble %>%
   granplot("inning_match", "ball_inning",
     hierarchy_model,
     response = "total_runs",
     plot_type = "quantile",
-    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
+    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+  )
 
 
 granplot(
@@ -71,4 +67,7 @@ granplot(
   quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99),
   overlay = FALSE
 )
+}
+\description{
+Plot probability distribution of univariate series across bivariate temporal granularities
 }

@@ -31,5 +31,5 @@ Get set of possible temporal granularities for a given tsibble
 \examples{
 library(dplyr)
 library(tsibbledata)
-vic_elec \%>\% search_gran(lowest_unit = "hour", highest_unit =  "month")
+vic_elec \%>\% search_gran(lowest_unit = "hour", highest_unit = "month")
 }

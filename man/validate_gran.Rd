@@ -28,16 +28,22 @@ Validate created granularities with existing columns
 library(dplyr)
 library(tsibble)
 cricket_tsibble <- cricketdata \%>\%
-mutate(data_index = row_number()) \%>\%
-as_tsibble(index = data_index)
+  mutate(data_index = row_number()) \%>\%
+  as_tsibble(index = data_index)
 
-hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"),
-convert_fct  = c(1, 6, 20, 2, 1))
+hierarchy_model <- tibble::tibble(
+  units = c("index", "ball", "over", "inning", "match"),
+  convert_fct = c(1, 6, 20, 2, 1)
+)
 
-cricket_tsibble \%>\% validate_gran(gran = "ball_over",
-hierarchy_tbl = hierarchy_model,
-validate_col = "ball")
-cricket_tsibble \%>\% validate_gran(gran = "over_inning",
- hierarchy_tbl = hierarchy_model,
-  validate_col = "over")
+cricket_tsibble \%>\% validate_gran(
+  gran = "ball_over",
+  hierarchy_tbl = hierarchy_model,
+  validate_col = "ball"
+)
+cricket_tsibble \%>\% validate_gran(
+  gran = "over_inning",
+  hierarchy_tbl = hierarchy_model,
+  validate_col = "over"
+)
 }

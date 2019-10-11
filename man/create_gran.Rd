@@ -30,9 +30,11 @@ Build dynamic temporal granularities
 library(dplyr)
 library(tsibble)
 cricket_tsibble <- cricketdata \%>\%
-mutate(data_index = row_number()) \%>\%
-as_tsibble(index = data_index)
-hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"),
-convert_fct  = c(1, 6, 20, 2, 1))
+  mutate(data_index = row_number()) \%>\%
+  as_tsibble(index = data_index)
+hierarchy_model <- tibble::tibble(
+  units = c("index", "ball", "over", "inning", "match"),
+  convert_fct = c(1, 6, 20, 2, 1)
+)
 cricket_tsibble \%>\% create_gran("ball_over", hierarchy_model)
 }

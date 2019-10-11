@@ -1,7 +1,7 @@
 library(readr)
 library(tsibble)
 library(dplyr)
-#cricket_data <-  read_csv("data/cricket.csv")
+# cricket_data <-  read_csv("data/cricket.csv")
 
 # with key tsibble
 cricket <- cricket_data %>%
@@ -12,5 +12,5 @@ cricket <- cricket_data %>%
 save(cricket, file = "data/cricket.RData")
 
 
-hierarchy <- tibble(units = c("ball", "over", "quarter", "semester", "match"), convert_fct  = c(NA, 5, 2, 2, 1))
+hierarchy <- tibble(units = c("ball", "over", "quarter", "semester", "match"), convert_fct = c(NA, 5, 2, 2, 1))
 hierarchy

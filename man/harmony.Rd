@@ -33,4 +33,5 @@ Get possible set of harmonies for a given tsibble
 \examples{
 library(dplyr)
 library(tsibbledata)
+# tsibbledata::vic_elec \%>\% harmony(lgran = "hour", ugran = "week")
 }

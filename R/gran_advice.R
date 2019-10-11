@@ -1,13 +1,23 @@
+#' Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity
 
-
-## ----gran_advice
-
-# advise function for which plots to choose depending on levels of facets and x-axis
-# gran_advice(.data, gran1="hour_week", gran2 = "day_month")
+#' @param .data a tsibble
+#' @param gran1,gran2 granularities
+#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
+#' @param response response variable to be plotted
+#' @param ... other arguments to be passed for appropriate labels
+#' @return a list of summary check points before visualizing distribution across bivariate granularities
+#
+#' @examples
+#' library(gravitas)
+#' library(tsibbledata)
+#' library(tsibble)
+#' vic_elec %>% gran_advice(.data, gran1="hour_week",
+#' gran2 = "day_month")
+#' @export
 gran_advice <- function(.data,
                         gran1,
                         gran2,
-                        hierarchy_tbl,
+                        hierarchy_tbl = NULL,
                         response = NULL, ...) {
 
   # checking if input data is tsibble
@@ -19,7 +29,7 @@ gran_advice <- function(.data,
     gran1,
     gran2,
     hierarchy_tbl,
-    response = NULL, ...
+    response, ...
   )
 
 
@@ -27,7 +37,7 @@ gran_advice <- function(.data,
     gran1,
     gran2,
     hierarchy_tbl,
-    response = NULL, ...
+    response, ...
   )
 
 
@@ -59,7 +69,7 @@ gran_advice <- function(.data,
   gran_obs <- gran_obs(.data,
     gran1,
     gran2,
-    hierarchy_tbl = NULL,
+    hierarchy_tbl,
     ...
   )
 
@@ -73,21 +83,22 @@ gran_advice <- function(.data,
 gran_warn <- function(.data,
                       gran1,
                       gran2,
-                      hierarchy_tbl,
+                      hierarchy_tbl = NULL,
                       response = NULL,
                       facet_h = NULL, ...) {
+
   gran_advice <- gran_advice(.data,
     gran1,
     gran2,
     hierarchy_tbl,
-    response = NULL, ...
+    response, ...
   )
 
   gran_tbl <- gran_tbl(.data,
     gran1,
     gran2,
     hierarchy_tbl,
-    response = NULL, ...
+    response, ...
   )
 
   gran1_level <- gran_tbl %>%
@@ -157,7 +168,8 @@ gran_warn <- function(.data,
 plot_choices <- function(.data,
                          gran1,
                          gran2,
-                         hierarchy_tbl,
+                         hierarchy_tbl = NULL,
+                         response = NULL,
                          facet_h = 31,
                          facet_m = 14,
                          facet_l = 7,
@@ -189,7 +201,6 @@ plot_choices <- function(.data,
   ## except when the number of levels across x-axis is low
   ## only quantile plots are suggested
 
-  browser()
 
   if (gran1_level > facet_h) {
     if (gran2_level < x_l) {
@@ -200,7 +211,6 @@ plot_choices <- function(.data,
     }
   }
 
-  }
   if (dplyr::between(gran1_level, facet_m, facet_h) &
       gran2_level > x_h) # (high, very high)
   {
@@ -217,7 +227,7 @@ plot_choices <- function(.data,
            dplyr::between(gran2_level, x_l, x_m)) # (high, medium)
   {
     plots_list <-c("quantile")
-  # }
+   }
   else if (dplyr::between(gran1_level, facet_m, facet_h) &
            gran2_level < x_l) # (high, low)
   {
@@ -325,3 +335,64 @@ is_homogenous <- function(.data,
 
   value_r
 }
+
+##----gran_tbl
+
+gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL, ...) {
+  if (!tsibble::is_tsibble(.data)) {
+    stop("must use tsibble")
+  }
+  match_gran1 <- match(gran1, names(.data))
+  match_gran2 <- match(gran2, names(.data))
+
+  if (!is.null(match_gran1)) {
+    var1 <- gran1
+  }
+  if (!is.null(match_gran2)) {
+    var2 <- gran2
+  }
+
+
+  ind <- .data[[rlang::as_string(tsibble::index(.data))]]
+
+  # gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
+  # gran2_split <- stringr::str_split(gran2, "_", 2) %>% unlist()
+  # var1 <- gran1_split[1]
+  # var2 <- gran1_split[2]
+  # var3 <- gran2_split[1]
+  # var4 <- gran2_split[2]
+  # parse(paste(var1, var2, sep  = "_"))
+  # L1 = parse(text = paste(var1, var2, sep  = "_"))
+
+  # data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(ind, var1, var2), L2 = build_gran(ind, var3, var4))
+
+  data_mutate <- .data %>% create_gran(gran1, hierarchy_tbl) %>% create_gran(gran2, hierarchy_tbl)
+
+  # All possible combinations that are possible
+  Allcomb <- data_mutate %>% tidyr::expand(.data[[gran1]], .data[[gran2]])
+
+
+  combexist <- data_mutate %>% tibble::as_tibble(name_repair = "minimal") %>% dplyr::group_by(.data[[gran1]], .data[[gran2]]) %>% dplyr::summarise(
+    count = dplyr::n()
+  )
+
+  output <- Allcomb %>%
+    dplyr::left_join(combexist, by = c(gran1, gran2)) %>%
+    dplyr::select(
+      gran1, gran2,
+      nobs := count
+    ) %>%
+    dplyr::mutate(nobs = tidyr::replace_na(nobs, 0))
+
+
+
+  # if(nrow(cmbmiss) != 0)
+  # {
+  #  return_output <- FALSE
+  # }
+  # else{return_output = output
+  #   }
+  return(output)
+}
+
+
