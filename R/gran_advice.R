@@ -21,10 +21,16 @@ gran_advice <- function(.data,
                         hierarchy_tbl = NULL,
                         ...) {
 
-  # checking if input data is tsibble
+  # data must be tsibble
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
+
+
+  if (is.null(gran1) | is.null(gran2)) {
+    stop("Specify the granularities that are to be plotted")
+  }
+
   # checking if input data is harmony
   harmony <- is_harmony(
     .data,
