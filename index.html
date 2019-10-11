@@ -61,7 +61,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/Sayani07/gravitas">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -78,6 +85,7 @@
 <a href="#gravitas" class="anchor"></a>gravitas</h1></div>
 <!-- badges: start -->
 
+<!-- badges: end -->
 <p>The package <strong>gravitas</strong> provides a tool to examine the probability distribution of univariate time series across bivariate temporal granularities using range of graphics in <code>ggplot2</code> through the following:</p>
 <ul>
 <li><p>create multiple-order-up circular or aperiodic temporal granularities.</p></li>
@@ -115,7 +123,7 @@
 <li><p>Check if two temporal granularities are harmonies with <code>is.harmony()</code></p></li>
 <li><p>Get all possible harmonies with <code><a href="reference/harmony.html">harmony()</a></code></p></li>
 <li>
-<p>Explore probability distribution across bivariate temporal granularities with <code><a href="reference/granplot.html">granplot()</a></code></p>
+<p>Explore probability distribution across bivariate temporal granularities with <code>granplot()</code></p>
 <ul>
 <li>Get recommendations on choosing more appropriate distribution plots</li>
 </ul>
@@ -127,8 +135,7 @@
 <a href="#more-information" class="anchor"></a>More information</h2>
 <p>View the vignette to get started!</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"gravitas"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#vignette("gravitas_vignette")</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(<span class="st">"https://raw.githubusercontent.com/Sayani07/gravitas/master/vignettes/gravitas_vignette.html"</span>, <span class="dt">destfile =</span> <span class="st">"gravitas_vignette.html"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#vignette("gravitas_vignette")</span></a></code></pre></div>
 <p>You can force building the vignettes with</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">#devtools::install_github("Sayani07/gravitas", build_vignettes = TRUE)</span></a></code></pre></div>
 <p>This package takes tsibble as the data input. Tsibble provides a data class of tbl_ts to represent tidy temporal data. It consists of a time index, key and other measured variables in a data-centric format, which makes it easier to work with temporal data. To learn more about it, please visit <a href="https://tsibble.tidyverts.org/" class="uri">https://tsibble.tidyverts.org/</a></p>
@@ -145,6 +152,8 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Browse source code at <br><a href="https://github.com/Sayani07/gravitas">https://​github.com/​Sayani07/​gravitas</a>
+</li>
 <li>Report a bug at <br><a href="https://github.com/Sayani07/gravitas/issues">https://​github.com/​Sayani07/​gravitas/​issues</a>
 </li>
 </ul>
@@ -158,7 +167,9 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Sayani Gupta <br><small class="roles"> Maintainer </small>  </li>
+<li>Sayani Gupta <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-0643-5358" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
+<li>Rob Hyndman <br><small class="roles"> Author, thesis advisor </small> <a href="https://orcid.org/0000-0002-2140-5352" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
+<li>Di Cook <br><small class="roles"> Author, thesis advisor </small> <a href="https://orcid.org/0000-0002-3813-7155" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
 </ul>
 </div>
 
@@ -166,6 +177,8 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/Sayani07/gravitas"><img src="https://travis-ci.org/Sayani07/gravitas.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://ci.appveyor.com/project/Sayani07/gravitas"><img src="https://ci.appveyor.com/api/projects/status/github/Sayani07/gravitas?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
+<li><a href="https://codecov.io/gh/Sayani07/gravitas?branch=master"><img src="https://codecov.io/gh/Sayani07/gravitas/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 </div>
@@ -173,7 +186,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Sayani Gupta.</p>
+  <p>Developed by Sayani Gupta, Rob Hyndman, Di Cook.</p>
 </div>
 
 <div class="pkgdown">

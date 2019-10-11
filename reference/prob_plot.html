@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot probability distribution of univariate series across bivariate temporal granularities — granplot • gravitas</title>
+<title>Plot probability distribution of univariate series across bivariate temporal granularities — prob_plot • gravitas</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,7 @@
 
 
 
-<meta property="og:title" content="Plot probability distribution of univariate series across bivariate temporal granularities — granplot" />
+<meta property="og:title" content="Plot probability distribution of univariate series across bivariate temporal granularities — prob_plot" />
 <meta property="og:description" content="Plot probability distribution of univariate series across bivariate temporal granularities" />
 <meta name="twitter:card" content="summary" />
 
@@ -98,7 +98,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/Sayani07/gravitas">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -113,17 +118,18 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot probability distribution of univariate series across bivariate temporal granularities</h1>
-    
-    <div class="hidden name"><code>granplot.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/prob_plot.R'><code>R/prob_plot.R</code></a></small>
+    <div class="hidden name"><code>prob_plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Plot probability distribution of univariate series across bivariate temporal granularities</p>
     </div>
 
-    <pre class="usage"><span class='fu'>granplot</span>(<span class='no'>.data</span>, <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>,
-  <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>), <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>overlay</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>prob_plot</span>(<span class='no'>.data</span>, <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.1</span>,
+  <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>, <span class='fl'>0.99</span>), <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>symmetric</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,8 +167,8 @@
       <td><p>levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities</p></td>
     </tr>
     <tr>
-      <th>overlay</th>
-      <td><p>If FALSE, only lines are drawn for quantiles. If TRUE, area is drawn instead of lines</p></td>
+      <th>symmetric</th>
+      <td><p>If TRUE, symmetic quantile area plot is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd. Ideally, the quantile_prob should be a symmetric vector with median at the middle position.</p></td>
     </tr>
     <tr>
       <th>alpha</th>
@@ -184,7 +190,14 @@
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span> <span class='fu'>granplot</span>(<span class='st'>"hour_day"</span>, <span class='st'>"day_week"</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"Demand"</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"boxplot"</span>)</div><div class='img'><img src='granplot-1.png' alt='' width='700' height='433' /></div><div class='input'>
+
+ <span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span> <span class='fu'>prob_plot</span>(<span class='kw'>gran1</span><span class='kw'>=</span> <span class='st'>"hour_day"</span>,<span class='kw'>gran2</span> <span class='kw'>=</span>  <span class='st'>"day_week"</span>,
+ <span class='kw'>response</span> <span class='kw'>=</span>  <span class='st'>"Demand"</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"quantile"</span>,
+ <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>,<span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>),
+ <span class='kw'>symmetric</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>outlier.colour</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>outlier.shape</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Dark2"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Number of observations for few combinations of</span>
+#&gt; <span class='warning'>     granularities vary within or across facets.</span>
+#&gt; <span class='warning'>     Use gran_obs() to find combinations which have low</span>
+#&gt; <span class='warning'>            observations or very different number of observations.</span></div><div class='img'><img src='prob_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>cricket_tsibble</span> <span class='kw'>&lt;-</span> <span class='no'>cricketdata</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>data_index</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span>()) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>data_index</span>)
@@ -195,21 +208,12 @@
 )
 
 <span class='no'>cricket_tsibble</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>granplot</span>(<span class='st'>"inning_match"</span>, <span class='st'>"ball_inning"</span>,
-    <span class='no'>hierarchy_model</span>,
-    <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"total_runs"</span>,
-    <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"quantile"</span>,
-    <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>))</div><div class='img'><img src='granplot-2.png' alt='' width='700' height='433' /></div><div class='input'>
-
-<span class='fu'>granplot</span>(
-  <span class='kw'>.data</span> <span class='kw'>=</span> <span class='kw pkg'>tsibbledata</span><span class='kw ns'>::</span><span class='no'><a href='https://tsibbledata.tidyverts.org/reference/vic_elec.html'>vic_elec</a></span>,
-  <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"day_week"</span>,
-  <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"Demand"</span>,
-  <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"quantile"</span>,
-  <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>, <span class='fl'>0.99</span>),
-  <span class='kw'>overlay</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</div><div class='img'><img src='granplot-3.png' alt='' width='700' height='433' /></div></pre>
+ <span class='fu'>prob_plot</span>(<span class='st'>"inning_match"</span>, <span class='st'>"over_inning"</span>,
+           <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='no'>hierarchy_model</span>,
+           <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"total_runs"</span>,
+           <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"lv"</span>,
+           <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>), <span class='kw'>symmetric</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+ )</div><div class='img'><img src='prob_plot-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -225,7 +229,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Sayani Gupta.</p>
+  <p>Developed by Sayani Gupta, Rob Hyndman, Di Cook.</p>
 </div>
 
 <div class="pkgdown">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get possible set of harmonies for a given tsibble — harmony • gravitas</title>
+<title>Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity — gran_advice • gravitas</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Get possible set of harmonies for a given tsibble — harmony" />
-<meta property="og:description" content="Get possible set of harmonies for a given tsibble" />
+<meta property="og:title" content="Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity — gran_advice" />
+<meta property="og:description" content="Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -117,63 +117,79 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get possible set of harmonies for a given tsibble</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/harmony.R'><code>R/harmony.R</code></a></small>
-    <div class="hidden name"><code>harmony.Rd</code></div>
+    <h1>Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/gran_advice.R'><code>R/gran_advice.R</code></a></small>
+    <div class="hidden name"><code>gran_advice.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Get possible set of harmonies for a given tsibble</p>
+    <p>Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity</p>
     </div>
 
-    <pre class="usage"><span class='fu'>harmony</span>(<span class='no'>.data</span>, <span class='kw'>ugran</span> <span class='kw'>=</span> <span class='st'>"year"</span>, <span class='kw'>lgran</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>filter_in</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>filter_out</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>gran_advice</span>(<span class='no'>.data</span>, <span class='no'>gran1</span>, <span class='no'>gran2</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.data</th>
-      <td><p>A tsibble object.</p></td>
+      <td><p>a tsibble</p></td>
     </tr>
     <tr>
-      <th>ugran</th>
-      <td><p>Typically set as the most coarse unit required in the analysis. Default is "year".</p></td>
-    </tr>
-    <tr>
-      <th>lgran</th>
-      <td><p>For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals. Typically serves as the finest unit required for analysis.</p></td>
+      <th>gran1, gran2</th>
+      <td><p>granularities</p></td>
     </tr>
     <tr>
       <th>hierarchy_tbl</th>
       <td><p>A hierarchy table specifying the hierarchy of units and their relationships</p></td>
     </tr>
     <tr>
-      <th>filter_in</th>
-      <td><p>Choices of temporal units to be kept.</p></td>
-    </tr>
-    <tr>
-      <th>filter_out</th>
-      <td><p>Choices of temporal units to be discarded.</p></td>
-    </tr>
-    <tr>
-      <th>facet_h</th>
-      <td><p>highest level of facets allowed.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
-      <td><p>added arguments to be passed.</p></td>
+      <td><p>other arguments to be passed for appropriate labels</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>compatibility table providing if the two granularities are harmonies or clashes. FALSE indicates a clash. If harmony, then a tibble with desired granularities returned.</p>
+    <p>a list of summary check points before visualizing distribution across bivariate granularities</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>gravitas</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='co'># tsibbledata::vic_elec %&gt;% harmony(lgran = "hour", ugran = "week")</span></div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
+<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span> <span class='fu'>gran_advice</span>(<span class='no'>.data</span>,
+  <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>,
+  <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"day_month"</span>
+)</div><div class='output co'>#&gt; $harmony
+#&gt; [1] "TRUE"
+#&gt; 
+#&gt; $homogenous
+#&gt; # A tibble: 1 x 2
+#&gt;   inter_facet intra_facet
+#&gt;   &lt;chr&gt;       &lt;chr&gt;      
+#&gt; 1 FALSE       FALSE      
+#&gt; 
+#&gt; $plot_choices
+#&gt; [1] "quantile"
+#&gt; 
+#&gt; $gran_obs
+#&gt; # A tibble: 31 x 25
+#&gt;    day_month   `0`   `1`   `2`   `3`   `4`   `5`   `6`   `7`   `8`   `9`  `10`
+#&gt;    &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+#&gt;  1 1            72    72    72    72    72    72    72    72    72    72    72
+#&gt;  2 2            72    72    72    72    72    72    72    72    72    72    72
+#&gt;  3 3            72    72    72    72    72    72    72    72    72    72    72
+#&gt;  4 4            72    72    72    72    72    72    72    72    72    72    72
+#&gt;  5 5            72    72    72    72    72    72    72    72    72    72    72
+#&gt;  6 6            72    72    72    72    72    72    72    72    72    72    72
+#&gt;  7 7            72    72    72    72    72    72    72    72    72    72    72
+#&gt;  8 8            72    72    72    72    72    72    72    72    72    72    72
+#&gt;  9 9            72    72    72    72    72    72    72    72    72    72    72
+#&gt; 10 10           72    72    72    72    72    72    72    72    72    72    72
+#&gt; # … with 21 more rows, and 13 more variables: `11` &lt;dbl&gt;, `12` &lt;dbl&gt;,
+#&gt; #   `13` &lt;dbl&gt;, `14` &lt;dbl&gt;, `15` &lt;dbl&gt;, `16` &lt;dbl&gt;, `17` &lt;dbl&gt;, `18` &lt;dbl&gt;,
+#&gt; #   `19` &lt;dbl&gt;, `20` &lt;dbl&gt;, `21` &lt;dbl&gt;, `22` &lt;dbl&gt;, `23` &lt;dbl&gt;
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

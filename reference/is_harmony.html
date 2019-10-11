@@ -98,7 +98,12 @@
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/Sayani07/gravitas">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -113,7 +118,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Check if two temporal granularities are harmonies</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/is_harmony.R'><code>R/is_harmony.R</code></a></small>
     <div class="hidden name"><code>is_harmony.Rd</code></div>
     </div>
 
@@ -121,8 +126,7 @@
     <p>Check if two temporal granularities are harmonies</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_harmony</span>(<span class='no'>.data</span>, <span class='no'>gran1</span>, <span class='no'>gran2</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>is_harmony</span>(<span class='no'>.data</span>, <span class='no'>gran1</span>, <span class='no'>gran2</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,10 +146,6 @@
     <tr>
       <th>hierarchy_tbl</th>
       <td><p>A hierarchy table specifying the hierarchy of units and their relationships</p></td>
-    </tr>
-    <tr>
-      <th>response</th>
-      <td><p>Variable for which summary is desired per combination</p></td>
     </tr>
     <tr>
       <th>facet_h</th>
@@ -181,7 +181,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Sayani Gupta.</p>
+  <p>Developed by Sayani Gupta, Rob Hyndman, Di Cook.</p>
 </div>
 
 <div class="pkgdown">
