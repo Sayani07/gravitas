@@ -193,12 +193,12 @@ prob_plot <- function(.data,
       gran1
     ))
 
-  # gran_warn(.data,
-  #                  gran1,
-  #                   gran2,
-  #                   hierarchy_tbl = hierarchy_tbl,
-  #                   response = response,
-  #                    ...)
+  gran_warn(.data,
+                   gran1,
+                    gran2,
+                    hierarchy_tbl = hierarchy_tbl,
+                    response = response,
+                     ...)
 
   return(plot_return)
 

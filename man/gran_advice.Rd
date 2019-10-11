@@ -4,7 +4,7 @@
 \alias{gran_advice}
 \title{Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity}
 \usage{
-gran_advice(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...)
+gran_advice(.data, gran1, gran2, hierarchy_tbl = NULL, ...)
 }
 \arguments{
 \item{.data}{a tsibble}
@@ -12,8 +12,6 @@ gran_advice(.data, gran1, gran2, hierarchy_tbl, response = NULL, ...)
 \item{gran1, gran2}{granularities}
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships}
-
-\item{response}{response variable to be plotted}
 
 \item{...}{other arguments to be passed for appropriate labels}
 }
@@ -27,6 +25,8 @@ Recommendations on plot choices and summary of interaction, number of observatio
 library(gravitas)
 library(tsibbledata)
 library(tsibble)
-vic_elec \%>\% gran_advice(.data, gran1="hour_week",
-gran2 = "day_month")
+vic_elec \%>\% gran_advice(.data,
+  gran1 = "hour_day",
+  gran2 = "day_month"
+)
 }

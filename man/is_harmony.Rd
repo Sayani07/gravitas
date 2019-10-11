@@ -4,8 +4,7 @@
 \alias{is_harmony}
 \title{Check if two temporal granularities are harmonies}
 \usage{
-is_harmony(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL,
-  facet_h = NULL, ...)
+is_harmony(.data, gran1, gran2, hierarchy_tbl = NULL, facet_h = NULL)
 }
 \arguments{
 \item{.data}{A tsibble object.}
@@ -15,8 +14,6 @@ is_harmony(.data, gran1, gran2, hierarchy_tbl = NULL, response = NULL,
 \item{gran2}{The second temporal granularity in the pair.}
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships}
-
-\item{response}{Variable for which summary is desired per combination}
 
 \item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.}
 
