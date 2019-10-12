@@ -29,7 +29,7 @@ test_that("tsibble input", {
 })
 
 test_that("list output", {
-  expect_is(gran_advice(x, "hour_day", "minute_hour"), c("list"))
+  expect_is(gran_advice(x, "hour_day", "hhour_hour"), c("list"))
 })
 
 

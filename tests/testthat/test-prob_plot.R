@@ -29,7 +29,7 @@ test_that("tsibble input", {
 })
 
 test_that("character output", {
-  expect_is(prob_plot(x, "hour_day", "minute_hour"), c("gg", "ggplot"))
+  expect_is(prob_plot(x, "hour_day", "hhour_hour"), c("gg", "ggplot"))
 })
 
 
