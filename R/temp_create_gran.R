@@ -58,7 +58,7 @@ temp_create_gran <- function(.data,
 
 
     if (!(lgran %in% lookup_table$units)) {
-      stop("lower part of granularity must
+      stop(" lower part of granularity must
            be listed as an element in the hierarchy table")
     }
     if (!(ugran %in% lookup_table$units)) {
@@ -209,10 +209,36 @@ build_gran <- function(x, lgran = NULL, ugran = NULL, ...) {
 
 # the lookup table - this needs to be changed if other granularities are included
 lookup_table <- tibble::tibble(
-  units = c("second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight", "month", "quarter", "semester", "year"),
-  convert_fct = c(60, 15, 2, 2, 24, 7, 2, 2, 3, 2, 2, 1),
-  convertfun = c("lubridate::second", "minute_qhour", "qhour_hhour", "hhour_hour", "lubridate::hour", "lubridate::wday", "week_fortnight", "fortnight_month", "month_quarter", "quarter_semester", "semester_year", 1),
-  convertday = c("second_day", "minute_day", "qhour_day", "hhour_day", "lubridate::hour", 1, "lubridate::wday", "day_fortnight", "lubridate::mday", "lubridate::qday", "day_semester", "lubridate::yday"),
+  units = c("second", "minute", "qhour",
+            "hhour", "hour", "day", "week",
+            "fortnight", "month", "quarter",
+            "semester", "year"),
+  convert_fct = c(60, 15, 2,
+                  2, 24, 7, 2,
+                  2, 3, 2,
+                  2, 1),
+  convertfun = c("lubridate::second",
+                 "minute_qhour",
+                 "qhour_hhour",
+                 "hhour_hour",
+                 "lubridate::hour",
+                 "lubridate::wday",
+                 "week_fortnight",
+                 "fortnight_month",
+                 "month_quarter",
+                 "quarter_semester",
+                 "semester_year", 1),
+  convertday = c("second_day",
+                 "minute_day",
+                 "qhour_day",
+                 "hhour_day",
+                 "lubridate::hour", 1,
+                 "lubridate::wday",
+                 "day_fortnight",
+                 "lubridate::mday",
+                 "lubridate::qday",
+                 "day_semester",
+                 "lubridate::yday"),
 )
 
 
@@ -222,9 +248,11 @@ lookup_table <- tibble::tibble(
 # provides the order difference between two granularities, also provide the upper granularity given the order
 g_order <- function(gran1, gran2 = NULL, order = NULL) {
   granularity <- lookup_table$units
-  index_gran1 <- granularity %>% match(x = gran1)
+  index_gran1 <- granularity %>%
+    match(x = gran1)
   if (!is.null(gran2)) {
-    index_gran2 <- granularity %>% match(x = gran2)
+    index_gran2 <- granularity %>%
+      match(x = gran2)
     return(index_gran2 - index_gran1)
   }
   if (!is.null(order)) {
@@ -238,18 +266,24 @@ gran_convert <- function(a, b = NULL, order = NULL) {
   a <- tolower(a)
   granularity <- lookup_table$units
   conv_fac <- lookup_table$convert_fct
-  index_gran1 <- granularity %>% match(x = a)
+  index_gran1 <- granularity %>%
+    match(x = a)
   granularity <- lookup_table$units
 
   if (!is.null(b)) {
     b <- tolower(b)
     if (!a %in% granularity | !b %in% granularity) {
-      stop(paste0("granularity ", a, " and ", b, " both should be one of ", paste0(granularity, collapse = ", ")), call. = FALSE)
+      stop(paste0("granularity ", a, " and ",
+                  b, " both should be one of ",
+                  paste0(granularity, collapse = ", ")),
+           call. = FALSE)
     }
 
 
     if (g_order(a, b) < 0) {
-      stop("Second temporal resolution should be higher in order than the first one. Try reversing their position")
+      stop("Second temporal resolution should be higher
+           in order than the first one.
+           Try reversing their position")
     }
     if (g_order(a, b) == 0) {
       return(1)
@@ -332,7 +366,8 @@ semester_year <- function(x, ...) {
 qhour_day <- function(x, ...) {
 
   # finds which quarter of the day
-  ceiling(lubridate::minute(x, ...) / 15) + 4 * (lubridate::hour(x, ...))
+  ceiling(lubridate::minute(x, ...) / 15) +
+    4 * (lubridate::hour(x, ...))
 }
 
 # goes from 0 to (47
@@ -342,11 +377,14 @@ hhour_day <- function(x, ...) {
 
 # goes from 0 to (60*24 - 1)
 minute_day <- function(x, ...) {
-  lubridate::minute(x, ...) + (lubridate::hour(x, ...)) * 60
+  lubridate::minute(x, ...) +
+    (lubridate::hour(x, ...)) * 60
 }
 # goes from 0 to (60*60*24 - 1)
 second_day <- function(x, ...) {
-  lubridate::second(x, ...) + lubridate::minute(x, ...) * 60 + (lubridate::hour(x, ...)) * 60 * 60
+  lubridate::second(x, ...) +
+    lubridate::minute(x, ...) * 60 +
+    (lubridate::hour(x, ...)) * 60 * 60
 }
 
 
