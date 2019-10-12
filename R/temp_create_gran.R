@@ -53,6 +53,20 @@ temp_create_gran <- function(.data, gran1 = NULL, label = TRUE, abbr = TRUE, ...
       stop("upper part of granularity must be listed as an element in the hierarchy table")
     }
 
+ # check if lgran is less than interval
+    if (tsibble::is_regular(.data))
+    {
+      interval_ts <- tsibble::interval(.data)
+      data_interval <- interval_ts[interval_ts != 0]
+      lgran_iden <- names(data_interval)
+      lgran_multiple <- data_interval[[1]]
+      if(lgran_iden == lgran & lgran_multiple > 1)
+      {
+       stop(paste("interval of this data is", lgran_multiple, lgran_iden, " and lower part of granularity is", lgran))
+      }
+    }
+
+
 
     data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, ...))
 
@@ -129,42 +143,43 @@ build_gran <- function(x, lgran = NULL, ugran = NULL, ...) {
     stop("lgran and ugran should be distinct")
   }
 
-
-
-  # if(index_lgran > index_ugran)
-  # {
-  #   tmp <- lgran
-  #   lgran <- ugran
-  #   ugran <- tmp
-  # }
-
+# for lower gran less than month and upper gran higher than month
   if (g_order(lgran, "month") > 0 & g_order("month", ugran) >= 0) {
     index_ugran <- lookup_table$units %>% match(x = ugran)
     day_ugran <- eval(parse_exp(lookup_table$convertday[index_ugran]))
+# for lower gran less than day
     if (g_order(lgran, "day") > 0) {
       c_lgran_day <- gran_convert(lgran, "day")
       value <- build_gran(x, lgran, "day") + c_lgran_day * (day_ugran - 1)
     }
+# for lower gran equal to day
     else if (g_order(lgran, "day") == 0) {
       value <- day_ugran
     }
+# for lower gran more than day
     else {
       c_day_lgran <- gran_convert("day", lgran)
       value <- ceiling(day_ugran / c_day_lgran)
     }
   }
+
+# for lower gran less than month and upper gran less than month (no other else since lower gran more than month and upper gran less than month can't happen)
   else {
+    # single-order-up
     lgran_ordr1 <- g_order(lgran, order = 1)
     if (g_order(lgran, ugran) == 1) {
       one_order <- lookup_table$convertfun[lookup_table$units %>% match(x = lgran)]
-      return(eval(parse_exp(one_order)))
+       value <- eval(parse_exp(one_order))
+
     } else {
+      # multiple-order-up
       value <- build_gran(x, lgran, lgran_ordr1) +
         gran_convert(lgran, lgran_ordr1) *
           (build_gran(x, lgran_ordr1, ugran) - 1)
-      return(value)
+
     }
   }
+  return(value)
 }
 
 
