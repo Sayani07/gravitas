@@ -56,9 +56,7 @@ test_that("search_gran error with
     search_gran(x,
                 "week",
                 "hour"),
-    "granularities should be of the form
-    finer to coarser.
-    Try swapping the order of the units."
+    "granularities should be of the form finer to coarser. Try swapping the order of the units."
   )
 })
 
@@ -66,9 +64,7 @@ test_that("search_gran error with finer
           and coarser unit swapped", {
   expect_error(
     search_gran(x, "week", "hour"),
-    "granularities should be of the form
-    finer to coarser. Try swapping the order
-    of the units."
+    "granularities should be of the form finer to coarser. Try swapping the order of the units."
   )
 })
 
@@ -78,8 +74,7 @@ test_that("search_gran error input for highest
           lookup table", {
   expect_error(
     search_gran(x, "hour", "weeks"),
-    "highest unit must be listed as
-    an element in the  hierarchy table"
+    "highest unit must be listed as an element in the  hierarchy table"
   )
 })
 
@@ -89,8 +84,7 @@ test_that("search_gran error input
           in predefined lookup table", {
   expect_error(
     search_gran(x, "millisecond", "week"),
-    "lowest unit must be listed as an
-    element in the hierarchy table"
+    "lowest unit must be listed as an element in the hierarchy table"
   )
 })
 
@@ -123,8 +117,7 @@ test_that("search_gran error with finer
       hierarchy_tbl =
         hierarchy_model
     ),
-    "granularities should be of the form
-    finer to coarser. Try swapping the order of the units."
+    "granularities should be of the form finer to coarser. Try swapping the order of the units."
   )
 })
 
@@ -135,8 +128,7 @@ test_that("search_gran error when no hierarchy table
       lowest_unit = "ball",
       highest_unit = "inning"
     ),
-    "Hierarchy table must be provided when
-    class of index of the tsibble is not date-time"
+    "Hierarchy table must be provided when class of index of the tsibble is not date-time"
   )
 })
 
@@ -149,8 +141,7 @@ test_that("search_gran error input for highest unit
       highest_unit = "innings",
       hierarchy_tbl = hierarchy_model
     ),
-    "highest unit must be listed as an
-    element in the  hierarchy table"
+    "highest unit must be listed as an element in the  hierarchy table"
   )
 })
 
@@ -163,7 +154,6 @@ test_that("search_gran error input for lowest
       highest_unit = "inning",
       hierarchy_tbl = hierarchy_model
     ),
-    "lowest unit must be listed as an
-    element in the hierarchy table"
+    "lowest unit must be listed as an element in the hierarchy table"
   )
 })

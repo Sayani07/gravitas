@@ -34,21 +34,18 @@ test_that("character output", {
 
 test_that("is_harmony error with null input", {
   expect_error(is_harmony(),
-  "argument \".data\" is missing,
-               with no default")
+               "argument \".data\" is missing, with no default")
 })
 
 test_that("throws error with just first granularity", {
   expect_error(is_harmony(x, gran1 = "hour_day"),
-               "argument \"gran2\" is missing,
-               with no default")
+               "argument \"gran2\" is missing, with no default")
 })
 
 
 test_that("throws error with just second granularity", {
   expect_error(is_harmony(x, gran2 = "hour_day"),
-               "argument \"gran1\" is missing,
-               with no default")
+               "argument \"gran1\" is missing, with no default")
 })
 
 test_that("throws error with no hierarchy table
@@ -56,8 +53,7 @@ test_that("throws error with no hierarchy table
   expect_error(is_harmony(cricket_tsibble,
                           "ball_inning",
                           "over_match"),
-               "Hierarchy table must be provided when class of
-               index of the tsibble is not date-time")
+               "Hierarchy table must be provided\n           when class of index of the tsibble\n           is not date-time")
 })
 
 test_that("throws error with incorrect input for granularity 1", {
@@ -65,8 +61,8 @@ test_that("throws error with incorrect input for granularity 1", {
                           "balls_inning",
                           "over_match",
                           hierarchy_model),
-               "lower part of granularity must be
-               listed as an element in the hierarchy table")
+               "lower part of granularity must be\n           listed as an element in the hierarchy table"
+  )
 })
 
 
@@ -75,6 +71,5 @@ test_that("throws error with incorrect input for granularity 2", {
                           "ball_inning",
                           "over_matchgh",
                           hierarchy_model),
-               "upper part of granularity must be
-               listed as an element in the hierarchy table")
+               "upper part of granularity must be\n           listed as an element in the hierarchy table")
 })

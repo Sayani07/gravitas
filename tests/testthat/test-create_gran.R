@@ -24,15 +24,13 @@ test_that("tsibble input", {
 })
 
 test_that("create_gran error with null input", {
-  expect_error(create_gran(), "argument \".data\"
-               is missing, with no default")
+  expect_error(create_gran(), "argument \".data\" is missing, with no default")
 })
 
 test_that("create_gran throws error with
           no granularity specified", {
   expect_error(create_gran(x),
-               "Provide the granularity that
-               needs to be computed")
+               "Provide the granularity that\n         needs to be computed")
 })
 
 
@@ -54,8 +52,8 @@ test_that("create_gran error with incorrect
           input for lower part of granularity", {
   expect_error(create_gran(x,
                            "hours_day"),
-               "lower part of granularity must be
-               listed as an element in the hierarchy table")
+               "lower part of granularity must
+           be listed as an element in the hierarchy table")
 })
 
 test_that("create_gran error with incorrect
@@ -63,7 +61,7 @@ test_that("create_gran error with incorrect
   expect_error(create_gran(x,
                            "hour_days"),
                "upper part of granularity must
-               be listed as an element in the hierarchy table")
+           be listed as an element in the hierarchy table")
 })
 
 # non-temporal data
@@ -85,9 +83,7 @@ test_that("create grans throws error
   expect_error(
     create_gran(cricket_tsibble,
                 "ball_inning"),
-    "Hierarchy table must be
-    provided when class of index of the
-    tsibble is not date-time"
+    "Hierarchy table must be provided\n           when class of index of the tsibble\n           is not date-time"
   )
 })
 
@@ -98,8 +94,7 @@ test_that("create grans throws error if
     create_gran(cricket_tsibble,
                 "balls_inning",
                 hierarchy_model),
-    "lower part of granularity must be
-    listed as an element in the hierarchy table"
+    "lower part of granularity must be\n           listed as an element in the hierarchy table"
   )
 })
 
@@ -109,7 +104,6 @@ test_that("create grans throws error
     create_gran(cricket_tsibble,
                 "ball_innings",
                 hierarchy_model),
-    "upper part of granularity must be
-    listed as an element in the hierarchy table"
+    "upper part of granularity must be\n           listed as an element in the hierarchy table"
   )
 })

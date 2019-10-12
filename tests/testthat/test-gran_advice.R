@@ -20,8 +20,7 @@ hierarchy_model <- tibble::tibble(
 # common tests for temporal and non-temporal data
 
 test_that("prob_plot error with null input", {
-  expect_error(gran_advice(), "argument \".data\" is missing,
-               with no default")
+  expect_error(gran_advice(),  "argument \".data\" is missing, with no default")
 })
 
 
@@ -49,8 +48,7 @@ test_that("throws error when granularities
 test_that("throws error with just one granularity", {
   expect_error(gran_advice(x,
                            gran2 = "hour_day"),
-               "argument \"gran1\" is missing,
-               with no default")
+               "argument \"gran1\" is missing, with no default")
 })
 
 
@@ -59,8 +57,7 @@ test_that("throws error with no hierarchy table
   expect_error(gran_advice(cricket_tsibble,
                            "ball_over",
                            "over_inning"),
-               "Hierarchy table must be provided when
-               class of index of the tsibble is not date-time")
+               "Hierarchy table must be provided\n           when class of index of the tsibble\n           is not date-time")
 })
 
 test_that("throws error with incorrect input for granularities", {
@@ -68,6 +65,5 @@ test_that("throws error with incorrect input for granularities", {
                            "balls_over",
                            "over_inning",
                            hierarchy_model),
-               "lower part of granularity must be listed
-               as an element in the hierarchy table")
+               "lower part of granularity must be\n           listed as an element in the hierarchy table")
 })

@@ -45,10 +45,12 @@ library(dplyr)
 library(tsibble)
 library(ggplot2)
 
- vic_elec \%>\% prob_plot(gran1= "hour_day",gran2 =  "day_week",
- response =  "Demand", plot_type = "quantile",
- quantile_prob = c(0.1, 0.25,0.5, 0.75, 0.9),
- symmetric = TRUE, outlier.colour = "red", outlier.shape = 2, palette = "Dark2")
+vic_elec \%>\% prob_plot(
+  gran1 = "hour_day", gran2 = "day_week",
+  response = "Demand", plot_type = "quantile",
+  quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
+  symmetric = TRUE, outlier.colour = "red", outlier.shape = 2, palette = "Dark2"
+)
 
 cricket_tsibble <- cricketdata \%>\%
   mutate(data_index = row_number()) \%>\%
@@ -60,10 +62,10 @@ hierarchy_model <- tibble::tibble(
 )
 
 cricket_tsibble \%>\%
- prob_plot("inning_match", "over_inning",
-           hierarchy_tbl = hierarchy_model,
-           response = "total_runs",
-           plot_type = "lv",
-           quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9), symmetric = FALSE
- )
+  prob_plot("inning_match", "over_inning",
+    hierarchy_tbl = hierarchy_model,
+    response = "total_runs",
+    plot_type = "lv",
+    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9), symmetric = FALSE
+  )
 }
