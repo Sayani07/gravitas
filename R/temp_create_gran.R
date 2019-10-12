@@ -1,4 +1,8 @@
-temp_create_gran <- function(.data, gran1 = NULL, label = TRUE, abbr = TRUE, ...) {
+temp_create_gran <- function(.data,
+                             gran1 = NULL,
+                             label = TRUE,
+                             abbr = TRUE,
+                             ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
@@ -27,9 +31,15 @@ temp_create_gran <- function(.data, gran1 = NULL, label = TRUE, abbr = TRUE, ...
   # wkday weekend treatment open
 
   if (gran1 == "wknd_wday") {
-    data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran = "day", ugran = "week", ...)) %>% dplyr::mutate(
+    data_mutate <- .data %>%
+      dplyr::mutate(L1 = build_gran(x,
+                                    lgran = "day",
+                                    ugran = "week", ...)) %>%
+      dplyr::mutate(
       wknd_wday =
-        dplyr::if_else(L1 %in% c(6, 7), "Weekend", "Weekday")
+        dplyr::if_else(L1 %in% c(6, 7),
+                       "Weekend",
+                       "Weekday")
     )
 
 
@@ -40,17 +50,20 @@ temp_create_gran <- function(.data, gran1 = NULL, label = TRUE, abbr = TRUE, ...
   # wkday weekend treatment open
 
   else {
-    gran1_split <- stringr::str_split(gran1, "_", 2) %>% unlist()
+    gran1_split <- stringr::str_split(gran1, "_", 2) %>%
+      unlist()
     lgran <- gran1_split[1]
     ugran <- gran1_split[2]
 
 
 
     if (!(lgran %in% lookup_table$units)) {
-      stop("lower part of granularity must be listed as an element in the hierarchy table")
+      stop("lower part of granularity must
+           be listed as an element in the hierarchy table")
     }
     if (!(ugran %in% lookup_table$units)) {
-      stop("upper part of granularity must be listed as an element in the hierarchy table")
+      stop("upper part of granularity must
+           be listed as an element in the hierarchy table")
     }
 
     # check if lgran is less than interval
@@ -60,20 +73,30 @@ temp_create_gran <- function(.data, gran1 = NULL, label = TRUE, abbr = TRUE, ...
       lgran_iden <- names(data_interval)
       lgran_multiple <- data_interval[[1]]
       if (lgran_iden == lgran & lgran_multiple > 1) {
-        stop(paste("interval of this data is", lgran_multiple, lgran_iden, " and lower part of granularity is", lgran))
+        stop(paste("interval of this data is",
+                   lgran_multiple,
+                   lgran_iden,
+                   " and lower part of granularity is", lgran))
       }
     }
 
 
 
-    data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, ...))
+    data_mutate <- .data %>%
+      dplyr::mutate(L1 = build_gran(x,
+                                    lgran, ugran, ...))
 
 
     lev <- unique(data_mutate$L1)
 
     if (label) {
       if (lgran == "day" & ugran == "week") {
-        data_mutate <- .data %>% dplyr::mutate(L1 = build_gran(x, lgran, ugran, week_start = getOption("lubridate.week.start", 1), label = TRUE))
+        data_mutate <- .data %>%
+          dplyr::mutate(L1 = build_gran(x,
+                                        lgran,
+                                        ugran,
+                                        week_start = getOption("lubridate.week.start", 1),
+                                        label = TRUE))
         names <- levels(data_mutate$L1)
       }
       else if (lgran == "month" & ugran == "year") {
@@ -82,7 +105,9 @@ temp_create_gran <- function(.data, gran1 = NULL, label = TRUE, abbr = TRUE, ...
         #
         #       should correct it later
         #
-        data_mutate <- .data %>% dplyr::mutate(L1 = lubridate::month(x, label = TRUE))
+        data_mutate <- .data %>%
+          dplyr::mutate(L1 = lubridate::month(x,
+                                              label = TRUE))
         names <- levels(data_mutate$L1)
       }
       # if not day_week or month_year
@@ -143,12 +168,14 @@ build_gran <- function(x, lgran = NULL, ugran = NULL, ...) {
 
   # for lower gran less than month and upper gran higher than month
   if (g_order(lgran, "month") > 0 & g_order("month", ugran) >= 0) {
-    index_ugran <- lookup_table$units %>% match(x = ugran)
+    index_ugran <- lookup_table$units %>%
+      match(x = ugran)
     day_ugran <- eval(parse_exp(lookup_table$convertday[index_ugran]))
     # for lower gran less than day
     if (g_order(lgran, "day") > 0) {
       c_lgran_day <- gran_convert(lgran, "day")
-      value <- build_gran(x, lgran, "day") + c_lgran_day * (day_ugran - 1)
+      value <- build_gran(x, lgran, "day") +
+        c_lgran_day * (day_ugran - 1)
     }
     # for lower gran equal to day
     else if (g_order(lgran, "day") == 0) {

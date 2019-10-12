@@ -89,14 +89,17 @@ server <- function(input, output, session) {
   # dynamically update dropdown list for facet - reactive
 
   observe({
-    my_choices <- search_gran(fileinput(),
-                              input$lowest_unit,
-                              input$highest_unit)
+    my_choices <- search_gran(
+      fileinput(),
+      input$lowest_unit,
+      input$highest_unit
+    )
 
     isolate({
       updateSelectInput(session,
         "facet",
-        choices = c(my_choices, input$filter_in),
+        choices = c(my_choices,
+                    input$filter_in),
         selected = harmony_table()$facet_variable[1]
       )
     })
@@ -105,14 +108,18 @@ server <- function(input, output, session) {
   # dynamically update dropdown list for x-axis - reactive
 
   observe({
-    my_choices <- search_gran(fileinput(),
-                              input$lowest_unit ,
-                              input$highest_unit)
-    my_choices2 <- my_choices[-match(input$facet, my_choices)]
+    my_choices <- search_gran(
+      fileinput(),
+      input$lowest_unit,
+      input$highest_unit
+    )
+    my_choices2 <- my_choices[-match(input$facet,
+                                     my_choices)]
     isolate({
       updateSelectInput(session,
         "xcol",
-        choices = c(my_choices2, input$filter_in),
+        choices = c(my_choices2,
+                    input$filter_in),
         selected = harmony_table()$x_variable[1]
       )
     })
@@ -321,9 +328,10 @@ server <- function(input, output, session) {
 
   harmony_table <- reactive({
     data_search_gran <- search_gran(fileinput(),
-                                    input$lowest_unit,
-                                    input$highest_unit,
-                                    filter_in = input$filter_in)
+      input$lowest_unit,
+      input$highest_unit,
+      filter_in = input$filter_in
+    )
 
     harmony_tbl %>%
       filter(facet_variable %in% data_search_gran) %>%
@@ -336,8 +344,9 @@ server <- function(input, output, session) {
 
 
   clash_reason <- reactive(gravitas:::clash_reason(fileinput(),
-                                                   gran1 = input$facet,
-                                                   gran2 = input$xcol))
+    gran1 = input$facet,
+    gran2 = input$xcol
+  ))
 
   # show the reason table with 0 observation combination
   clash_txt <- reactive({
@@ -392,11 +401,14 @@ server <- function(input, output, session) {
   output$downloadPlot <- downloadHandler(
     filename = function() {
       paste(input$file, ".png",
-            sep = "")
+        sep = ""
+      )
     },
     content = function(file) {
-      ggsave(file, plot = warn_txt()[[1]],
-             device = "png")
+      ggsave(file,
+        plot = warn_txt()[[1]],
+        device = "png"
+      )
     }
   )
 
@@ -404,9 +416,11 @@ server <- function(input, output, session) {
     # Show a modal when the button is pressed
     shinyalert(
       title = "Check for warnings/messages",
-      text = dplyr::if_else(is.null(warning_text()),
-                            clash_txt(),
-                            warning_text())
+      text = dplyr::if_else(
+        is.null(warning_text()),
+        clash_txt(),
+        warning_text()
+      )
     )
   })
 
