@@ -37,21 +37,21 @@ server <- function(input, output, session) {
     )
   })
 
-  # reactive lgran variable
-  lgran <- reactive({
-    if (is.null(input$lgran)) return(NULL)
+  # reactive lowest_unit variable
+  lowest_unit <- reactive({
+    if (is.null(input$lowest_unit)) return(NULL)
     isolate({
-      input$lgran
+      input$lowest_unit
     })
   })
 
 
-  # reactive ugran variable
+  # reactive highest_unit variable
 
-  ugran <- reactive({
-    if (is.null(input$ugran)) return("year")
+  highest_unit <- reactive({
+    if (is.null(input$highest_unit)) return("year")
     isolate({
-      input$ugran
+      input$highest_unit
     })
   })
 
@@ -90,8 +90,8 @@ server <- function(input, output, session) {
 
   observe({
     my_choices <- search_gran(fileinput(),
-                              input$ugran,
-                              input$lgran)
+                              input$lowest_unit,
+                              input$highest_unit)
 
     isolate({
       updateSelectInput(session,
@@ -105,7 +105,9 @@ server <- function(input, output, session) {
   # dynamically update dropdown list for x-axis - reactive
 
   observe({
-    my_choices <- search_gran(fileinput(), input$ugran, input$lgran)
+    my_choices <- search_gran(fileinput(),
+                              input$lowest_unit ,
+                              input$highest_unit)
     my_choices2 <- my_choices[-match(input$facet, my_choices)]
     isolate({
       updateSelectInput(session,
@@ -221,7 +223,7 @@ server <- function(input, output, session) {
 
     if (input$flip_coord) {
       capture_all_problems(
-        granplot(
+        prob_plot(
           .data = fileinput(),
           gran1 = gran1,
           gran2 = gran2,
@@ -233,7 +235,7 @@ server <- function(input, output, session) {
     }
     else {
       capture_all_problems(
-        granplot(
+        prob_plot(
           .data = fileinput(),
           gran1 = gran1,
           gran2 = gran2,
@@ -319,8 +321,8 @@ server <- function(input, output, session) {
 
   harmony_table <- reactive({
     data_search_gran <- search_gran(fileinput(),
-                                    input$ugran,
-                                    input$lgran,
+                                    input$lowest_unit,
+                                    input$highest_unit,
                                     filter_in = input$filter_in)
 
     harmony_tbl %>%
@@ -373,7 +375,7 @@ server <- function(input, output, session) {
 
 
       expr(
-        granplot(
+        prob_plot(
           .data = !!input$file$name,
           gran1 = !!input$facet,
           gran2 = !!input$xcol,
