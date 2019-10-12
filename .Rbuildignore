@@ -17,3 +17,4 @@
 ^data/cricketdata$
 ^docs$
 ^tic\.R$
+^cran-comments.\md$

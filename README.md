@@ -58,20 +58,25 @@ gravitas::run\_app().
 
 ## Features
 
+  - Search for a set of all possible temporal granularities with
+    `search_gran`
+
   - Build any temporal granularity with `create_gran`
 
-  - Get set of possible temporal granularities with `search_gran()`
-    
-      - Refine your search of possible temporal granularities by
-        altering arguments in `search_gran()`
+  - Refine your search of possible temporal granularities by altering
+    arguments in `search_gran()`
 
   - Check if two temporal granularities are harmonies with
-    `is.harmony()`
+    `is_harmony()`
 
   - Get all possible harmonies with `harmony()`
 
+  - Get advice on recommended plots, interaction between granularities,
+    number of observations available for probability distributions for
+    chosen granularities with `gran_advice`
+
   - Explore probability distribution across bivariate temporal
-    granularities with `granplot()`
+    granularities with `prob_plot()`
     
       - Get recommendations on choosing more appropriate distribution
         plots
@@ -82,13 +87,8 @@ View the vignette to get started\!
 
 ``` r
 library("gravitas")
-#vignette("gravitas_vignette")
-```
-
-You can force building the vignettes with
-
-``` r
-#devtools::install_github("Sayani07/gravitas", build_vignettes = TRUE)
+vignette("gravitas_vignette")
+#> Warning: vignette 'gravitas_vignette' not found
 ```
 
 This package takes tsibble as the data input. Tsibble provides a data

@@ -54,35 +54,33 @@ gravitas comes with an interactive webpage, which lets you go through the differ
 
 ## Features
 
+  -  Search for a set of all possible temporal granularities with `search_gran`
+
   -  Build any temporal granularity with `create_gran` 
 
-  - Get set of possible temporal granularities with `search_gran()`
-    - Refine your search of possible temporal granularities by altering arguments in `search_gran()`
+  - Refine your search of possible temporal granularities by altering arguments in `search_gran()`
 
  
-  - Check if two temporal granularities are harmonies with `is.harmony()`
+  - Check if two temporal granularities are harmonies with `is_harmony()`
  
   - Get all possible harmonies with `harmony()`
  
-  - Explore probability distribution across bivariate temporal granularities with `granplot()`
-    - Get recommendations on choosing more appropriate distribution plots
+  - Get recommendations on choosing more appropriate distribution plots and advice on interaction between granularities, number of observations available for drawing probability distributions for chosen granularities with `gran_advice`
+  
+  - Explore probability distribution across bivariate temporal granularities with `prob_plot()`
+    
   
 ## More information
 
 View the vignette to get started! 
 
 
-
 ```{r}
 library("gravitas")
-#vignette("gravitas_vignette")
+vignette("gravitas_vignette")
 ```
 
-You can force building the vignettes with 
 
-```{r}
-#devtools::install_github("Sayani07/gravitas", build_vignettes = TRUE)
-```
 This package takes tsibble as the data input. Tsibble provides a data class of tbl_ts to represent tidy temporal data. It consists of a time index, key and other measured variables in a data-centric format, which makes it easier to work with temporal data. To learn more about it, please visit [https://tsibble.tidyverts.org/](https://tsibble.tidyverts.org/)
 
 ## Reporting and issues
