@@ -36,6 +36,8 @@ create_gran <- function(.data, gran1 = NULL, hierarchy_tbl = NULL, label = TRUE,
   }
 
 
+
+
   # column treated as granularities
   events <- match(gran1, names(.data))
   if (!is.na(events)) {
@@ -134,12 +136,12 @@ dynamic_build_gran <- function(x, lgran = NULL, ugran = NULL, hierarchy_tbl = NU
 #' cricket_tsibble <- cricketdata %>%
 #'   mutate(data_index = row_number()) %>%
 #'   as_tsibble(index = data_index)
-#' 
+#'
 #' hierarchy_model <- tibble::tibble(
 #'   units = c("index", "ball", "over", "inning", "match"),
 #'   convert_fct = c(1, 6, 20, 2, 1)
 #' )
-#' 
+#'
 #' cricket_tsibble %>% validate_gran(
 #'   gran = "ball_over",
 #'   hierarchy_tbl = hierarchy_model,
