@@ -19,29 +19,30 @@
 #' library(dplyr)
 #' library(tsibble)
 #' library(ggplot2)
-#'
-#'  vic_elec %>% prob_plot(gran1= "hour_day",gran2 =  "day_week",
-#'  response =  "Demand", plot_type = "quantile",
-#'  quantile_prob = c(0.1, 0.25,0.5, 0.75, 0.9),
-#'  symmetric = TRUE, outlier.colour = "red", outlier.shape = 2, palette = "Dark2")
-#'
+#' 
+#' vic_elec %>% prob_plot(
+#'   gran1 = "hour_day", gran2 = "day_week",
+#'   response = "Demand", plot_type = "quantile",
+#'   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
+#'   symmetric = TRUE, outlier.colour = "red", outlier.shape = 2, palette = "Dark2"
+#' )
+#' 
 #' cricket_tsibble <- cricketdata %>%
 #'   mutate(data_index = row_number()) %>%
 #'   as_tsibble(index = data_index)
-#'
+#' 
 #' hierarchy_model <- tibble::tibble(
 #'   units = c("index", "ball", "over", "inning", "match"),
 #'   convert_fct = c(1, 6, 20, 2, 1)
 #' )
-#'
-#'cricket_tsibble %>%
-#'  prob_plot("inning_match", "over_inning",
-#'            hierarchy_tbl = hierarchy_model,
-#'            response = "total_runs",
-#'            plot_type = "lv",
-#'            quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9), symmetric = FALSE
-#'  )
-
+#' 
+#' cricket_tsibble %>%
+#'   prob_plot("inning_match", "over_inning",
+#'     hierarchy_tbl = hierarchy_model,
+#'     response = "total_runs",
+#'     plot_type = "lv",
+#'     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9), symmetric = FALSE
+#'   )
 #' @export prob_plot
 
 prob_plot <- function(.data,
@@ -54,11 +55,11 @@ prob_plot <- function(.data,
                       facet_h = NULL,
                       symmetric = TRUE,
                       alpha = 0.8,
-                      #begin = 0,
-                      #end = 1,
-                      #direction = 1,
-                      #palette = "YlGnBu",
-                      #package = "RColorBrewer",
+                      # begin = 0,
+                      # end = 1,
+                      # direction = 1,
+                      # palette = "YlGnBu",
+                      # package = "RColorBrewer",
                       ...) {
 
   # data must be tsibble
@@ -83,11 +84,12 @@ prob_plot <- function(.data,
   }
 
   if (is.null(plot_type)) {
-    gran_advice <- gran_advice(.data,
-                               gran1,
-                               gran2,
-                               hierarchy_tbl,
-                               ...
+    gran_advice <- gran_advice(
+      .data,
+      gran1,
+      gran2,
+      hierarchy_tbl,
+      ...
     )
     plot_type <- gran_advice$plot_choices[1]
   }
@@ -109,18 +111,18 @@ prob_plot <- function(.data,
   # facet <- gran1
 
 
-  x_var <- dplyr::if_else(plot_type=="ridge", response, gran2)
-  y_var <- dplyr::if_else(plot_type=="ridge", gran2, response)
+  x_var <- dplyr::if_else(plot_type == "ridge", response, gran2)
+  y_var <- dplyr::if_else(plot_type == "ridge", gran2, response)
 
-#
-#   if (plot_type == "ridge") {
-#     x_var <- y
-#     y_var <- x
-#   }
-#   else {
-#     x_var <- x
-#     y_var <- y
-#   }
+  #
+  #   if (plot_type == "ridge") {
+  #     x_var <- y
+  #     y_var <- x
+  #   }
+  #   else {
+  #     x_var <- x
+  #     y_var <- y
+  #   }
 
   p <- data_mutate %>%
     as_tibble(.name_repair = "minimal") %>%
@@ -149,20 +151,18 @@ prob_plot <- function(.data,
 
   else if (plot_type == "lv") {
     plot <-
-      p + geom_lv(aes(fill=..LV..),
-                  k=5,
-                  ...
+      p + geom_lv(aes(fill = ..LV..),
+        k = 5,
+        ...
       )
   }
 
   else if (plot_type == "ridge") {
     plot <- p +
-      ggridges::geom_density_ridges(...
-      )
+      ggridges::geom_density_ridges(...)
   }
 
   else if (plot_type == "quantile") {
-
     plot <- quantile_plot(
       .data,
       gran1,
@@ -177,12 +177,13 @@ prob_plot <- function(.data,
   }
 
   plot_return <- plot +
-    ggplot2::theme(legend.position = "bottom",
-    strip.text = ggplot2::element_text(
-      size = 7,
-      margin = ggplot2::margin()
-    )
-  ) +
+    ggplot2::theme(
+      legend.position = "bottom",
+      strip.text = ggplot2::element_text(
+        size = 7,
+        margin = ggplot2::margin()
+      )
+    ) +
     ggplot2::ylab(y_var) +
     ggplot2::xlab(x_var) +
     ggplot2::ggtitle(paste0(
@@ -194,14 +195,14 @@ prob_plot <- function(.data,
     ))
 
   gran_warn(.data,
-                   gran1,
-                    gran2,
-                    hierarchy_tbl = hierarchy_tbl,
-                    response = response,
-                     ...)
+    gran1,
+    gran2,
+    hierarchy_tbl = hierarchy_tbl,
+    response = response,
+    ...
+  )
 
   return(plot_return)
-
 }
 
 
@@ -227,8 +228,7 @@ quantile_plot <- function(.data,
                           direction = 1,
                           palette = "YlGnBu",
                           package = "RColorBrewer",
-                          ...
-) {
+                          ...) {
   p <- quantile_prob
 
   quantile_names <- purrr::map_chr(p, ~ paste0(.x * 100, "%"))
@@ -270,19 +270,19 @@ quantile_plot <- function(.data,
     mid_pos <- p %>% match(x = median(p))
 
     # how many colors needed
-   #  browser()
-   #  color_l <- length(quantile_names) - 1
-   # color_set <- palap::palap(color_l,
-   #                           alpha = alpha,
-   #                           begin = begin,
-   #                           end = end,
-   #                           direction = direction,
-   #                           palette = palette,
-   #                           package = package)
+    #  browser()
+    #  color_l <- length(quantile_names) - 1
+    # color_set <- palap::palap(color_l,
+    #                           alpha = alpha,
+    #                           begin = begin,
+    #                           end = end,
+    #                           direction = direction,
+    #                           palette = palette,
+    #                           package = package)
 
 
 
-    #color_set <- paletteer_d(package = "RColorBrewer", palette = "YlGnBu", n = color_l)
+    # color_set <- paletteer_d(package = "RColorBrewer", palette = "YlGnBu", n = color_l)
 
 
     color_l <- ceiling(length(quantile_names) / 2)

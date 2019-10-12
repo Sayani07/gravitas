@@ -14,7 +14,7 @@
 #' vic_elec %>% is_harmony("hour_day", "day_week")
 #' @export is_harmony
 
-is_harmony <- function(.data, gran1, gran2, hierarchy_tbl = NULL,facet_h = NULL) {
+is_harmony <- function(.data, gran1, gran2, hierarchy_tbl = NULL, facet_h = NULL) {
 
   # data must be tsibble
   if (!tsibble::is_tsibble(.data)) {

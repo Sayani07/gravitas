@@ -367,7 +367,7 @@ gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL) {
 
   return(output)
 }
-##----gran_obs
+## ----gran_obs
 
 
 
