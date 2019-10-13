@@ -313,13 +313,6 @@ gran_convert <- function(a, b = NULL, order = NULL) {
 #
 
 
-
-
-
-
-
-
-
 # all one order up functions
 
 
@@ -372,7 +365,14 @@ qhour_day <- function(x, ...) {
 
 # goes from 0 to (47
 hhour_day <- function(x, ...) {
-  (lubridate::hour(x, ...) + 1) * 2 - 1
+  {floor
+    (
+      (
+        (
+          hour(x))*60 +
+          minute(x))/30
+    )
+  }
 }
 
 # goes from 0 to (60*24 - 1)
