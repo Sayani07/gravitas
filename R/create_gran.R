@@ -72,6 +72,18 @@
 #'     "ball_over",
 #'     hierarchy_model
 #'   )
+#'
+#'
+#' # Validate if given column in the data set
+#' # equals computed granularity
+#'
+#'
+#' validate_gran(cricket_tsibble,
+#' gran = "over_inning",
+#' hierarchy_tbl = hierarchy_model,
+#'  validate_col = "over")
+#'
+#'
 #' @export
 create_gran <- function(.data, gran1 = NULL, hierarchy_tbl = NULL, label = TRUE, abbr = TRUE, ...) {
 
