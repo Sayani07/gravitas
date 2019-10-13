@@ -82,7 +82,7 @@ library(dplyr)
 library(ggplot2)
 library(tsibble)
 
-smart_meter <- sm_cust1 %>% as_tsibble() %>% ungroup()
+smart_meter <- smart_meter10 %>% as_tsibble() %>% ungroup()
 
 smart_meter %>% 
   prob_plot(gran1 = "wknd_wday",

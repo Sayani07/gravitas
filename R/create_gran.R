@@ -22,7 +22,7 @@
 #' library(ggplot2)
 #'
 #'
-#' smart_meter <- sm_cust1 %>%
+#' smart_meter <- smart_meter10 %>%
 #' as_tsibble() %>%
 #' ungroup()
 #'

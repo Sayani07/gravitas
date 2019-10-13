@@ -95,7 +95,7 @@ library(ggplot2)
 library(tsibble)
 #> Warning: package 'tsibble' was built under R version 3.5.2
 
-smart_meter <- sm_cust1 %>% as_tsibble() %>% ungroup()
+smart_meter <- smart_meter20 %>% as_tsibble() %>% ungroup()
 
 smart_meter %>% 
   prob_plot(gran1 = "wknd_wday",

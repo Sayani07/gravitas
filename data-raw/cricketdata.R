@@ -48,4 +48,4 @@ cricketdata <- cricket_over_inning_crctd %>%
   mutate(ball_per_over = purrr::rep_along(match_id, 1:6)) %>%
   filter(inning %in% c(1, 2))
 
-save(cricketdata, file = "data/cricketdata.rda")
+save(cricketdata, file = "data/cricketdata.rda", compress = "gzip", version = 2)

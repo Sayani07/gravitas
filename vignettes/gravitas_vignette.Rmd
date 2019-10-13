@@ -43,7 +43,7 @@ One of the [customer trials](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-46
 ```
 
 ```{r data_store, echo=TRUE}
-smart_meter_nsw <- sm_cust1 %>% as_tsibble() %>% ungroup()
+smart_meter_nsw <- smart_meter10 %>% as_tsibble() %>% ungroup()
 ```
 
 
