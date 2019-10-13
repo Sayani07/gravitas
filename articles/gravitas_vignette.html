@@ -105,7 +105,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <h2 class="hasAnchor">
 <a href="#get-started" class="anchor"></a>Get started</h2>
 <p>One of the <a href="https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter">customer trials</a> conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney providing customer wise data is employed to have a run through of this package. The data consists of half-hourly demand <code>general_supply_kwh</code> for more than 40k households across these places. Suppose we want to explore the probability distribution of the energy consumption for these households across different time granularities and identify their behavioral patterns. Data for the year 2013 for one household is used for illustration purposes.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">smart_meter_nsw &lt;-<span class="st"> </span>sm_cust1 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tsibble</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ungroup</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">smart_meter_nsw &lt;-<span class="st"> </span>smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tsibble</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ungroup</span>()</a></code></pre></div>
 <div id="get-set-of-possible-temporal-granularities-with-search_gran" class="section level3">
 <h3 class="hasAnchor">
 <a href="#get-set-of-possible-temporal-granularities-with-search_gran" class="anchor"></a>Get set of possible temporal granularities with <code>search_gran()</code>
@@ -155,7 +155,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; [1] "FALSE"</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8">smart_meter_nsw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"day_month"</span>, <span class="dt">gran2 =</span> <span class="st">"hhour_week"</span>)</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; [1] "FALSE"</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; [1] "TRUE"</span></a></code></pre></div>
 </div>
 <div id="get-all-possible-harmonies-with-harmony" class="section level3">
 <h3 class="hasAnchor">
@@ -165,7 +165,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">smart_meter_nsw  <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/harmony.html">harmony</a></span>(<span class="dt">ugran =</span> <span class="st">"month"</span>,</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">                             <span class="dt">filter_out =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"fortnight"</span>, <span class="st">"hhour"</span>),</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">                             <span class="dt">filter_in =</span> <span class="st">"wknd_wday"</span>)</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; # A tibble: 78 x 4</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; # A tibble: 84 x 4</span></a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt;    facet_variable  x_variable facet_levels x_levels</span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;    &lt;chr&gt;           &lt;chr&gt;             &lt;int&gt;    &lt;int&gt;</span></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt;  1 hour_day        hhour_hour           24        2</span></a>
@@ -178,7 +178,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt;  8 wknd_wday       hhour_hour            2        2</span></a>
 <a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt;  9 day_week        hhour_day             7       48</span></a>
 <a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; 10 day_fortnight   hhour_day            14       48</span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; # … with 68 more rows</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; # … with 74 more rows</span></a></code></pre></div>
 </div>
 <div id="explore-probability-distribution-across-bivariate-temporal-granularities-with-prob_plot" class="section level3">
 <h3 class="hasAnchor">
