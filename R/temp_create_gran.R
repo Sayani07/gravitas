@@ -365,14 +365,13 @@ qhour_day <- function(x, ...) {
 
 # goes from 0 to (47
 hhour_day <- function(x, ...) {
-  {floor
+  floor(
     (
       (
-        (
-          hour(x))*60 +
-          minute(x))/30
-    )
-  }
+        lubridate::hour(x))*60 +
+        lubridate::minute(x))/30
+  )
+
 }
 
 # goes from 0 to (60*24 - 1)

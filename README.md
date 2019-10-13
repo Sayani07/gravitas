@@ -31,8 +31,7 @@ following:
 
   - recommending appropriate probability distribution plots of the time
     series variable across the bivariate granularities based on the
-    levels of the bivariate granularties and their compatibility
-    relationship.
+    levels of the bivariate granularties and their interaction.
 
 ## Installation
 
@@ -91,35 +90,20 @@ a quantile plot or letter value plot.
 library(gravitas)
 library(dplyr)
 #> Warning: package 'dplyr' was built under R version 3.5.2
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(ggplot2)
 #> Warning: package 'ggplot2' was built under R version 3.5.2
+library(tsibble)
+#> Warning: package 'tsibble' was built under R version 3.5.2
 
-smart_meter <- sm_cust1 %>% ungroup()
+smart_meter <- sm_cust1 %>% as_tsibble() %>% ungroup()
 
-sm_cust1 %>% 
+smart_meter %>% 
   prob_plot(gran1 = "wknd_wday",
             gran2 = "hour_day",
             response = "general_supply_kwh",
             plot_type = "quantile",
                        quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
   scale_y_sqrt()
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
 #> Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of
 #>      granularities vary within or across facets.
 #>      Use gran_obs() to find combinations which have low
@@ -130,21 +114,12 @@ sm_cust1 %>%
 
 ``` r
 library(gravitas)
-sm_cust1 %>% 
+smart_meter %>% 
   prob_plot("wknd_wday",
             "hour_day",
                               response = "general_supply_kwh",
                               plot_type = "lv",
                        outlier.colour = "red") + scale_y_sqrt()
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
-#> Adding missing grouping variables: `customer_id`
 #> Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of
 #>      granularities vary within or across facets.
 #>      Use gran_obs() to find combinations which have low
