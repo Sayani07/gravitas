@@ -1,5 +1,5 @@
 ---
-title: "Exploring probability distributions for bivariate temporal granularities with gravitas"
+title: "Exploring probability distributions for bivariate temporal granularities"
 author: "<i>Sayani Gupta</i <br> <hr>"
 output: 
   rmarkdown::html_vignette:
