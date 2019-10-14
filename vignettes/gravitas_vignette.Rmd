@@ -12,13 +12,13 @@ vignette: >
 https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-naniar.Rmd -->
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  echo = TRUE, 
+  echo = TRUE,
   collapse = TRUE,
   comment = "#>",
   fig.height = 5,
-  fig.width  = 8,
-  fig.align  = "center",
-  cache      = FALSE
+  fig.width = 8,
+  fig.align = "center",
+  cache = FALSE
 )
 library(gravitas)
 library(dplyr)
@@ -37,15 +37,17 @@ In this vignette, we describe the tools in the package `gravitas` for systematic
 
 ## Computation
 
-### Get set of possible granularities
+### Get set of possible granularities with `search_gran`
 
 The `smart_meter10` data in the package is a [tsibble](https://tsibble.tidyverts.org/) providing the energy consumption for ten households from [customer trials](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter). 
 
 ```{r data_look}
-smart_meter10 %>% select(customer_id, 
-                         reading_datetime,
-                         general_supply_kwh,
-                         everything())
+smart_meter10 %>% select(
+  customer_id,
+  reading_datetime,
+  general_supply_kwh,
+  everything()
+)
 ```
 
 This is a regular tsibble with energy demand `general_supply_kwh` available every 30 minutes from 2012 to 2014. Typically, the first thing we should have at our disposal for examining periodicities of energy behavior across time granularities is to know the number of time granularities we can look at exhaustively. If we consider conventional time deconstructions for a Gregorian calendar, the following time granularities can be considered for analysis. 
@@ -58,15 +60,19 @@ The default for search gran in this case, provides temporal granularities rangin
 
 ```{r search_gran_limit}
 
-smart_meter10 %>% search_gran(highest_unit  = "month")
+smart_meter10 %>% 
+  search_gran(highest_unit = "month")
 ```
 
 This looks better. However, some intermediate temporal units might not be pertinent to the analysis and we might want to  remove them from the list of granularities that we want to examine.
 
 ```{r search_gran_limit2}
 
-smart_meter10 %>% search_gran(highest_unit = "month", 
-                              filter_out = c( "hhour", "fortnight"))
+smart_meter10 %>% 
+  search_gran(
+  highest_unit = "month",
+  filter_out = c("hhour", "fortnight")
+)
 ```
 
 
@@ -76,19 +82,23 @@ After we have the set of granularities to look at, we should be able to compute 
 
 
 ```{r create_gran, echo=TRUE}
-smart_meter10  %>%
+smart_meter10 %>%
   create_gran("day_fortnight") %>%
-  ggplot2::ggplot(aes(x = as.factor(day_fortnight),
-                      y = general_supply_kwh)) + 
+  ggplot2::ggplot(aes(
+    x = as.factor(day_fortnight),
+    y = general_supply_kwh
+  )) +
   scale_y_sqrt() +
-  xlab("day_fortnight") + 
-  geom_lv(outlier.colour = "red",
-          aes(fill = ..LV..),
-          k = 5) + 
+  xlab("day_fortnight") +
+  geom_lv(
+    outlier.colour = "red",
+    aes(fill = ..LV..),
+    k = 5
+  ) +
   scale_color_brewer(palette = "Dark2")
 
 
-smart_meter10  %>%
+smart_meter10 %>%
   create_gran("day_fortnight") %>%
   group_by(day_fortnight)
 ```
@@ -99,20 +109,27 @@ smart_meter10  %>%
 If we want to look at two of these granularities at a time, it is equivalent to choosing 6 permutation 2 pairs, which essentially means we need to examine 30 plots. However, we need to be cognizant of how these granularities interact. Harmony/clash can be identified to considerably reduce the number of visualizations that can aid exploratory analysis.
 
 ```{r is_harmony}
-smart_meter10 %>% is_harmony(gran1 = "hour_day", gran2 = "day_week")
+smart_meter10 %>% 
+  is_harmony(gran1 = "hour_day", 
+             gran2 = "day_week")
 
-smart_meter10 %>% is_harmony(gran1 = "hour_day", gran2 = "day_week", facet_h = 14)
+smart_meter10 %>%
+  is_harmony(gran1 = "hour_day", 
+             gran2 = "day_week", 
+             facet_h = 14)
 
-smart_meter10 %>% is_harmony(gran1 = "day_month", gran2 = "week_month")
-
+smart_meter10 %>% 
+  is_harmony(gran1 = "day_month",
+             gran2 = "week_month")
 ```
 
 Let us now look at all the harmonies that we can examine. Fortunately, we are left with only 13 out of 30 visualizations. 
 
 ```{r harmony, echo=TRUE}
-smart_meter10  %>% harmony(ugran = "month",
-                             filter_out = c( "hhour", "fortnight"))
-
+smart_meter10 %>% harmony(
+  ugran = "month",
+  filter_out = c("hhour", "fortnight")
+)
 ```
 
 ## Visualization
@@ -122,24 +139,26 @@ Moving on, if we want to switch the facet and x-axis variable, we simply reverse
 
 
 ```{r hd_dm, echo=TRUE, fig.cap="Quantile plot across hour-day as facets and day-month across x-axis"}
-smart_meter10  %>%
+smart_meter10 %>%
   prob_plot("hour_day",
-           "day_month",
-           response = "general_supply_kwh",
-           plot_type = "quantile",
-           quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-           symmetric = TRUE) +
+    "day_month",
+    response = "general_supply_kwh",
+    plot_type = "quantile",
+    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
+    symmetric = TRUE
+  ) +
   scale_y_sqrt()
 ```
 
 ```{r dm_hd, echo=TRUE}
-smart_meter10  %>%
+smart_meter10 %>%
   prob_plot("day_month",
-            "hour_day",
-           response = "general_supply_kwh",
-           plot_type = "quantile", 
-           quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-           symmetric = TRUE) 
+    "hour_day",
+    response = "general_supply_kwh",
+    plot_type = "quantile",
+    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
+    symmetric = TRUE
+  )
 ```
 
 \ref{fig:dw_hd} shows letter-value plot of energy consumption across wknd_wday (facet) and hour-day (x-axis).
@@ -150,76 +169,33 @@ Currently, we can choose from "boxplot", "violin", "ridge", "lv" or "quantile" t
 
 
 ```{r hd_dw, echo=TRUE}
-smart_meter10  %>% prob_plot("wknd_wday",
-                              "week_month",
-                              response  = "general_supply_kwh",
-                              plot_type = "violin")  + scale_y_sqrt()
+smart_meter10 %>% prob_plot("wknd_wday",
+  "week_month",
+  response = "general_supply_kwh",
+  plot_type = "violin"
+) + scale_y_sqrt()
 ```
 
-This provides an useful warning suggesting quantiles should be computed with caution as number of observations might not vary or not be enough for computing distribution plots.
+This provides an useful warning suggesting distribution should be computed with caution as number of observations might vary or not be enough for computing distribution plots.
 
 ```{r granobs, echo=TRUE}
-smart_meter10  %>% gran_obs("week_month",
-                              "wknd_wday")
+smart_meter10 %>% gran_obs(
+  "week_month",
+  "wknd_wday"
+)
 ```
 
-In this case, number of observations are much less compared to weekends. But number of observations are enough to have reliable estimates of distribution.
-
-<br>
-
-<!-- Suppose, both the granularities chosen have too many levels, which is not suitable for faceting or are clashes, then warnings will be provided. -->
-
-
-<!-- ```{r , echo=TRUE} -->
-<!-- smart_meter10  %>% -->
-<!--   prob_plot(gran1 = "hour_week", -->
-<!--            gran2 = "day_week",  -->
-<!--            response = "general_supply_kwh",  -->
-<!--            plot_type = "boxplot")  -->
-<!-- ``` -->
-
-<br>
+In this case, number of observations are much less on weekends compared to weekdays, but enough to have reliable estimates of distribution.
 
 We can also have recommendations on plots and general check points before plotting two granularities using 
 `gran_advice`.
 
 ```{r granadvice}
-smart_meter10  %>% gran_advice("week_month",
-                              "wknd_wday")
+smart_meter10 %>% gran_advice(
+  "week_month",
+  "wknd_wday"
+)
 ```
-
-<!-- Now, we want to view distribution of `general_supply_kwh` across the another set of harmonies - month_year and hour_day and let the package decide -->
-<!-- the plot type that is best suitable. -->
-
-<!-- ```{r example7, echo=TRUE} -->
-<!-- smart_meter10  %>% -->
-<!--     prob_plot("month_year", "hour_day", -->
-<!--            response = "general_supply_kwh", -->
-<!--            #plot_type = "quantile", -->
-<!--            quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) + -->
-<!--   ggtitle("Quantile plot across hour-of-day by month-of-year for Household 1") + -->
-<!--   scale_y_continuous(breaks = seq(0, 1.5, 0.25)) -->
-<!-- ``` -->
-
-
-<!-- Suppose, both the granularities chosen have too many levels, which is not suitable for faceting or are clashes, then warnings will be provided. -->
-
-
-<!-- ```{r example9, echo=TRUE} -->
-<!-- smart_meter10  %>% -->
-<!--   prob_plot(gran1 = "day_quarter", -->
-<!--            gran2 = "day_week", -->
-<!--            "general_supply_kwh", -->
-<!--            plot_type = "quantile", -->
-<!--            symmetric = FALSE) -->
-<!-- ``` -->
-
-<!-- The warning says :  Faceting not recommended as there are too many categories in day_quarter and also suggest using day_week as the facet variable. -->
-
-<!-- Moreover, the granularities chosen are clashes and one can see the set of harmonies using `harmony(.data)` -->
-
-<!-- <!-- Want to browse through a similar analysis and get insights about the energy behavior of few households? Consider looking at [https://github.com/Sayani07/gsoc2019/blob/master/smart_meter.pdf]. --> -->
-
 
 ### How prob_plot works
 
@@ -233,3 +209,5 @@ Recommendations for distribution plots depend on the levels of the two granulari
 Thanks to PhD supervisors [Prof. Rob J Hyndman](https://robjhyndman.com/), [Prof. Dianne Cook](http://dicook.org/) and [Google Summer of Code 2019](https://summerofcode.withgoogle.com/) mentor [Prof. Antony Unwin](http://rosuda.org/~unwin/) for their support and always leading by example. The fine balance of encouraging me to work on my ideas and stepping in to help when I need has made the devlopment of this package a great learning experience for me.
 
 Moreover, I want to thank my cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team) at Monash University for always lending an ear and sharing their wisdom and experience on developing R packages whenever needed. 
+
+
