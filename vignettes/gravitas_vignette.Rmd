@@ -25,6 +25,18 @@ library(ggplot2)
 library(tsibble)
 ```
 
+
+# Introduction
+
+Temporal data are available at various resolution depending on context. Time series analysis data collected at finer scale needs to be analyzed also at coarser temporal scales. This approach requires deconstructing time in various possible ways leading to linear (e.g. days, weeks), circular (e.g. day-of-week) or aperiodic (e.g. day-of-month) time granularities. The hierarchical structure of time also creates a natural nested ordering resulting in single or multiple order-up granularities. For a conventional Gregorian calendar, examples of single-order-up granularity may include hour-of-day, minute-of-hour and examples of multiple-order-up granularity may include hour-of-week or minute-of-day. All of these granularites might be useful in throwing light on the periodicity of the data depending on the context.  
+
+Exploration of large quantities of temporal data across so many different deconstructions of time becomes clumsy without a systematic approach. 
+
+In this vignette, we describe the tools in the package gravitas for systematically exploring large quantities of temporal data across different time deconstructions by visualizing the probability distributions. 
+
+
+# Computation of time granularities: 
+
 The package **gravitas** provides a tool to examine the probability distribution of univariate time series across bivariate temporal granularities using range of graphics in `ggplot2` through the following:  
 
  - create multiple-order-up circular or aperiodic temporal granularities.  
