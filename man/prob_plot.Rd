@@ -26,7 +26,7 @@ prob_plot(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL,
 
 \item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities}
 
-\item{symmetric}{If TRUE, symmetic quantile area plot is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd. Ideally, the quantile_prob should be a symmetric vector with median at the middle position.}
+\item{symmetric}{If TRUE, symmetic quantile area plot is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd and ideally the quantile_prob should be a symmetric vector with median at the middle position.}
 
 \item{alpha}{level of transperancy for the quantile area}
 
