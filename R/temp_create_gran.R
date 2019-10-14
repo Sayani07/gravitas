@@ -1,3 +1,6 @@
+#' Compute temporal granularities for a given tsibble
+
+
 temp_create_gran <- function(.data,
                              gran1 = NULL,
                              label = TRUE,

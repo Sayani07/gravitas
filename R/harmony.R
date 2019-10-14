@@ -8,7 +8,7 @@
 #' @param filter_in Choices of temporal units to be kept.
 #' @param filter_out Choices of temporal units to be discarded.
 #' @param ... added arguments to be passed.
-#' @return compatibility table providing if the two granularities are harmonies or clashes. FALSE indicates a clash. If harmony, then a tibble with desired granularities returned.
+#' @return  A tibble of harmonies and their levels.The levels can be used to decide which granularities to be plotted across x-axis/facets for exploratory aid.
 #' @examples
 #' library(dplyr)
 #' library(tsibbledata)

@@ -1,12 +1,4 @@
 #' Get set of possible temporal granularities for a given tsibble
-#'
-#' @param .data A tsibble object.
-#' @param ugran Upper temporal unit. Typically, it is set as the most coarse temporal unit required in the analysis. Default is "year".
-#' @param lgran Lowest temporal unit. For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals.
-#' @param filter_in Choices of temporal units to be kept.
-#' @param filter_out Choices of temporal units to be discarded.
-#' @param ... Other arguments to be passed.
-#' @return Set of possible granularities.
 
 temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, ...) {
   granularity <- lookup_table$units
