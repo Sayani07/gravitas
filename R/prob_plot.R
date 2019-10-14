@@ -8,7 +8,7 @@
 #' @param response response variable to be plotted
 #' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities
 #' @param quantile_prob numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "Decile" plot
-#' @param symmetric If TRUE, symmetic quantile area plot is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd. Ideally, the quantile_prob should be a symmetric vector with median at the middle position.
+#' @param symmetric If TRUE, symmetic quantile area plot is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd and ideally the quantile_prob should be a symmetric vector with median at the middle position.
 #' @param alpha level of transperancy for the quantile area
 #' @param ... other arguments to be passed for appropriate labels
 #' @return a ggplot object
@@ -19,23 +19,23 @@
 #' library(dplyr)
 #' library(tsibble)
 #' library(ggplot2)
-#' 
+#'
 #' vic_elec %>% prob_plot(
 #'   gran1 = "hour_day", gran2 = "day_week",
 #'   response = "Demand", plot_type = "quantile",
 #'   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
 #'   symmetric = TRUE, outlier.colour = "red", outlier.shape = 2, palette = "Dark2"
 #' )
-#' 
+#'
 #' cricket_tsibble <- cricketdata %>%
 #'   mutate(data_index = row_number()) %>%
 #'   as_tsibble(index = data_index)
-#' 
+#'
 #' hierarchy_model <- tibble::tibble(
 #'   units = c("index", "ball", "over", "inning", "match"),
 #'   convert_fct = c(1, 6, 20, 2, 1)
 #' )
-#' 
+#'
 #' cricket_tsibble %>%
 #'   prob_plot("inning_match", "over_inning",
 #'     hierarchy_tbl = hierarchy_model,
