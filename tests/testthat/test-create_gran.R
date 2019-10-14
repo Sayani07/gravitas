@@ -3,7 +3,7 @@ context("create granularities")
 x <- tsibbledata::vic_elec
 
 cricket_tsibble <- cricketdata %>%
-  dplyr::mutate(data_index = row_number()) %>%
+  dplyr::mutate(data_index = dplyr::row_number()) %>%
   tsibble::as_tsibble(index = data_index)
 
 hierarchy_model <- tibble::tibble(
