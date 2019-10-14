@@ -25,7 +25,7 @@ harmony(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL,
 \item{...}{added arguments to be passed.}
 }
 \value{
-compatibility table providing if the two granularities are harmonies or clashes. FALSE indicates a clash. If harmony, then a tibble with desired granularities returned.
+A tibble of harmonies and their levels.The levels can be used to decide which granularities to be plotted across x-axis/facets for exploratory aid.
 }
 \description{
 Get possible set of harmonies for a given tsibble

@@ -1,5 +1,3 @@
-#' Get set of possible temporal granularities for a given tsibble
-
 temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NULL, filter_out = NULL, ...) {
   granularity <- lookup_table$units
   constant <- lookup_table$convert_fct
