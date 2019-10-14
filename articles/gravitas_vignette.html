@@ -105,12 +105,12 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <h2 class="hasAnchor">
 <a href="#get-started" class="anchor"></a>Get started</h2>
 <p>One of the <a href="https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter">customer trials</a> conducted as part of the Smart Grid Smart City (SGSC) project (2010-2014) in Newcastle, New South Wales and some parts of Sydney providing customer wise data is employed to have a run through of this package. The data consists of half-hourly demand <code>general_supply_kwh</code> for more than 40k households across these places. Suppose we want to explore the probability distribution of the energy consumption for these households across different time granularities and identify their behavioral patterns. Data for the year 2013 for one household is used for illustration purposes.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">smart_meter_nsw &lt;-<span class="st"> </span>smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as_tsibble</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">ungroup</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#smart_meter10 &lt;- smart_meter10 %&gt;% as_tsibble() %&gt;% ungroup()</span></a></code></pre></div>
 <div id="get-set-of-possible-temporal-granularities-with-search_gran" class="section level3">
 <h3 class="hasAnchor">
 <a href="#get-set-of-possible-temporal-granularities-with-search_gran" class="anchor"></a>Get set of possible temporal granularities with <code>search_gran()</code>
 </h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">smart_meter_nsw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/search_gran.html">search_gran</a></span>()</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/search_gran.html">search_gran</a></span>()</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt;  [1] "hhour_hour"         "hhour_day"          "hhour_week"        </span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;  [4] "hhour_fortnight"    "hhour_month"        "hhour_quarter"     </span></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;  [7] "hhour_semester"     "hhour_year"         "hour_day"          </span></a>
@@ -130,7 +130,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 </h3>
 <p>The default for search gran in this case, provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarce temporal unit can be set to be “month”.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">smart_meter_nsw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/search_gran.html">search_gran</a></span>(<span class="dt">highest_unit  =</span> <span class="st">"month"</span>)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/search_gran.html">search_gran</a></span>(<span class="dt">highest_unit  =</span> <span class="st">"month"</span>)</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;  [1] "hhour_hour"      "hhour_day"       "hhour_week"     </span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;  [4] "hhour_fortnight" "hhour_month"     "hour_day"       </span></a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt;  [7] "hour_week"       "hour_fortnight"  "hour_month"     </span></a>
@@ -138,7 +138,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; [13] "week_fortnight"  "week_month"      "fortnight_month"</span></a></code></pre></div>
 <p>This looks better. However, some intermediate temporal units might not be pertinent to the analysis and we might want to remove them from the list of granularities that we want to examine.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">smart_meter_nsw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/search_gran.html">search_gran</a></span>(<span class="dt">highest_unit =</span> <span class="st">"month"</span>, <span class="dt">filter_out =</span> <span class="st">"fortnight"</span>)</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/search_gran.html">search_gran</a></span>(<span class="dt">highest_unit =</span> <span class="st">"month"</span>, <span class="dt">filter_out =</span> <span class="st">"fortnight"</span>)</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt;  [1] "hhour_hour"  "hhour_day"   "hhour_week"  "hhour_month" "hour_day"   </span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;  [6] "hour_week"   "hour_month"  "day_week"    "day_month"   "week_month"</span></a></code></pre></div>
 </div>
@@ -148,13 +148,13 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 </h3>
 <p>Now that we have the list of granularities that we want to look at, let us see which pairs form harmony/clash.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">smart_meter_nsw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"hour_day"</span>, <span class="dt">gran2 =</span> <span class="st">"day_week"</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"hour_day"</span>, <span class="dt">gran2 =</span> <span class="st">"day_week"</span>)</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; [1] "TRUE"</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">smart_meter_nsw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"hour_day"</span>, <span class="dt">gran2 =</span> <span class="st">"day_week"</span>, <span class="dt">facet_h =</span> <span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"hour_day"</span>, <span class="dt">gran2 =</span> <span class="st">"day_week"</span>, <span class="dt">facet_h =</span> <span class="dv">14</span>)</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; [1] "FALSE"</span></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">smart_meter_nsw <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"day_month"</span>, <span class="dt">gran2 =</span> <span class="st">"hhour_week"</span>)</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"day_month"</span>, <span class="dt">gran2 =</span> <span class="st">"hhour_week"</span>)</a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; [1] "TRUE"</span></a></code></pre></div>
 </div>
 <div id="get-all-possible-harmonies-with-harmony" class="section level3">
@@ -162,7 +162,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a href="#get-all-possible-harmonies-with-harmony" class="anchor"></a>Get all possible harmonies with <code>harmony()</code>
 </h3>
 <p>Or, we can find the set of harmonies all at once with the help of function <code>harmony</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">smart_meter_nsw  <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/harmony.html">harmony</a></span>(<span class="dt">ugran =</span> <span class="st">"month"</span>,</a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">smart_meter10  <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/harmony.html">harmony</a></span>(<span class="dt">ugran =</span> <span class="st">"month"</span>,</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">                             <span class="dt">filter_out =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"fortnight"</span>, <span class="st">"hhour"</span>),</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">                             <span class="dt">filter_in =</span> <span class="st">"wknd_wday"</span>)</a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; # A tibble: 84 x 4</span></a>
@@ -185,35 +185,31 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a href="#explore-probability-distribution-across-bivariate-temporal-granularities-with-prob_plot" class="anchor"></a>Explore probability distribution across bivariate temporal granularities with <code>prob_plot()</code>
 </h3>
 <p>Now, we want to view distribution of the measured variable <code>general_supply_kwh</code> across these bivariate granularities through different distribution plots using <code>prob_plot</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">smart_meter_nsw  <span class="op">%&gt;%</span></a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">smart_meter10  <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"day_week"</span>,</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">           <span class="st">"hour_day"</span>,</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">           <span class="st">"general_supply_kwh"</span>,</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">           <span class="dt">response =</span> <span class="st">"general_supply_kwh"</span>,</a>
 <a class="sourceLine" id="cb7-5" data-line-number="5">           <span class="dt">plot_type =</span> <span class="st">"violin"</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">1</span>, <span class="dv">24</span>, <span class="dv">3</span>))</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; The first measured variable</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;             plotted since no response variable specified</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;      granularities vary within or across facets.</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;      Use gran_obs() to find combinations which have low</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;             observations or very different number of observations.</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;      granularities vary within or across facets.</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;      Use gran_obs() to find combinations which have low</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;             observations or very different number of observations.</span></a></code></pre></div>
 <p><img src="gravitas_vignette_files/figure-html/example8-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>Suppose, we want a quantile plot, instead of a violin plot for viewing the distribution of energy consumption across similar temporal granularities.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">smart_meter_nsw  <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"day_week"</span>,</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">smart_meter10  <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"day_week"</span>,</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">                              <span class="st">"hour_day"</span>,</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">                              <span class="st">"general_supply_kwh"</span>,</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">                              <span class="dt">response  =</span> <span class="st">"general_supply_kwh"</span>,</a>
 <a class="sourceLine" id="cb8-4" data-line-number="4">                              <span class="dt">plot_type =</span> <span class="st">"quantile"</span>, <span class="dt">quantile_prob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>))</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; The first measured variable</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;             plotted since no response variable specified</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;      granularities vary within or across facets.</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;      Use gran_obs() to find combinations which have low</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;             observations or very different number of observations.</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;      granularities vary within or across facets.</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;      Use gran_obs() to find combinations which have low</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;             observations or very different number of observations.</span></a></code></pre></div>
 <p><img src="gravitas_vignette_files/figure-html/example6-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>This provides an useful warning suggesting quantiles should be computed with caution as number of observations might not be enough for reliable estimates.</p>
 <p><br></p>
 <p>Now, we want to view distribution of <code>general_supply_kwh</code> across the another set of harmonies - month_year and hour_day and let the package decide the plot type that is best suitable.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">smart_meter_nsw  <span class="op">%&gt;%</span><span class="st">   </span></a>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">smart_meter10  <span class="op">%&gt;%</span><span class="st">   </span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">    </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"month_year"</span>, <span class="st">"hour_day"</span>, </a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">           <span class="dt">response =</span> <span class="st">"general_supply_kwh"</span>, </a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">           <span class="co">#plot_type = "quantile", </span></a>
@@ -228,7 +224,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <p>Moving on, if we want to switch the facet and x-axis variable, we simply reverse the order of time granularities. Here, prob_plot would output a ggplot2 object. So we are free to add any element to the default plot.</p>
 <p><br></p>
 <p>Suppose, both the granularities chosen have too many levels, which is not suitable for facetting or are clashes, then warnings will be provided.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">smart_meter_nsw  <span class="op">%&gt;%</span></a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">smart_meter10  <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="dt">gran1 =</span> <span class="st">"day_quarter"</span>,</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">           <span class="dt">gran2 =</span> <span class="st">"day_week"</span>, </a>
 <a class="sourceLine" id="cb10-4" data-line-number="4">           <span class="st">"general_supply_kwh"</span>, </a>
@@ -250,7 +246,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a href="#create-any-temporal-granularity-with-create_gran" class="anchor"></a>Create any temporal granularity with <code>create_gran()</code>
 </h3>
 <p>Any granularity can be built using <code>create_gran</code> if any other plots are to explored which is not included in plot_types of <code>gran_plot</code> or for extracting any other summary statistics. They can be also be used for exploring distribution of the time series across univariate temporal granularity.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">smart_meter_nsw  <span class="op">%&gt;%</span></a>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">smart_meter10  <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/create_gran.html">create_gran</a></span>(<span class="st">"day_fortnight"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> <span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(day_fortnight),</a>
 <a class="sourceLine" id="cb11-4" data-line-number="4">                      <span class="dt">y =</span> general_supply_kwh)) <span class="op">+</span><span class="st"> </span></a>
