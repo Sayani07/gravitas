@@ -10,7 +10,6 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
     stop("Argument ugran is missing, with no default")
   }
 
-
   if (tsibble::is_regular(.data)) {
     interval_ts <- tsibble::interval(.data)
     data_interval <- interval_ts[interval_ts != 0]
@@ -22,7 +21,6 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
       }
       else if (lgran_multiple > 1) {
         index_lgran <- granularity %>% match(x = lgran_iden)
-
 
         if (constant[index_lgran] < lgran_multiple) {
           constant[index_lgran] <- constant[index_lgran] * constant[index_lgran + 1]
@@ -43,7 +41,6 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
     stop("lgran and ugran should be distinct")
   }
 
-
   if (g_order(lgran, ugran) == 1) {
     stop("Only one granularity ", lgran, "_", {
       ugran
@@ -55,16 +52,12 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
   index_gran2 <- granularity %>% match(x = ugran)
   gran2_set <- lookup_table$units[index_gran1:index_gran2]
 
-
   gran <- paste(gran1 = combn(gran2_set, 2)[1, ], gran2 = combn(gran2_set, 2)[2, ], sep = "_")
 
-  gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
+  gran_split <- stringr::str_split(gran, "_", 2) %>%
+    unlist() %>%
+    unique()
 
-
-  # if (!is.null(filter_in)) {
-  #   if (length(filter_in) == 1) {
-  #     stop("Atleast two temporal units to be provided for filter_in ")
-  #   }
   if (!is.null(filter_in)) {
     data_names <- names(.data)
     exhaust_set <- c(data_names, granularity, "wknd_wday")
@@ -79,7 +72,6 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
     }
 
     # if all filter_in are not column variables
-
     else {
       filter_in_sub <- filter_in[match(granularity, filter_in)]
       filter_in_sub <- filter_in_sub[!is.na(filter_in_sub)]
@@ -99,40 +91,6 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
     }
   }
 
-  # if(all(filter_in %in% data_names)==TRUE){
-  #       gran_input <- filter_in[!is.na(match(filter_in, data_names))]
-  #       gran2 <- c(gran, gran_input)
-  #       gran <- gran2
-  #     }
-  #
-
-  #   {
-  #    filter_in <- filter_in[match(granularity, filter_in)]
-  #    filter_in <- filter_in[!is.na(filter_in)]
-  #    gran_split <- gran_split[match(filter_in, gran_split)]
-  #    gran1 <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
-  #    gran <- gran1
-  # }
-  # if all filter_in are column variables
-  # if(all(filter_in %in% data_names)==TRUE){
-  # gran_input <- filter_in[!is.na(match(filter_in, data_names))]
-  # gran2 <- c(gran, gran_input)
-  # gran <- gran2
-  # }
-  # if some filter_in are temporal units and others are column variables
-  #     else{
-  #       gran <- c(gran1, gran2)
-  #       filter_in <- filter_in[match(granularity, filter_in)]
-  #       filter_in <- filter_in[!is.na(filter_in)]
-  #       gran_split <- gran_split[match(filter_in, gran_split)]
-  #       # gran_split <- c(gran_split, filter_in) %>% unique()
-  #       gran1 <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
-  #
-  #     }
-  #
-  #
-  #   }
-  # }
   else if (!is.null(filter_out)) {
     if (!all(filter_out %in% granularity)) {
       stop("temporal units to be filtered out not found: make sure vector contains units which are between lgran and ugran")

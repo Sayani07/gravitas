@@ -14,13 +14,13 @@
 # https://deanattali.com/2015/04/21/r-package-shiny-app/
 run_app <- function() {
   appDir <- system.file("shiny-examples",
-    "gravitas_app",
-    package = "gravitas"
+                        "gravitas_app",
+                        package = "gravitas"
   )
   if (appDir == "") {
     stop("Could not find example directory.
          Try re-installing `gravitas`.",
-      call. = FALSE
+         call. = FALSE
     )
   }
 

@@ -26,74 +26,64 @@ gran_advice <- function(.data,
     stop("must use tsibble")
   }
 
-
   if (is.null(gran1) | is.null(gran2)) {
     stop("Specify the granularities that are to be plotted")
   }
 
   # checking if input data is harmony
-  harmony <- is_harmony(
-    .data,
-    gran1,
-    gran2,
-    hierarchy_tbl
+  harmony <- is_harmony(.data,
+                        gran1,
+                        gran2,
+                        hierarchy_tbl
   )
 
-
-  homogenous <- is_homogenous(
-    .data,
-    gran1,
-    gran2,
-    hierarchy_tbl
+  homogenous <- is_homogenous(.data,
+                              gran1,
+                              gran2,
+                              hierarchy_tbl
   )
-
 
   plot_choices <- plot_choices(.data,
-    gran1,
-    gran2,
-    hierarchy_tbl,
-    facet_h = 31,
-    facet_m = 14,
-    facet_l = 7,
-    x_h = 31,
-    x_m = 14,
-    x_l = 7,
-    ...
+                               gran1,
+                               gran2,
+                               hierarchy_tbl,
+                               facet_h = 31,
+                               facet_m = 14,
+                               facet_l = 7,
+                               x_h = 31,
+                               x_m = 14,
+                               x_l = 7,
+                               ...
   )
 
-
-  gran_obs <- gran_obs(
-    .data,
-    gran1,
-    gran2,
-    hierarchy_tbl,
-    ...
+  gran_obs <- gran_obs(.data,
+                       gran1,
+                       gran2,
+                       hierarchy_tbl,
+                       ...
   )
 
-  return(list(harmony = harmony, homogenous = homogenous, plot_choices = plot_choices, gran_obs = gran_obs))
+  return(list(harmony = harmony,
+              homogenous = homogenous,
+              plot_choices = plot_choices,
+              gran_obs = gran_obs))
 }
-
-
-## ----gran_warn
-
 
 gran_warn <- function(.data,
                       gran1,
                       gran2,
                       hierarchy_tbl = NULL,
                       facet_h = NULL, ...) {
-  gran_advice <- gran_advice(
-    .data,
-    gran1,
-    gran2,
-    hierarchy_tbl
+  gran_advice <- gran_advice(.data,
+                             gran1,
+                             gran2,
+                             hierarchy_tbl
   )
 
-  gran_tbl <- gran_tbl(
-    .data,
-    gran1,
-    gran2,
-    hierarchy_tbl
+  gran_tbl <- gran_tbl(.data,
+                       gran1,
+                       gran2,
+                       hierarchy_tbl
   )
 
   gran1_level <- gran_tbl %>%
@@ -110,7 +100,6 @@ gran_warn <- function(.data,
     facet_h <- 31
   }
 
-
   if (gran_advice$harmony == "FALSE") {
     warning("Granularities chosen are Clashes.
             \nYou might be interested to look at the
@@ -125,14 +114,13 @@ gran_warn <- function(.data,
     }
 
 
-    # Facetting not recommended for so many levels
+    #TODO: Facetting not recommended for so many levels
 
     if (gran1_level > facet_h & gran2_level > facet_h) {
       warning(paste(
         "Facetting not recommended:
                   too many categories in ",
-        gran1,
-        "and", gran2
+        gran1, "and", gran2
       ))
     }
     else if (gran1_level > facet_h & gran2_level <= facet_h) {
@@ -154,12 +142,6 @@ gran_warn <- function(.data,
 }
 
 
-
-
-
-
-## ----plot_choices
-
 plot_choices <- function(.data,
                          gran1,
                          gran2,
@@ -170,13 +152,11 @@ plot_choices <- function(.data,
                          x_h = 31,
                          x_m = 14,
                          x_l = 7) {
-  data_count <- gran_tbl(
-    .data,
-    gran1,
-    gran2,
-    hierarchy_tbl
+  data_count <- gran_tbl(.data,
+                         gran1,
+                         gran2,
+                         hierarchy_tbl
   )
-
 
   gran1_level <- data_count %>%
     dplyr::select(!!rlang::quo_name(gran1)) %>%
@@ -189,11 +169,6 @@ plot_choices <- function(.data,
     nrow()
 
 
-  # very high facet levels
-  ## except when the number of levels across x-axis is low
-  ## only quantile plots are suggested
-
-
   if (gran1_level > facet_h) {
     if (gran2_level < x_l) {
       plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
@@ -204,74 +179,64 @@ plot_choices <- function(.data,
   }
 
   if (dplyr::between(gran1_level, facet_m, facet_h) &
-    gran2_level > x_h) # (high, very high)
+      gran2_level > x_h) # (high, very high)
   {
     plots_list <- c("quantile")
   }
 
   else if (dplyr::between(gran1_level, facet_m, facet_h) &
-    dplyr::between(gran2_level, x_m, x_h)) # (high, high)
+           dplyr::between(gran2_level, x_m, x_h)) # (high, high)
   {
     plots_list <- c("quantile")
   }
 
   else if (dplyr::between(gran1_level, facet_m, facet_h) &
-    dplyr::between(gran2_level, x_l, x_m)) # (high, medium)
+           dplyr::between(gran2_level, x_l, x_m)) # (high, medium)
   {
     plots_list <- c("quantile")
   }
   else if (dplyr::between(gran1_level, facet_m, facet_h) &
-    gran2_level < x_l) # (high, low)
+           gran2_level < x_l) # (high, low)
+  {
+    plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
+  }
+
+  else if (dplyr::between(gran1_level, facet_l, facet_m) &
+           gran2_level > x_h) # (medium, very high)
+  {
+    plots_list <- c("quantile")
+  }
+  else if (dplyr::between(gran1_level, facet_l, facet_m) &
+           dplyr::between(gran2_level, x_m, x_h)) # (medium, high)
+  {
+    plots_list <- c("quantile")
+  }
+
+  else if (dplyr::between(gran1_level, facet_l, facet_m) &
+           dplyr::between(gran2_level, x_l, x_m)) # (medium, medium)
+  {
+    plots_list <- c("violin", "lv", "quantile", "boxplot")
+  }
+  else if (dplyr::between(gran1_level, facet_l, facet_m) &
+           gran2_level < x_l) # (medium, low)
   {
     plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
   }
 
 
-  # medium facet levels
-  # for high and very high levels in x-axis quantiles are suggested
-  # for medium and low levels in x-axis, all other plots might be drawn
-  # for medium, ridge is removed from list
-
-  else if (dplyr::between(gran1_level, facet_l, facet_m) &
-    gran2_level > x_h) # (medium, very high)
-  {
-    plots_list <- c("quantile")
-  }
-  else if (dplyr::between(gran1_level, facet_l, facet_m) &
-    dplyr::between(gran2_level, x_m, x_h)) # (medium, high)
-  {
-    plots_list <- c("quantile")
-  }
-
-  else if (dplyr::between(gran1_level, facet_l, facet_m) &
-    dplyr::between(gran2_level, x_l, x_m)) # (medium, medium)
-  {
-    plots_list <- c("violin", "lv", "quantile", "boxplot")
-  }
-  else if (dplyr::between(gran1_level, facet_l, facet_m) &
-    gran2_level < x_l) # (medium, low)
-  {
-    plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
-  }
-
-  # low facet levels
-  ## for very high, only quantiles are suggested
-  ## for  high and medium, all except ridge plots suggested
-  ## for low, all plots can be drawn
-
   else if (gran1_level < facet_l &
-    gran2_level > x_h) # (low, very high)
+           gran2_level > x_h) # (low, very high)
   {
     plots_list <- c("quantile")
   }
   else if (gran1_level < facet_l &
-    dplyr::between(gran2_level, x_m, x_h)) # (low, high)
+           dplyr::between(gran2_level, x_m, x_h)) # (low, high)
   {
     plots_list <- c("violin", "lv", "quantile", "boxplot")
   }
 
   else if (gran1_level < facet_l &
-    dplyr::between(gran2_level, x_l, x_m)) # (low, medium)
+           dplyr::between(gran2_level, x_l, x_m)) # (low, medium)
   {
     plots_list <- c("violin", "lv", "quantile", "boxplot")
   }
@@ -283,27 +248,22 @@ plot_choices <- function(.data,
   plots_list
 }
 
-## ----is_homogenous
-
 is_homogenous <- function(.data,
                           gran1,
                           gran2,
                           hierarchy_tbl = NULL) {
 
   # inter facet homogeneity
-
-  data_count <- gran_tbl(
-    .data,
-    gran1,
-    gran2,
-    hierarchy_tbl
+  data_count <- gran_tbl(.data,
+                         gran1,
+                         gran2,
+                         hierarchy_tbl
   )
 
   inter_facet_homogeneity <- data_count %>%
     dplyr::group_by(!!rlang::quo_name(gran1)) %>%
-    dplyr::summarise(
-      min_c = min(nobs),
-      max_c = max(nobs)
+    dplyr::summarise(min_c = min(nobs),
+                     max_c = max(nobs)
     ) %>%
     dplyr::summarise(sum = sum(dplyr::if_else(min_c == max_c, 0, 1))) %>%
     dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
@@ -316,14 +276,16 @@ is_homogenous <- function(.data,
     dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
 
 
-  value_r <- tibble(inter_facet = inter_facet_homogeneity$value, intra_facet = intra_facet_homogeneity$value)
-
-  value_r
+  value_r <- tibble(inter_facet = inter_facet_homogeneity$value,
+                    intra_facet = intra_facet_homogeneity$value)
+  return(value_r)
 }
 
-## ----gran_tbl
 
-gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL) {
+gran_tbl <- function(.data,
+                     gran1,
+                     gran2,
+                     hierarchy_tbl = NULL) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
@@ -348,7 +310,6 @@ gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL) {
   Allcomb <- data_mutate %>%
     tidyr::expand(.data[[gran1]], .data[[gran2]])
 
-
   combexist <- data_mutate %>%
     tibble::as_tibble(name_repair = "minimal") %>%
     dplyr::group_by(.data[[gran1]], .data[[gran2]]) %>%
@@ -358,18 +319,14 @@ gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL) {
 
   output <- Allcomb %>%
     dplyr::left_join(combexist, by = c(gran1, gran2)) %>%
-    dplyr::select(
-      gran1, gran2,
-      nobs := count
+    dplyr::select(gran1,
+                  gran2,
+                  nobs := count
     ) %>%
     dplyr::mutate(nobs = tidyr::replace_na(nobs, 0))
 
-
   return(output)
 }
-## ----gran_obs
-
-
 
 #' Cross tabulation of granularities
 #' useful for validating if number of observations are sufficient to compute probability distributions
@@ -386,10 +343,10 @@ gran_tbl <- function(.data, gran1, gran2, hierarchy_tbl = NULL) {
 #' library(ggplot2)
 #' vic_elec %>% gran_obs("hour_day", "day_week")
 #' @export gran_obs
-
-
-
-gran_obs <- function(.data, gran1, gran2, hierarchy_tbl = NULL) {
+gran_obs <- function(.data,
+                     gran1,
+                     gran2,
+                     hierarchy_tbl = NULL) {
   gran_tbl(.data, gran1, gran2, hierarchy_tbl) %>%
     tidyr::spread(
       key = !!gran1,
