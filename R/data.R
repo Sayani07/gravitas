@@ -28,3 +28,14 @@
 #'
 #' @usage data(cricketdata)
 "cricketdata"
+
+#' Cricket data IPL season 2008 to 2016
+#'
+#' The Indian Premiere League played
+#' by teams representing
+#' different cities in India conisting of match_id, batting and bowling #' team, innings, over, runs per overs and rate rate per over
+#' The data is obtained from url{https://www.kaggle.com/littleraj30
+#' /indian-premier-league-2019-ball-by-ball/version/1}
+#'
+#' @usage data(cricket)
+"cricket"
