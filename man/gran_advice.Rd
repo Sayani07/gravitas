@@ -22,11 +22,10 @@ a list of summary check points before visualizing distribution across bivariate 
 Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity
 }
 \examples{
-library(gravitas)
 library(tsibbledata)
-library(tsibble)
-vic_elec \%>\% gran_advice(.data,
+vic_elec \%>\% gran_advice(
   gran1 = "hour_day",
   gran2 = "day_month"
 )
+
 }

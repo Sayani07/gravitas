@@ -7,13 +7,12 @@
 #' @return a list of summary check points before visualizing distribution across bivariate granularities
 #
 #' @examples
-#' library(gravitas)
 #' library(tsibbledata)
-#' library(tsibble)
-#' vic_elec %>% gran_advice(.data,
+#' vic_elec %>% gran_advice(
 #'   gran1 = "hour_day",
 #'   gran2 = "day_month"
 #' )
+#'
 #' @export
 gran_advice <- function(.data,
                         gran1,
