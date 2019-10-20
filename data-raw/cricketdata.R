@@ -49,3 +49,6 @@ cricketdata <- cricket_over_inning_crctd %>%
   filter(inning %in% c(1, 2))
 
 save(cricketdata, file = "data/cricketdata.rda", compress = "gzip", version = 2)
+
+
+
