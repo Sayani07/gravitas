@@ -64,17 +64,21 @@ cricketdata <- cricket_over_inning_crctd %>%
   filter(inning %in% c(1, 2))
 
 
+cricket <- cricketdata %>% select(season, match_id,
+                                  inning, batting_team,
+                                  bowling_team, ball_per_over,
+                                  over, winner, dismissal_kind,
+                                  total_runs)
 
-
-cricket <- cricketdata %>% group_by(season,
-                                    match_id,
-                                    batting_team,
-                                    bowling_team,
-                                    inning,
-                                    over) %>%
-  summarise(runs_per_over = sum(total_runs),
-            run_rate = sum(total_runs)/length(total_runs)) %>%
-  ungroup()
+# cricket <- cricketdata %>% group_by(season,
+#                                     match_id,
+#                                     batting_team,
+#                                     bowling_team,
+#                                     inning,
+#                                     over) %>%
+#   summarise(runs_per_over = sum(total_runs),
+#             run_rate = sum(total_runs)/length(total_runs)) %>%
+#   ungroup()
 
 
 # cricket_tsibble_all <- cricket_per_over %>%
