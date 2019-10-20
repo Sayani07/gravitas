@@ -29,51 +29,70 @@ test_that("create_gran error with null input", {
 
 test_that("create_gran throws error with
           no granularity specified", {
-  expect_error(create_gran(x),
-               "Provide the granularity that\n         needs to be computed")
+  expect_error(
+    create_gran(x),
+    "Provide the granularity that\n         needs to be computed"
+  )
 })
 
 
 
 test_that("tsibble output", {
-  expect_is(create_gran(x,
-                        "hour_day"),
-            c("tbl_ts", "tbl_df", "tbl", "data.frame"))
+  expect_is(
+    create_gran(
+      x,
+      "hour_day"
+    ),
+    c("tbl_ts", "tbl_df", "tbl", "data.frame")
+  )
 })
 
 test_that("create grans creates a factor", {
-  expect_is(create_gran(x, "hhour_week") %>%
-              as_tibble() %>%
-              .$hhour_week,
-            "factor")
+  expect_is(
+    create_gran(x, "hhour_week") %>%
+      as_tibble() %>%
+      .$hhour_week,
+    "factor"
+  )
 })
 
 test_that("create_gran error with incorrect
           input for lower part of granularity", {
-  expect_error(create_gran(x,
-                           "hours_day"),
-               "lower part of granularity must
-           be listed as an element in the hierarchy table")
+  expect_error(
+    create_gran(
+      x,
+      "hours_day"
+    ),
+    "lower part of granularity must
+           be listed as an element in the hierarchy table"
+  )
 })
 
 test_that("create_gran error with incorrect
           input for upper part of granularity", {
-  expect_error(create_gran(x,
-                           "hour_days"),
-               "upper part of granularity must
-           be listed as an element in the hierarchy table")
+  expect_error(
+    create_gran(
+      x,
+      "hour_days"
+    ),
+    "upper part of granularity must
+           be listed as an element in the hierarchy table"
+  )
 })
 
 # non-temporal data
 
 test_that("create grans creates a
           factor for non-temporal data", {
-  expect_is(create_gran(cricket_tsibble,
-                        "ball_inning",
-                        hierarchy_tbl = hierarchy_model) %>%
-              as_tibble() %>%
-              .$ball_inning,
-            "factor")
+  expect_is(
+    create_gran(cricket_tsibble,
+      "ball_inning",
+      hierarchy_tbl = hierarchy_model
+    ) %>%
+      as_tibble() %>%
+      .$ball_inning,
+    "factor"
+  )
 })
 
 
@@ -81,8 +100,10 @@ test_that("create grans creates a
 test_that("create grans throws error
           if hierarchy table no provided for non-temporal data", {
   expect_error(
-    create_gran(cricket_tsibble,
-                "ball_inning"),
+    create_gran(
+      cricket_tsibble,
+      "ball_inning"
+    ),
     "Hierarchy table must be provided\n           when class of index of the tsibble\n           is not date-time"
   )
 })
@@ -91,9 +112,11 @@ test_that("create grans throws error
 test_that("create grans throws error if
           incorrect input for lower part of gran", {
   expect_error(
-    create_gran(cricket_tsibble,
-                "balls_inning",
-                hierarchy_model),
+    create_gran(
+      cricket_tsibble,
+      "balls_inning",
+      hierarchy_model
+    ),
     "lower part of granularity must be\n           listed as an element in the hierarchy table"
   )
 })
@@ -101,9 +124,11 @@ test_that("create grans throws error if
 test_that("create grans throws error
           if incorrect input for upper part of gran", {
   expect_error(
-    create_gran(cricket_tsibble,
-                "ball_innings",
-                hierarchy_model),
+    create_gran(
+      cricket_tsibble,
+      "ball_innings",
+      hierarchy_model
+    ),
     "upper part of granularity must be\n           listed as an element in the hierarchy table"
   )
 })

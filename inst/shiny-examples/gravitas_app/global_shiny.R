@@ -9,7 +9,7 @@ so_many_problems <- function(){
   warning("warn")
   warning("warn2")
   warning("warn3")
-  if(runif(1) > 0.5){
+  if (runif(1) > 0.5){
     stop("error")
   }
   "yay"

@@ -34,28 +34,20 @@ A tsibble with an additional column of granularity
 Build dynamic temporal granularities
 }
 \examples{
-library(gravitas)
 library(dplyr)
 library(tsibble)
 library(ggplot2)
-
 
 smart_meter <- smart_meter10 \%>\%
 as_tsibble() \%>\%
 ungroup()
 
-
 # Search for granularities
-
-
 smart_meter \%>\%
   search_gran(highest_unit = "month")
 
-
 # Screen harmonies from the search list
 \dontrun{
-
-
 smart_meter \%>\%
   harmony(
     ugran = "fortnight",
@@ -63,11 +55,8 @@ smart_meter \%>\%
     filter_in = "wknd_wday"
   )
 
-
 # visualize probability distribution of
 # the harmony pair (wknd_wday, hour_day)
-
-
 smart_meter \%>\%
   prob_plot(
     gran1 = "wknd_wday",
@@ -79,14 +68,10 @@ smart_meter \%>\%
   scale_y_sqrt()
 }
 
-
 # Compute granularities for non-temporal data
-
-
 cricket_tsibble <- cricketdata \%>\%
   mutate(data_index = row_number()) \%>\%
   as_tsibble(index = data_index)
-
 
 hierarchy_model <- tibble::tibble(
   units = c("index", "ball", "over", "inning", "match"),
@@ -98,11 +83,8 @@ cricket_tsibble \%>\%
     hierarchy_model
   )
 
-
 # Validate if given column in the data set
 # equals computed granularity
-
-
 validate_gran(cricket_tsibble,
 gran = "over_inning",
 hierarchy_tbl = hierarchy_model,
