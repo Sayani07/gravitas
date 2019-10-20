@@ -23,8 +23,8 @@
 #'
 #'
 #' smart_meter <- smart_meter10 %>%
-#' as_tsibble() %>%
-#' ungroup()
+#'   as_tsibble() %>%
+#'   ungroup()
 #'
 #'
 #' # Search for granularities
@@ -86,11 +86,10 @@
 #'
 #'
 #' validate_gran(cricket_tsibble,
-#' gran = "over_inning",
-#' hierarchy_tbl = hierarchy_model,
-#'  validate_col = "over")
-#'
-#'
+#'   gran = "over_inning",
+#'   hierarchy_tbl = hierarchy_model,
+#'   validate_col = "over"
+#' )
 #' @export
 create_gran <- function(.data, gran1 = NULL, hierarchy_tbl = NULL, label = TRUE, abbr = TRUE, ...) {
 
