@@ -19,15 +19,6 @@
 "smart_meter10"
 
 
-#' Cricket data for IPL 2008
-#'
-#' The Indian Premiere League played
-#' by eight teams representing
-#' different cities in India for 2008.
-#' The data is obtained from url{https://www.kaggle.com/littleraj30/indian-premier-league-2019-ball-by-ball/version/1}
-#'
-#' @usage data(cricketdata)
-"cricketdata"
 
 #' Cricket data IPL season 2008 to 2016
 #'
