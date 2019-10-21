@@ -83,7 +83,7 @@ smart_meter \%>\%
 # Compute granularities for non-temporal data
 
 
-cricket_tsibble <- cricketdata \%>\%
+cricket_tsibble <- cricket \%>\%
   mutate(data_index = row_number()) \%>\%
   as_tsibble(index = data_index)
 

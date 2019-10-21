@@ -27,7 +27,7 @@ Validate created granularities with existing columns
 \examples{
 library(dplyr)
 library(tsibble)
-cricket_tsibble <- cricketdata \%>\%
+cricket_tsibble <- cricket \%>\%
   mutate(data_index = row_number()) \%>\%
   as_tsibble(index = data_index)
 
@@ -39,7 +39,7 @@ hierarchy_model <- tibble::tibble(
 cricket_tsibble \%>\% validate_gran(
   gran = "ball_over",
   hierarchy_tbl = hierarchy_model,
-  validate_col = "ball"
+  validate_col = "ball_per_over"
 )
 cricket_tsibble \%>\% validate_gran(
   gran = "over_inning",

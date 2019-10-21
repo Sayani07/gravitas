@@ -2,7 +2,7 @@ context("check if two granularities are harmonies")
 
 x <- tsibbledata::vic_elec
 
-cricket_tsibble <- cricketdata %>%
+cricket_tsibble <- cricket %>%
   dplyr::mutate(data_index = row_number()) %>%
   tsibble::as_tsibble(index = data_index)
 

@@ -65,7 +65,7 @@
 #' # Compute granularities for non-temporal data
 #'
 #'
-#' cricket_tsibble <- cricketdata %>%
+#' cricket_tsibble <- cricket %>%
 #'   mutate(data_index = row_number()) %>%
 #'   as_tsibble(index = data_index)
 #'
@@ -228,7 +228,7 @@ dynamic_build_gran <- function(x, lgran = NULL, ugran = NULL, hierarchy_tbl = NU
 #' @examples
 #' library(dplyr)
 #' library(tsibble)
-#' cricket_tsibble <- cricketdata %>%
+#' cricket_tsibble <- cricket %>%
 #'   mutate(data_index = row_number()) %>%
 #'   as_tsibble(index = data_index)
 #'
@@ -240,7 +240,7 @@ dynamic_build_gran <- function(x, lgran = NULL, ugran = NULL, hierarchy_tbl = NU
 #' cricket_tsibble %>% validate_gran(
 #'   gran = "ball_over",
 #'   hierarchy_tbl = hierarchy_model,
-#'   validate_col = "ball"
+#'   validate_col = "ball_per_over"
 #' )
 #' cricket_tsibble %>% validate_gran(
 #'   gran = "over_inning",
