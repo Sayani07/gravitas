@@ -35,25 +35,21 @@ Build dynamic temporal granularities
 }
 \examples{
 
-smart_meter <- smart_meter10 \%>\%
-  as_tsibble() \%>\%
-  ungroup()
 # Search for granularities
-smart_meter \%>\%
-  search_gran(highest_unit = "month")
+smart_meter10 \%>\%
+  search_gran(highest_unit = "week")
 
 # Screen harmonies from the search list
-\dontrun{
-smart_meter \%>\%
+
+smart_meter10 \%>\%
   harmony(
-    ugran = "fortnight",
-    filter_out = c("hhour"),
+    ugran = "day",
     filter_in = "wknd_wday"
   )
 
 # visualize probability distribution of
 # the harmony pair (wknd_wday, hour_day)
-smart_meter \%>\%
+smart_meter10 \%>\%
   prob_plot(
     gran1 = "wknd_wday",
     gran2 = "hour_day",
@@ -62,10 +58,8 @@ smart_meter \%>\%
     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
   ) +
   scale_y_sqrt()
-}
 
 # Compute granularities for non-temporal data
-
 
 cricket_tsibble <- cricket \%>\%
   mutate(data_index = row_number()) \%>\%
