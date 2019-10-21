@@ -14,6 +14,39 @@
 #' )
 #'
 #' @export
+
+
+#define the S3 method with USeMethod
+
+
+advice <- function(x) UseMethod("advice")
+
+advice.gran_advice <- function(object){
+
+   z <- object
+
+   # cat("Recommended plots:", z$plot_choices, "\n")
+   # cat("gran_obs:")
+   # z$gran_obs
+   #print(z$gran_obs)
+
+   ans <- NULL
+   # ans$harmony <-  cat("Harmony:", z$harmony,  "\n")
+   # ans$homogenous <-  z$homogenous
+   # ans$gran_obs <- z$gran_obs
+
+    #ans <- z[c("harmony", "homogenous", "plot_choices")]
+        #gran_obs <- z$gran_obs
+        #harmony <- z$harmony
+        #ans <-  list(gran_obs = gran_obs, harmony)
+        ans <- cat("Recommended plot(s) include", z$plot_choices, "/n")
+        #names(gran_obs) <- "gran_obs"
+        #class(ans) <- "advice.gran_advice"
+        ans
+
+}
+
+
 gran_advice <- function(.data,
                         gran1,
                         gran2,
@@ -62,10 +95,13 @@ gran_advice <- function(.data,
                        ...
   )
 
-  return(list(harmony = harmony,
-              homogenous = homogenous,
-              plot_choices = plot_choices,
-              gran_obs = gran_obs))
+  z <- list(harmony = harmony,
+            homogenous = homogenous,
+            plot_choices = plot_choices,
+            gran_obs = gran_obs)
+
+  class(z) <- "gran_advice"
+  z
 }
 
 gran_warn <- function(.data,
