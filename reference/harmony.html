@@ -92,6 +92,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/cricket.html">Exploring probability distributions for bivariate granularities for a non-temporal case </a>
+    </li>
+    <li>
       <a href="../articles/gravitas_vignette.html">Exploring probability distributions for bivariate temporal granularities</a>
     </li>
   </ul>
@@ -138,15 +141,19 @@
     </tr>
     <tr>
       <th>ugran</th>
-      <td><p>Typically set as the most coarse unit required in the analysis. Default is "year".</p></td>
+      <td><p>Typically set as the most coarse unit required in the analysis.
+Default is "year".</p></td>
     </tr>
     <tr>
       <th>lgran</th>
-      <td><p>For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals. Typically serves as the finest unit required for analysis.</p></td>
+      <td><p>For "regular" tsibble, lgran is the interval of the tsibble.
+It needs to be specified for "irregular" time intervals. Typically serves
+as the finest unit required for analysis.</p></td>
     </tr>
     <tr>
       <th>hierarchy_tbl</th>
-      <td><p>A hierarchy table specifying the hierarchy of units and their relationships</p></td>
+      <td><p>A hierarchy table specifying the hierarchy of units and
+their relationships</p></td>
     </tr>
     <tr>
       <th>filter_in</th>
@@ -168,7 +175,9 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble of harmonies and their levels.The levels can be used to decide which granularities to be plotted across x-axis/facets for exploratory aid.</p>
+    <p>A tibble of harmonies and their levels.The levels can be used to
+decide which granularities to be plotted across x-axis/facets for
+exploratory aid.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
