@@ -20,6 +20,11 @@
 \alias{median}
 \alias{shinytheme}
 \alias{useShinyalert}
+\alias{as_tsibble}
+\alias{ungroup}
+\alias{mutate}
+\alias{resolution}
+\alias{alpha}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -27,9 +32,9 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{groups}}}
+  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{groups}}, \code{\link[dplyr]{ungroup}}, \code{\link[dplyr]{mutate}}}
 
-  \item{ggplot2}{\code{\link[ggplot2]{xlab}}, \code{\link[ggplot2]{ylab}}, \code{\link[ggplot2]{scale_fill_brewer}}, \code{\link[ggplot2]{aes}}}
+  \item{ggplot2}{\code{\link[ggplot2]{xlab}}, \code{\link[ggplot2]{ylab}}, \code{\link[ggplot2]{scale_fill_brewer}}, \code{\link[ggplot2]{aes}}, \code{\link[ggplot2]{resolution}}, \code{\link[ggplot2]{alpha}}}
 
   \item{lvplot}{\code{\link[lvplot]{geom_lv}}}
 
@@ -42,5 +47,7 @@ below to see their documentation.
   \item{stats}{\code{\link[stats]{quantile}}, \code{\link[stats]{median}}}
 
   \item{tibble}{\code{\link[tibble]{as_tibble}}, \code{\link[tibble]{tibble}}}
+
+  \item{tsibble}{\code{\link[tsibble]{as_tsibble}}}
 }}
 

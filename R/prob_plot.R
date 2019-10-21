@@ -15,8 +15,6 @@
 #
 #' @examples
 #' library(tsibbledata)
-#' library(dplyr)
-#' library(tsibble)
 #' library(ggplot2)
 #'
 #' vic_elec %>% prob_plot(

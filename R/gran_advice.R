@@ -13,38 +13,10 @@
 #'   gran2 = "day_month"
 #' )
 #'
-#' @export
+#' @export gran_advice
 
 
 #define the S3 method with USeMethod
-
-
-advice <- function(x) UseMethod("advice")
-
-advice.gran_advice <- function(object){
-
-   z <- object
-
-   # cat("Recommended plots:", z$plot_choices, "\n")
-   # cat("gran_obs:")
-   # z$gran_obs
-   #print(z$gran_obs)
-
-   ans <- NULL
-   # ans$harmony <-  cat("Harmony:", z$harmony,  "\n")
-   # ans$homogenous <-  z$homogenous
-   # ans$gran_obs <- z$gran_obs
-
-    #ans <- z[c("harmony", "homogenous", "plot_choices")]
-        #gran_obs <- z$gran_obs
-        #harmony <- z$harmony
-        #ans <-  list(gran_obs = gran_obs, harmony)
-        ans <- cat("Recommended plot(s) include", z$plot_choices, "/n")
-        #names(gran_obs) <- "gran_obs"
-        #class(ans) <- "advice.gran_advice"
-        ans
-
-}
 
 
 gran_advice <- function(.data,
@@ -100,9 +72,38 @@ gran_advice <- function(.data,
             plot_choices = plot_choices,
             gran_obs = gran_obs)
 
-  class(z) <- "gran_advice"
+  #class(z) <- "gran_advice"
   z
 }
+
+
+advice <- function(x) UseMethod("advice")
+
+advice.gran_advice <- function(object){
+
+  z <- object
+
+  # cat("Recommended plots:", z$plot_choices, "\n")
+  # cat("gran_obs:")
+  # z$gran_obs
+  #print(z$gran_obs)
+
+  ans <- NULL
+  # ans$harmony <-  cat("Harmony:", z$harmony,  "\n")
+  # ans$homogenous <-  z$homogenous
+  # ans$gran_obs <- z$gran_obs
+
+  #ans <- z[c("harmony", "homogenous", "plot_choices")]
+  #gran_obs <- z$gran_obs
+  #harmony <- z$harmony
+  #ans <-  list(gran_obs = gran_obs, harmony)
+  ans <- cat("Recommended plot(s) include", z$plot_choices, "/n")
+  #names(gran_obs) <- "gran_obs"
+  #class(ans) <- "advice.gran_advice"
+  ans
+
+}
+
 
 gran_warn <- function(.data,
                       gran1,
@@ -297,18 +298,19 @@ is_homogenous <- function(.data,
 
   inter_facet_homogeneity <- data_count %>%
     dplyr::group_by(!!rlang::quo_name(gran1)) %>%
-    dplyr::summarise(min_c = min(nobs),
-                     max_c = max(nobs)
-    ) %>%
-    dplyr::summarise(sum = sum(dplyr::if_else(min_c == max_c, 0, 1))) %>%
+    dplyr::summarise(gini_meas = ineq::ineq(nobs)) %>%
+    dplyr::mutate(total_gini_meas = dplyr::if_else(gini_meas > 0.8, 1 ,0)) %>%
+    dplyr::summarise(sum = sum(total_gini_meas)) %>%
     dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
 
   # intra facet homogeneity
   intra_facet_homogeneity <- data_count %>%
     dplyr::group_by(!!rlang::quo_name(gran2)) %>%
-    dplyr::summarise(min_c = min(nobs), max_c = max(nobs)) %>%
-    dplyr::summarise(sum = sum(dplyr::if_else(min_c == max_c, 0, 1))) %>%
+    dplyr::summarise(gini_meas = ineq::ineq(nobs)) %>%
+    dplyr::mutate(total_gini_meas = dplyr::if_else(gini_meas > 0.8, 1 ,0)) %>%
+    dplyr::summarise(sum = sum(total_gini_meas)) %>%
     dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
+
 
 
   value_r <- tibble(inter_facet = inter_facet_homogeneity$value,

@@ -9,7 +9,6 @@
 #' @param ... Other arguments to be passed.
 #' @return Set of possible granularities.
 #' @examples
-#' library(dplyr)
 #' library(tsibbledata)
 #' vic_elec %>% search_gran(lowest_unit = "hour", highest_unit = "month")
 #' @export

@@ -34,9 +34,6 @@ A tsibble with an additional column of granularity
 Build dynamic temporal granularities
 }
 \examples{
-library(dplyr)
-library(tsibble)
-library(ggplot2)
 
 smart_meter <- smart_meter10 \%>\%
   as_tsibble() \%>\%

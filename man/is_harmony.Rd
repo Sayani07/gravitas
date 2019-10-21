@@ -26,8 +26,6 @@ TRUE if two granularties are harmonies.
 Check if two temporal granularities are harmonies
 }
 \examples{
-library(dplyr)
 library(tsibbledata)
-library(ggplot2)
 vic_elec \%>\% is_harmony("hour_day", "day_week")
 }

@@ -73,3 +73,28 @@ shinythemes::shinytheme
 #' @importFrom shinyalert useShinyalert
 #' @export
 shinyalert::useShinyalert
+
+#' @importFrom tsibble as_tsibble
+#' @export
+tsibble::as_tsibble
+
+
+#' @importFrom dplyr ungroup
+#' @export
+dplyr::ungroup
+
+#' @importFrom dplyr mutate
+#' @export
+dplyr::mutate
+
+#' @importFrom ggplot2 resolution
+#' @export
+ggplot2::resolution
+
+#' @importFrom ggplot2 alpha
+#' @export
+ggplot2::alpha
+
+
+
+

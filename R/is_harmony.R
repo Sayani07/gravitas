@@ -8,9 +8,7 @@
 #' @param ... Added arguments to be passed
 #' @return TRUE if two granularties are harmonies.
 #' @examples
-#' library(dplyr)
 #' library(tsibbledata)
-#' library(ggplot2)
 #' vic_elec %>% is_harmony("hour_day", "day_week")
 #' @export is_harmony
 

@@ -16,9 +16,8 @@
 #' decide which granularities to be plotted across x-axis/facets for
 #' exploratory aid.
 #' @examples
-#' library(dplyr)
 #' library(tsibbledata)
-#' # tsibbledata::vic_elec %>% harmony(lgran = "hour", ugran = "week")
+#' vic_elec %>% harmony(lgran = "hour", ugran = "week")
 #' @export harmony
 harmony <- function(.data,
                     ugran = "year",
