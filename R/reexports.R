@@ -95,6 +95,9 @@ ggplot2::resolution
 #' @export
 ggplot2::alpha
 
+#' @importFrom ggplot2 scale_y_sqrt
+#' @export
+ggplot2::scale_y_sqrt
 
 
 

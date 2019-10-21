@@ -25,6 +25,7 @@
 \alias{mutate}
 \alias{resolution}
 \alias{alpha}
+\alias{scale_y_sqrt}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -34,7 +35,7 @@ below to see their documentation.
 \describe{
   \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{groups}}, \code{\link[dplyr]{ungroup}}, \code{\link[dplyr]{mutate}}}
 
-  \item{ggplot2}{\code{\link[ggplot2]{xlab}}, \code{\link[ggplot2]{ylab}}, \code{\link[ggplot2]{scale_fill_brewer}}, \code{\link[ggplot2]{aes}}, \code{\link[ggplot2]{resolution}}, \code{\link[ggplot2]{alpha}}}
+  \item{ggplot2}{\code{\link[ggplot2]{xlab}}, \code{\link[ggplot2]{ylab}}, \code{\link[ggplot2]{scale_fill_brewer}}, \code{\link[ggplot2]{aes}}, \code{\link[ggplot2]{resolution}}, \code{\link[ggplot2]{alpha}}, \code{\link[ggplot2]{scale_y_sqrt}}}
 
   \item{lvplot}{\code{\link[lvplot]{geom_lv}}}
 
