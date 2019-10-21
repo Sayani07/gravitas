@@ -41,8 +41,8 @@ library(ggplot2)
 
 
 smart_meter <- smart_meter10 \%>\%
-as_tsibble() \%>\%
-ungroup()
+  as_tsibble() \%>\%
+  ungroup()
 
 
 # Search for granularities
@@ -104,9 +104,8 @@ cricket_tsibble \%>\%
 
 
 validate_gran(cricket_tsibble,
-gran = "over_inning",
-hierarchy_tbl = hierarchy_model,
- validate_col = "over")
-
-
+  gran = "over_inning",
+  hierarchy_tbl = hierarchy_model,
+  validate_col = "over"
+)
 }
