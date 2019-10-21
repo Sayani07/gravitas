@@ -208,8 +208,6 @@ dynamic_build_gran <- function(x, lgran = NULL, ugran = NULL, hierarchy_tbl = NU
 #' @return A tsibble with an additional column of granularity
 #'
 #' @examples
-#' library(dplyr)
-#' library(tsibble)
 #' cricket_tsibble <- cricket %>%
 #'   mutate(data_index = row_number()) %>%
 #'   as_tsibble(index = data_index)

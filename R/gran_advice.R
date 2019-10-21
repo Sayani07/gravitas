@@ -375,9 +375,7 @@ gran_tbl <- function(.data,
 #' @param ... Added arguments to be passed
 #' @return TRUE if two granularties are harmonies.
 #' @examples
-#' library(dplyr)
 #' library(tsibbledata)
-#' library(ggplot2)
 #' vic_elec %>% gran_obs("hour_day", "day_week")
 #' @export gran_obs
 gran_obs <- function(.data,

@@ -26,8 +26,6 @@ Cross tabulation of granularities
 useful for validating if number of observations are sufficient to compute probability distributions
 }
 \examples{
-library(dplyr)
 library(tsibbledata)
-library(ggplot2)
 vic_elec \%>\% gran_obs("hour_day", "day_week")
 }
