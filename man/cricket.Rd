@@ -4,7 +4,7 @@
 \name{cricket}
 \alias{cricket}
 \title{Cricket data IPL season 2008 to 2016}
-\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 8560 rows and 8 columns.}
+\format{An object of class \code{spec_tbl_df} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 51360 rows and 10 columns.}
 \usage{
 data(cricket)
 }
