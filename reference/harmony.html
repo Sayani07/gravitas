@@ -180,9 +180,12 @@ decide which granularities to be plotted across x-axis/facets for
 exploratory aid.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='co'># tsibbledata::vic_elec %&gt;% harmony(lgran = "hour", ugran = "week")</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
+<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span> <span class='fu'>harmony</span>(<span class='kw'>lgran</span> <span class='kw'>=</span> <span class='st'>"hour"</span>, <span class='kw'>ugran</span> <span class='kw'>=</span> <span class='st'>"week"</span>)</div><div class='output co'>#&gt; # A tibble: 2 x 4
+#&gt;   facet_variable x_variable facet_levels x_levels
+#&gt;   &lt;chr&gt;          &lt;chr&gt;             &lt;int&gt;    &lt;int&gt;
+#&gt; 1 day_week       hour_day              7       24
+#&gt; 2 hour_day       day_week             24        7</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

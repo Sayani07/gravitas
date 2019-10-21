@@ -179,7 +179,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a class="sourceLine" id="cb5-4" data-line-number="4">    <span class="dt">x =</span> <span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(day_fortnight),</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">    <span class="dt">y =</span> general_supply_kwh</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6">  )) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw">scale_y_sqrt</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() <span class="op">+</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"day_fortnight"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/lvplot/man/geom_lv.html">geom_lv</a></span>(</a>
 <a class="sourceLine" id="cb5-10" data-line-number="10">    <span class="dt">outlier.colour =</span> <span class="st">"red"</span>,</a>
@@ -266,11 +266,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a class="sourceLine" id="cb9-6" data-line-number="6">    <span class="dt">quantile_prob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>),</a>
 <a class="sourceLine" id="cb9-7" data-line-number="7">    <span class="dt">symmetric =</span> <span class="ot">TRUE</span></a>
 <a class="sourceLine" id="cb9-8" data-line-number="8">  ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_y_sqrt</span>()</a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;      granularities vary within or across facets.</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;      Use gran_obs() to find combinations which have low</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;             observations or very different number of observations.</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>()</a></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="gravitas_vignette_files/figure-html/hd_dm-1.png" alt="Quantile plot across hour-day as facets and day-month across x-axis" width="768"><p class="caption">
 Quantile plot across hour-day as facets and day-month across x-axis
@@ -283,11 +279,7 @@ Quantile plot across hour-day as facets and day-month across x-axis
 <a class="sourceLine" id="cb10-5" data-line-number="5">    <span class="dt">plot_type =</span> <span class="st">"quantile"</span>,</a>
 <a class="sourceLine" id="cb10-6" data-line-number="6">    <span class="dt">quantile_prob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>),</a>
 <a class="sourceLine" id="cb10-7" data-line-number="7">    <span class="dt">symmetric =</span> <span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">  )</a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;      granularities vary within or across facets.</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;      Use gran_obs() to find combinations which have low</span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;             observations or very different number of observations.</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-8" data-line-number="8">  )</a></code></pre></div>
 <p><img src="gravitas_vignette_files/figure-html/dm_hd-1.png" width="768" style="display: block; margin: auto;"></p>
 <p> shows letter-value plot of energy consumption across wknd_wday (facet) and hour-day (x-axis). On weekdays, letter value C (lower tail) from 7 hours to 16 hours is not distinctly visible for most hours on weekdays compared to weekends, signifying there might be less volatility in these hours for weekdays. Similar observations can be made for letter values C and D which closely follow M, F, E on weekdays, but not on weekends. <a href="%22https://cran.r-project.org/web/packages/lvplot/index.html">Letter value plots</a> are useful for examining the distribution of the tail of the distribution.</p>
 <p>Currently, we can choose from “boxplot”, “violin”, “ridge”, “lv” or “quantile” to visualize distributions.</p>
@@ -295,11 +287,7 @@ Quantile plot across hour-day as facets and day-month across x-axis
 <a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="st">"week_month"</span>,</a>
 <a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="dt">response =</span> <span class="st">"general_supply_kwh"</span>,</a>
 <a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="dt">plot_type =</span> <span class="st">"violin"</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_sqrt</span>()</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;      granularities vary within or across facets.</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;      Use gran_obs() to find combinations which have low</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;             observations or very different number of observations.</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-5" data-line-number="5">) <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>()</a></code></pre></div>
 <p><img src="gravitas_vignette_files/figure-html/hd_dw-1.png" width="768" style="display: block; margin: auto;"></p>
 <p>This provides an useful warning suggesting distribution should be computed with caution as number of observations might vary or not be enough for computing distribution plots.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/gran_obs.html">gran_obs</a></span>(</a>
@@ -324,7 +312,7 @@ Quantile plot across hour-day as facets and day-month across x-axis
 <a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
 <a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt;   inter_facet intra_facet</span></a>
 <a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;      </span></a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; 1 FALSE       FALSE      </span></a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; 1 TRUE        TRUE       </span></a>
 <a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt; $plot_choices</span></a>
 <a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#&gt; [1] "ridge"    "violin"   "lv"       "quantile"</span></a>
