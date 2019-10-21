@@ -20,19 +20,25 @@ hierarchy_model <- tibble::tibble(
 # common tests for temporal and non-temporal data
 
 test_that("tsibble input", {
-  expect_is(x, c("tbl_ts", "tbl_df",
-                 "tbl",
-                 "data.frame"))
+  expect_is(x, c(
+    "tbl_ts", "tbl_df",
+    "tbl",
+    "data.frame"
+  ))
 })
 
 test_that("search_gran outputs a character", {
-  expect_is(search_gran(x, "hour", "week"),
-            "character")
+  expect_is(
+    search_gran(x, "hour", "week"),
+    "character"
+  )
 })
 
 test_that("search_gran error with null input", {
-  expect_error(search_gran(),
-               "argument \".data\" is missing, with no default")
+  expect_error(
+    search_gran(),
+    "argument \".data\" is missing, with no default"
+  )
 })
 
 
@@ -40,9 +46,11 @@ test_that("search_gran error with null input", {
 
 
 test_that("search_gran hour to week expected output", {
-  expect_equal(search_gran(x,
-                           "hour",
-                           "week"), c(
+  expect_equal(search_gran(
+    x,
+    "hour",
+    "week"
+  ), c(
     "hour_day",
     "hour_week",
     "day_week"
@@ -53,9 +61,11 @@ test_that("search_gran hour to week expected output", {
 test_that("search_gran error with
           finer and coarser unit swapped", {
   expect_error(
-    search_gran(x,
-                "week",
-                "hour"),
+    search_gran(
+      x,
+      "week",
+      "hour"
+    ),
     "granularities should be of the form finer to coarser. Try swapping the order of the units."
   )
 })

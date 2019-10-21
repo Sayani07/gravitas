@@ -13,14 +13,18 @@
 #' library(tsibbledata)
 #' vic_elec %>% search_gran(lowest_unit = "hour", highest_unit = "month")
 #' @export
-search_gran <- function(.data, lowest_unit = NULL, highest_unit = NULL, hierarchy_tbl = NULL, filter_in = NULL, filter_out = NULL, ...) {
+search_gran <- function(.data,
+                        lowest_unit = NULL,
+                        highest_unit = NULL,
+                        hierarchy_tbl = NULL,
+                        filter_in = NULL,
+                        filter_out = NULL,
+                        ...) {
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
 
-
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
-
 
   # if class is timestamp, then use predefined lookup table, have to state hierarchy table for non-temporal data
   if (any(class(x) %in% c("POSIXct", "POSIXt"))) {
@@ -33,7 +37,6 @@ search_gran <- function(.data, lowest_unit = NULL, highest_unit = NULL, hierarch
   units <- hierarchy_tbl$units
   convert_fct <- hierarchy_tbl$convert_fct
 
-
   # Put the last element of the vector units as the upper most unit desired - default
   if (is.null(highest_unit)) {
     highest_unit <- dplyr::last(hierarchy_tbl$units)
@@ -43,7 +46,6 @@ search_gran <- function(.data, lowest_unit = NULL, highest_unit = NULL, hierarch
   else if (!(highest_unit %in% hierarchy_tbl$units)) {
     stop("highest unit must be listed as an element in the  hierarchy table")
   }
-
 
   # Put the first element of the vector units as the lowest most unit desired - default
   if (is.null(lowest_unit)) {
@@ -82,7 +84,6 @@ search_gran <- function(.data, lowest_unit = NULL, highest_unit = NULL, hierarch
     stop("lowest unit must be listed as an element in the hierarchy table")
   }
 
-
   # check if input for highest and lowest units are distinct
   if (dynamic_g_order(lowest_unit, highest_unit, hierarchy_tbl) == 0) {
     stop("lowest_unit and highest_unit should be distinct")
@@ -103,7 +104,9 @@ search_gran <- function(.data, lowest_unit = NULL, highest_unit = NULL, hierarch
     # all possible granularities from lowest to highest units except ones that have been filtered in separately
     gran <- paste(gran1 = combn(gran2_set, 2)[1, ], gran2 = combn(gran2_set, 2)[2, ], sep = "_")
 
-    gran_split <- stringr::str_split(gran, "_", 2) %>% unlist() %>% unique()
+    gran_split <- stringr::str_split(gran, "_", 2) %>%
+      unlist() %>%
+      unique()
 
     # to join units in the list of gran which are either columns from data or wknd_wday
 
@@ -162,11 +165,6 @@ dynamic_g_order <- function(lower_gran = NULL, upper_gran = NULL, hierarchy_tbl 
   units <- hierarchy_tbl$units
   convert_fct <- hierarchy_tbl$convert_fct
 
-  # Put the first element of the vector units as the lowest most unit desired - default
-  # if (is.null(lowest_unit)) {
-  #   lowest_unit = dplyr::first(hierarchy_tbl$units)
-  # }
-
   index_l <- units %>% match(x = lower_gran)
   if (!is.null(upper_gran)) {
     index_h <- units %>% match(x = upper_gran)
@@ -178,7 +176,6 @@ dynamic_g_order <- function(lower_gran = NULL, upper_gran = NULL, hierarchy_tbl 
 }
 
 # provides the conversion factor between two granularities
-
 dynamic_gran_convert <- function(lower_gran = NULL, upper_gran = NULL, hierarchy_tbl = NULL, order = NULL) {
   units <- hierarchy_tbl$units
   convert_fct <- hierarchy_tbl$convert_fct
@@ -189,8 +186,6 @@ dynamic_gran_convert <- function(lower_gran = NULL, upper_gran = NULL, hierarchy
     if (!lower_gran %in% units | !upper_gran %in% units) {
       stop(paste0("units ", lower_gran, " and ", upper_gran, " both should be one of ", paste0(units, collapse = ", ")), call. = FALSE)
     }
-
-
 
     if (dynamic_g_order(lower_gran, upper_gran, hierarchy_tbl) < 0) {
       stop("Order of second unit should be larger than the first one. Try reversing their position")

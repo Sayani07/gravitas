@@ -40,7 +40,10 @@ cricket_over_inning_crctd <- cricket_over_crctd %>%
 
 # each match needs to have 2 innings
 
-cricket_filtr_inning <- cricketdata %>% group_by(match_id) %>% summarise(length(inning)) %>% filter(`length(inning)` == 240)
+cricket_filtr_inning <- cricketdata %>%
+  group_by(match_id) %>%
+  summarise(length(inning)) %>%
+  filter(`length(inning)` == 240)
 
 cricketdata <- cricket_over_inning_crctd %>%
   filter(match_id %in% cricket_filtr_inning$match_id) %>%

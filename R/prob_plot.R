@@ -14,7 +14,6 @@
 #' @return a ggplot object
 #
 #' @examples
-#' library(gravitas)
 #' library(tsibbledata)
 #' library(dplyr)
 #' library(tsibble)
@@ -61,21 +60,14 @@ prob_plot <- function(.data,
                       # palette = "YlGnBu",
                       # package = "RColorBrewer",
                       ...) {
-
   # data must be tsibble
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
   }
 
-
   if (is.null(gran1) | is.null(gran2)) {
     stop("Specify the granularities that are to be plotted")
   }
-
-  # if (is.null(facet_h)) {
-  #   facet_h <- 31
-  # }
-
 
   if (is.null(response)) {
     response <- tsibble::measured_vars(.data)[1]
@@ -84,63 +76,41 @@ prob_plot <- function(.data,
   }
 
   if (is.null(plot_type)) {
-    gran_advice <- gran_advice(
-      .data,
-      gran1,
-      gran2,
-      hierarchy_tbl,
-      ...
+    gran_advice <- gran_advice(.data,
+                               gran1,
+                               gran2,
+                               hierarchy_tbl,
+                               ...
     )
     plot_type <- gran_advice$plot_choices[1]
   }
 
   ## making data mutate and basic ggplot object without a geom
-  ##
-  ##
   data_mutate <- .data %>%
     create_gran(gran1,
-      hierarchy_tbl = hierarchy_tbl
+                hierarchy_tbl = hierarchy_tbl
     ) %>%
     create_gran(gran2,
-      hierarchy_tbl = hierarchy_tbl
+                hierarchy_tbl = hierarchy_tbl
     )
-
-
-  # x <- gran2
-  # y <- response
-  # facet <- gran1
-
 
   x_var <- dplyr::if_else(plot_type == "ridge", response, gran2)
   y_var <- dplyr::if_else(plot_type == "ridge", gran2, response)
 
-  #
-  #   if (plot_type == "ridge") {
-  #     x_var <- y
-  #     y_var <- x
-  #   }
-  #   else {
-  #     x_var <- x
-  #     y_var <- y
-  #   }
-
   p <- data_mutate %>%
     as_tibble(.name_repair = "minimal") %>%
-    ggplot2::ggplot(ggplot2::aes(
-      x = data_mutate[[x_var]],
-      y = data_mutate[[y_var]]
+    ggplot2::ggplot(ggplot2::aes(x = data_mutate[[x_var]],
+                                 y = data_mutate[[y_var]]
     )) +
     ggplot2::facet_wrap(~ data_mutate[[gran1]]) +
-    ggplot2::ggtitle(paste0(
-      plot_type,
-      " plot across ",
-      gran2, "on x-axis",
-      " given ",
-      gran1, "on facets"
+    ggplot2::ggtitle(paste0(plot_type,
+                            " plot across ",
+                            gran2, "on x-axis",
+                            " given ",
+                            gran1, "on facets"
     )) +
     xlab(gran2) + ylab(response) +
     scale_fill_brewer()
-
 
   if (plot_type == "boxplot") {
     plot <- p + ggplot2::geom_boxplot(...)
@@ -152,8 +122,8 @@ prob_plot <- function(.data,
   else if (plot_type == "lv") {
     plot <-
       p + geom_lv(aes(fill = ..LV..),
-        k = 5,
-        ...
+                  k = 5,
+                  ...
       )
   }
 
@@ -163,16 +133,15 @@ prob_plot <- function(.data,
   }
 
   else if (plot_type == "quantile") {
-    plot <- quantile_plot(
-      .data,
-      gran1,
-      gran2,
-      hierarchy_tbl,
-      response,
-      symmetric,
-      quantile_prob,
-      alpha,
-      ...
+    plot <- quantile_plot(.data,
+                          gran1,
+                          gran2,
+                          hierarchy_tbl,
+                          response,
+                          symmetric,
+                          quantile_prob,
+                          alpha,
+                          ...
     )
   }
 
@@ -195,11 +164,11 @@ prob_plot <- function(.data,
     ))
 
   gran_warn(.data,
-    gran1,
-    gran2,
-    hierarchy_tbl = hierarchy_tbl,
-    response = response,
-    ...
+            gran1,
+            gran2,
+            hierarchy_tbl = hierarchy_tbl,
+            response = response,
+            ...
   )
 
   return(plot_return)
@@ -270,7 +239,6 @@ quantile_plot <- function(.data,
     mid_pos <- p %>% match(x = median(p))
 
     # how many colors needed
-    #  browser()
     #  color_l <- length(quantile_names) - 1
     # color_set <- palap::palap(color_l,
     #                           alpha = alpha,

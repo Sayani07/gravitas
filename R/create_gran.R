@@ -1,4 +1,6 @@
 #' Build dynamic temporal granularities
+#'
+#'
 
 #' @param .data A tsibble object.
 #' @param gran1 the granularity to be created. For temporal data, any combination
@@ -16,28 +18,19 @@
 #' @return A tsibble with an additional column of granularity
 #
 #' @examples
-#' library(gravitas)
 #' library(dplyr)
 #' library(tsibble)
 #' library(ggplot2)
 #'
-#'
 #' smart_meter <- smart_meter10 %>%
 #'   as_tsibble() %>%
 #'   ungroup()
-#'
-#'
 #' # Search for granularities
-#'
-#'
 #' smart_meter %>%
 #'   search_gran(highest_unit = "month")
 #'
-#'
 #' # Screen harmonies from the search list
 #' \dontrun{
-#'
-#'
 #' smart_meter %>%
 #'   harmony(
 #'     ugran = "fortnight",
@@ -45,11 +38,8 @@
 #'     filter_in = "wknd_wday"
 #'   )
 #'
-#'
 #' # visualize probability distribution of
 #' # the harmony pair (wknd_wday, hour_day)
-#'
-#'
 #' smart_meter %>%
 #'   prob_plot(
 #'     gran1 = "wknd_wday",
@@ -61,14 +51,12 @@
 #'   scale_y_sqrt()
 #' }
 #'
-#'
 #' # Compute granularities for non-temporal data
 #'
 #'
 #' cricket_tsibble <- cricket %>%
 #'   mutate(data_index = row_number()) %>%
 #'   as_tsibble(index = data_index)
-#'
 #'
 #' hierarchy_model <- tibble::tibble(
 #'   units = c("index", "ball", "over", "inning", "match"),
@@ -80,11 +68,8 @@
 #'     hierarchy_model
 #'   )
 #'
-#'
 #' # Validate if given column in the data set
 #' # equals computed granularity
-#'
-#'
 #' validate_gran(cricket_tsibble,
 #'   gran = "over_inning",
 #'   hierarchy_tbl = hierarchy_model,
@@ -195,21 +180,21 @@ dynamic_build_gran <- function(x, lgran = NULL, ugran = NULL, hierarchy_tbl = NU
     else {
       lgran_ordr1 <- dynamic_g_order(lgran, hierarchy_tbl = hierarchy_tbl, order = 1)
       value <- dynamic_build_gran(x,
-        lgran,
-        ugran = lgran_ordr1,
-        hierarchy_tbl
+                                  lgran,
+                                  ugran = lgran_ordr1,
+                                  hierarchy_tbl
       ) +
         dynamic_gran_convert(
           lgran,
           lgran_ordr1,
           hierarchy_tbl
         ) *
-          (dynamic_build_gran(
-            x,
-            lgran_ordr1,
-            ugran,
-            hierarchy_tbl
-          ) - 1)
+        (dynamic_build_gran(
+          x,
+          lgran_ordr1,
+          ugran,
+          hierarchy_tbl
+        ) - 1)
     }
   }
   return(value)
@@ -224,7 +209,7 @@ dynamic_build_gran <- function(x, lgran = NULL, ugran = NULL, hierarchy_tbl = NU
 #' @param validate_col A column in the data which acts as validator
 #' @param ... Other arguments passed on to individual methods.
 #' @return A tsibble with an additional column of granularity
-#
+#'
 #' @examples
 #' library(dplyr)
 #' library(tsibble)
@@ -251,7 +236,8 @@ dynamic_build_gran <- function(x, lgran = NULL, ugran = NULL, hierarchy_tbl = NU
 validate_gran <- function(.data,
                           gran = NULL,
                           hierarchy_tbl = NULL,
-                          validate_col = NULL, ...) {
+                          validate_col = NULL,
+                          ...) {
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
   gran_split <- stringr::str_split(gran, "_", 2) %>%
@@ -261,9 +247,8 @@ validate_gran <- function(.data,
   ugran <- gran_split[2]
 
   all_gran <- search_gran(.data,
-    hierarchy_tbl = hierarchy_tbl
+                          hierarchy_tbl = hierarchy_tbl
   )
-
 
   if (!(gran %in% all_gran)) # which granularity needs to be checked
   {
@@ -292,30 +277,26 @@ create_single_gran <- function(x,
                                lgran = NULL,
                                hierarchy_tbl = NULL,
                                ...) {
-  # x = .data[[tsibble::index(.data)]] # index column
   units <- hierarchy_tbl$units
   convert_fct <- hierarchy_tbl$convert_fct
-
 
   if (any(class(x) %in% c("POSIXct", "POSIXt"))) {
     ugran <- g_order(lgran, order = 1)
     value <- build_gran(x,
-      lgran = lgran,
-      ugran = ugran,
-      ...
+                        lgran = lgran,
+                        ugran = ugran,
+                        ...
     )
   }
   else {
     ugran <- dynamic_g_order(lgran,
-      hierarchy_tbl = hierarchy_tbl,
-      order = 1
+                             hierarchy_tbl = hierarchy_tbl,
+                             order = 1
     )
     index_lower_gran <- match(lgran, units)
     if (all(is.na(index_lower_gran))) {
       stop("linear granularity to be created should be one of the units present in the hierarchy table.")
     }
-
-
 
     linear_gran <- ceiling(x / (dynamic_gran_convert(
       units[1],

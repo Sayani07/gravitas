@@ -39,7 +39,6 @@ a ggplot object
 Plot probability distribution of univariate series across bivariate temporal granularities
 }
 \examples{
-library(gravitas)
 library(tsibbledata)
 library(dplyr)
 library(tsibble)

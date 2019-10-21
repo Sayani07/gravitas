@@ -10,11 +10,15 @@ harmony(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL,
 \arguments{
 \item{.data}{A tsibble object.}
 
-\item{ugran}{Typically set as the most coarse unit required in the analysis. Default is "year".}
+\item{ugran}{Typically set as the most coarse unit required in the analysis.
+Default is "year".}
 
-\item{lgran}{For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals. Typically serves as the finest unit required for analysis.}
+\item{lgran}{For "regular" tsibble, lgran is the interval of the tsibble.
+It needs to be specified for "irregular" time intervals. Typically serves
+as the finest unit required for analysis.}
 
-\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships}
+\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and
+their relationships}
 
 \item{filter_in}{Choices of temporal units to be kept.}
 
@@ -25,7 +29,9 @@ harmony(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL,
 \item{...}{added arguments to be passed.}
 }
 \value{
-A tibble of harmonies and their levels.The levels can be used to decide which granularities to be plotted across x-axis/facets for exploratory aid.
+A tibble of harmonies and their levels.The levels can be used to
+decide which granularities to be plotted across x-axis/facets for
+exploratory aid.
 }
 \description{
 Get possible set of harmonies for a given tsibble
