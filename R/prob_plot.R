@@ -27,7 +27,7 @@
 #'   symmetric = TRUE, outlier.colour = "red", outlier.shape = 2, palette = "Dark2"
 #' )
 #'
-#' cricket_tsibble <- cricketdata %>%
+#' cricket_tsibble <- cricket %>%
 #'   mutate(data_index = row_number()) %>%
 #'   as_tsibble(index = data_index)
 #'
