@@ -47,27 +47,10 @@ Mumbai Indians(MI) and Delhi Daredevils (DD) are two teams which played from 201
 
 - Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings?
 
-
-We filter the seasons and batting team and compute the total runs per over and run rate per over from the ball by ball data set `cricket`. 
-
-```{r, echo = TRUE}
-cricket_per_over <- cricket %>% 
-  filter(season %in% c(2010:2015),
-         batting_team %in% c("Mumbai Indians",
-                             "Delhi Daredevils")) %>%
-  group_by(season,
-           match_id,
-           batting_team,
-           bowling_team,
-           inning, over) %>%
-  summarise(runs_per_over = sum(total_runs), 
-            run_rate = sum(total_runs)/length(total_runs))
-```
-
-Although there is no conventional time element in cricket, we can still represent the data set through a `tsibble`, where each ball, which represents an ordering from past to future, can form the `index` of the tsibble.  
+Although there is no conventional time element in cricket, we can still represent the data set `cricket` through a `tsibble`, where each ball, which represents an ordering from past to future, can form the `index` of the tsibble.  
 
 ```{r}
-cricket_tsibble <- cricket_per_over %>%
+cricket_tsibble <- cricket %>%
   ungroup() %>%
   mutate(data_index = row_number()) %>%
   as_tsibble(index = data_index)
@@ -79,14 +62,14 @@ cricket_tsibble %>%
   filter(batting_team == "Mumbai Indians") %>% 
     prob_plot("inning", "over",
              hierarchy_model,
-             response = "run_rate",
+             response = "runs_per_over",
              plot_type = "lv")
 
 cricket_tsibble %>%
   filter(batting_team == "Delhi Daredevils") %>% 
     prob_plot("inning", "over",
              hierarchy_model,
-             response = "run_rate",
+             response = "runs_per_over",
              plot_type = "lv")
 ```
 
