@@ -78,11 +78,6 @@ The probability distribution of the energy consumption for ten households from
 
 ```{r, message=FALSE}
 library(gravitas)
-library(dplyr)
-library(ggplot2)
-library(tsibble)
-
-
 
 smart_meter10 %>% 
   prob_plot(gran1 = "wknd_wday",
