@@ -23,9 +23,14 @@
 \alias{as_tsibble}
 \alias{ungroup}
 \alias{mutate}
+\alias{filter}
 \alias{resolution}
 \alias{alpha}
 \alias{scale_y_sqrt}
+\alias{row_number}
+\alias{GeomPoint}
+\alias{GeomRect}
+\alias{GeomSegment}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -33,9 +38,9 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{groups}}, \code{\link[dplyr]{ungroup}}, \code{\link[dplyr]{mutate}}}
+  \item{dplyr}{\code{\link[dplyr]{\%>\%}}, \code{\link[dplyr]{groups}}, \code{\link[dplyr]{ungroup}}, \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{filter}}, \code{\link[dplyr]{row_number}}}
 
-  \item{ggplot2}{\code{\link[ggplot2]{xlab}}, \code{\link[ggplot2]{ylab}}, \code{\link[ggplot2]{scale_fill_brewer}}, \code{\link[ggplot2]{aes}}, \code{\link[ggplot2]{resolution}}, \code{\link[ggplot2]{alpha}}, \code{\link[ggplot2]{scale_y_sqrt}}}
+  \item{ggplot2}{\code{\link[ggplot2]{xlab}}, \code{\link[ggplot2]{ylab}}, \code{\link[ggplot2]{scale_fill_brewer}}, \code{\link[ggplot2]{aes}}, \code{\link[ggplot2]{resolution}}, \code{\link[ggplot2]{alpha}}, \code{\link[ggplot2]{scale_y_sqrt}}, \code{\link[ggplot2]{GeomPoint}}, \code{\link[ggplot2]{GeomRect}}, \code{\link[ggplot2]{GeomSegment}}}
 
   \item{lvplot}{\code{\link[lvplot]{geom_lv}}}
 

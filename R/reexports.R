@@ -87,6 +87,12 @@ dplyr::ungroup
 #' @export
 dplyr::mutate
 
+
+
+#' @importFrom dplyr filter
+#' @export
+dplyr::filter
+
 #' @importFrom ggplot2 resolution
 #' @export
 ggplot2::resolution
@@ -100,4 +106,24 @@ ggplot2::alpha
 ggplot2::scale_y_sqrt
 
 
+
+#' @importFrom dplyr row_number
+#' @export
+dplyr::row_number
+
+
+#' @importFrom ggplot2 GeomPoint
+#' @export
+ggplot2::GeomPoint
+
+
+
+#' @importFrom ggplot2 GeomRect
+#' @export
+ggplot2::GeomRect
+
+
+#' @importFrom ggplot2 GeomSegment
+#' @export
+ggplot2::GeomSegment
 

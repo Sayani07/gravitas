@@ -33,12 +33,6 @@ hierarchy_model <- tibble::tibble(
   units = c("index", "ball", "over", "inning", "match"),
   convert_fct = c(1, 6, 20, 2, 1)
 )
-
-cricket_tsibble \%>\% validate_gran(
-  gran = "ball_over",
-  hierarchy_tbl = hierarchy_model,
-  validate_col = "ball_per_over"
-)
 cricket_tsibble \%>\% validate_gran(
   gran = "over_inning",
   hierarchy_tbl = hierarchy_model,
