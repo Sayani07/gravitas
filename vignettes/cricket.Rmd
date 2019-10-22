@@ -21,9 +21,6 @@ knitr::opts_chunk$set(
   cache = FALSE
 )
 library(gravitas)
-library(dplyr)
-library(ggplot2)
-library(tsibble)
 ```
 
 # Introduction
@@ -75,7 +72,7 @@ cricket_tsibble %>%
 
 
 ```{r}
-cricket %>% 
+cricket_tsibble %>% 
   filter(dot_balls %in% c(1,2,3,4)) %>%
   prob_plot("dot_balls",
             "over",
@@ -83,7 +80,6 @@ cricket %>%
             response = "runs_per_over",
             plot_type = "quantile",
             quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
-
 
 ```
 
