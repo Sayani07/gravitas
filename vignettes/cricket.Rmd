@@ -75,25 +75,7 @@ cricket_tsibble %>%
 
 
 ```{r}
-cricket_dot_wckt <- cricket %>% 
-  mutate(wicket = if_else(is.na(dismissal_kind),0,1),
-         dot_balls = if_else(total_runs==0,1, 0)
-         ) %>% 
-  group_by(season, match_id, batting_team, bowling_team,  inning, over) %>%
-  summarise(wicket = sum(wicket),
-            dot_balls = sum(dot_balls)) 
-
-cricket_tsibble_dot <- cricket_tsibble %>%
-  left_join(cricket_dot_wckt,
-                              by = c("season", 
-                                     "match_id",
-                                     "batting_team",
-                                     "bowling_team",
-                                     "inning",
-                                     "over"))
-
-
-cricket_tsibble_dot  %>% 
+cricket %>% 
   filter(dot_balls %in% c(1,2,3,4)) %>%
   prob_plot("dot_balls",
             "over",
