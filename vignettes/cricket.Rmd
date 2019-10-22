@@ -1,5 +1,5 @@
 ---
-title: "Exploring probability distributions for bivariate granularities for a non-temporal case "
+title: "A non-temporal study with gravitas "
 author: "<i>Sayani Gupta</i <br> <hr>"
 output: 
   rmarkdown::html_vignette:
