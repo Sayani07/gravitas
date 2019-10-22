@@ -61,8 +61,7 @@ hierarchy_model <- tibble::tibble(
 cricket_tsibble \%>\%
   prob_plot("inning_match", "over_inning",
     hierarchy_tbl = hierarchy_model,
-    response = "total_runs",
-    plot_type = "lv",
-    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9), symmetric = FALSE
+    response = "runs_per_over",
+    plot_type = "lv"
   )
 }

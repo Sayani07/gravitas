@@ -62,8 +62,8 @@ smart_meter10 \%>\%
 # Compute granularities for non-temporal data
 
 cricket_tsibble <- cricket \%>\%
-  mutate(data_index = row_number()) \%>\%
-  as_tsibble(index = data_index)
+mutate(data_index = row_number()) \%>\%
+as_tsibble(index = data_index)
 
 hierarchy_model <- tibble::tibble(
   units = c("index", "ball", "over", "inning", "match"),
@@ -74,6 +74,14 @@ cricket_tsibble \%>\%
     "ball_over",
     hierarchy_model
   )
+
+  cricket_tsibble \%>\%
+  filter(batting_team \%in\% c("Mumbai Indians",
+                             "Chennai Super Kings"))\%>\%
+  prob_plot("inning", "over",
+  hierarchy_model,
+  response = "runs_per_over",
+  plot_type = "lv")
 
 # Validate if given column in the data set
 # equals computed granularity

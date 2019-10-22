@@ -63,12 +63,12 @@ cricketdata <- cricket_over_inning_crctd %>%
   mutate(ball_per_over = purrr::rep_along(match_id, 1:6)) %>%
   filter(inning %in% c(1, 2))
 
-
-cricket <- cricketdata %>% select(season, match_id,
-                                  inning, batting_team,
-                                  bowling_team, ball_per_over,
-                                  over, winner, dismissal_kind,
-                                  total_runs)
+#
+# cricket <- cricketdata %>% select(season, match_id,
+#                                   inning, batting_team,
+#                                   bowling_team, ball_per_over,
+#                                   over, winner, dismissal_kind,
+#                                   total_runs)
 
 # cricket <- cricketdata %>% group_by(season,
 #                                     match_id,
@@ -86,6 +86,17 @@ cricket <- cricketdata %>% select(season, match_id,
 #   mutate(data_index = row_number()) %>%
 #   as_tsibble(index = data_index)
 
+
+cricket <-  cricketdata %>%
+  mutate(wicket = if_else(is.na(dismissal_kind),0,1),
+         dot_balls = if_else(total_runs== 0,1, 0)) %>%
+  group_by(season, match_id, batting_team,
+           bowling_team,  inning, over) %>%
+  summarise(wicket = sum(wicket),
+            dot_balls = sum(dot_balls),
+            runs_per_over = sum(total_runs),
+            run_rate = round(sum(total_runs)/length(total_runs)), 1) %>%
+  ungroup()
 
 
 save(cricket, file = "data/cricket.rda", compress = "gzip", version = 2)
