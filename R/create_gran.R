@@ -18,7 +18,8 @@
 #' @return A tsibble with an additional column of granularity
 #
 #' @examples
-#'
+#'library(dplyr)
+#'library(ggplot2)
 #' # Search for granularities
 #' smart_meter10 %>%
 #'   search_gran(highest_unit = "week")
@@ -34,6 +35,7 @@
 #' # visualize probability distribution of
 #' # the harmony pair (wknd_wday, hour_day)
 #' smart_meter10 %>%
+#' filter(customer_id == 10006704) %>%
 #'   prob_plot(
 #'     gran1 = "wknd_wday",
 #'     gran2 = "hour_day",
@@ -45,6 +47,7 @@
 #'
 #' # Compute granularities for non-temporal data
 #'
+#'library(tsibble)
 #' cricket_tsibble <- cricket %>%
 #' mutate(data_index = row_number()) %>%
 #' as_tsibble(index = data_index)

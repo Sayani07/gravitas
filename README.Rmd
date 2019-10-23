@@ -11,6 +11,9 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+library(gravitas)
+library(ggplot2)
+
 ```
 # gravitas
 
@@ -77,8 +80,6 @@ The probability distribution of the energy consumption for ten households from
 [customer trials](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter) across weekend/weekday and half-hours of the day can be examined through a quantile plot or letter value plot.
 
 ```{r, message=FALSE}
-library(gravitas)
-
 smart_meter10 %>% 
   prob_plot(gran1 = "wknd_wday",
             gran2 = "hour_day",
@@ -89,8 +90,7 @@ smart_meter10 %>%
 ```    
 
 ```{r}
-library(gravitas)
-smart_meter %>% 
+smart_meter10 %>% 
   prob_plot("wknd_wday",
             "hour_day",
                               response = "general_supply_kwh",

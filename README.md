@@ -80,50 +80,31 @@ gravitas::run\_app().
 
 ## Example
 
-The probability distribution of the energy consumption for one household
-from [customer
+The probability distribution of the energy consumption for ten
+households from [customer
 trials](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter)
 across weekend/weekday and half-hours of the day can be examined through
 a quantile plot or letter value plot.
 
 ``` r
-library(gravitas)
-library(dplyr)
-#> Warning: package 'dplyr' was built under R version 3.5.2
-library(ggplot2)
-#> Warning: package 'ggplot2' was built under R version 3.5.2
-library(tsibble)
-#> Warning: package 'tsibble' was built under R version 3.5.2
-
-smart_meter <- smart_meter20 %>% as_tsibble() %>% ungroup()
-
-smart_meter %>% 
+smart_meter10 %>% 
   prob_plot(gran1 = "wknd_wday",
             gran2 = "hour_day",
             response = "general_supply_kwh",
             plot_type = "quantile",
                        quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
   scale_y_sqrt()
-#> Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of
-#>      granularities vary within or across facets.
-#>      Use gran_obs() to find combinations which have low
-#>             observations or very different number of observations.
 ```
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
 ``` r
-library(gravitas)
-smart_meter %>% 
+smart_meter10 %>% 
   prob_plot("wknd_wday",
             "hour_day",
                               response = "general_supply_kwh",
                               plot_type = "lv",
                        outlier.colour = "red") + scale_y_sqrt()
-#> Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of
-#>      granularities vary within or across facets.
-#>      Use gran_obs() to find combinations which have low
-#>             observations or very different number of observations.
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
