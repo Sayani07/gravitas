@@ -3,7 +3,7 @@
 \docType{data}
 \name{cricket}
 \alias{cricket}
-\title{Cricket data for different seasons of Indian Premiere League}
+\title{Cricket data set for different seasons of Indian Premiere League}
 \format{A tibble with 8560 rows and 11 variables:
 * **season**: years representing IPL season
 * **match_id**: match codes
@@ -31,13 +31,12 @@ library(ggplot2)
 
 # convert data set to a tsibble ----
 cricket_tsibble <- cricket \%>\%
-mutate(data_index = row_number()) \%>\%
-as_tsibble(index = data_index)
+  mutate(data_index = row_number()) \%>\%
+  as_tsibble(index = data_index)
 # set the hierarchy of the units in a table ----
 hierarchy_model <- tibble::tibble(
   units = c("index", "ball", "over", "inning", "match"),
-  convert_fct = c(1, 6, 20, 2, 1)
-)
+  convert_fct = c(1, 6, 20, 2, 1))
 # Compute granularities for non-temporal data ----
 cricket_tsibble \%>\%
   create_gran("ball_over",
@@ -52,6 +51,6 @@ cricket_tsibble \%>\%
   plot_type = "lv")
 }
 \references{
-[Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data)
+[Kaggle IPL Data Analysis](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data)
 }
 \keyword{datasets}
