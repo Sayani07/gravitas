@@ -28,7 +28,7 @@ sm_cust50 <- smart_meter_data %>%
   ungroup() %>%
   dplyr::select(-calendar_key)
 
-# selecting just 20
+# selecting just 10
 sm15 <- sm_cust50 %>%
   distinct(customer_id) %>%
   sample_n(size = 10)
