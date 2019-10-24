@@ -1,10 +1,12 @@
-#' Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity
-
-#' @param .data a tsibble
-#' @param gran1,gran2 granularities
-#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
-#' @param ... other arguments to be passed for appropriate labels
-#' @return a list of summary check points before visualizing distribution across bivariate granularities
+#' Advice summaries for granularities
+#'
+#' Recommendations on plot choices, interaction, number of observations and intra or inter facet homogeneity. Important summaries before drawing distribution plots.
+#'
+#' @param .data a tsibble.
+#' @param gran1,gran2 granularities.
+#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships.
+#' @param ... other arguments to be passed for appropriate labels.
+#' @return Summary check points before visualizing distribution across bivariate granularities
 #
 #' @examples
 #' library(tsibbledata)

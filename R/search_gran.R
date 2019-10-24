@@ -1,9 +1,11 @@
-#' Get set of possible temporal granularities for a given tsibble
+#' Search for granularities
+#'
+#' Get set of possible granularities that can be considered exhaustively depending on the frequency of the data.
 #'
 #' @param .data A tsibble object.
 #' @param lowest_unit Typically set as the finest unit required for analysis. For "regular" tsibble, lgran is the interval of the tsibble. It needs to be specified for "irregular" time intervals.For non-temporal data, default is the first unit specified in the hierarchy table.
 #' @param highest_unit Typically set as the most coarse unit required for analysis.For temporal data, default is "year" and for non-temporal data, default is set as the last unit specified in the hierarchy table
-#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
+#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships.
 #' @param filter_in Choices of temporal units to be kept.
 #' @param filter_out Choices of temporal units to be discarded.
 #' @param ... Other arguments to be passed.

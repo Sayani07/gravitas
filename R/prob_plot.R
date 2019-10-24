@@ -1,17 +1,19 @@
-#' Plot probability distribution of univariate series across bivariate temporal granularities
-
+#' Plotting probability distributions across granularities
+#'
+#' Plot probability distribution of univariate series across bivariate temporal granularities.
+#'
 #' @param .data a tsibble
-#' @param gran1 the lower level granularity to be paired
-#' @param gran2 the upper level granularity to be paired
-#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
-#' @param plot_type type of distribution plot
-#' @param response response variable to be plotted
-#' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities
-#' @param quantile_prob numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "Decile" plot
+#' @param gran1 the granularity which is to be placed across facets. Can be column names if required granularity already exists in the tsibble. For example, a column with public holidays which needs to be treated as granularity, can be included here.
+#' @param gran2 the granularity to be placed across x-axis. Can be column names if required granularity already exists in the tsibble.
+#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships.
+#' @param plot_type type of distribution plot. Options include "boxplot", "lv" (letter-value), "quantile", "ridge" or "violin".
+#' @param response response variable to be plotted.
+#' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.
+#' @param quantile_prob numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "decile" plot.
 #' @param symmetric If TRUE, symmetic quantile area plot is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd and ideally the quantile_prob should be a symmetric vector with median at the middle position.
 #' @param alpha level of transperancy for the quantile area
-#' @param ... other arguments to be passed for appropriate labels
-#' @return a ggplot object
+#' @param ... other arguments to be passed for customising the obtained ggplot object.
+#' @return a ggplot object which can be customised as usual.
 #
 #' @examples
 #' library(tsibbledata)

@@ -1,5 +1,8 @@
 #' Get possible set of harmonies for a given tsibble
 #'
+#' Interaction of pair of granularities, categorised as harmony and clash. harmon
+#' () screens out harmony pairs from
+#' list of all possible pairs of granularities.
 #' @param .data A tsibble object.
 #' @param ugran Typically set as the most coarse unit required in the analysis.
 #'  Default is "year".
@@ -7,9 +10,9 @@
 #' It needs to be specified for "irregular" time intervals. Typically serves
 #' as the finest unit required for analysis.
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and
-#' their relationships
+#' their relationships.
 #' @param facet_h highest level of facets allowed.
-#' @param filter_in Choices of temporal units to be kept.
+#' @param filter_in Choices of temporal units to be kept. Can be column names if #' required granularity already exists in the tsibble. For example, a column with public holidays which needs to be treated as granularity, can be included here for checking how it interacts with other granularities.
 #' @param filter_out Choices of temporal units to be discarded.
 #' @param ... added arguments to be passed.
 #' @return  A tibble of harmonies and their levels.The levels can be used to

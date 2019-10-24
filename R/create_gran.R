@@ -1,21 +1,22 @@
 #' Build dynamic temporal granularities
 #'
+#' Create time granularities that accommodate for periodicities in data, both single and multiple order up.
+#' Periodic ones might include time granularities like minute of the day, hour of the week  and aperiodic calendar categorizations may include day of the month or
+#' week of the quarter. For non-temporal data, supports
+#' only periodic deconstructions.
 #'
-
 #' @param .data A tsibble object.
 #' @param gran1 the granularity to be created. For temporal data, any combination
 #' of "second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight
-#' ,"month", "quarter", "semester" or "year" can be chosen in the form of finer to
-#' coarser unit. For example, for the granularity hour of the week, value is
+#' ,"month", "quarter", "semester" or "year" can be chosen in the form of finer #' to coarser unit. For example, for the granularity hour of the week, value is
 #' "hour_week".
 #' @param label Logical. TRUE will display the month as an ordered factor of
-#' character string such as "January", "February". FALSE will display the month as
-#' an ordered factor such as 1 to 12, where 1 stands for January and 12 for
+#' character string such as "January", "February". FALSE will display the month #' as an ordered factor such as 1 to 12, where 1 stands for January and 12 for
 #' December.
-#' @param abbr logical. FALSE will display abbreviated labels
-#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
+#' @param abbr logical. FALSE will display abbreviated labels.
+#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and #' their relationships.
 #' @param ... Other arguments passed on to individual methods.
-#' @return A tsibble with an additional column of granularity
+#' @return A tsibble with an additional column of granularity.
 #
 #' @examples
 #'library(dplyr)
