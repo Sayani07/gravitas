@@ -313,7 +313,7 @@ is_homogenous <- function(.data,
 
 
 
-  value_r <- tibble(inter_facet = inter_facet_homogeneity$value,
+  value_r <- tibble::tibble(inter_facet = inter_facet_homogeneity$value,
                     intra_facet = intra_facet_homogeneity$value)
   return(value_r)
 }

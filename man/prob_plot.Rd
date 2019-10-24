@@ -41,6 +41,9 @@ Plot probability distribution of univariate series across bivariate temporal gra
 \examples{
 library(tsibbledata)
 library(ggplot2)
+library(tsibble)
+library(lvplot)
+library(dplyr)
 
 vic_elec \%>\% prob_plot(
   gran1 = "hour_day", gran2 = "day_week",

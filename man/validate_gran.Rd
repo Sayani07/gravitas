@@ -25,6 +25,8 @@ A tsibble with an additional column of granularity
 Validate created granularities with existing columns
 }
 \examples{
+library(dplyr)
+library(tsibble)
 cricket_tsibble <- cricket \%>\%
   mutate(data_index = row_number()) \%>\%
   as_tsibble(index = data_index)

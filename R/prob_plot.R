@@ -17,6 +17,8 @@
 #' library(tsibbledata)
 #' library(ggplot2)
 #' library(tsibble)
+#' library(lvplot)
+#' library(dplyr)
 #'
 #' vic_elec %>% prob_plot(
 #'   gran1 = "hour_day", gran2 = "day_week",
@@ -96,7 +98,7 @@ prob_plot <- function(.data,
   y_var <- dplyr::if_else(plot_type == "ridge", gran2, response)
 
   p <- data_mutate %>%
-    as_tibble(.name_repair = "minimal") %>%
+    tibble::as_tibble(.name_repair = "minimal") %>%
     ggplot2::ggplot(ggplot2::aes(x = data_mutate[[x_var]],
                                  y = data_mutate[[y_var]]
     )) +
@@ -107,8 +109,8 @@ prob_plot <- function(.data,
                             " given ",
                             gran1, "on facets"
     )) +
-    xlab(gran2) + ylab(response) +
-    scale_fill_brewer()
+    ggplot2::xlab(gran2) + ggplot2::ylab(response) +
+    ggplot2::scale_fill_brewer()
 
   if (plot_type == "boxplot") {
     plot <- p + ggplot2::geom_boxplot(...)
@@ -119,7 +121,7 @@ prob_plot <- function(.data,
 
   else if (plot_type == "lv") {
     plot <-
-      p + geom_lv(aes(fill = ..LV..),
+      p + lvplot::geom_lv(ggplot2::aes(fill = ..LV..),
                   k = 5,
                   ...
       )
@@ -200,7 +202,7 @@ quantile_plot <- function(.data,
 
   quantile_names <- purrr::map_chr(p, ~ paste0(.x * 100, "%"))
 
-  quantile_funs <- purrr::map(p, ~ purrr::partial(quantile, probs = .x, na.rm = TRUE)) %>%
+  quantile_funs <- purrr::map(p, ~ purrr::partial(stats::quantile, probs = .x, na.rm = TRUE)) %>%
     rlang::set_names(nm = quantile_names)
 
   data_mutate <- .data %>%
@@ -234,7 +236,7 @@ quantile_plot <- function(.data,
     if (length(quantile_names) %% 2 != 0) {
       y_mid <- stats::median(quantile_names)
     }
-    mid_pos <- p %>% match(x = median(p))
+    mid_pos <- p %>% match(x = stats::median(p))
 
     # how many colors needed
     #  color_l <- length(quantile_names) - 1
@@ -273,7 +275,7 @@ quantile_plot <- function(.data,
 
 
     plot <- eval(sum_expr(l)) +
-      ggplot2::geom_line(aes(
+      ggplot2::geom_line(ggplot2::aes(
         x = data_mutate_obj[[!!gran2]],
         y = data_mutate_obj[[quantile_names[mid_pos]]],
         group = data_mutate_obj[[!!gran1]]
@@ -296,7 +298,7 @@ quantile_plot <- function(.data,
         quantile_funs
       ) %>%
       tidyr::gather(
-        quantile,
+        quantiles,
         value,
         -c(
           `data_mutate[[gran1]]`,
@@ -306,18 +308,18 @@ quantile_plot <- function(.data,
       dplyr::select(
         !!rlang::quo_name(gran1) := `data_mutate[[gran1]]`,
         !!rlang::quo_name(gran2) := `data_mutate[[gran2]]`,
-        quantile := quantile,
+        quantiles := quantiles,
         value := value
       )
 
 
 
     plot <- data_pcntl %>%
-      ggplot2::ggplot(aes(
+      ggplot2::ggplot(ggplot2::aes(
         x = data_pcntl[[gran2]],
         y = value,
-        group = as.factor(quantile),
-        color = quantile
+        group = as.factor(quantiles),
+        color = quantiles
       )) +
       ggplot2::geom_line() +
       ggplot2::facet_wrap(~ data_pcntl[[gran1]]) +
@@ -331,7 +333,7 @@ quantile_plot <- function(.data,
 
 ribbon_function <- function(i, ymin, ymax, x, gran1, gran2, group, color_set, alpha) {
   rlang::expr(
-    ggplot2::geom_ribbon(aes(
+    ggplot2::geom_ribbon(ggplot2::aes(
       ymin = data_mutate_obj[[!!ymin[i]]],
       ymax = data_mutate_obj[[!!ymax[i]]],
       x = data_mutate_obj[[!!gran2]],

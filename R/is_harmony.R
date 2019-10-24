@@ -4,8 +4,7 @@
 #' @param gran1 One of the temporal granularities to check for harmonies.
 #' @param gran2 The second temporal granularity in the pair.
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships
-#' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.
-#' @param ... Added arguments to be passed
+#' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.≥
 #' @return TRUE if two granularties are harmonies.
 #' @examples
 #' library(tsibbledata)

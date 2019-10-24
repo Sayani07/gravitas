@@ -1,5 +1,9 @@
 context("creates plot")
 
+library(gravitas)
+library(ggplot2)
+library(dplyr)
+library(tsibble)
 x <- tsibbledata::vic_elec
 
 cricket_tsibble <- cricket %>%

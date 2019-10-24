@@ -2,6 +2,12 @@ context("recommendation on plots and check points")
 
 x <- tsibbledata::vic_elec
 
+
+library(gravitas)
+library(ggplot2)
+library(dplyr)
+library(tsibble)
+
 cricket_tsibble <- cricket %>%
   dplyr::mutate(data_index = row_number()) %>%
   tsibble::as_tsibble(index = data_index)

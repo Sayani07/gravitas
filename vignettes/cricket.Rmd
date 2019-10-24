@@ -23,6 +23,8 @@ knitr::opts_chunk$set(
 library(gravitas)
 library(dplyr)
 library(ggplot2)
+library(tsibble)
+library(lvplot)
 ```
 
 # Exploring probability distributions for cricket

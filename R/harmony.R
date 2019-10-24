@@ -42,7 +42,7 @@ harmony <- function(.data,
   }
 
   set1_merge <- merge(set1, set1) %>%
-    as_tibble(.name_repair = "minimal") %>%
+    tibble::as_tibble(.name_repair = "minimal") %>%
     dplyr::filter(x != y) %>%
     purrr::map_dfr(as.character)
 
