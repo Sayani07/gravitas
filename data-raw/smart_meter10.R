@@ -32,7 +32,9 @@ sm_cust50 <- smart_meter_data %>%
 sm15 <- sm_cust50 %>%
   distinct(customer_id) %>%
   sample_n(size = 10)
+
 smart_meter10 <- sm_cust50 %>% filter(customer_id %in% sm10$customer_id)
 
+smart_meter10 <- smart_meter10 %>% as_tsibble()
 
-save(smart_meter10, file = "data/smart_meter15.RData", compress = "xz")
+save(smart_meter10, file = "data/smart_meter10.RData", compress = "xz")

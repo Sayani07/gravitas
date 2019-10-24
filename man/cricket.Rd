@@ -37,7 +37,7 @@ cricket_tsibble <- cricket \%>\%
 hierarchy_model <- tibble::tibble(
   units = c("index", "ball", "over", "inning", "match"),
   convert_fct = c(1, 6, 20, 2, 1))
-# Compute granularities for non-temporal data ----
+# Compute granularities ----
 cricket_tsibble \%>\%
   create_gran("ball_over",
                hierarchy_model)

@@ -7,13 +7,13 @@
 #' and areas in Sydney.
 #' It contains half hourly interval meter readings (KWh)
 #' of electricity consumption and generation of households.
-#'@format A tsibble with 259, 235 rows and 3 columns:
+#' @format A tsibble with 259, 235 rows and 3 columns:
 #' * **customer_id**: household ID
 #' * **reading_datetime**: Date time for which data is recorded (index)
 #' * **general_supply_kwh**:electricity supplied to this household
-#'@references [Department of the Environment and Energy, Australia](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter)
-#'@doctype data
-#'@name smart_meter10
+#' @references [Department of the Environment and Energy, Australia](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter)
+#' @doctype data
+#' @name smart_meter10
 #' @usage data(smart_meter10)
 "smart_meter10"
 
@@ -53,7 +53,7 @@
 #' hierarchy_model <- tibble::tibble(
 #'   units = c("index", "ball", "over", "inning", "match"),
 #'   convert_fct = c(1, 6, 20, 2, 1))
-#'# Compute granularities for non-temporal data ----
+#'# Compute granularities ----
 #' cricket_tsibble %>%
 #'   create_gran("ball_over",
 #'                hierarchy_model)
