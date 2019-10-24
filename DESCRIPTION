@@ -45,9 +45,12 @@ Suggests:
     readr
 VignetteBuilder: knitr
 Maintainer: Sayani Gupta <gupta.sayani@gmail.com>
-Description: Provides tools for exploring large quantities of temporal data across different deconstructions of time.
-     Computes circular, aperiodic, single-order-up or multiple-order-up granularities and advices on which combinations of
-     granularities to explore and through which distribution plots.
+Description: Provides tools for exploring large quantities of temporal data 
+             across different deconstructions of time.
+             Computes circular, aperiodic, single-order-up or 
+             multiple-order-up granularities and advices on which
+             combinations of granularities to explore and through which 
+             distribution plots.
 BugReports: https://github.com/Sayani07/gravitas/issues
 License: GPL-3
 URL: https://github.com/Sayani07/gravitas/

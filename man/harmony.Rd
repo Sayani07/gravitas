@@ -14,13 +14,12 @@ harmony(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL,
 Default is "year".}
 
 \item{lgran}{For "regular" tsibble, lgran is the interval of the tsibble.
-It needs to be specified for "irregular" time intervals. Typically serves
-as the finest unit required for analysis.}
+It needs to be specified for "irregular" time intervals. Typically serves as the finest unit required for analysis.}
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and
 their relationships}
 
-\item{filter_in}{Choices of temporal units to be kept.}
+\item{filter_in}{Choices of temporal units to be kept. Can be column names if #' required granularity already exists in the tsibble. For example, a column with public holidays which needs to be treated as granularity, can be included here for checking how it interacts with other granularities.}
 
 \item{filter_out}{Choices of temporal units to be discarded.}
 
@@ -34,7 +33,8 @@ decide which granularities to be plotted across x-axis/facets for
 exploratory aid.
 }
 \description{
-Get possible set of harmonies for a given tsibble
+Interaction of pair of granularities, categorised as harmony and clash. harmony () screens out harmony pairs from
+list of all possible pairs of granularities.
 }
 \examples{
 library(tsibbledata)

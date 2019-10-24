@@ -2,30 +2,42 @@
 % Please edit documentation in R/gran_advice.R
 \name{gran_advice}
 \alias{gran_advice}
-\title{Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity}
+\title{Advice summaries for granularities}
 \usage{
 gran_advice(.data, gran1, gran2, hierarchy_tbl = NULL, ...)
 }
 \arguments{
-\item{.data}{a tsibble}
+\item{.data}{a tsibble.}
 
-\item{gran1, gran2}{granularities}
+\item{gran1, gran2}{granularities.}
 
-\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships}
+\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships.}
 
-\item{...}{other arguments to be passed for appropriate labels}
+\item{...}{other arguments to be passed for appropriate labels.}
 }
 \value{
-a list of summary check points before visualizing distribution across bivariate granularities
+Summary check points before visualizing distribution across bivariate granularities
 }
 \description{
-Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity
+Recommendations on plot choices, interaction, number of observations and intra or inter facet homogeneity. Important summaries before drawing distribution plots.
 }
 \examples{
 library(tsibbledata)
+library(dplyr)
+library(ggplot2)
+
 vic_elec \%>\% gran_advice(
   gran1 = "hour_day",
   gran2 = "day_month"
 )
+
+smart_meter10 \%>\% prob_plot(
+  gran1 = "hour_day",
+  gran2 = "day_month",
+  response = "general_supply_kwh",
+  plot_type = "quantile",
+  quantile_prob = c(0.25, 0.5, 0.75),
+  symmetric = FALSE) +
+  scale_y_sqrt()
 
 }

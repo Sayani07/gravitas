@@ -37,7 +37,7 @@
 #' # visualize probability distribution of
 #' # the harmony pair (wknd_wday, hour_day)
 #' smart_meter10 %>%
-#' filter(customer_id == 10006704) %>%
+#' filter(customer_id == 10017936) %>%
 #'   prob_plot(
 #'     gran1 = "wknd_wday",
 #'     gran2 = "hour_day",

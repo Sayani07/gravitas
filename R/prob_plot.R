@@ -26,7 +26,8 @@
 #'   gran1 = "hour_day", gran2 = "day_week",
 #'   response = "Demand", plot_type = "quantile",
 #'   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-#'   symmetric = TRUE, outlier.colour = "red", outlier.shape = 2, palette = "Dark2"
+#'   symmetric = TRUE, outlier.colour = "red",
+#'   outlier.shape = 2, palette = "Dark2"
 #' )
 #'
 #' cricket_tsibble <- cricket %>%

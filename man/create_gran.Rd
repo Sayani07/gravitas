@@ -29,8 +29,9 @@ December.}
 A tsibble with an additional column of granularity.
 }
 \description{
-Create time granularities that accommodate for periodicities in data.
-Periodic ones might include time granularities like minute of the day, hour of the week  and aperiodic calendar categorizations may include day of the month or public holidays. For non-temporal data, supports
+Create time granularities that accommodate for periodicities in data, both single and multiple order up.
+Periodic ones might include time granularities like minute of the day, hour of the week  and aperiodic calendar categorizations may include day of the month or
+week of the quarter. For non-temporal data, supports
 only periodic deconstructions.
 }
 \examples{

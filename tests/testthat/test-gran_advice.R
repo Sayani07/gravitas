@@ -39,12 +39,12 @@ test_that("tsibble input", {
   ))
 })
 
-test_that("list output", {
+test_that("gran_advice class", {
   expect_is(gran_advice(
     x,
     "hour_day",
     "hhour_hour"
-  ), c("list"))
+  ), c("gran_advice"))
 })
 
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/prob_plot.R
 \name{prob_plot}
 \alias{prob_plot}
-\title{Plot probability distribution of univariate series across bivariate temporal granularities}
+\title{Plotting probability distributions across granularities}
 \usage{
 prob_plot(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL,
   response = NULL, plot_type = NULL, quantile_prob = c(0.01, 0.1,
@@ -12,31 +12,31 @@ prob_plot(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL,
 \arguments{
 \item{.data}{a tsibble}
 
-\item{gran1}{the lower level granularity to be paired}
+\item{gran1}{the granularity which is to be placed across facets. Can be column names if required granularity already exists in the tsibble. For example, a column with public holidays which needs to be treated as granularity, can be included here.}
 
-\item{gran2}{the upper level granularity to be paired}
+\item{gran2}{the granularity to be placed across x-axis. Can be column names if required granularity already exists in the tsibble.}
 
-\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships}
+\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships.}
 
-\item{response}{response variable to be plotted}
+\item{response}{response variable to be plotted.}
 
-\item{plot_type}{type of distribution plot}
+\item{plot_type}{type of distribution plot. Options include "boxplot", "lv" (letter-value), "quantile", "ridge" or "violin".}
 
-\item{quantile_prob}{numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "Decile" plot}
+\item{quantile_prob}{numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "decile" plot.}
 
-\item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities}
+\item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.}
 
 \item{symmetric}{If TRUE, symmetic quantile area plot is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd and ideally the quantile_prob should be a symmetric vector with median at the middle position.}
 
 \item{alpha}{level of transperancy for the quantile area}
 
-\item{...}{other arguments to be passed for appropriate labels}
+\item{...}{other arguments to be passed for customising the obtained ggplot object.}
 }
 \value{
-a ggplot object
+a ggplot object which can be customised as usual.
 }
 \description{
-Plot probability distribution of univariate series across bivariate temporal granularities
+Plot probability distribution of univariate series across bivariate temporal granularities.
 }
 \examples{
 library(tsibbledata)
@@ -49,7 +49,8 @@ vic_elec \%>\% prob_plot(
   gran1 = "hour_day", gran2 = "day_week",
   response = "Demand", plot_type = "quantile",
   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-  symmetric = TRUE, outlier.colour = "red", outlier.shape = 2, palette = "Dark2"
+  symmetric = TRUE, outlier.colour = "red",
+  outlier.shape = 2, palette = "Dark2"
 )
 
 cricket_tsibble <- cricket \%>\%

@@ -9,17 +9,27 @@
 #' @return Summary check points before visualizing distribution across bivariate granularities
 #
 #' @examples
-#' library(tsibbledata)
-#' vic_elec %>% gran_advice(
-#'   gran1 = "hour_day",
-#'   gran2 = "day_month"
-#' )
+#' library(dplyr)
+#' library(ggplot2)
+#'
+#' smart_meter10 %>%
+#' filter(customer_id == 10017936) %>%
+#'   prob_plot(gran1 = "wknd_wday",
+#'             gran2 = "hour_day")
+#'
+#' # choosing quantile plots from plot choices
+#' smart_meter10 %>%
+#' filter(customer_id == 10017936) %>%
+#'   prob_plot(
+#'     gran1 = "wknd_wday",
+#'     gran2 = "hour_day",
+#'     response = "general_supply_kwh",
+#'     plot_type = "quantile",
+#'     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+#'   ) +
+#'   scale_y_sqrt()
 #'
 #' @export gran_advice
-
-
-#define the S3 method with USeMethod
-
 
 gran_advice <- function(.data,
                         gran1,
@@ -74,35 +84,37 @@ gran_advice <- function(.data,
             plot_choices = plot_choices,
             gran_obs = gran_obs)
 
-  #class(z) <- "gran_advice"
+  class(z) <- "gran_advice"
   z
 }
 
 
-advice <- function(x) UseMethod("advice")
-
-advice.gran_advice <- function(object){
+print.gran_advice <- function(object){
 
   z <- object
 
-  # cat("Recommended plots:", z$plot_choices, "\n")
-  # cat("gran_obs:")
-  # z$gran_obs
-  #print(z$gran_obs)
 
-  ans <- NULL
-  # ans$harmony <-  cat("Harmony:", z$harmony,  "\n")
-  # ans$homogenous <-  z$homogenous
-  # ans$gran_obs <- z$gran_obs
+  if(z$harmony=="TRUE") cat("The chosen granularities are harmonies","\n","\n")
+  else
+    cat("The chosen granularities are clashes.
+        Consider looking at harmony() to obtain possible harmonies","\n","\n")
 
-  #ans <- z[c("harmony", "homogenous", "plot_choices")]
-  #gran_obs <- z$gran_obs
-  #harmony <- z$harmony
-  #ans <-  list(gran_obs = gran_obs, harmony)
-  ans <- cat("Recommended plot(s) include", z$plot_choices, "/n")
-  #names(gran_obs) <- "gran_obs"
-  #class(ans) <- "advice.gran_advice"
-  ans
+  cat("Recommended plots are:", z$plot_choices, "\n","\n")
+
+  if(z$homogenous$inter_facet=="TRUE")
+    cat("Number of observations are homogenous across facets","\n","\n")
+  else
+    cat("Number of observations are significantly different across facets",
+        "\n","\n")
+
+  if(z$homogenous$intra_facet=="TRUE")
+    cat("Number of observations are homogenous within facets",
+        "\n","\n")
+  else
+    cat("Number of observations are significantly different within facets",
+        "\n","\n")
+  cat("Cross tabulation of granularities :", "\n","\n")
+  print(z$gran_obs)
 
 }
 

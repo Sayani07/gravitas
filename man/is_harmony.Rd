@@ -13,15 +13,15 @@ is_harmony(.data, gran1, gran2, hierarchy_tbl = NULL, facet_h = NULL)
 
 \item{gran2}{The second temporal granularity in the pair.}
 
-\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships}
+\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships.}
 
-\item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.≥}
+\item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.}
 }
 \value{
 TRUE if two granularties are harmonies.
 }
 \description{
-Check if two temporal granularities are harmonies
+Interaction of pair of granularities, categorised as harmony and clash
 }
 \examples{
 library(tsibbledata)
