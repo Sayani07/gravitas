@@ -3,16 +3,60 @@
 \docType{data}
 \name{cricket}
 \alias{cricket}
-\title{Cricket data IPL season 2008 to 2016}
+\title{Cricket data for different seasons of Indian Premiere League}
 \format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 8560 rows and 11 columns.}
 \usage{
-data(cricket)
+cricket
 }
 \description{
 The Indian Premiere League played
 by teams representing
-different cities in India conisting of match_id, batting and bowling #' team, innings, over, runs per overs and rate rate per over
-The data is obtained from url{https://www.kaggle.com/littleraj30
-/indian-premier-league-2019-ball-by-ball/version/1}
+different citiesin India from 2008 to 2016
+* **season**: years representing IPL season
+* **match_id**: match codes
+* **batting_team**: name of batting team
+* **bowling_team**: name of bowling team
+* **inning**: innings of the match
+* **over**: overs of the inning
+* **wicket**: number of wickets in each over
+* **dot_balls**: number of balls with no runs in an over
+* **runs_per_over**: Runs for each over
+* **run_rate**: run rate for each over
+}
+\examples{
+data(cricket)
+
+library(tsibble)
+library(dplyr)
+library(ggplot2)
+
+# convert data set to a tsibble
+cricket_tsibble <- cricket \%>\%
+mutate(data_index = row_number()) \%>\%
+as_tsibble(index = data_index)
+
+# set the hierarchy of the units in a table
+hierarchy_model <- tibble::tibble(
+  units = c("index", "ball", "over", "inning", "match"),
+  convert_fct = c(1, 6, 20, 2, 1)
+)
+
+# Compute granularities for non-temporal data
+cricket_tsibble \%>\%
+  create_gran(
+    "ball_over",
+    hierarchy_model
+  )
+# Visualise distribution of runs across granularities
+cricket_tsibble \%>\%
+ filter(batting_team \%in\% c("Mumbai Indians",
+                             "Chennai Super Kings"))\%>\%
+ prob_plot("inning", "over",
+ hierarchy_model,
+ response = "runs_per_over",
+ plot_type = "lv")
+}
+\references{
+[Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data)
 }
 \keyword{datasets}
