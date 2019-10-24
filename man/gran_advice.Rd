@@ -22,22 +22,24 @@ Summary check points before visualizing distribution across bivariate granularit
 Recommendations on plot choices, interaction, number of observations and intra or inter facet homogeneity. Important summaries before drawing distribution plots.
 }
 \examples{
-library(tsibbledata)
 library(dplyr)
 library(ggplot2)
 
-vic_elec \%>\% gran_advice(
-  gran1 = "hour_day",
-  gran2 = "day_month"
-)
+smart_meter10 \%>\%
+filter(customer_id == 10017936) \%>\%
+  prob_plot(gran1 = "wknd_wday",
+            gran2 = "hour_day")
 
-smart_meter10 \%>\% prob_plot(
-  gran1 = "hour_day",
-  gran2 = "day_month",
-  response = "general_supply_kwh",
-  plot_type = "quantile",
-  quantile_prob = c(0.25, 0.5, 0.75),
-  symmetric = FALSE) +
+# choosing quantile plots from plot choices
+smart_meter10 \%>\%
+filter(customer_id == 10017936) \%>\%
+  prob_plot(
+    gran1 = "wknd_wday",
+    gran2 = "hour_day",
+    response = "general_supply_kwh",
+    plot_type = "quantile",
+    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
+  ) +
   scale_y_sqrt()
 
 }
