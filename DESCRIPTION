@@ -15,7 +15,11 @@ Authors@R:
       person(given = "Di",
              family = "Cook",
              role = c("aut", "ths"),
-             comment = c(ORCID = "0000-0002-3813-7155")))
+             comment = c(ORCID = "0000-0002-3813-7155")),
+      person(given = "Antony", 
+             family = "Unwin", 
+             role = "aut", 
+             email = "au50au@me.com"))
 Depends:
   R(>= 3.1.3)
 Imports:
