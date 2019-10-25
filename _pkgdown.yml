@@ -1,0 +1,59 @@
+template:
+  params:
+    bootswatch: flatly
+    docsearch:
+      index_name:  gravitas
+
+home:
+  links:
+  - text: Learn more
+    href: https://github.com/Sayani07/gravitas
+
+reference:
+  - title: "Computation, search and validation of granularities"
+    desc: >
+       Number of granularities that can be analyzed for the contexts
+    contents:
+      - starts_with("create_gran")
+      - search_gran
+      - validate_gran
+
+  - title: "Interaction of granularities"
+    desc: >
+      How granularities interact with each other? Are they harmonies/clashes?
+    contents:
+      - is_harmony
+      - harmony
+      - gran_obs
+
+  - title: "Visualisation of granularities"
+    desc: >
+      Visualise probability distribution of time series data across these
+      granularities to obtain insights on periodic behavior
+    contents:
+      - gran_advice
+      - starts_with("prob_plot")
+
+  - title: "Shiny App"
+    desc: >
+     Runs a shiny app demonstrating functionalities of gravitas
+    contents:
+      - run_app
+
+  - title: "Data sets"
+    contents:
+      - smart_meter10
+      - cricket
+
+
+
+navbar:
+  left:
+  - text: "Articles"
+    menu:
+      - text: Temporal study
+        href: articles/gravitas_vignette.html
+      - text: Non-temporal study
+        href: articles/cricket.html
+  - text: Reference
+    href: reference/index.html
