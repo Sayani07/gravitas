@@ -6,14 +6,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity — gran_advice • gravitas</title>
+<title>Advice summaries for granularities — gran_advice • gravitas</title>
 
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -33,10 +33,16 @@
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<script src="../docsearch.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity — gran_advice" />
-<meta property="og:description" content="Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity" />
+
+<meta property="og:title" content="Advice summaries for granularities — gran_advice" />
+<meta property="og:description" content="Recommendations on plot choices, interaction, number of observations and intra or inter facet homogeneity. Important summaries before drawing distribution plots." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -75,29 +81,23 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Vignettes
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/cricket.html">A non-temporal study with gravitas </a>
+      <a href="../articles/gravitas_vignette.html">Temporal study</a>
     </li>
     <li>
-      <a href="../articles/gravitas_vignette.html">Exploring probability distributions for bivariate temporal granularities</a>
+      <a href="../articles/cricket.html">Non-temporal study</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -108,6 +108,12 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -120,13 +126,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity</h1>
+    <h1>Advice summaries for granularities</h1>
     <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/gran_advice.R'><code>R/gran_advice.R</code></a></small>
     <div class="hidden name"><code>gran_advice.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Recommendations on plot choices and summary of interaction, number of observations and intra or inter facet homogeneity</p>
+    <p>Recommendations on plot choices, interaction, number of observations and intra or inter facet homogeneity. Important summaries before drawing distribution plots.</p>
     </div>
 
     <pre class="usage"><span class='fu'>gran_advice</span>(<span class='no'>.data</span>, <span class='no'>gran1</span>, <span class='no'>gran2</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
@@ -136,61 +142,46 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.data</th>
-      <td><p>a tsibble</p></td>
+      <td><p>a tsibble.</p></td>
     </tr>
     <tr>
       <th>gran1, gran2</th>
-      <td><p>granularities</p></td>
+      <td><p>granularities.</p></td>
     </tr>
     <tr>
       <th>hierarchy_tbl</th>
-      <td><p>A hierarchy table specifying the hierarchy of units and their relationships</p></td>
+      <td><p>A hierarchy table specifying the hierarchy of units and their relationships.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments to be passed for appropriate labels</p></td>
+      <td><p>other arguments to be passed for appropriate labels.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list of summary check points before visualizing distribution across bivariate granularities</p>
+    <p>Summary check points before visualizing distribution across bivariate granularities</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span> <span class='fu'>gran_advice</span>(
-  <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>,
-  <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"day_month"</span>
-)</div><div class='output co'>#&gt; $harmony
-#&gt; [1] "TRUE"
-#&gt; 
-#&gt; $homogenous
-#&gt; # A tibble: 1 x 2
-#&gt;   inter_facet intra_facet
-#&gt;   &lt;chr&gt;       &lt;chr&gt;      
-#&gt; 1 TRUE        TRUE       
-#&gt; 
-#&gt; $plot_choices
-#&gt; [1] "quantile"
-#&gt; 
-#&gt; $gran_obs
-#&gt; # A tibble: 31 x 25
-#&gt;    day_month   `0`   `1`   `2`   `3`   `4`   `5`   `6`   `7`   `8`   `9`  `10`
-#&gt;    &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-#&gt;  1 1            72    72    72    72    72    72    72    72    72    72    72
-#&gt;  2 2            72    72    72    72    72    72    72    72    72    72    72
-#&gt;  3 3            72    72    72    72    72    72    72    72    72    72    72
-#&gt;  4 4            72    72    72    72    72    72    72    72    72    72    72
-#&gt;  5 5            72    72    72    72    72    72    72    72    72    72    72
-#&gt;  6 6            72    72    72    72    72    72    72    72    72    72    72
-#&gt;  7 7            72    72    72    72    72    72    72    72    72    72    72
-#&gt;  8 8            72    72    72    72    72    72    72    72    72    72    72
-#&gt;  9 9            72    72    72    72    72    72    72    72    72    72    72
-#&gt; 10 10           72    72    72    72    72    72    72    72    72    72    72
-#&gt; # … with 21 more rows, and 13 more variables: `11` &lt;dbl&gt;, `12` &lt;dbl&gt;,
-#&gt; #   `13` &lt;dbl&gt;, `14` &lt;dbl&gt;, `15` &lt;dbl&gt;, `16` &lt;dbl&gt;, `17` &lt;dbl&gt;, `18` &lt;dbl&gt;,
-#&gt; #   `19` &lt;dbl&gt;, `20` &lt;dbl&gt;, `21` &lt;dbl&gt;, `22` &lt;dbl&gt;, `23` &lt;dbl&gt;
-#&gt; </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+
+<span class='no'>smart_meter10</span> <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>customer_id</span> <span class='kw'>==</span> <span class='fl'>10017936</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='prob_plot.html'>prob_plot</a></span>(<span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"wknd_wday"</span>,
+            <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>)</div><div class='output co'>#&gt; <span class='message'>The first measured variable</span>
+#&gt; <span class='message'>            plotted since no response variable specified</span></div><div class='img'><img src='gran_advice-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># choosing quantile plots from plot choices</span>
+<span class='no'>smart_meter10</span> <span class='kw'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>customer_id</span> <span class='kw'>==</span> <span class='fl'>10017936</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='prob_plot.html'>prob_plot</a></span>(
+    <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"wknd_wday"</span>,
+    <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>,
+    <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>,
+    <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"quantile"</span>,
+    <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>)
+  ) +
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_sqrt</a></span>()</div><div class='img'><img src='gran_advice-2.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -207,7 +198,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Sayani Gupta, Rob Hyndman, Di Cook.</p>
+  <p>Developed by Sayani Gupta, Rob Hyndman, Di Cook, Antony Unwin.</p>
 </div>
 
 <div class="pkgdown">
@@ -218,6 +209,23 @@
    </div>
 
   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: '',
+    indexName: 'gravitas',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
 
   </body>

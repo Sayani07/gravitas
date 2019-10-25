@@ -6,14 +6,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot probability distribution of univariate series across bivariate temporal granularities — prob_plot • gravitas</title>
+<title>Plotting probability distributions across granularities — prob_plot • gravitas</title>
 
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -33,10 +33,16 @@
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<script src="../docsearch.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Plot probability distribution of univariate series across bivariate temporal granularities — prob_plot" />
-<meta property="og:description" content="Plot probability distribution of univariate series across bivariate temporal granularities" />
+
+<meta property="og:title" content="Plotting probability distributions across granularities — prob_plot" />
+<meta property="og:description" content="Plot probability distribution of univariate series across bivariate temporal granularities." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -75,29 +81,23 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Vignettes
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/cricket.html">A non-temporal study with gravitas </a>
+      <a href="../articles/gravitas_vignette.html">Temporal study</a>
     </li>
     <li>
-      <a href="../articles/gravitas_vignette.html">Exploring probability distributions for bivariate temporal granularities</a>
+      <a href="../articles/cricket.html">Non-temporal study</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -108,6 +108,12 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -120,13 +126,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot probability distribution of univariate series across bivariate temporal granularities</h1>
+    <h1>Plotting probability distributions across granularities</h1>
     <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/prob_plot.R'><code>R/prob_plot.R</code></a></small>
     <div class="hidden name"><code>prob_plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plot probability distribution of univariate series across bivariate temporal granularities</p>
+    <p>Plot probability distribution of univariate series across bivariate temporal granularities.</p>
     </div>
 
     <pre class="usage"><span class='fu'>prob_plot</span>(<span class='no'>.data</span>, <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -143,31 +149,31 @@
     </tr>
     <tr>
       <th>gran1</th>
-      <td><p>the lower level granularity to be paired</p></td>
+      <td><p>the granularity which is to be placed across facets. Can be column names if required granularity already exists in the tsibble. For example, a column with public holidays which needs to be treated as granularity, can be included here.</p></td>
     </tr>
     <tr>
       <th>gran2</th>
-      <td><p>the upper level granularity to be paired</p></td>
+      <td><p>the granularity to be placed across x-axis. Can be column names if required granularity already exists in the tsibble.</p></td>
     </tr>
     <tr>
       <th>hierarchy_tbl</th>
-      <td><p>A hierarchy table specifying the hierarchy of units and their relationships</p></td>
+      <td><p>A hierarchy table specifying the hierarchy of units and their relationships.</p></td>
     </tr>
     <tr>
       <th>response</th>
-      <td><p>response variable to be plotted</p></td>
+      <td><p>response variable to be plotted.</p></td>
     </tr>
     <tr>
       <th>plot_type</th>
-      <td><p>type of distribution plot</p></td>
+      <td><p>type of distribution plot. Options include "boxplot", "lv" (letter-value), "quantile", "ridge" or "violin".</p></td>
     </tr>
     <tr>
       <th>quantile_prob</th>
-      <td><p>numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "Decile" plot</p></td>
+      <td><p>numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "decile" plot.</p></td>
     </tr>
     <tr>
       <th>facet_h</th>
-      <td><p>levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities</p></td>
+      <td><p>levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.</p></td>
     </tr>
     <tr>
       <th>symmetric</th>
@@ -179,23 +185,27 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments to be passed for appropriate labels</p></td>
+      <td><p>other arguments to be passed for customising the obtained ggplot object.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a ggplot object</p>
+    <p>a ggplot object which can be customised as usual.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lvplot</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
 
 <span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span> <span class='fu'>prob_plot</span>(
   <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"day_week"</span>,
   <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"Demand"</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"quantile"</span>,
   <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>),
-  <span class='kw'>symmetric</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>outlier.colour</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>outlier.shape</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Dark2"</span>
+  <span class='kw'>symmetric</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>outlier.colour</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
+  <span class='kw'>outlier.shape</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Dark2"</span>
 )</div><div class='img'><img src='prob_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>cricket_tsibble</span> <span class='kw'>&lt;-</span> <span class='no'>cricket</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>data_index</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span>()) <span class='kw'>%&gt;%</span>
@@ -227,7 +237,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Sayani Gupta, Rob Hyndman, Di Cook.</p>
+  <p>Developed by Sayani Gupta, Rob Hyndman, Di Cook, Antony Unwin.</p>
 </div>
 
 <div class="pkgdown">
@@ -238,6 +248,23 @@
    </div>
 
   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: '',
+    indexName: 'gravitas',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
 
   </body>
