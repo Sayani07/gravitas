@@ -18,3 +18,4 @@
 ^docs$
 ^tic\.R$
 ^cran-comments.\md$
+^_pkgdown\.yml$
