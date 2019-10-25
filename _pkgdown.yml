@@ -49,7 +49,7 @@ reference:
 
 navbar:
   left:
-  - text: "Articles"
+  - text: "Vignettes"
     menu:
       - text: Temporal study
         href: articles/gravitas_vignette.html
