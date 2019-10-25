@@ -3,10 +3,22 @@ source("global_shiny.R", local = TRUE)
 tabInput <- tabPanel(
   "Data summary", fluidPage(
     sidebarPanel(
-      # Input csv file
-      fileInput("file", "Data file (tsibble as .Rda file)"),
+      # Input rda file
+
+      checkboxInput("default",
+                    "Explore package with Victorian electricity demand
+                    (Default)",
+                    value = TRUE
+      ),
+
+      fileInput("file", "Upload your own data file (tsibble as .Rda file)"),
       wellPanel(helpText(HTML(
-        " Load a data(tsibble) in a .Rda file
+        "Browse through the package
+        with the already loaded data set on",
+        "<a href=https://rdrr.io/cran/tsibble
+        data/man/vic_elec.html>Victorian
+        electricity demand</a>",
+        "or load your own dataset (tsibble) in a .Rda file
                               and have a glance of your data before
                               moving ahead with your exploratory journey.",
         "<hr>",

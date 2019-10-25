@@ -16,15 +16,25 @@ source("global_shiny.R", local = TRUE)
 server <- function(input, output, session) {
 
   # reactive file input
+
+ # load default data set
+
+
+ # try with your own dataset
   fileinput <- reactive({
-    if (is.null(input$file)) return(vic_elec)
-    inFile <- isolate({
-      input$file
-    })
-    file <- inFile$datapath
-    tmp <- new.env()
-    load(file, envir = tmp)
-    tmp[[ls(tmp)[1]]] %>% tsibble::as_tsibble()
+    if (input$default) return(vic_elec)
+    else {
+      if (is.null(input$file)) return(vic_elec)
+      else{
+        inFile <- isolate({
+          input$file
+        })
+        file <- inFile$datapath
+        tmp <- new.env()
+        load(file, envir = tmp)
+        tmp[[ls(tmp)[1]]] %>% tsibble::as_tsibble()
+      }
+    }
   })
 
   # reactive measured variable
@@ -370,6 +380,13 @@ server <- function(input, output, session) {
     #   gran_x = input$facet
     # }
 
+    file_name <- reactive({
+      if(input$default) return("vic_elec")
+      if(is.null(input$file)) return("vic_elec")
+      else   return(input$file$name)
+    })
+
+
     HTML(
       "<hr >",
       "<strong>View R Code</strong>",
@@ -385,7 +402,7 @@ server <- function(input, output, session) {
 
       expr(
         prob_plot(
-          .data = !!input$file$name,
+          .data = !!file_name(),
           gran1 = !!input$facet,
           gran2 = !!input$xcol,
           response = !!input$ycol,
