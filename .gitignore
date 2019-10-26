@@ -1,5 +1,4 @@
 .Rproj.user/
-.Rproj.user/shared/notebooks
 .Rhistory
 .RData
 .Ruserdata
@@ -8,3 +7,4 @@ R/.DS_Store
 Meta
 docs/
 doc/
+doc
