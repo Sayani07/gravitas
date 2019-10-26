@@ -8,8 +8,12 @@ library(dplyr)
 deliveries <-  read_csv("data-raw/deliveries_all.csv")
 matches <- read_csv("data-raw/matches_all.csv")
 
-cricket_season <- deliveries %>% left_join(matches, by = c("match_id" ="id"))
+cricket_season <- deliveries %>%
+  left_join(matches, by = c("match_id" ="id")) %>%
+  mutate(winner_team = if_else(winner == "batting_team", "batting_team","bowling_team"))
 
+
+cricket_winner <- cricket_season %>% select(match_id, winner_team) %>% unique()
 # making it uniform
 # each over needs to have 6 balls
 
@@ -95,8 +99,21 @@ cricket <-  cricketdata %>%
   summarise(wicket = sum(wicket),
             dot_balls = sum(dot_balls),
             runs_per_over = sum(total_runs),
-            run_rate = round(sum(total_runs)/length(total_runs)), 1) %>%
-  ungroup()
+            run_rate = round(sum(total_runs)/length(total_runs))) %>% ungroup()
+
+
+cricket %>%
+  left_join(cricket_winner, by= c("match_id"))%>%
+  select(season, match_id, batting_team,
+         bowling_team,
+         inning,
+         over,
+         wicket,
+         dot_balls,
+         runs_per_over,
+         run_rate,
+         winner_team)
+
 
 
 save(cricket, file = "data/cricket.rda", compress = "gzip", version = 2)

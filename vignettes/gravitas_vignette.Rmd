@@ -202,7 +202,7 @@ of observations used for drawing the distribution plot so that one can ensure th
 ```{r granadvice}
 smart_meter10 %>% gran_advice(
   "week_month",
-  "wknd_wday"
+  "hour_day"
 )
 ```
 
@@ -216,46 +216,9 @@ smart_meter10 %>% gran_obs(
 )
 ```
 
-Through `prob_plot` we can choose one from the list of recommended plots. Warnings are generated if users try to plot clashes, number of facet variables are too high or number of observations used to compute statistical summaries for distribution are not large enough.
+Through `prob_plot` we can choose one from the list of recommended plots. Warnings are generated if users try to plot clashes, number of facet variables are too high or number of observations used to compute statistical summaries for distribution are not large enough. Currently, we can choose from "boxplot", "violin", "ridge", "lv" or "quantile" to visualize distributions.
 
-
-Currently, we can choose from "boxplot", "violin", "ridge", "lv" or "quantile" to visualize distributions.
-
-
-
-The quantile plot of energy consumption across day-month (x-axis) and hour-day (facet). This will help us to see if for each hour of the day, energy consumption changes across different days of the month. From the plot, we see there is not much variation across day-of-month. 
-
-
-```{r hd_dm, echo=TRUE, fig.cap="Quantile plot across hour-day as facets and day-month across x-axis"}
-smart_meter10 %>%
-  prob_plot("hour_day",
-    "day_month",
-    response = "general_supply_kwh",
-    plot_type = "quantile",
-    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-    symmetric = TRUE
-  ) +
-  scale_y_sqrt()
-```
-
-
-Moving on, if we want to switch the facet and x-axis variable, we simply reverse the order of time granularities. Here, prob_plot would output a ggplot2 object. So we are free to add any element to the default plot. \ref{fig:dm_hd} shows quantile plot of energy consumption across day-month (facet) and hour-day (x-axis). This plot shows the daily pattern of consumption for each day of the month. There is a morning and evening peak in consumption.
-
-
-
-```{r dm_hd, echo=TRUE}
-smart_meter10 %>%
-  prob_plot("day_month",
-    "hour_day",
-    response = "general_supply_kwh",
-    plot_type = "quantile",
-    quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-    symmetric = TRUE
-  )
-```
-
-\ref{fig:dw_hd} shows letter-value plot of energy consumption across wknd_wday (facet) and hour-day (x-axis).
-On weekdays, letter value C (lower tail) from 7 hours to 16 hours is not distinctly visible for most hours on weekdays compared to weekends, signifying there might be less volatility in these hours for weekdays.  Similar observations can be made for letter values C and D which closely follow M, F, E on weekdays, but not on weekends.
+Box plot of energy consumption across wknd_wday (facet) and hour-day (x-axis) are plotted for the same two households. For the second households, outliers are more prominent implying their regular behavior is more stable. For the first household, energy behavior is not significantly different for weekdays and weekends. For the second household, median energy consumption for the early morning hours is extremely high compared for weekends and weekdays.
 
 
 ```{r hd_dw, echo=TRUE}
@@ -264,28 +227,32 @@ cust1 <- smart_meter10 %>%
   prob_plot("wknd_wday",
                             "hour_day",
                             response = "general_supply_kwh",
-                            plot_type = "lv") +
+                            plot_type = "boxplot") +
   scale_y_sqrt()
 ```
 
-```{r hd_dw, echo=TRUE}
+```{r hd_dw2, echo=TRUE}
 cust2 <- smart_meter10 %>% 
   filter(customer_id %in% c(10017936))%>% 
   prob_plot("wknd_wday",
                             "hour_day",
                             response = "general_supply_kwh",
-                            plot_type = "lv") +
+                            plot_type = "boxplot") +
   scale_y_sqrt()
 ```
 
-```{r cust, echo=TRUE}
+```{r cust, echo=FALSE}
 cust1
 cust2
 ```
 
-## Further work
+## Future development
 
-To develop a framework so that these individual distributions are utilizes to group customers into similar pockets of behavior. 
+- To develop a framework so that these individual distributions are utilized to group subjects into similar pockets of behavior. 
+
+- Make `gravitas` work with big data tools like sparklyr
+
+- Any periodic/aperiodic temporal granularities computation given a hierarchical structure/calendar.
 
 ## Acknowledgements
 
