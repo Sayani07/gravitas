@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572076072646.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "16868A1",
+    "lastKnownWriteTime" : 1572162557,
+    "last_content_update" : 1572162557762,
+    "path" : "~/Documents/gravitas/R/gran_advice.R",
+    "project_path" : "R/gran_advice.R",
+    "properties" : {
+        "cursorPosition" : "16,0",
+        "docOutlineSize" : "85",
+        "docOutlineVisible" : "1",
+        "scrollLine" : "2"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

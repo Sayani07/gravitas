@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572071792635.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "F4BA7360",
+    "lastKnownWriteTime" : 140404223862952,
+    "last_content_update" : 1572071792635,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "B769562A",
+        "caption" : "cricket_season",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=cricket_season&cache_key=B769562A",
+        "displayedObservations" : "136598",
+        "environment" : "",
+        "expression" : "cricket_season",
+        "object" : "cricket_season",
+        "preview" : "0",
+        "totalObservations" : "136598",
+        "variables" : "39"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 12,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

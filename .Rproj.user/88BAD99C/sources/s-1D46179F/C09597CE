@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572140506471.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C09597CE",
+    "lastKnownWriteTime" : 1572162836,
+    "last_content_update" : 1572162836524,
+    "path" : "~/Documents/gravitas/R/data.R",
+    "project_path" : "R/data.R",
+    "properties" : {
+        "cursorPosition" : "12,17",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 10,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

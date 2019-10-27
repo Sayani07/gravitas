@@ -1,0 +1,3 @@
+"0","cricket_tsibble <- cricket %>%"
+"0","  mutate(data_index = row_number()) %>%"
+"0","  as_tsibble(index = data_index)"

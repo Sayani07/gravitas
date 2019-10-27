@@ -1,0 +1,8 @@
+"0","cricket_tsibble %>%"
+"0","  filter(batting_team %in% c(""Mumbai Indians"","
+"0","                             ""Chennai Super Kings""))%>%"
+"0","  mutate(win = if_else(winner_team == ""batting_team"", 1, 0)) %>% "
+"0","  prob_plot(""inning"", ""over"","
+"0","  hierarchy_model,"
+"0","  response = ""runs_per_over"","
+"0","  plot_type = ""lv"")"

@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1571919816369.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "678E19EB",
+    "lastKnownWriteTime" : 1572001119,
+    "last_content_update" : 1572001119,
+    "path" : "~/Documents/gravitas/_pkgdown.yml",
+    "project_path" : "_pkgdown.yml",
+    "properties" : {
+        "cursorPosition" : "45,15",
+        "scrollLine" : "37"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "yaml"
+}

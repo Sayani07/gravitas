@@ -1,0 +1,10 @@
+"0","smart_meter10  %>%"
+"0","  prob_plot(""hour_day"","
+"0","           ""day_month"","
+"0","           response = ""general_supply_kwh"","
+"0","           plot_type = ""quantile"","
+"0","           symmetric = FALSE) "
+"2","Number of observations for few combinations of
+     granularities vary within or across facets.
+     Use gran_obs() to find combinations which have low
+            observations or very different number of observations."

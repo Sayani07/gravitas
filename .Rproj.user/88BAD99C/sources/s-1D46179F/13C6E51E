@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572135426226.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "13C6E51E",
+    "lastKnownWriteTime" : 1572143552,
+    "last_content_update" : 1572143552998,
+    "path" : "~/Documents/gravitas/vignettes/gravitas_vignette.Rmd",
+    "project_path" : "vignettes/gravitas_vignette.Rmd",
+    "properties" : {
+        "cursorPosition" : "238,0",
+        "ignored_words" : "granularities,tsibble,periodicities,hhour,hd,dm,quantile,ggplot,kwh,dw,wknd,wday,lv,boxplot,quantiles,br,Quantile,https,github,Sayani,gsoc,pdf,univariate,devlopment,Monash,bivariate,VignetteIndexEntry,VignetteEngine,knitr,rmarkdown,VignetteEncoding,njtierney,naniar,Rmd,aperiodic,granularites,allcust,gif,boxplots,outliers,sparklyr\n",
+        "last_setup_crc32" : "",
+        "scrollLine" : "233"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

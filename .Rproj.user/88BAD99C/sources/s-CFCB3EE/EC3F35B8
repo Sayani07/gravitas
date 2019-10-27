@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572070335089.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EC3F35B8",
+    "lastKnownWriteTime" : 1572071654,
+    "last_content_update" : 1572071670311,
+    "path" : "~/Documents/gravitas/vignettes/cricket.Rmd",
+    "project_path" : "vignettes/cricket.Rmd",
+    "properties" : {
+        "cursorPosition" : "88,26",
+        "last_setup_crc32" : "CFCB3EEb3009b62",
+        "scrollLine" : "78"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

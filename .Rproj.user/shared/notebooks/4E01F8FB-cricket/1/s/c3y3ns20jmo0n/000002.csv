@@ -1,0 +1,27 @@
+"0","library(gravitas)"
+"0","library(tsibble)"
+"0","library(dplyr)"
+"2","package ‘dplyr’ was built under R version 3.5.2"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following object is masked from ‘package:tsibble’:
+
+    id
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","cricket_tsibble <- cricket %>%"
+"0","  ungroup() %>%"
+"0","  mutate(data_index = row_number()) %>%"
+"0","  as_tsibble(index = data_index)"

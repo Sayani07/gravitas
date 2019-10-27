@@ -1,0 +1,28 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572135480567.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "1A8D6321",
+    "lastKnownWriteTime" : 1572166566,
+    "last_content_update" : 1572166566730,
+    "path" : "~/Documents/gravitas/README.Rmd",
+    "project_path" : "README.Rmd",
+    "properties" : {
+        "cursorPosition" : "81,128",
+        "docOutlineSize" : "68",
+        "docOutlineVisible" : "1",
+        "ignored_words" : "granularities,lv,devlopment,Monash,tsibble,Tsibble,tbl,centric,https,github,Sayani,md,Rmd,travis,ci,appveyor,codecov,io,gh,univariate,bivariate,aperiodic,granularties,functionalities,wknd,wday,kwh,quantile\n",
+        "scrollLine" : "73"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

@@ -1,0 +1,64 @@
+Package: gravitas
+Type: Package
+Title: Granularity visualisation of temporal data
+Version: 0.0.0.9000
+Authors@R: 
+    c(person(given = "Sayani",
+             family = "Gupta",
+             role = c("aut", "cre"),
+             email = "gupta.sayani@gmail.com",
+             comment = c(ORCID = "0000-0003-0643-5358")),
+      person(given = "Rob",
+             family = "Hyndman",
+             role = c("aut", "ths"),
+             comment = c(ORCID = "0000-0002-2140-5352")),
+      person(given = "Di",
+             family = "Cook",
+             role = c("aut", "ths"),
+             comment = c(ORCID = "0000-0002-3813-7155")),
+      person(given = "Antony", 
+             family = "Unwin", 
+             role = "aut", 
+             email = "au50au@me.com"))
+Depends:
+  R(>= 3.1.3)
+Imports:
+  lubridate(>= 1.7.4),
+  dplyr(>= 0.8.0.9009),
+  tsibble (>= 0.8.0),
+  tibble(>= 2.1.1),
+  rlang(>= 0.3.4),
+  tidyr(>= 0.8.3),
+  ggplot2 (>= 3.1.1),
+  stats,
+  stringr(>= 1.4.0),
+  lvplot,
+  ggridges,
+  shiny,
+  shinythemes,
+  shinyalert,
+  RColorBrewer,
+  ineq
+Suggests:
+    tsibbledata (>= 0.0.0.9000),
+    purrr (>= 0.3.2),
+    testthat (>= 2.1.0),
+    covr,
+    knitr,
+    rmarkdown,
+    readr
+VignetteBuilder: knitr
+Maintainer: Sayani Gupta <gupta.sayani@gmail.com>
+Description: Provides tools for exploring large quantities of temporal data 
+             across different deconstructions of time.
+             Computes circular, aperiodic, single-order-up or 
+             multiple-order-up granularities and advices on which
+             combinations of granularities to explore and through which 
+             distribution plots.
+BugReports: https://github.com/Sayani07/gravitas/issues
+License: GPL-3
+URL: https://github.com/Sayani07/gravitas/
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+RoxygenNote: 6.1.1

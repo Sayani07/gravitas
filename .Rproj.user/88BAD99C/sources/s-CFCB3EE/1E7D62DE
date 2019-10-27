@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572071682736.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "1E7D62DE",
+    "lastKnownWriteTime" : 141733920769,
+    "last_content_update" : 1572071682736,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "DC90FC5",
+        "caption" : "cricket",
+        "contentUrl" : "grid_resource/gridviewer.html?env=package%3Agravitas&obj=cricket&cache_key=DC90FC5",
+        "displayedObservations" : 8560,
+        "environment" : "package:gravitas",
+        "expression" : "cricket",
+        "object" : "cricket",
+        "preview" : 0,
+        "totalObservations" : 8560,
+        "variables" : 11
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 10,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

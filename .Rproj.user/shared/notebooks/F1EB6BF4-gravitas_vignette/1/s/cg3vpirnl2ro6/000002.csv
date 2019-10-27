@@ -1,0 +1,7 @@
+"0","cust2 <- smart_meter10 %>% "
+"0","  filter(customer_id %in% c(10017936))%>% "
+"0","  prob_plot(""wknd_wday"","
+"0","                            ""hour_day"","
+"0","                            response = ""general_supply_kwh"","
+"0","                            plot_type = ""boxplot"") +"
+"0","  scale_y_sqrt()"

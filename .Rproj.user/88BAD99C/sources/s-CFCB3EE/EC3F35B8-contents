@@ -1,0 +1,128 @@
+---
+title: "Exploring probability distributions for cricket"
+author: "<i>Sayani Gupta</i <br> <hr>"
+output: 
+  rmarkdown::html_vignette:
+vignette: >
+  %\VignetteIndexEntry{Exploring probability distributions for bivariate granularities for a non-temporal case}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+<!-- #Example vignette: 
+https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-naniar.Rmd -->
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  collapse = TRUE,
+  comment = "#>",
+  fig.height = 5,
+  fig.width = 8,
+  fig.align = "center",
+  cache = FALSE
+)
+library(gravitas)
+library(dplyr)
+library(ggplot2)
+library(tsibble)
+library(lvplot)
+```
+
+# Introduction
+
+Package `gravitas` is not only restricted to temporal data. An application on cricket follows to illustrate how this package can be generalised in other applications. 
+
+The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by teams representing different cities in India. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. A hierarchy table like this can be construed for this game format.
+
+```{r hierarchy, echo=FALSE}
+hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"), 
+                                  convert_fct = c(1, 6, 20, 2, 1))
+knitr::kable(hierarchy_model, caption = " A hierarchy table for T20 cricket")
+```
+
+
+The ball by ball data for IPL season 2008 to 2016 is sourced from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the package contains information on batting and bowling team,  balls of the over,  over of the innings, innings of the match and total runs per ball for a sample of 214 matches spanning over 9 seasons (2008 to 2016). It also has information on which team won, dismissal type, batting and bowling teams as other useful information.
+
+
+There are many interesting questions that can possibly be answered with such a data set, however, we will explore a few and understand how the package can help answer some of the questions.
+
+
+Mumbai Indians(MI) and Delhi Daredevils (DD) are two teams which played from 2010 to 2015, in which MI always qualified in top 4, and DD never made it to top 4. It would be interesting to see the difference in their strategies throughout all matches in these seasons. The following two questions might help us partially understand their strategies/performances. 
+
+- Q1: How their run rates vary depending on if they bat first or 2nd?
+
+- Q2: Is there a chance that they are more likely to win if they bat first?
+
+- Q3: Which team is more consistent in their approach in terms of run rate across different overs of the innings?
+
+Although there is no conventional time element in cricket, we can still represent the data set `cricket` through a `tsibble`, where each over, which represents an ordering from past to future, can form the `index` of the tsibble.  
+
+
+
+```{r}
+cricket_tsibble <- cricket %>%
+  mutate(data_index = row_number()) %>%
+  as_tsibble(index = data_index)
+```
+
+
+# How run rates vary depending on if they bat first or 2nd?
+
+```{r}
+cricket_tsibble %>%
+  filter(batting_team %in% c("Mumbai Indians",
+                             "Chennai Super Kings"))%>%
+  prob_plot("inning", "over",
+  hierarchy_model,
+  response = "runs_per_over",
+  plot_type = "lv")
+```
+
+
+# How run rates vary depending on if they bat first or 2nd?
+
+
+
+```{r}
+cricket_tsibble %>%
+  filter(batting_team %in% c("Mumbai Indians",
+                             "Chennai Super Kings"))%>%
+  mutate(winner = if_else())
+  prob_plot("inning", "over",
+  hierarchy_model,
+  response = "runs_per_over",
+  plot_type = "lv")
+```
+
+
+
+
+```{r}
+cricket_tsibble %>%
+  filter(batting_team == "Mumbai Indians") %>% 
+    prob_plot("inning", "over",
+             hierarchy_model,
+             response = "runs_per_over",
+             plot_type = "lv")
+
+cricket_tsibble %>%
+  filter(batting_team == "Delhi Daredevils") %>% 
+    prob_plot("inning", "over",
+             hierarchy_model,
+             response = "runs_per_over",
+             plot_type = "lv")
+```
+
+
+```{r}
+cricket_tsibble %>% 
+  filter(dot_balls %in% c(1,2,3,4)) %>%
+  prob_plot("dot_balls",
+            "over",
+            hierarchy_model,
+            response = "runs_per_over",
+            plot_type = "quantile",
+            quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
+
+```
+
+

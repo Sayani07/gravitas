@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572071742848.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EF92398",
+    "lastKnownWriteTime" : 1572073563,
+    "last_content_update" : 1572073563,
+    "path" : "~/Documents/gravitas/data-raw/cricket.R",
+    "project_path" : "data-raw/cricket.R",
+    "properties" : {
+        "cursorPosition" : "102,0",
+        "scrollLine" : "87",
+        "tempName" : "Untitled2"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 11,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

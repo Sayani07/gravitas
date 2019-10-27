@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572163143157.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "899BE2A9",
+    "lastKnownWriteTime" : 1572169232,
+    "last_content_update" : 1572169506897,
+    "path" : "~/Documents/gravitas/R/create_gran.R",
+    "project_path" : "R/create_gran.R",
+    "properties" : {
+        "cursorPosition" : "100,31",
+        "docOutlineVisible" : "1",
+        "scrollLine" : "84",
+        "source_window_id" : ""
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 13,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

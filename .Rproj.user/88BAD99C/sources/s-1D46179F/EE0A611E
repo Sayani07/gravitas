@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1572168440918.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EE0A611E",
+    "lastKnownWriteTime" : 1572169378,
+    "last_content_update" : 1572169378,
+    "path" : "~/Documents/gravitas/inst/shiny-examples/gravitas_app/ui.R",
+    "project_path" : "inst/shiny-examples/gravitas_app/ui.R",
+    "properties" : {
+        "cursorPosition" : "266,0",
+        "scrollLine" : "49"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 13,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

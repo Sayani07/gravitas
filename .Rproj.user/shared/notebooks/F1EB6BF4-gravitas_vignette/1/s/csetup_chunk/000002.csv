@@ -1,0 +1,39 @@
+"0","knitr::opts_chunk$set("
+"0","  echo = TRUE,"
+"0","  collapse = TRUE,"
+"0","  comment = ""#>"","
+"0","  fig.height = 5,"
+"0","  fig.width = 8,"
+"0","  fig.align = ""center"","
+"0","  cache = FALSE"
+"0",")"
+"0","library(gravitas)"
+"0","library(dplyr)"
+"2","package ‘dplyr’ was built under R version 3.5.2"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(ggplot2)"
+"2","package ‘ggplot2’ was built under R version 3.5.2"
+"0","library(tsibble)"
+"2","package ‘tsibble’ was built under R version 3.5.2"
+"2","
+Attaching package: ‘tsibble’
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    id
+
+"
