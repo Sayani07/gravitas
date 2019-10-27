@@ -96,7 +96,7 @@ knitr::include_graphics("man/figures/smart_allcust_period.gif")
 
 So the question is how to explore systematically multiple perspectives of this smart meter data across different time granularities? The solution is to visualize the probability distributions across these granularities to find regular / nearly-periodic patterns or anomalies in behaviors.
 
-Let us see how we can analyze the energy behavior of these households by making allowances for the following aspects of time granularities: Computation, interaction and visualisation. 
+Let us see how we can analyze the energy behavior of these households by making allowances for the following aspects of time granularities: Computation, interaction and visualization. 
 
 
 ## Computation
@@ -124,7 +124,7 @@ This looks better. However, some intermediate temporal units might not be pertin
 
 ```{r search_gran_limit2}
 
-smart_meter10 %>% search_gran(ugran = "month",
+smart_meter10 %>% search_gran(highest_unit = "month",
                               filter_out = c("hhour", "fortnight")
 )
 ```
@@ -133,8 +133,10 @@ smart_meter10 %>% search_gran(ugran = "month",
 
 After we have the set of granularities to look at, we should be able to compute any granularity using `create_gran`. These can be be used for exploring distribution of the time series across univariate temporal granularity or computing summary statistics across these categorizations. 
 
-The data is filtered for two customers and a new granularity "day-of-the-fortnight" is created and visualised to understand if the electricity demand consumption is different across days of the fortnight. From the [letter value plot](https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2017.1305277?journalCode=ucgs20#.XbOwLpMzZ24), we can not clearly observe any pattern across days of the fortnight for each individual household. But we can see the difference in distribution of 
-energy consumption for these two households. Let us see if we can derive any other insights than the othewrwise obvious observation that for most cases the second household has much less consumption than the first one. If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable reflected through distinct letter values, implying when their not-so-regular behavior is quite extreme. 
+The data is filtered for two customers and a new granularity "day_fortnight" (day of the fortnight) is created and visualized to understand if the electricity consumption is different across days of the fortnight. From the [letter value plot](https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2017.1305277?journalCode=ucgs20#.XbOwLpMzZ24), we can not clearly observe any pattern across days of the fortnight for each individual household. 
+
+ The difference in distribution of 
+energy consumption for these two households can be observed in the following plot. Let us see if we can derive any other insights than the otherwise obvious observation that for most cases the second household has much less consumption than the first one. If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme. 
 
 ```{r}
 library(lvplot)
@@ -161,7 +163,7 @@ smart_meter10 %>%
 
 ## Interaction
 
-We can visualise the distribution of energy across univariate time granularities for deriving insights on periodic behavior. From the search list, we found that we can look at six granularities, that amounts to analyzing six graphics. However, what happens if we want to see the distribution of energy across two granularities at a time? This is equivalent to looking at the distribution of energy consumption across one granularity conditional on another one. One way can be to plot one of the granularities on the x-axis and another on the facet. Different perspectives of the data can be derived by placing time granularity across x-axis and facets.   
+We can visualize the distribution of energy across univariate time granularities for deriving insights on periodic behavior. From the search list, we found that we can look at six granularities, that amounts to analyzing six graphics. However, what happens if we want to see the distribution of energy across two granularities at a time? This is equivalent to looking at the distribution of energy consumption across one granularity conditional on another one. One way can be to plot one of the granularities on the x-axis and another on the facet. Different perspectives of the data can be derived depending on where the granularities are places.
 
 So, what is the number of pairs of granularities we can look at? It is equivalent to taking 2 granularities from 6, which essentially means we need to examine 30 plots. The good news is, not all time granularities can be plotted together and we do not have to analyse so many plots!
 
@@ -182,7 +184,7 @@ smart_meter10 %>%
              gran2 = "week_month")
 ```
 
-Let us now look at all the harmonies that we can examine. Fortunately, we are left with only 13 out of 30 visualizations. We can also play with the argument `facet_h`, which represents the maximum number of levels allowed for facet variables, to reduce or increase the number of harmonies.
+Let us now look at all the harmonies that we can examine. Fortunately, we are left with only 13 out of 30 visualizations. We can also play with the argument `facet_h`, which represents the maximum number of levels allowed for the facet variable, to reduce or increase the number of harmonies.
 
 ```{r harmony, echo=TRUE}
 smart_meter10 %>% harmony(
@@ -194,10 +196,10 @@ smart_meter10 %>% harmony(
 
 ## Visualization
 
-We want to visualize distribution of the measured variable `general_supply_kwh` across these harmonies through different distribution plots using `prob_plot`. We have several options for visualizing statistical distributions and each comes with some pros and cons which we need to consider while choosing a good one for our context. Traditional methods of plotting distributions include boxplots and violin plots, while more recent methods include ridge plots, quantile plots or letter-value plots. 
+Now, we know the pairs of granularities that we need to look at using harmonies. Next, we want to visualize distribution of the measured variable `general_supply_kwh` across these harmonies. This is possible through `prob_plot`. We have several options for visualizing statistical distributions and each comes with some pros and cons which we need to consider while choosing a good one for our context. Traditional methods of plotting distributions include boxplots and violin plots, while more recent methods include ridge plots, quantile plots or letter-value plots. 
 
-`gran_advice` provides check points before plotting a distribution. It includes recommended distribution plots depending on the levels of the two granularities plotted. Assumptions are made to ensure display is not too cluttered by the space occupied by various kinds of distribution plots. Moreover, it also advices on the number 
-of observations used for drawing the distribution plot so that one can ensure that they are enough before jumping on to plot a distribution. Furthermore, it advices if the number of observations varies significantly across facets or within facets.
+`gran_advice` provides check points before plotting a distribution. It includes recommended distribution plots depending on the levels of the two granularities plotted. Assumptions are made to ensure display is not too cluttered by the space occupied by various kinds of distribution plots. Moreover, it also advice on the number 
+of observations used for drawing the distribution plot so that one can ensure that they are enough before jumping on to plot a distribution. Furthermore, it advice if the number of observations varies significantly across facets or within facets.
 
 ```{r granadvice}
 smart_meter10 %>% gran_advice(
@@ -218,7 +220,7 @@ smart_meter10 %>% gran_obs(
 
 Through `prob_plot` we can choose one from the list of recommended plots. Warnings are generated if users try to plot clashes, number of facet variables are too high or number of observations used to compute statistical summaries for distribution are not large enough. Currently, we can choose from "boxplot", "violin", "ridge", "lv" or "quantile" to visualize distributions.
 
-Box plot of energy consumption across wknd_wday (facet) and hour-day (x-axis) are plotted for the same two households. For the second households, outliers are more prominent implying their regular behavior is more stable. For the first household, energy behavior is not significantly different for weekdays and weekends. For the second household, median energy consumption for the early morning hours is extremely high compared for weekends and weekdays.
+We visualize the harmony pair (wknd_wday, hour_day) through a box plot. Boxplot of energy consumption is shown across wknd_wday (facet) and hour-day (x-axis) for the same two households. For the second household, outliers are less prominent implying their regular behavior is more stable. For the first household, energy behavior is not significantly different between weekdays and weekends. For the second household, median energy consumption for the early morning hours is extremely high for weekends compared to weekdays.
 
 
 ```{r hd_dw, echo=TRUE}
@@ -258,6 +260,6 @@ cust2
 
 Thanks to PhD supervisors [Prof. Rob J Hyndman](https://robjhyndman.com/), [Prof. Dianne Cook](http://dicook.org/) and [Google Summer of Code 2019](https://summerofcode.withgoogle.com/) mentor [Prof. Antony Unwin](http://rosuda.org/~unwin/) for their support and always leading by example. The fine balance of encouraging me to work on my ideas and stepping in to help when I need has made the devlopment of this package a great learning experience for me.
 
-Moreover, I want to thank my cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team) at Monash University for always lending an ear and sharing their wisdom and experience on developing R packages whenever needed. 
+Moreover, I want to thank my cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for always lending an ear and sharing their wisdom and experience of developing R packages whenever needed. 
 
 

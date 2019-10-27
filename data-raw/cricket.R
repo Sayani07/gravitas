@@ -10,7 +10,7 @@ matches <- read_csv("data-raw/matches_all.csv")
 
 cricket_season <- deliveries %>%
   left_join(matches, by = c("match_id" ="id")) %>%
-  mutate(winner_team = if_else(winner == "batting_team", "batting_team","bowling_team"))
+  mutate(winner_team = if_else(winner == batting_team, "batting_team","bowling_team"))
 
 
 cricket_winner <- cricket_season %>% select(match_id, winner_team) %>% unique()
@@ -102,7 +102,7 @@ cricket <-  cricketdata %>%
             run_rate = round(sum(total_runs)/length(total_runs))) %>% ungroup()
 
 
-cricket %>%
+cricket <-  cricket %>%
   left_join(cricket_winner, by= c("match_id"))%>%
   select(season, match_id, batting_team,
          bowling_team,
