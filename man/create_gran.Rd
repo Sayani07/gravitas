@@ -63,7 +63,8 @@ filter(customer_id == 10017936) \%>\%
   ) +
   scale_y_sqrt()
 
-# Compute granularities for non-temporal data
+\dontrun{
+#' # Compute granularities for non-temporal data
 
 library(tsibble)
 cricket_tsibble <- cricket \%>\%
@@ -95,4 +96,5 @@ validate_gran(cricket_tsibble,
   hierarchy_tbl = hierarchy_model,
   validate_col = "over"
 )
+}
 }
