@@ -1,13 +1,14 @@
 #' Build dynamic temporal granularities
 #'
 #' Create time granularities that accommodate for periodicities in data, both single and multiple order up.
-#' Periodic ones might include time granularities like minute of the day, hour of the week  and aperiodic calendar categorizations may include day of the month or
+#' Periodic ones might include time granularities like minute of the day, hour
+#'  of the week  and aperiodic calendar categorizations may include day of the month or
 #' week of the quarter. For non-temporal data, supports
 #' only periodic deconstructions.
 #'
 #' @param .data A tsibble object.
-#' @param gran1 the granularity to be created. For temporal data, any combination
-#' of "second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight
+#' @param gran1 the granularity to be created. For temporal data, any
+#' combination of "second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight
 #' ,"month", "quarter", "semester" or "year" can be chosen in the form of finer #' to coarser unit. For example, for the granularity hour of the week, value is
 #' "hour_week".
 #' @param label Logical. TRUE will display the month as an ordered factor of
@@ -47,7 +48,8 @@
 #'   ) +
 #'   scale_y_sqrt()
 #'
-#' # Compute granularities for non-temporal data
+#'\dontrun{
+#'#' # Compute granularities for non-temporal data
 #'
 #'library(tsibble)
 #' cricket_tsibble <- cricket %>%
@@ -79,8 +81,10 @@
 #'   hierarchy_tbl = hierarchy_model,
 #'   validate_col = "over"
 #' )
+#' }
 #' @export
-create_gran <- function(.data, gran1 = NULL, hierarchy_tbl = NULL, label = TRUE,
+create_gran <- function(.data, gran1 = NULL, hierarchy_tbl = NULL,
+                        label = TRUE,
                         abbr = TRUE, ...) {
 
   # data must be tsibble
@@ -254,7 +258,8 @@ validate_gran <- function(.data,
     stop("granularity to be validated needs
          to be one that can be formed from the hierarchy table.")
   }
-  if (!(validate_col %in% names(.data))) # column of data which has the granularity
+  if (!(validate_col %in% names(.data))) # column of data which has the
+    #granularity
   {
     stop("validate_col should be one of the
          columns of the data")
