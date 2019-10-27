@@ -6,14 +6,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Smart meter data for a household — smart_meter10 • gravitas</title>
+<title>Smart meter data for ten households — smart_meter10 • gravitas</title>
 
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -33,17 +33,22 @@
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<script src="../docsearch.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Smart meter data for a household — smart_meter10" />
+
+<meta property="og:title" content="Smart meter data for ten households — smart_meter10" />
 <meta property="og:description" content="Customer Trial data conducted as part of
 Smart Grid Smart City (SGSC) project
 (2010-2014) based in Newcastle,
 New South Wales
 and areas in Sydney.
 It contains half hourly interval meter readings (KWh)
-of electricity consumption and generation of households.
-The data is obtained from urlhttps://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter" />
+of electricity consumption and generation of households." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -82,26 +87,23 @@ The data is obtained from urlhttps://data.gov.au/dataset/ds-dga-4e21dea3-9b87-46
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Vignettes
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/gravitas_vignette.html">Exploring probability distributions for bivariate temporal granularities</a>
+      <a href="../articles/gravitas_vignette.html">Temporal study</a>
+    </li>
+    <li>
+      <a href="../articles/cricket.html">Non-temporal study</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -112,6 +114,12 @@ The data is obtained from urlhttps://data.gov.au/dataset/ds-dga-4e21dea3-9b87-46
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -124,7 +132,7 @@ The data is obtained from urlhttps://data.gov.au/dataset/ds-dga-4e21dea3-9b87-46
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Smart meter data for a household</h1>
+    <h1>Smart meter data for ten households</h1>
     <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/data.R'><code>R/data.R</code></a></small>
     <div class="hidden name"><code>smart_meter10.Rd</code></div>
     </div>
@@ -136,8 +144,7 @@ Smart Grid Smart City (SGSC) project
 New South Wales
 and areas in Sydney.
 It contains half hourly interval meter readings (KWh)
-of electricity consumption and generation of households.
-The data is obtained from urlhttps://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter</p>
+of electricity consumption and generation of households.</p>
     </div>
 
     <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>smart_meter10</span>)</pre>
@@ -145,18 +152,20 @@ The data is obtained from urlhttps://data.gov.au/dataset/ds-dga-4e21dea3-9b87-46
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A tsibble with 3 variables</p><dl class='dl-horizontal'>
-  <dt>customer_id</dt><dd><p>household ID</p></dd>
-  <dt>reading_datetime</dt><dd><p>timestamps for which data is collected</p></dd>
-  <dt>general_supply_KwH</dt><dd><p>electricity supplied to this household</p></dd>
+    <p>A tsibble with 259, 235 rows and 3 columns:
+* **customer_id**: household ID
+* **reading_datetime**: Date time for which data is recorded (index)
+* **general_supply_kwh**:electricity supplied to this household</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-</dl>
+    <p>[Department of the Environment and Energy, Australia](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#format">Format</a></li>
+      <li><a href="#references">References</a></li>
     </ul>
 
   </div>
@@ -165,7 +174,7 @@ The data is obtained from urlhttps://data.gov.au/dataset/ds-dga-4e21dea3-9b87-46
 
       <footer>
       <div class="copyright">
-  <p>Developed by Sayani Gupta, Rob Hyndman, Di Cook.</p>
+  <p>Developed by Sayani Gupta, Rob Hyndman, Di Cook, Antony Unwin.</p>
 </div>
 
 <div class="pkgdown">
@@ -176,6 +185,23 @@ The data is obtained from urlhttps://data.gov.au/dataset/ds-dga-4e21dea3-9b87-46
    </div>
 
   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: '',
+    indexName: 'gravitas',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
 
   </body>

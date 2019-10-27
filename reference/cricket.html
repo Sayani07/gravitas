@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plotting probability distributions across granularities — prob_plot • gravitas</title>
+<title>Cricket data set for different seasons of Indian Premiere League — cricket • gravitas</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,9 @@
 
 
 
-<meta property="og:title" content="Plotting probability distributions across granularities — prob_plot" />
-<meta property="og:description" content="Plot probability distribution of univariate series across bivariate temporal granularities." />
+<meta property="og:title" content="Cricket data set for different seasons of Indian Premiere League — cricket" />
+<meta property="og:description" content="The Indian Premiere League played by teams representing
+different cities in India from 2008 to 2016" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,108 +127,84 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plotting probability distributions across granularities</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/prob_plot.R'><code>R/prob_plot.R</code></a></small>
-    <div class="hidden name"><code>prob_plot.Rd</code></div>
+    <h1>Cricket data set for different seasons of Indian Premiere League</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>cricket.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plot probability distribution of univariate series across bivariate temporal granularities.</p>
+    <p>The Indian Premiere League played by teams representing
+different cities in India from 2008 to 2016</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prob_plot</span>(<span class='no'>.data</span>, <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.1</span>,
-  <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>, <span class='fl'>0.99</span>), <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>symmetric</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='no'>cricket</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>.data</th>
-      <td><p>a tsibble</p></td>
-    </tr>
-    <tr>
-      <th>gran1</th>
-      <td><p>the granularity which is to be placed across facets. Can be column names if required granularity already exists in the tsibble. For example, a column with public holidays which needs to be treated as granularity, can be included here.</p></td>
-    </tr>
-    <tr>
-      <th>gran2</th>
-      <td><p>the granularity to be placed across x-axis. Can be column names if required granularity already exists in the tsibble.</p></td>
-    </tr>
-    <tr>
-      <th>hierarchy_tbl</th>
-      <td><p>A hierarchy table specifying the hierarchy of units and their relationships.</p></td>
-    </tr>
-    <tr>
-      <th>response</th>
-      <td><p>response variable to be plotted.</p></td>
-    </tr>
-    <tr>
-      <th>plot_type</th>
-      <td><p>type of distribution plot. Options include "boxplot", "lv" (letter-value), "quantile", "ridge" or "violin".</p></td>
-    </tr>
-    <tr>
-      <th>quantile_prob</th>
-      <td><p>numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "decile" plot.</p></td>
-    </tr>
-    <tr>
-      <th>facet_h</th>
-      <td><p>levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.</p></td>
-    </tr>
-    <tr>
-      <th>symmetric</th>
-      <td><p>If TRUE, symmetic quantile area plot is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd and ideally the quantile_prob should be a symmetric vector with median at the middle position.</p></td>
-    </tr>
-    <tr>
-      <th>alpha</th>
-      <td><p>level of transperancy for the quantile area</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>other arguments to be passed for customising the obtained ggplot object.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>a ggplot object which can be customised as usual.</p>
+    <p>A tibble with 8560 rows and 11 variables:
+* **season**: years representing IPL season
+* **match_id**: match codes
+* **batting_team**: name of batting team
+* **bowling_team**: name of bowling team
+* **inning**: innings of the match
+* **over**: overs of the inning
+* **wicket**: number of wickets in each over
+* **dot_balls**: number of balls with no runs in an over
+* **runs_per_over**: Runs for each over
+* **run_rate**: run rate for each over</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>[Kaggle IPL Data Analysis](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lvplot</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>cricket</span>)
 
-<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span> <span class='fu'>prob_plot</span>(
-  <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"day_week"</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"Demand"</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"quantile"</span>,
-  <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>),
-  <span class='kw'>symmetric</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>outlier.colour</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>outlier.shape</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Dark2"</span>
-)</div><div class='img'><img src='prob_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘tsibble’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:dplyr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    id</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+
+<span class='co'># convert data set to a tsibble ----</span>
 <span class='no'>cricket_tsibble</span> <span class='kw'>&lt;-</span> <span class='no'>cricket</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>data_index</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span>()) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>data_index</span>)
-
+<span class='co'># set the hierarchy of the units in a table ----</span>
 <span class='no'>hierarchy_model</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
   <span class='kw'>units</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"index"</span>, <span class='st'>"ball"</span>, <span class='st'>"over"</span>, <span class='st'>"inning"</span>, <span class='st'>"match"</span>),
-  <span class='kw'>convert_fct</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>6</span>, <span class='fl'>20</span>, <span class='fl'>2</span>, <span class='fl'>1</span>)
-)
-
+  <span class='kw'>convert_fct</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>6</span>, <span class='fl'>20</span>, <span class='fl'>2</span>, <span class='fl'>1</span>))
+<span class='co'># Compute granularities ----</span>
 <span class='no'>cricket_tsibble</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>prob_plot</span>(<span class='st'>"inning_match"</span>, <span class='st'>"over_inning"</span>,
-    <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='no'>hierarchy_model</span>,
-    <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"runs_per_over"</span>,
-    <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"lv"</span>
-  )</div><div class='img'><img src='prob_plot-2.png' alt='' width='700' height='433' /></div></pre>
+  <span class='fu'><a href='create_gran.html'>create_gran</a></span>(<span class='st'>"ball_over"</span>,
+               <span class='no'>hierarchy_model</span>)</div><div class='output co'>#&gt; # A tsibble: 8,560 x 12 [1]
+#&gt;    season match_id batting_team bowling_team inning  over wicket dot_balls
+#&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
+#&gt;  1   2008        2 Chennai Sup… Kings XI Pu…      1     1      0         4
+#&gt;  2   2008        2 Chennai Sup… Kings XI Pu…      1     2      0         2
+#&gt;  3   2008        2 Chennai Sup… Kings XI Pu…      1     3      1         4
+#&gt;  4   2008        2 Chennai Sup… Kings XI Pu…      1     4      0         3
+#&gt;  5   2008        2 Chennai Sup… Kings XI Pu…      1     5      0         3
+#&gt;  6   2008        2 Chennai Sup… Kings XI Pu…      1     6      0         3
+#&gt;  7   2008        2 Chennai Sup… Kings XI Pu…      1     7      1         1
+#&gt;  8   2008        2 Chennai Sup… Kings XI Pu…      1     8      1         3
+#&gt;  9   2008        2 Chennai Sup… Kings XI Pu…      1     9      0         1
+#&gt; 10   2008        2 Chennai Sup… Kings XI Pu…      1    10      0         2
+#&gt; # … with 8,550 more rows, and 4 more variables: runs_per_over &lt;dbl&gt;,
+#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;, ball_over &lt;fct&gt;</div><div class='input'><span class='co'># Visualise distribution of runs across granularities ----</span>
+<span class='no'>cricket_tsibble</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>batting_team</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Mumbai Indians"</span>,
+                             <span class='st'>"Chennai Super Kings"</span>))<span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='prob_plot.html'>prob_plot</a></span>(<span class='st'>"inning"</span>, <span class='st'>"over"</span>,
+  <span class='no'>hierarchy_model</span>,
+  <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"runs_per_over"</span>,
+  <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"lv"</span>)</div><div class='img'><img src='cricket-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
+      <li><a href="#format">Format</a></li>
+      <li><a href="#references">References</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

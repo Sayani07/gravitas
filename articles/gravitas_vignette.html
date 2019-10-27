@@ -6,11 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Exploring probability distributions for bivariate temporal granularities • gravitas</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Exploring probability distributions for bivariate temporal granularities">
+<script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Exploring probability distributions for bivariate temporal granularities">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -37,26 +39,23 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Vignettes
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/gravitas_vignette.html">Exploring probability distributions for bivariate temporal granularities</a>
+      <a href="../articles/gravitas_vignette.html">Temporal study</a>
+    </li>
+    <li>
+      <a href="../articles/cricket.html">Non-temporal study</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -67,7 +66,13 @@
   </a>
 </li>
       </ul>
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
+      </form>
+      
+    </div>
 <!--/.nav-collapse -->
   </div>
 <!--/.container -->
@@ -80,8 +85,7 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Exploring probability distributions for bivariate temporal granularities</h1>
-                        <h4 class="author">
-<i>Sayani Gupta</i>
+                        <h4 class="author">Sayani Gupta
 <hr>
 </h4>
             
@@ -98,9 +102,57 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>Temporal data are available at various resolution depending on context. Often in time series analysis, data collected at finer scale needs to be explored also at coarser temporal scales. This approach requires deconstructing time in various possible ways leading to linear (e.g. days, weeks), circular (e.g. day-of-week) or aperiodic (e.g. day-of-month) time granularities. The hierarchical structure of time also creates a natural nested ordering resulting in single or multiple order-up granularities. For a conventional Gregorian calendar, examples of single-order-up granularity may include hour-of-day, minute-of-hour and examples of multiple-order-up granularity may include hour-of-week or minute-of-day. All of these granularites might be useful in throwing light on the periodicity of the data depending on the context.</p>
+<p>Temporal data are available at various resolution depending on the context. Often in time series analysis, data collected at finer scale needs to be explored also at coarser temporal scales. This approach requires deconstructing time in various possible ways leading to linear (e.g. days, weeks), circular (e.g. day-of-week) or aperiodic (e.g. day-of-month) time granularities. The hierarchical structure of time also creates a natural nested ordering resulting in single or multiple order-up granularities. For a conventional Gregorian calendar, examples of single-order-up granularity may include hour-of-day, minute-of-hour and examples of multiple-order-up granularity may include hour-of-week or minute-of-day. All of these granularites might be useful in throwing light on the periodicity of the data.</p>
 <p>Exploration of large quantities of temporal data across so many different deconstructions of time becomes clumsy without a systematic approach.</p>
-<p>In this vignette, we describe the tools in the package <code>gravitas</code> for systematically exploring large quantities of temporal data across different time deconstructions by visualizing the probability distributions using range of graphics in <code>ggplot2</code> by making allowances for the following aspects of time granularities:</p>
+<p>This vignette describes the tools in the package <code>gravitas</code> for systematically exploring large quantities of temporal data across different time deconstructions by visualizing the probability distributions using range of graphics in <code>ggplot2</code>.</p>
+</div>
+<div id="analysis-of-smart-meter-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#analysis-of-smart-meter-data" class="anchor"></a>Analysis of smart meter data</h1>
+<p>The <code>smart_meter10</code> data set in the package is a <a href="https://tsibble.tidyverts.org/">tsibble</a> providing the energy consumption for ten households from <a href="https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter">customer trials</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(customer_id,</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">                         reading_datetime,</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">                         general_supply_kwh,</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">                         <span class="kw">everything</span>()</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; # A tsibble: 259,235 x 8 [30m] &lt;UTC&gt;</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; # Key:       customer_id [10]</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt;    customer_id reading_datetime    general_supply_… event_key</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;    &lt;chr&gt;       &lt;dttm&gt;                         &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;  1 10006704    2012-06-01 10:00:00            0.24          0</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;  2 10006704    2012-06-01 10:30:00            0.245         0</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;  3 10006704    2012-06-01 11:00:00            0.206         0</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt;  4 10006704    2012-06-01 11:30:00            0.217         0</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;  5 10006704    2012-06-01 12:00:00            0.214         0</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt;  6 10006704    2012-06-01 12:30:00            0.23          0</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt;  7 10006704    2012-06-01 13:00:00            0.898         0</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt;  8 10006704    2012-06-01 13:30:00            0.197         0</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt;  9 10006704    2012-06-01 14:00:00            0.255         0</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; 10 10006704    2012-06-01 14:30:00            0.199         0</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; # … with 259,225 more rows, and 4 more variables:</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; #   controlled_load_kwh &lt;dbl&gt;, gross_generation_kwh &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; #   net_generation_kwh &lt;dbl&gt;, other_kwh &lt;dbl&gt;</span></a></code></pre></div>
+<!-- To have an understanding of how different the energy consumption for each household of the trial is, energy consumption is plotted against time with each transition state indicating one household for a sample. If we plot the raw data for all of them, it is difficult to get insights of their behavior.  -->
+<p>It is hard to derive insights when we try to visualize periodicity in the data for all households. For example, if we plot the energy consumption across each hour of the day, the structure of the data suggest that there are several data points for each hour of the day for just one household. Hence, for several households, there will be a blob of points for each hour of the day.</p>
+<!-- # ```{r, echo=FALSE, out.width="100%"} -->
+<!-- # # smart_p <- smart_meter10 %>% -->
+<!-- # #            ggplot() + -->
+<!-- # #            geom_line(aes(x =reading_datetime, -->
+<!-- # #                          y = general_supply_kwh, -->
+<!-- # #                          color = customer_id))  + -->
+<!-- # #   theme(legend.position = "None") -->
+<!-- # # -->
+<!-- # # smart_anim <-  smart_p + gganimate::transition_states(customer_id)+ labs(title = "{closest_state}") -->
+<!-- # # -->
+<!-- # # gganimate::animate(smart_anim, fps = 10, width = 1000, height = 600) -->
+<!-- # # -->
+<!-- # # -->
+<!-- # # anim_save("images/smart_allcust.gif") -->
+<!-- # -->
+<!-- # knitr::include_graphics("man/figures/smart_allcust_period.gif") -->
+<!-- # ``` -->
+<p>So the question is how to explore systematically multiple perspectives of this smart meter data across different time granularities? The solution is to visualize the probability distributions across these granularities to find regular / nearly-periodic patterns or anomalies in behaviors.</p>
+<p>Let us see how we can analyze the energy behavior of these households by making allowances for the following aspects of time granularities: Computation, interaction and visualization.</p>
 <div id="computation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#computation" class="anchor"></a>Computation</h2>
@@ -108,45 +160,24 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <h3 class="hasAnchor">
 <a href="#get-set-of-possible-granularities-with-search_gran" class="anchor"></a>Get set of possible granularities with <code>search_gran</code>
 </h3>
-<p>The <code>smart_meter10</code> data in the package is a <a href="https://tsibble.tidyverts.org/">tsibble</a> providing the energy consumption for ten households from <a href="https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter">customer trials</a>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">  customer_id,</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">  reading_datetime,</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">  general_supply_kwh,</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">  <span class="kw">everything</span>()</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; # A tsibble: 259,235 x 8 [30m] &lt;UTC&gt;</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; # Key:       customer_id [15]</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;    customer_id reading_datetime    general_supply_… event_key</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;    &lt;chr&gt;       &lt;dttm&gt;                         &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;  1 10006704    2012-06-01 10:00:00            0.24          0</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;  2 10006704    2012-06-01 10:30:00            0.245         0</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt;  3 10006704    2012-06-01 11:00:00            0.206         0</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;  4 10006704    2012-06-01 11:30:00            0.217         0</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt;  5 10006704    2012-06-01 12:00:00            0.214         0</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt;  6 10006704    2012-06-01 12:30:00            0.23          0</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt;  7 10006704    2012-06-01 13:00:00            0.898         0</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt;  8 10006704    2012-06-01 13:30:00            0.197         0</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt;  9 10006704    2012-06-01 14:00:00            0.255         0</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; 10 10006704    2012-06-01 14:30:00            0.199         0</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; # … with 259,225 more rows, and 4 more variables:</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; #   controlled_load_kwh &lt;dbl&gt;, gross_generation_kwh &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt; #   net_generation_kwh &lt;dbl&gt;, other_kwh &lt;dbl&gt;</span></a></code></pre></div>
-<p>This is a regular tsibble with energy demand <code>general_supply_kwh</code> available every 30 minutes from 2012 to 2014. Typically, the first thing we should have at our disposal for examining periodicities of energy behavior across time granularities is to know the number of time granularities we can look at exhaustively. If we consider conventional time deconstructions for a Gregorian calendar, the following time granularities can be considered for analysis.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/search_gran.html">search_gran</a></span>()</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt;  [1] "hhour_hour"         "hhour_day"          "hhour_week"        </span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;  [4] "hhour_fortnight"    "hhour_month"        "hhour_quarter"     </span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;  [7] "hhour_semester"     "hhour_year"         "hour_day"          </span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; [10] "hour_week"          "hour_fortnight"     "hour_month"        </span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; [13] "hour_quarter"       "hour_semester"      "hour_year"         </span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [16] "day_week"           "day_fortnight"      "day_month"         </span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; [19] "day_quarter"        "day_semester"       "day_year"          </span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [22] "week_fortnight"     "week_month"         "week_quarter"      </span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; [25] "week_semester"      "week_year"          "fortnight_month"   </span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; [28] "fortnight_quarter"  "fortnight_semester" "fortnight_year"    </span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; [31] "month_quarter"      "month_semester"     "month_year"        </span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; [34] "quarter_semester"   "quarter_year"       "semester_year"</span></a></code></pre></div>
-<p>The default for search gran in this case, provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarse temporal unit can be set to be a “month”.</p>
+<p>Typically, the first thing we should have at our disposal for examining periodicities of energy behavior across time granularities is to know the number of time granularities we can look at exhaustively. If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, quarter, semester, year), the following time granularities can be considered for this analysis.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tsibble)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://tsibble.tidyverts.org/reference/regular.html">interval</a></span>(smart_meter10)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; 30m</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/search_gran.html">search_gran</a></span>()</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;  [1] "hhour_hour"         "hhour_day"          "hhour_week"        </span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;  [4] "hhour_fortnight"    "hhour_month"        "hhour_quarter"     </span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;  [7] "hhour_semester"     "hhour_year"         "hour_day"          </span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; [10] "hour_week"          "hour_fortnight"     "hour_month"        </span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [13] "hour_quarter"       "hour_semester"      "hour_year"         </span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt; [16] "day_week"           "day_fortnight"      "day_month"         </span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt; [19] "day_quarter"        "day_semester"       "day_year"          </span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; [22] "week_fortnight"     "week_month"         "week_quarter"      </span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; [25] "week_semester"      "week_year"          "fortnight_month"   </span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; [28] "fortnight_quarter"  "fortnight_semester" "fortnight_year"    </span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; [31] "month_quarter"      "month_semester"     "month_year"        </span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; [34] "quarter_semester"   "quarter_year"       "semester_year"</span></a></code></pre></div>
+<p>The interval of this tsibble is 30 minutes, and hence the default for <code>search_gran</code> in this case, provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarse temporal unit can be set to be a “month”.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/search_gran.html">search_gran</a></span>(<span class="dt">highest_unit =</span> <span class="st">"month"</span>)</a>
@@ -155,195 +186,159 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt;  [7] "hour_week"       "hour_fortnight"  "hour_month"     </span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; [10] "day_week"        "day_fortnight"   "day_month"      </span></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; [13] "week_fortnight"  "week_month"      "fortnight_month"</span></a></code></pre></div>
-<p>This looks better. However, some intermediate temporal units might not be pertinent to the analysis and we might want to remove them from the list of granularities that we want to examine.</p>
+<p>This looks better. However, some intermediate temporal units might not be pertinent to the analysis and we might want to remove them from the list of granularities that we want to examine using the argument <code>filter_out</code> in <code>search_gran</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/search_gran.html">search_gran</a></span>(</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="dt">highest_unit =</span> <span class="st">"month"</span>,</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">  <span class="dt">filter_out =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hhour"</span>, <span class="st">"fortnight"</span>)</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; [1] "hour_day"   "hour_week"  "hour_month" "day_week"   "day_month" </span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; [6] "week_month"</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-2" data-line-number="2">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/search_gran.html">search_gran</a></span>(<span class="dt">highest_unit =</span> <span class="st">"month"</span>,</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">                              <span class="dt">filter_out =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hhour"</span>, <span class="st">"fortnight"</span>)</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; [1] "hour_day"   "hour_week"  "hour_month" "day_week"   "day_month" </span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; [6] "week_month"</span></a></code></pre></div>
 </div>
 <div id="create-any-temporal-granularity-with-create_gran" class="section level3">
 <h3 class="hasAnchor">
 <a href="#create-any-temporal-granularity-with-create_gran" class="anchor"></a>Create any temporal granularity with <code>create_gran()</code>
 </h3>
 <p>After we have the set of granularities to look at, we should be able to compute any granularity using <code>create_gran</code>. These can be be used for exploring distribution of the time series across univariate temporal granularity or computing summary statistics across these categorizations.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/create_gran.html">create_gran</a></span>(<span class="st">"day_fortnight"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">    <span class="dt">x =</span> <span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(day_fortnight),</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">    <span class="dt">y =</span> general_supply_kwh</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">  )) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw">scale_y_sqrt</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"day_fortnight"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/lvplot/man/geom_lv.html">geom_lv</a></span>(</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">    <span class="dt">outlier.colour =</span> <span class="st">"red"</span>,</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">    <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">fill =</span> ..LV..),</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">    <span class="dt">k =</span> <span class="dv">5</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">  ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="st">  </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette =</span> <span class="st">"Dark2"</span>)</a></code></pre></div>
-<p><img src="gravitas_vignette_files/figure-html/create_gran-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">smart_meter10 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/create_gran.html">create_gran</a></span>(<span class="st">"day_fortnight"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">  </span><span class="kw">group_by</span>(day_fortnight)</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; # A tsibble: 259,235 x 9 [30m] &lt;UTC&gt;</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; # Key:       customer_id [10]</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; # Groups:    day_fortnight [14]</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;    customer_id reading_datetime    event_key general_supply_…</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;    &lt;chr&gt;       &lt;dttm&gt;                  &lt;dbl&gt;            &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt;  1 10006704    2012-06-01 10:00:00         0            0.24 </span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt;  2 10006704    2012-06-01 10:30:00         0            0.245</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt;  3 10006704    2012-06-01 11:00:00         0            0.206</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt;  4 10006704    2012-06-01 11:30:00         0            0.217</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt;  5 10006704    2012-06-01 12:00:00         0            0.214</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt;  6 10006704    2012-06-01 12:30:00         0            0.23 </span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt;  7 10006704    2012-06-01 13:00:00         0            0.898</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt;  8 10006704    2012-06-01 13:30:00         0            0.197</span></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt;  9 10006704    2012-06-01 14:00:00         0            0.255</span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; 10 10006704    2012-06-01 14:30:00         0            0.199</span></a>
-<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; # … with 259,225 more rows, and 5 more variables:</span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; #   controlled_load_kwh &lt;dbl&gt;, gross_generation_kwh &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; #   net_generation_kwh &lt;dbl&gt;, other_kwh &lt;dbl&gt;, day_fortnight &lt;fct&gt;</span></a></code></pre></div>
+<p>The data is filtered for two customers and a new granularity “day_fortnight” (day of the fortnight) is created and visualized to understand if the electricity consumption is different across days of the fortnight. From the <a href="https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2017.1305277?journalCode=ucgs20#.XbOwLpMzZ24">letter value plot</a>, we can not clearly observe any pattern across days of the fortnight for each individual household.</p>
+<p>The difference in distribution of energy consumption for these two households can be observed in the following plot. Let us see if we can derive any other insights than the otherwise obvious observation that for most cases the second household has much less consumption than the first one. If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(lvplot)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tibble)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">smart_meter10 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(customer_id <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">10006704</span>, <span class="dv">10017936</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/create_gran.html">create_gran</a></span>(<span class="st">"day_fortnight"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="st">  </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">    <span class="dt">x =</span> <span class="kw"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(day_fortnight),</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">    <span class="dt">y =</span> general_supply_kwh)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"day_fortnight"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/lvplot/man/geom_lv.html">geom_lv</a></span>(</a>
+<a class="sourceLine" id="cb5-13" data-line-number="13">    <span class="dt">outlier.colour =</span> <span class="st">"red"</span>,</a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">    <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">fill =</span> ..LV..),</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15">    <span class="dt">k =</span> <span class="dv">5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>customer_id) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/lvplot/man/geom_lv.html">scale_fill_lv</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() </a></code></pre></div>
+<p><img src="gravitas_vignette_files/figure-html/unnamed-chunk-1-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div id="interaction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#interaction" class="anchor"></a>Interaction</h2>
-<p>If we want to look at two of these granularities at a time, it is equivalent to choosing 6 permutation 2 pairs, which essentially means we need to examine 30 plots. However, we need to be cognizant of how these granularities interact. Harmony/clash can be identified to considerably reduce the number of visualizations that can aid exploratory analysis.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"hour_day"</span>, </a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">             <span class="dt">gran2 =</span> <span class="st">"day_week"</span>)</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; [1] "TRUE"</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6">smart_meter10 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"hour_day"</span>, </a>
-<a class="sourceLine" id="cb7-8" data-line-number="8">             <span class="dt">gran2 =</span> <span class="st">"day_week"</span>, </a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">             <span class="dt">facet_h =</span> <span class="dv">14</span>)</a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; [1] "FALSE"</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"day_month"</span>,</a>
-<a class="sourceLine" id="cb7-14" data-line-number="14">             <span class="dt">gran2 =</span> <span class="st">"week_month"</span>)</a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; [1] "FALSE"</span></a></code></pre></div>
-<p>Let us now look at all the harmonies that we can examine. Fortunately, we are left with only 13 out of 30 visualizations.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/harmony.html">harmony</a></span>(</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">  <span class="dt">ugran =</span> <span class="st">"month"</span>,</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="dt">filter_out =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hhour"</span>, <span class="st">"fortnight"</span>)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; # A tibble: 13 x 4</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;    facet_variable x_variable facet_levels x_levels</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;             &lt;int&gt;    &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;  1 day_week       hour_day              7       24</span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;  2 day_month      hour_day             31       24</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  3 week_month     hour_day              5       24</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;  4 day_month      hour_week            31      168</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  5 week_month     hour_week             5      168</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  6 day_week       hour_month            7      744</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  7 hour_day       day_week             24        7</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;  8 day_month      day_week             31        7</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;  9 week_month     day_week              5        7</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; 10 hour_day       day_month            24       31</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; 11 day_week       day_month             7       31</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; 12 hour_day       week_month           24        5</span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; 13 day_week       week_month            7        5</span></a></code></pre></div>
+<p>We can visualize the distribution of energy across univariate time granularities for deriving insights on periodic behavior. From the search list, we found that we can look at six granularities, that amounts to analyzing six graphics. However, what happens if we want to see the distribution of energy across two granularities at a time? This is equivalent to looking at the distribution of energy consumption across one granularity conditional on another one. One way can be to plot one of the granularities on the x-axis and another on the facet. Different perspectives of the data can be derived depending on where the granularities are places.</p>
+<p>So, what is the number of pairs of granularities we can look at? It is equivalent to taking 2 granularities from 6, which essentially means we need to examine 30 plots. The good news is, not all time granularities can be plotted together and we do not have to analyse so many plots!</p>
+<p>Harmony/clash can be identified to considerably reduce the number of visualizations that can aid exploratory analysis.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"hour_day"</span>, </a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">             <span class="dt">gran2 =</span> <span class="st">"day_week"</span>)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; [1] "TRUE"</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">smart_meter10 <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"hour_day"</span>, </a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">             <span class="dt">gran2 =</span> <span class="st">"day_week"</span>, </a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">             <span class="dt">facet_h =</span> <span class="dv">14</span>)</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; [1] "FALSE"</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="dt">gran1 =</span> <span class="st">"day_month"</span>,</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">             <span class="dt">gran2 =</span> <span class="st">"week_month"</span>)</a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; [1] "FALSE"</span></a></code></pre></div>
+<p>Let us now look at all the harmonies that we can examine. Fortunately, we are left with only 13 out of 30 visualizations. We can also play with the argument <code>facet_h</code>, which represents the maximum number of levels allowed for the facet variable, to reduce or increase the number of harmonies.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/harmony.html">harmony</a></span>(</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="dt">ugran =</span> <span class="st">"month"</span>,</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="dt">filter_out =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hhour"</span>)</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">)</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; # A tibble: 38 x 4</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;    facet_variable  x_variable facet_levels x_levels</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;    &lt;chr&gt;           &lt;chr&gt;             &lt;int&gt;    &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  1 day_week        hour_day              7       24</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  2 day_fortnight   hour_day             14       24</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  3 day_month       hour_day             31       24</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  4 week_fortnight  hour_day              2       24</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  5 week_month      hour_day              5       24</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  6 fortnight_month hour_day              3       24</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  7 day_month       hour_week            31      168</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  8 week_fortnight  hour_week             2      168</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  9 week_month      hour_week             5      168</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; 10 fortnight_month hour_week             3      168</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; # … with 28 more rows</span></a></code></pre></div>
 </div>
 <div id="visualization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualization" class="anchor"></a>Visualization</h2>
-<p>We want to view distribution of the measured variable <code>general_supply_kwh</code> across these harmonies through different distribution plots using <code>prob_plot</code>.  shows quantile plot of energy consumption across day-month (x-axis) and hour-day (facet). This will help us to see if for each hour of the day, energy consumption changes across different days of the month. From the plot, we see there is not much variation across day-of-month. Moving on, if we want to switch the facet and x-axis variable, we simply reverse the order of time granularities. Here, prob_plot would output a ggplot2 object. So we are free to add any element to the default plot.  shows quantile plot of energy consumption across day-month (facet) and hour-day (x-axis). This plot shows the daily pattern of consumption for each day of the month. There is a morning and evening peak in consumption.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"hour_day"</span>,</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">    <span class="st">"day_month"</span>,</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">    <span class="dt">response =</span> <span class="st">"general_supply_kwh"</span>,</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5">    <span class="dt">plot_type =</span> <span class="st">"quantile"</span>,</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">    <span class="dt">quantile_prob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>),</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7">    <span class="dt">symmetric =</span> <span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8">  ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="st">  </span><span class="kw">scale_y_sqrt</span>()</a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt;      granularities vary within or across facets.</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt;      Use gran_obs() to find combinations which have low</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;             observations or very different number of observations.</span></a></code></pre></div>
-<div class="figure" style="text-align: center">
-<img src="gravitas_vignette_files/figure-html/hd_dm-1.png" alt="Quantile plot across hour-day as facets and day-month across x-axis" width="768"><p class="caption">
-Quantile plot across hour-day as facets and day-month across x-axis
-</p>
+<p>Now, we know the pairs of granularities that we need to look at using harmonies. Next, we want to visualize distribution of the measured variable <code>general_supply_kwh</code> across these harmonies. This is possible through <code>prob_plot</code>. We have several options for visualizing statistical distributions and each comes with some pros and cons which we need to consider while choosing a good one for our context. Traditional methods of plotting distributions include boxplots and violin plots, while more recent methods include ridge plots, quantile plots or letter-value plots.</p>
+<p><code>gran_advice</code> provides check points before plotting a distribution. It includes recommended distribution plots depending on the levels of the two granularities plotted. Assumptions are made to ensure display is not too cluttered by the space occupied by various kinds of distribution plots. Moreover, it also advice on the number of observations used for drawing the distribution plot so that one can ensure that they are enough before jumping on to plot a distribution. Furthermore, it advice if the number of observations varies significantly across facets or within facets.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/gran_advice.html">gran_advice</a></span>(</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">  <span class="st">"week_month"</span>,</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="st">"hour_day"</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">)</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; The chosen granularities are harmonies </span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;  </span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; Recommended plots are: violin lv quantile boxplot </span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;  </span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt; Number of observations are homogenous across facets </span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  </span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; Number of observations are homogenous within facets </span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;  </span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt; Cross tabulation of granularities : </span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  </span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; # A tibble: 24 x 6</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;    hour_day   `1`   `2`   `3`   `4`   `5`</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;    &lt;fct&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;  1 0         2474  2464  2518  2489   857</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt;  2 1         2470  2470  2518  2486   854</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt;  3 2         2469  2469  2520  2486   855</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;  4 3         2468  2468  2522  2486   856</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;  5 4         2467  2468  2521  2486   856</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;  6 5         2468  2468  2520  2487   856</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt;  7 6         2470  2469  2519  2486   855</span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;  8 7         2470  2472  2518  2484   854</span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt;  9 8         2470  2471  2519  2479   854</span></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; 10 9         2470  2470  2520  2478   856</span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt; # … with 14 more rows</span></a></code></pre></div>
+<p><code>gran_obs</code> can be employed to see if number of observations per category is large enough to draw distribution plot. In this case, number of observations are much less on weekends compared to weekdays, but enough to have reliable estimates of distribution.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/gran_obs.html">gran_obs</a></span>(</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">  <span class="st">"week_month"</span>,</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">  <span class="st">"wknd_wday"</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">)</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt;   wknd_wday   `1`   `2`   `3`   `4`   `5`</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; 1 Weekday   42348 42195 43144 42468 14695</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; 2 Weekend   17008 17024 17347 17094  5912</span></a></code></pre></div>
+<p>Through <code>prob_plot</code> we can choose one from the list of recommended plots. Warnings are generated if users try to plot clashes, number of facet variables are too high or number of observations used to compute statistical summaries for distribution are not large enough. Currently, we can choose from “boxplot”, “violin”, “ridge”, “lv” or “quantile” to visualize distributions.</p>
+<p>We visualize the harmony pair (wknd_wday, hour_day) through a box plot. Boxplot of energy consumption is shown across wknd_wday (facet) and hour-day (x-axis) for the same two households. For the second household, outliers are less prominent implying their regular behavior is more stable. For the first household, energy behavior is not significantly different between weekdays and weekends. For the second household, median energy consumption for the early morning hours is extremely high for weekends compared to weekdays.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">cust1 &lt;-<span class="st"> </span>smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(customer_id <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">10006704</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"wknd_wday"</span>,</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">                            <span class="st">"hour_day"</span>,</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">                            <span class="dt">response =</span> <span class="st">"general_supply_kwh"</span>,</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">                            <span class="dt">plot_type =</span> <span class="st">"boxplot"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">cust2 &lt;-<span class="st"> </span>smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(customer_id <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">10017936</span>))<span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"wknd_wday"</span>,</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">                            <span class="st">"hour_day"</span>,</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">                            <span class="dt">response =</span> <span class="st">"general_supply_kwh"</span>,</a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">                            <span class="dt">plot_type =</span> <span class="st">"boxplot"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>()</a></code></pre></div>
+<p><img src="gravitas_vignette_files/figure-html/cust-1.png" width="768" style="display: block; margin: auto;"><img src="gravitas_vignette_files/figure-html/cust-2.png" width="768" style="display: block; margin: auto;"></p>
 </div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"day_month"</span>,</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">    <span class="st">"hour_day"</span>,</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">    <span class="dt">response =</span> <span class="st">"general_supply_kwh"</span>,</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">    <span class="dt">plot_type =</span> <span class="st">"quantile"</span>,</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">    <span class="dt">quantile_prob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>),</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">    <span class="dt">symmetric =</span> <span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">  )</a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;      granularities vary within or across facets.</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;      Use gran_obs() to find combinations which have low</span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;             observations or very different number of observations.</span></a></code></pre></div>
-<p><img src="gravitas_vignette_files/figure-html/dm_hd-1.png" width="768" style="display: block; margin: auto;"></p>
-<p> shows letter-value plot of energy consumption across wknd_wday (facet) and hour-day (x-axis). On weekdays, letter value C (lower tail) from 7 hours to 16 hours is not distinctly visible for most hours on weekdays compared to weekends, signifying there might be less volatility in these hours for weekdays. Similar observations can be made for letter values C and D which closely follow M, F, E on weekdays, but not on weekends. <a href="%22https://cran.r-project.org/web/packages/lvplot/index.html">Letter value plots</a> are useful for examining the distribution of the tail of the distribution.</p>
-<p>Currently, we can choose from “boxplot”, “violin”, “ridge”, “lv” or “quantile” to visualize distributions.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"wknd_wday"</span>,</a>
-<a class="sourceLine" id="cb11-2" data-line-number="2">  <span class="st">"week_month"</span>,</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3">  <span class="dt">response =</span> <span class="st">"general_supply_kwh"</span>,</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">  <span class="dt">plot_type =</span> <span class="st">"violin"</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">) <span class="op">+</span><span class="st"> </span><span class="kw">scale_y_sqrt</span>()</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Number of observations for few combinations of</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;      granularities vary within or across facets.</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;      Use gran_obs() to find combinations which have low</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt;             observations or very different number of observations.</span></a></code></pre></div>
-<p><img src="gravitas_vignette_files/figure-html/hd_dw-1.png" width="768" style="display: block; margin: auto;"></p>
-<p>This provides an useful warning suggesting distribution should be computed with caution as number of observations might vary or not be enough for computing distribution plots.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/gran_obs.html">gran_obs</a></span>(</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">  <span class="st">"week_month"</span>,</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">  <span class="st">"wknd_wday"</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;   wknd_wday   `1`   `2`   `3`   `4`   `5`</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; 1 Weekday   42348 42195 43144 42468 14695</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; 2 Weekend   17008 17024 17347 17094  5912</span></a></code></pre></div>
-<p>In this case, number of observations are much less on weekends compared to weekdays, but enough to have reliable estimates of distribution.</p>
-<p>We can also have recommendations on plots and general check points before plotting two granularities using <code>gran_advice</code>.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/gran_advice.html">gran_advice</a></span>(</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">  <span class="st">"week_month"</span>,</a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">  <span class="st">"wknd_wday"</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; $harmony</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; [1] "TRUE"</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; $homogenous</span></a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; # A tibble: 1 x 2</span></a>
-<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt;   inter_facet intra_facet</span></a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;      </span></a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; 1 FALSE       FALSE      </span></a>
-<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt; $plot_choices</span></a>
-<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#&gt; [1] "ridge"    "violin"   "lv"       "quantile"</span></a>
-<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="co">#&gt; $gran_obs</span></a>
-<a class="sourceLine" id="cb13-18" data-line-number="18"><span class="co">#&gt; # A tibble: 2 x 6</span></a>
-<a class="sourceLine" id="cb13-19" data-line-number="19"><span class="co">#&gt;   wknd_wday   `1`   `2`   `3`   `4`   `5`</span></a>
-<a class="sourceLine" id="cb13-20" data-line-number="20"><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb13-21" data-line-number="21"><span class="co">#&gt; 1 Weekday   42348 42195 43144 42468 14695</span></a>
-<a class="sourceLine" id="cb13-22" data-line-number="22"><span class="co">#&gt; 2 Weekend   17008 17024 17347 17094  5912</span></a></code></pre></div>
-<div id="how-prob_plot-works" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-prob_plot-works" class="anchor"></a>How prob_plot works</h3>
-<p>Recommendations for distribution plots depend on the levels of the two granularities plotted. They will vary depending on which granularity is placed on the x-axis and which one across facets. Assumptions are made to ensure display is not too cluttered by the space occupied by various kinds of distribution plots. Moreover, the recommendation system ensures that there are just enough observations before choosing a distribution plot.</p>
-<p><code>prob_plot</code> choose the recommended plots only if plot_type = NULL. Warnings are generated if users try to plot clashes, number of facet variables are too high or number of observations used to compute statistical summaries for distribution are not large enough.</p>
-</div>
+<div id="future-development" class="section level2">
+<h2 class="hasAnchor">
+<a href="#future-development" class="anchor"></a>Future development</h2>
+<ul>
+<li><p>To develop a framework so that these individual distributions are utilized to group subjects into similar pockets of behavior.</p></li>
+<li><p>Make <code>gravitas</code> work with big data tools like sparklyr</p></li>
+<li><p>Any periodic/aperiodic temporal granularities computation given a hierarchical structure/calendar.</p></li>
+</ul>
 </div>
 <div id="acknowledgements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#acknowledgements" class="anchor"></a>Acknowledgements</h2>
 <p>Thanks to PhD supervisors <a href="https://robjhyndman.com/">Prof. Rob J Hyndman</a>, <a href="http://dicook.org/">Prof. Dianne Cook</a> and <a href="https://summerofcode.withgoogle.com/">Google Summer of Code 2019</a> mentor <a href="http://rosuda.org/~unwin/">Prof. Antony Unwin</a> for their support and always leading by example. The fine balance of encouraging me to work on my ideas and stepping in to help when I need has made the devlopment of this package a great learning experience for me.</p>
-<p>Moreover, I want to thank my cohort at <a href="https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team">NUMBATS</a> at Monash University for always lending an ear and sharing their wisdom and experience on developing R packages whenever needed.</p>
+<p>Moreover, I want to thank my cohort at <a href="https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team">NUMBATS</a>, Monash University for always lending an ear and sharing their wisdom and experience of developing R packages whenever needed.</p>
 </div>
 </div>
   </div>
@@ -354,11 +349,13 @@ Quantile plot across hour-day as facets and day-month across x-axis
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li>
-<a href="#introduction">Introduction</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#introduction">Introduction</a></li>
+      <li>
+<a href="#analysis-of-smart-meter-data">Analysis of smart meter data</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#computation">Computation</a></li>
       <li><a href="#interaction">Interaction</a></li>
       <li><a href="#visualization">Visualization</a></li>
+      <li><a href="#future-development">Future development</a></li>
       <li><a href="#acknowledgements">Acknowledgements</a></li>
       </ul>
 </li>
@@ -371,7 +368,7 @@ Quantile plot across hour-day as facets and day-month across x-axis
 
 
       <footer><div class="copyright">
-  <p>Developed by Sayani Gupta, Rob Hyndman, Di Cook.</p>
+  <p>Developed by Sayani Gupta, Rob Hyndman, Di Cook, Antony Unwin.</p>
 </div>
 
 <div class="pkgdown">
@@ -382,7 +379,20 @@ Quantile plot across hour-day as facets and day-month across x-axis
 </div>
 
   
-
-
-  </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
+  docsearch({
+    
+    
+    apiKey: '',
+    indexName: 'gravitas',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+</body>
 </html>
