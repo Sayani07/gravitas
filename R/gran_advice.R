@@ -2,6 +2,53 @@
 #'
 #' Recommendations on plot choices, interaction, number of observations and intra or inter facet homogeneity. Important summaries before drawing distribution plots.
 #'
+#' @param x An object of class gran_advice
+#' @param ... other arguments to be passed for appropriate labels.
+#' @return Print check points before visualizing distribution across bivariate granularities
+#
+#' @examples
+#' library(dplyr)
+#' library(ggplot2)
+#'
+#' smart_meter10 %>%
+#' filter(customer_id == 10017936) %>%
+#'   gran_advice(gran1 = "wknd_wday",
+#'             gran2 = "hour_day")
+#'
+#' @export
+print.gran_advice <- function(x, ...){
+
+  z <- x
+
+
+  if(z$harmony=="TRUE") cat("The chosen granularities are harmonies","\n","\n")
+  else
+    cat("The chosen granularities are clashes.
+        Consider looking at harmony() to obtain possible harmonies","\n","\n")
+
+  cat("Recommended plots are:", z$plot_choices, "\n","\n")
+
+  if(z$homogenous$inter_facet=="TRUE")
+    cat("Number of observations are homogenous across facets","\n","\n")
+  else
+    cat("Number of observations are significantly different across facets",
+        "\n","\n")
+
+  if(z$homogenous$intra_facet=="TRUE")
+    cat("Number of observations are homogenous within facets",
+        "\n","\n")
+  else
+    cat("Number of observations are significantly different within facets",
+        "\n","\n")
+  cat("Cross tabulation of granularities :", "\n","\n")
+  print(z$gran_obs)
+
+}
+
+#' Advice summaries for granularities
+#'
+#' Recommendations on plot choices, interaction, number of observations and intra or inter facet homogeneity. Important summaries before drawing distribution plots.
+#'
 #' @param .data a tsibble.
 #' @param gran1,gran2 granularities.
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships.
@@ -14,7 +61,7 @@
 #'
 #' smart_meter10 %>%
 #' filter(customer_id == 10017936) %>%
-#'   prob_plot(gran1 = "wknd_wday",
+#'   gran_advice(gran1 = "wknd_wday",
 #'             gran2 = "hour_day")
 #'
 #' # choosing quantile plots from plot choices
@@ -89,34 +136,6 @@ gran_advice <- function(.data,
 }
 
 
-print.gran_advice <- function(object){
-
-  z <- object
-
-
-  if(z$harmony=="TRUE") cat("The chosen granularities are harmonies","\n","\n")
-  else
-    cat("The chosen granularities are clashes.
-        Consider looking at harmony() to obtain possible harmonies","\n","\n")
-
-  cat("Recommended plots are:", z$plot_choices, "\n","\n")
-
-  if(z$homogenous$inter_facet=="TRUE")
-    cat("Number of observations are homogenous across facets","\n","\n")
-  else
-    cat("Number of observations are significantly different across facets",
-        "\n","\n")
-
-  if(z$homogenous$intra_facet=="TRUE")
-    cat("Number of observations are homogenous within facets",
-        "\n","\n")
-  else
-    cat("Number of observations are significantly different within facets",
-        "\n","\n")
-  cat("Cross tabulation of granularities :", "\n","\n")
-  print(z$gran_obs)
-
-}
 
 
 gran_warn <- function(.data,

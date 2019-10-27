@@ -8,3 +8,5 @@ Meta
 docs/
 doc/
 doc
+inst/doc
+inst/*.html

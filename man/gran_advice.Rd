@@ -27,7 +27,7 @@ library(ggplot2)
 
 smart_meter10 \%>\%
 filter(customer_id == 10017936) \%>\%
-  prob_plot(gran1 = "wknd_wday",
+  gran_advice(gran1 = "wknd_wday",
             gran2 = "hour_day")
 
 # choosing quantile plots from plot choices

@@ -4,7 +4,7 @@ author: "Sayani Gupta<hr>"
 output: 
   rmarkdown::html_vignette:
 vignette: >
-  %\VignetteIndexEntry{Exploring probability distributions for bivariate temporal granularities with gravitas}
+  %\VignetteIndexEntry{Exploring probability distributions for bivariate temporal granularities}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -50,48 +50,28 @@ smart_meter10 %>% select(customer_id,
 )
 ```
 
-To have an understanding of how different the energy consumption for each household of the trial is, energy consumption is plotted against time with each transition state indicating one household for a sample. If we plot the raw data for all of them, it is difficult to get insights of their behavior. 
+<!-- To have an understanding of how different the energy consumption for each household of the trial is, energy consumption is plotted against time with each transition state indicating one household for a sample. If we plot the raw data for all of them, it is difficult to get insights of their behavior.  -->
 
 
+It is hard to derive insights when we try to visualize periodicity in the data for all households. For example, if we plot the energy consumption across each hour of the day, the structure of the data suggest that there are several data points for each hour of the day for just one household. Hence, for several households, there will be a blob of points for each hour of the day. 
 
-```{r, echo=FALSE, out.width="100%"}
-# smart_p <- smart_meter10 %>%
-#            ggplot() + 
-#            geom_line(aes(x =reading_datetime,
-#                          y = general_supply_kwh, 
-#                          color = customer_id))  + 
-#   theme(legend.position = "None")
-# 
-# smart_anim <-  smart_p + gganimate::transition_states(customer_id)+ labs(title = "{closest_state}")
-# 
-# gganimate::animate(smart_anim, fps = 10, width = 1000, height = 600)
-# 
-# 
-# anim_save("images/smart_allcust.gif")
-
-knitr::include_graphics("man/figures/smart_allcust.gif")
-```
-
-
-Things become harder when we try to visualize periodicity in the data for all households. For example, if we plot the energy consumption across each hour of the day, the structure of the data suggest that there are several data points for each hour of the day for just one household. Hence, for several households, there will be a blob of points for each hour of the day. 
-
-```{r, echo=FALSE, out.width="100%"}
-# smart_p <- smart_meter10 %>%
-#            ggplot() + 
-#            geom_line(aes(x =reading_datetime,
-#                          y = general_supply_kwh, 
-#                          color = customer_id))  + 
-#   theme(legend.position = "None")
-# 
-# smart_anim <-  smart_p + gganimate::transition_states(customer_id)+ labs(title = "{closest_state}")
-# 
-# gganimate::animate(smart_anim, fps = 10, width = 1000, height = 600)
-# 
-# 
-# anim_save("images/smart_allcust.gif")
-
-knitr::include_graphics("man/figures/smart_allcust_period.gif")
-```
+<!-- # ```{r, echo=FALSE, out.width="100%"} -->
+<!-- # # smart_p <- smart_meter10 %>% -->
+<!-- # #            ggplot() + -->
+<!-- # #            geom_line(aes(x =reading_datetime, -->
+<!-- # #                          y = general_supply_kwh, -->
+<!-- # #                          color = customer_id))  + -->
+<!-- # #   theme(legend.position = "None") -->
+<!-- # # -->
+<!-- # # smart_anim <-  smart_p + gganimate::transition_states(customer_id)+ labs(title = "{closest_state}") -->
+<!-- # # -->
+<!-- # # gganimate::animate(smart_anim, fps = 10, width = 1000, height = 600) -->
+<!-- # # -->
+<!-- # # -->
+<!-- # # anim_save("images/smart_allcust.gif") -->
+<!-- # -->
+<!-- # knitr::include_graphics("man/figures/smart_allcust_period.gif") -->
+<!-- # ``` -->
 
 
 So the question is how to explore systematically multiple perspectives of this smart meter data across different time granularities? The solution is to visualize the probability distributions across these granularities to find regular / nearly-periodic patterns or anomalies in behaviors.

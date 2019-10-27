@@ -12,7 +12,6 @@
 #' * **reading_datetime**: Date time for which data is recorded (index)
 #' * **general_supply_kwh**:electricity supplied to this household
 #' @references [Department of the Environment and Energy, Australia](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter)
-#' @doctype data
 #' @name smart_meter10
 #' @usage data(smart_meter10)
 "smart_meter10"
@@ -36,7 +35,6 @@
 #' * **runs_per_over**: Runs for each over
 #' * **run_rate**: run rate for each over
 #' @references [Kaggle IPL Data Analysis](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data)
-#' @docType data
 #' @name cricket
 #' @examples
 #' data(cricket)

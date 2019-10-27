@@ -4,7 +4,7 @@ author: "<i>Sayani Gupta</i <br> <hr>"
 output: 
   rmarkdown::html_vignette:
 vignette: >
-  %\VignetteIndexEntry{Exploring probability distributions for bivariate granularities for a non-temporal case}
+  %\VignetteIndexEntry{Exploring probability distributions for cricket}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
