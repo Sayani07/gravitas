@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A non-temporal study with gravitas  • gravitas</title>
+<title>Exploring probability distributions for cricket • gravitas</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="A non-temporal study with gravitas ">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Exploring probability distributions for cricket">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -84,7 +84,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>A non-temporal study with gravitas</h1>
+      <h1>Exploring probability distributions for cricket</h1>
                         <h4 class="author">
 <i>Sayani Gupta</i>
 <hr>
@@ -100,84 +100,220 @@
     
 <!-- #Example vignette: 
 https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-naniar.Rmd -->
-<div id="exploring-probability-distributions-for-cricket" class="section level1">
+<div id="introduction" class="section level1">
 <h1 class="hasAnchor">
-<a href="#exploring-probability-distributions-for-cricket" class="anchor"></a>Exploring probability distributions for cricket</h1>
-<p>Package gravitas is not only restricted to temporal data. We provide an example of cricket to illustrate how this can be generalised in other applications. The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by eight teams representing eight different cities in India. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. We have sourced the the ball by ball data for IPL season 2008 to 2016 from <a href="https://www.kaggle.com/josephgpinto/ipl-data-analysis/data">Kaggle</a>. The dataset contains the information on batting team, bowling team, balls of the over, over of the innings, innings of the match and total runs per ball for 577 matches spanning over 9 seasons (2008 to 2016). It also has information on which team won, dismissal type, batting and bowling teams as other useful information.</p>
-<p>A hierarchy like table  can be construed for this game format, where index here would refer to ball as the data set contains ball-by-ball data.</p>
+<a href="#introduction" class="anchor"></a>Introduction</h1>
+<p>Package <code>gravitas</code> is not only restricted to temporal data. An application on cricket follows to illustrate how this package can be generalized in other applications.</p>
+<p>The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by teams representing different cities in India. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls.Hence, a hierarchy table like this can be construed for this game format.</p>
 <table class="table">
-<caption>A hierarchy table for T20 cricket</caption>
-<thead><tr class="header">
-<th align="left">units</th>
-<th align="right">convert_fct</th>
+<caption>
+A hierarchy table for T20 cricket
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+units
+</th>
+<th style="text-align:right;">
+convert_fct
+</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">index</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:left;">
+index
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
-<tr class="even">
-<td align="left">ball</td>
-<td align="right">6</td>
+<tr>
+<td style="text-align:left;">
+ball
+</td>
+<td style="text-align:right;">
+6
+</td>
 </tr>
-<tr class="odd">
-<td align="left">over</td>
-<td align="right">20</td>
+<tr>
+<td style="text-align:left;">
+over
+</td>
+<td style="text-align:right;">
+20
+</td>
 </tr>
-<tr class="even">
-<td align="left">inning</td>
-<td align="right">2</td>
+<tr>
+<td style="text-align:left;">
+inning
+</td>
+<td style="text-align:right;">
+2
+</td>
 </tr>
-<tr class="odd">
-<td align="left">match</td>
-<td align="right">1</td>
+<tr>
+<td style="text-align:left;">
+match
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
 </tbody>
 </table>
-<p>There are many interesting questions that can possibly be answered with such a data set, however, we will explore a few and understand how the proposed approach in the paper can help answer some of the questions.</p>
-<p>Mumbai Indians(MI) and Delhi Daredevils (DD) are two teams which played from 2010 to 2015, in which MI always qualified in top 4, and DD never made it to top 4. It would be interesting to see the difference in their strategies throughout all matches in these seasons. The following two questions might help us partially understand their strategies.</p>
-<ul>
-<li><p>Q1: How their run rates vary depending on if they bat first or 2nd? Is there a chance that they are more likely to win if they bat first?</p></li>
-<li><p>Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings?</p></li>
-</ul>
-<p>Although there is no conventional time element in cricket, we can still represent the data set <code>cricket</code> through a <code>tsibble</code>, where each ball, which represents an ordering from past to future, can form the <code>index</code> of the tsibble.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">cricket_tsibble &lt;-<span class="st"> </span>cricket <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">data_index =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="st">  </span><span class="kw">as_tsibble</span>(<span class="dt">index =</span> data_index)</a></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">cricket_tsibble <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(batting_team <span class="op">==</span><span class="st"> "Mumbai Indians"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">    </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"inning"</span>, <span class="st">"over"</span>,</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">             hierarchy_model,</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">             <span class="dt">response =</span> <span class="st">"runs_per_over"</span>,</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">             <span class="dt">plot_type =</span> <span class="st">"lv"</span>)</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Some combinations of granularities have less than 30 observations.</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;             Check gran_obs() to find combinations which have low observations.</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;             Analyze the distribution of these combinations with caution.</span></a></code></pre></div>
+<p>The ball by ball data for IPL season is sourced from <a href="https://www.kaggle.com/josephgpinto/ipl-data-analysis/data">Kaggle</a>. The <code>cricket</code> data set in the <code>gravitas</code> package summaries the ball-by-ball data cross overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(gravitas)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tibble)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(cricket)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Observations: 8,560</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Variables: 10</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; $ season        &lt;dbl&gt; 2008, 2008, 2008, 2008, 2008, 2008, 2008, 2008, 20…</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; $ match_id      &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,…</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; $ batting_team  &lt;chr&gt; "Chennai Super Kings", "Chennai Super Kings", "Che…</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; $ bowling_team  &lt;chr&gt; "Kings XI Punjab", "Kings XI Punjab", "Kings XI Pu…</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; $ inning        &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,…</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; $ over          &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,…</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; $ wicket        &lt;dbl&gt; 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0,…</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt; $ dot_balls     &lt;dbl&gt; 4, 2, 4, 3, 3, 3, 1, 3, 1, 2, 1, 0, 2, 1, 0, 3, 0,…</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt; $ runs_per_over &lt;dbl&gt; 5, 14, 2, 6, 9, 11, 9, 8, 13, 5, 19, 20, 4, 10, 18…</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; $ run_rate      &lt;dbl&gt; 1, 2, 0, 1, 2, 2, 2, 1, 2, 1, 3, 3, 1, 2, 3, 1, 2,…</span></a></code></pre></div>
+<p>There are many interesting questions that can possibly be answered with such a data set. We will explore a few to understand how the package can help answer some of the questions.</p>
+<!-- Mumbai Indians(MI) and Delhi Daredevils (DD) are two teams which played from 2010 to 2015, in which MI always qualified in top 4, and DD never made it to top 4. It would be interesting to see the difference in their strategies throughout all matches in these seasons. The following two questions might help us partially understand their strategies/performances.  -->
+<!-- - Q1: How their run rates vary depending on if they bat first or 2nd? -->
+<!-- <!-- - Q2: Is there a chance that they are more likely to win if they bat first? -->
+<!-- - Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings? -->
+<p>Although there is no conventional time element in cricket, we can still represent the data set <code>cricket</code> through a <code>tsibble</code>, where each over, which represents an ordering from past to future, can form the <code>index</code> of the tsibble.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">cricket_tsibble &lt;-<span class="st"> </span>cricket <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">data_index =</span> <span class="kw">row_number</span>()) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span><span class="kw">as_tsibble</span>(<span class="dt">index =</span> data_index)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">cricket_tsibble</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; # A tsibble: 8,560 x 11 [1]</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt;    season match_id batting_team bowling_team inning  over wicket dot_balls</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;  1   2008        2 Chennai Sup… Kings XI Pu…      1     1      0         4</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;  2   2008        2 Chennai Sup… Kings XI Pu…      1     2      0         2</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;  3   2008        2 Chennai Sup… Kings XI Pu…      1     3      1         4</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;  4   2008        2 Chennai Sup… Kings XI Pu…      1     4      0         3</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;  5   2008        2 Chennai Sup… Kings XI Pu…      1     5      0         3</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt;  6   2008        2 Chennai Sup… Kings XI Pu…      1     6      0         3</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt;  7   2008        2 Chennai Sup… Kings XI Pu…      1     7      1         1</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt;  8   2008        2 Chennai Sup… Kings XI Pu…      1     8      1         3</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;  9   2008        2 Chennai Sup… Kings XI Pu…      1     9      0         1</span></a>
+<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt; 10   2008        2 Chennai Sup… Kings XI Pu…      1    10      0         2</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; # … with 8,550 more rows, and 3 more variables: runs_per_over &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;</span></a></code></pre></div>
+</div>
+<div id="how-run-rates-vary-depending-on-if-a-team-bats-first-or-2nd" class="section level1">
+<h1 class="hasAnchor">
+<a href="#how-run-rates-vary-depending-on-if-a-team-bats-first-or-2nd" class="anchor"></a>How run rates vary depending on if a team bats first or 2nd?</h1>
+<p>We filtered the data for two top teams in IPL - Mumbai Indians and Chennai Super Kings. Each inning of the match is plotted across facets and overs of the innings are plotted across the x-axis. It can be observed from the letter value plot that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability in runs increase as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">cricket_tsibble <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(batting_team <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Mumbai Indians"</span>,</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">                             <span class="st">"Chennai Super Kings"</span>))<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"inning"</span>, <span class="st">"over"</span>,</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">  hierarchy_model,</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">  <span class="dt">response =</span> <span class="st">"runs_per_over"</span>,</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">  <span class="dt">plot_type =</span> <span class="st">"lv"</span>)</a></code></pre></div>
 <p><img src="cricket_files/figure-html/unnamed-chunk-2-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">cricket_tsibble <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(batting_team <span class="op">==</span><span class="st"> "Delhi Daredevils"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="st">    </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"inning"</span>, <span class="st">"over"</span>,</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">             hierarchy_model,</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">             <span class="dt">response =</span> <span class="st">"runs_per_over"</span>,</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">             <span class="dt">plot_type =</span> <span class="st">"lv"</span>)</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Some combinations of granularities have less than 30 observations.</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;             Check gran_obs() to find combinations which have low observations.</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt;             Analyze the distribution of these combinations with caution.</span></a></code></pre></div>
-<p><img src="cricket_files/figure-html/unnamed-chunk-2-2.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">cricket_tsibble <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(dot_balls <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"dot_balls"</span>,</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">            <span class="st">"over"</span>,</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">            hierarchy_model,</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">            <span class="dt">response =</span> <span class="st">"runs_per_over"</span>,</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">            <span class="dt">plot_type =</span> <span class="st">"quantile"</span>,</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">            <span class="dt">quantile_prob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>))</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Some combinations of granularities have less than 30 observations.</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;             Check gran_obs() to find combinations which have low observations.</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt;             Analyze the distribution of these combinations with caution.</span></a></code></pre></div>
-<p><img src="cricket_files/figure-html/unnamed-chunk-3-1.png" width="768" style="display: block; margin: auto;"></p>
+<!-- # Is there a chance that they are more likely to win if they bat first? -->
+<!-- ```{r} -->
+<!-- cricket_tsibble %>% -->
+<!--   filter(batting_team %in% c("Mumbai Indians", -->
+<!--                              "Chennai Super Kings"))%>% -->
+<!--   mutate(win = if_else(winner_team == "batting_team", 1, 0), -->
+<!--          bat_first = if_else(inning == 1, 1, 0)) %>%  -->
+<!--   prob_plot("bat_first", "win", -->
+<!--   hierarchy_model, -->
+<!--   response = "runs_per_over", -->
+<!--   plot_type = "lv") -->
+<!-- ``` -->
+<p><br></p>
+</div>
+<div id="do-wickets-and-dot-balls-affect-the-runs-differently-across-overs" class="section level1">
+<h1 class="hasAnchor">
+<a href="#do-wickets-and-dot-balls-affect-the-runs-differently-across-overs" class="anchor"></a>Do wickets and dot balls affect the runs differently across overs?</h1>
+<p>A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. The number of wickets per can be thought to be a measure of good fielding. It might be interesting to see how good fielding or bowling affect runs per over differently.</p>
+<p>Now, number of wickets/dot balls per over do not appear in the hierarchy table, but they can still be thought of as granularities since they are constructed for each index (over) of the tsibble. The relationship is not periodic because number of wickets that are dismissed or dot balls that are being bowled changes across overs. This is unlike the periodic relationship for units specified in the hierarchy table.</p>
+<p><code>gran_advice</code> is employed to check if it would be appropriate to plot wickets and dot balls across overs. The output suggests that the pair (dot_ball, over) is a harmony for our data set, but the pair (wicket, over) is a clash. It also gives us the number of observations per categorization. The number of observations for 2, 3 or 4 wickets are too low to plot a distribution, implying there are hardly any overs in which 2 or more wickets are dismissed. The number of observations for more than 5 dot balls in any over is again very low suggesting those are rare cases.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">p1 &lt;-<span class="st"> </span>cricket_tsibble <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/gran_advice.html">gran_advice</a></span>(<span class="st">"wicket"</span>,</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">            <span class="st">"over"</span>,</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">            hierarchy_model)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">cricket_tsibble <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/gran_advice.html">gran_advice</a></span>(<span class="st">"dot_balls"</span>,</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">            <span class="st">"over"</span>,</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">            hierarchy_model)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; The chosen granularities are clashes.</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;         Consider looking at harmony() to obtain possible harmonies </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt;  </span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; Recommended plots are: quantile </span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt;  </span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; Number of observations are homogenous across facets </span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;  </span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; Number of observations are homogenous within facets </span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt;  </span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; Cross tabulation of granularities : </span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt;  </span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; # A tibble: 20 x 8</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="co">#&gt;    over    `0`   `1`   `2`   `3`   `4`   `5`   `6`</span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co">#&gt;    &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co">#&gt;  1 1         2    18    74   126   125    68    15</span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="co">#&gt;  2 2         6    38    80   133   105    57     9</span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="co">#&gt;  3 3        14    41   113   135    90    31     4</span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="co">#&gt;  4 4        17    62   114   124    80    25     6</span></a>
+<a class="sourceLine" id="cb5-23" data-line-number="23"><span class="co">#&gt;  5 5        21    70   104   110    86    34     3</span></a>
+<a class="sourceLine" id="cb5-24" data-line-number="24"><span class="co">#&gt;  6 6        20    66   111   125    76    24     6</span></a>
+<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="co">#&gt;  7 7        41   105   123   104    44    11     0</span></a>
+<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="co">#&gt;  8 8        53   105   129    82    44    15     0</span></a>
+<a class="sourceLine" id="cb5-27" data-line-number="27"><span class="co">#&gt;  9 9        45   122   125    78    44    12     2</span></a>
+<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co">#&gt; 10 10       52   141   109    83    35     7     1</span></a>
+<a class="sourceLine" id="cb5-29" data-line-number="29"><span class="co">#&gt; 11 11       61   112   125    86    36     7     1</span></a>
+<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="co">#&gt; 12 12       69   137   117    71    27     7     0</span></a>
+<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="co">#&gt; 13 13       70   116   114    89    33     5     1</span></a>
+<a class="sourceLine" id="cb5-32" data-line-number="32"><span class="co">#&gt; 14 14       62   134   114    81    22    14     1</span></a>
+<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="co">#&gt; 15 15       63   125   133    73    30     4     0</span></a>
+<a class="sourceLine" id="cb5-34" data-line-number="34"><span class="co">#&gt; 16 16       80   148   121    49    20     9     1</span></a>
+<a class="sourceLine" id="cb5-35" data-line-number="35"><span class="co">#&gt; 17 17       81   148   107    58    25     9     0</span></a>
+<a class="sourceLine" id="cb5-36" data-line-number="36"><span class="co">#&gt; 18 18       72   128   145    57    24     2     0</span></a>
+<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="co">#&gt; 19 19       77   146   108    66    25     6     0</span></a>
+<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="co">#&gt; 20 20       72   141   117    62    29     6     1</span></a></code></pre></div>
+<p>Hence, we filter our data set to retain only those overs where number of wickets or dot balls are less than or equal to 2. Some pairs of granularities should still be analyzed with caution as suggested by <code>gran_advice</code>. Area quantile plots are drawn across overs of the innings, faceted by either number of dot balls (first) or number of wickets (second). The dark black line represents the median, whereas the orange and green represents the area between 25th and 75th percentile and between 10th and 90th percentile respectively. For both the plots, runs per over decreases as we move from left to right, implying runs decreases as number of dot balls or wickets increases.</p>
+<p>Moreover, tt seems like with zero or one wicket, there is still an upward trend in runs across overs of the innings, whereas the same is not true for dot balls more than 0 per over.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">cricket_tsibble <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(dot_balls <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"dot_balls"</span>,</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">            <span class="st">"over"</span>,</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">            hierarchy_model,</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">            <span class="dt">response =</span> <span class="st">"runs_per_over"</span>,</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">            <span class="dt">plot_type =</span> <span class="st">"quantile"</span>,</a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">            <span class="dt">quantile_prob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>))</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Some combinations of granularities have less than 30 observations.</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;             Check gran_obs() to find combinations which have low observations.</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt;             Analyze the distribution of these combinations with caution.</span></a></code></pre></div>
+<p><img src="cricket_files/figure-html/unnamed-chunk-5-1.png" width="768" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">cricket_tsibble <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(wicket <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"wicket"</span>,</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">            <span class="st">"over"</span>,</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">            hierarchy_model,</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">            <span class="dt">response =</span> <span class="st">"runs_per_over"</span>,</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">            <span class="dt">plot_type =</span> <span class="st">"quantile"</span>,</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">            <span class="dt">quantile_prob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>))</a></code></pre></div>
+<p><img src="cricket_files/figure-html/unnamed-chunk-6-1.png" width="768" style="display: block; margin: auto;"></p>
+<!-- ```{r} -->
+<!-- cricket_tsibble %>% -->
+<!--   filter(batting_team == "Mumbai Indians") %>%  -->
+<!--     prob_plot("inning", "over", -->
+<!--              hierarchy_model, -->
+<!--              response = "runs_per_over", -->
+<!--              plot_type = "lv") -->
+<!-- cricket_tsibble %>% -->
+<!--   filter(batting_team == "Delhi Daredevils") %>%  -->
+<!--     prob_plot("inning", "over", -->
+<!--              hierarchy_model, -->
+<!--              response = "runs_per_over", -->
+<!--              plot_type = "lv") -->
+<!-- ``` -->
 </div>
   </div>
 
@@ -187,7 +323,9 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#exploring-probability-distributions-for-cricket">Exploring probability distributions for cricket</a></li>
+<li><a href="#introduction">Introduction</a></li>
+      <li><a href="#how-run-rates-vary-depending-on-if-a-team-bats-first-or-2nd">How run rates vary depending on if a team bats first or 2nd?</a></li>
+      <li><a href="#do-wickets-and-dot-balls-affect-the-runs-differently-across-overs">Do wickets and dot balls affect the runs differently across overs?</a></li>
       </ul>
 </div>
       </div>
