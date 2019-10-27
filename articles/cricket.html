@@ -203,9 +203,9 @@ match
 <a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; # … with 8,550 more rows, and 3 more variables: runs_per_over &lt;dbl&gt;,</span></a>
 <a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;</span></a></code></pre></div>
 </div>
-<div id="how-run-rates-vary-depending-on-if-a-team-bats-first-or-2nd" class="section level1">
+<div id="how-run-rates-vary-depending-on-if-a-team-bats-first-or-second" class="section level1">
 <h1 class="hasAnchor">
-<a href="#how-run-rates-vary-depending-on-if-a-team-bats-first-or-2nd" class="anchor"></a>How run rates vary depending on if a team bats first or 2nd?</h1>
+<a href="#how-run-rates-vary-depending-on-if-a-team-bats-first-or-second" class="anchor"></a>How run rates vary depending on if a team bats first or second?</h1>
 <p>We filtered the data for two top teams in IPL - Mumbai Indians and Chennai Super Kings. Each inning of the match is plotted across facets and overs of the innings are plotted across the x-axis. It can be observed from the letter value plot that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability in runs increase as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">cricket_tsibble <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(batting_team <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Mumbai Indians"</span>,</a>
@@ -324,7 +324,7 @@ match
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#introduction">Introduction</a></li>
-      <li><a href="#how-run-rates-vary-depending-on-if-a-team-bats-first-or-2nd">How run rates vary depending on if a team bats first or 2nd?</a></li>
+      <li><a href="#how-run-rates-vary-depending-on-if-a-team-bats-first-or-second">How run rates vary depending on if a team bats first or second?</a></li>
       <li><a href="#do-wickets-and-dot-balls-affect-the-runs-differently-across-overs">Do wickets and dot balls affect the runs differently across overs?</a></li>
       </ul>
 </div>
