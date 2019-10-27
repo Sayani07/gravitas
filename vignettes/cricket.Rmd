@@ -73,7 +73,7 @@ cricket_tsibble
 ```
 
 
-# How run rates vary depending on if a team bats first or 2nd?
+# How run rates vary depending on if a team bats first or second?
 
 We filtered the data for two top teams in IPL - Mumbai Indians and Chennai Super Kings. 
 Each inning of the match is plotted across facets and overs of the innings are plotted across the x-axis. It can be observed from the letter value plot that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability in runs increase as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.

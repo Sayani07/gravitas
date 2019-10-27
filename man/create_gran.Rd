@@ -10,8 +10,8 @@ create_gran(.data, gran1 = NULL, hierarchy_tbl = NULL, label = TRUE,
 \arguments{
 \item{.data}{A tsibble object.}
 
-\item{gran1}{the granularity to be created. For temporal data, any combination
-of "second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight
+\item{gran1}{the granularity to be created. For temporal data, any
+combination of "second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight
 ,"month", "quarter", "semester" or "year" can be chosen in the form of finer #' to coarser unit. For example, for the granularity hour of the week, value is
 "hour_week".}
 
@@ -30,7 +30,8 @@ A tsibble with an additional column of granularity.
 }
 \description{
 Create time granularities that accommodate for periodicities in data, both single and multiple order up.
-Periodic ones might include time granularities like minute of the day, hour of the week  and aperiodic calendar categorizations may include day of the month or
+Periodic ones might include time granularities like minute of the day, hour
+ of the week  and aperiodic calendar categorizations may include day of the month or
 week of the quarter. For non-temporal data, supports
 only periodic deconstructions.
 }

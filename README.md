@@ -16,7 +16,7 @@ coverage](https://codecov.io/gh/Sayani07/gravitas/branch/master/graph/badge.svg)
 
 ## Overview
 
-The package **gravitas** provides a tool to examine the probability
+Package `gravitas` provides a tool to examine the probability
 distribution of univariate time series across bivariate temporal
 granularities using range of graphics in `ggplot2` through the
 following:
@@ -33,11 +33,13 @@ following:
     series variable across the bivariate granularities based on the
     levels of the bivariate granularties and their interaction.
 
-The hierarchical structure of time creates a natural nested ordering.
-For example, hours are nested within days, days within weeks, weeks
-within months, and so on. Package `gravitas` is not restricted to
-temporal data. It can be used in non-temporal applications for which a
-hierarchical structure can be constructed similar to time.
+`gravitas` is not restricted to temporal data. It can be utilized in
+non-temporal cases for which a hierarchical structure can be construed
+similar to time. The hierarchical structure of time creates a natural
+nested ordering. For example, hours are nested within days, days within
+weeks, weeks within months, and so on. Similarly, if a periiodic nesting
+exist for a non-temporal application, `gravitas` can be used to explore
+the probability distribution of a continuous random variable.
 
 ## Installation
 
@@ -57,7 +59,7 @@ devtools::install_github("Sayani07/gravitas")
 
 ## Quick look
 
-gravitas comes with an interactive webpage, which lets you go through
+`gravitas` comes with an interactive webpage, which lets you go through
 the different functionalities of this package. To try it, simply use
 gravitas::run\_app().
 
@@ -66,7 +68,7 @@ gravitas::run\_app().
   - Search for a set of all possible temporal granularities with
     `search_gran()`
 
-  - Build any temporal granularity with `create_gran`
+  - Build any temporal granularity with `create_gran()`
 
   - Check if two temporal granularities are harmonies with
     `is_harmony()`
@@ -89,14 +91,16 @@ gravitas::run\_app().
 The probability distribution of the energy consumption for ten
 households from [customer
 trials](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter)
-can be explored using `gravitas` as follows:
+can be explored as follows:
 
 ### Search for granularities
 
 ``` r
+library(gravitas)
 library(dplyr)
 #> Warning: package 'dplyr' was built under R version 3.5.2
 library(ggplot2)
+#> Warning: package 'ggplot2' was built under R version 3.5.2
 library(lvplot)
 
  smart_meter10 %>%
@@ -127,6 +131,15 @@ library(lvplot)
 
 ### Visualize probability distribution of the harmony pair (wknd\_wday, hour\_day)
 
+Area quantile plots are drawn across hours of the day faceted by
+weekend/weekday. The black line represents the median, whereas the
+orange and green represents the area between 25th and 75th percentile
+and between 10th and 90th percentile respectively. For this household,
+median energy consumption for the early morning hours is extremely high
+for weekends compared to weekdays. The energy behavior is skewed to the
+left, where 10th and 25th percentile are very close to each other in
+both weekend/weekday.
+
 ``` r
 smart_meter10 %>%
  filter(customer_id == 10017936) %>%
@@ -135,9 +148,7 @@ smart_meter10 %>%
      gran2 = "hour_day",
      response = "general_supply_kwh",
      plot_type = "quantile",
-     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-     symmetric = FALSE
-   ) +
+     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
    scale_y_sqrt()
 ```
 
@@ -145,10 +156,17 @@ smart_meter10 %>%
 
 ## Example: non-temporal case
 
-`cricket` data set in teh package can be explored as follows by
-explicitly defining a hierarchy table as follows:
+`cricket` data set in the package can be explored by explicitly defining
+a hierarchy table as follows:
 
 #### Visualize granularities for non-temporal data
+
+Each inning of the match is plotted across facets and overs of the
+innings are plotted across the x-axis. It can be observed from the
+letter value plot that there is no clear upward shift in runs in the
+second innings as compared to the first innings. The variability in runs
+increase as the teams approach towards the end of the innings, as
+observed through the longer and more distinct letter values.
 
 ``` r
 library(tsibble)
@@ -198,15 +216,16 @@ cricket_tsibble <- cricket %>%
 
 <img src="man/figures/README-cricket-1.png" width="100%" />
 
-#### Validate if given column in the data set equals computed granularity
+## More information
 
-``` r
-validate_gran(cricket_tsibble,
-   gran = "over_inning",
-   hierarchy_tbl = hierarchy_model,
-   validate_col = "over" )
-#> [1] FALSE
-```
+View the [vignette](https://sayani07.github.io/gravitas/) to get
+started\!
+
+This package takes tsibble as the data input. Tsibble provides a data
+class of tbl\_ts to represent tidy temporal data. It consists of a time
+index, key and other measured variables in a data-centric format, which
+makes it easier to work with temporal data. To learn more about it,
+please visit <https://tsibble.tidyverts.org/>
 
 ## Acknowledgements
 
@@ -223,17 +242,6 @@ Moreover, I want to thank my cohort at
 [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team),
 Monash University for always lending an ear and sharing their wisdom and
 experience of developing R packages whenever needed.
-
-## More information
-
-View the [vignette](https://sayani07.github.io/gravitas/) to get
-started\!
-
-This package takes tsibble as the data input. Tsibble provides a data
-class of tbl\_ts to represent tidy temporal data. It consists of a time
-index, key and other measured variables in a data-centric format, which
-makes it easier to work with temporal data. To learn more about it,
-please visit <https://tsibble.tidyverts.org/>
 
 ## Reporting and issues
 
