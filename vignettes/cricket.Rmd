@@ -127,7 +127,7 @@ cricket_tsibble %>%
 ```
 
 
-Hence, we filter our data set to retain only those overs where the number of wickets or dot balls are less than, or equal to 2. Some pairs of granularities should still be analyzed with caution as suggested by `gran_advice`. Area quantile plots are drawn across overs of the innings, faceted by either number of dot balls (first) or the number of wickets (second). The dark black line represents the median, whereas the orange and green represent the area between the 25th and 75th percentile and between the 10th and 90th percentile respectively. For both the plots, runs per over decreases as we move from left to right, implying runs decreases as the number of dot balls or wickets increases.
+Hence, we filter our data set to retain those overs where the number of wickets or dot balls are less than, or equal to 2. Some pairs of granularities should still be analyzed with caution as suggested by `gran_advice`. Area quantile plots are drawn across overs of the innings, faceted by either number of dot balls (first) or the number of wickets (second). The dark black line represents the median, whereas the orange and green represent the area between the 25th and 75th percentile and between the 10th and 90th percentile respectively. For both the plots, runs per over decreases as we move from left to right, implying runs decreases as the number of dot balls or wickets increases.
 
 
 Moreover, it seems like with zero or one wicket overs, there is still an upward trend in runs across overs of the innings, whereas the same is not true for dot balls more than 0 per over.
