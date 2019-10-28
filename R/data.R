@@ -18,22 +18,22 @@
 
 
 
-#' Cricket data set for different seasons of Indian Premiere League
+#' Cricket data set for different seasons of Indian Premier League
 #'
-#' The Indian Premiere League played by teams representing
+#' The Indian Premier League played by teams representing
 #' different cities in India from 2008 to 2016
 #'
 #' @format A tibble with 8560 rows and 11 variables:
-#' * **season**: years representing IPL season
-#' * **match_id**: match codes
-#' * **batting_team**: name of batting team
-#' * **bowling_team**: name of bowling team
-#' * **inning**: innings of the match
-#' * **over**: overs of the inning
-#' * **wicket**: number of wickets in each over
-#' * **dot_balls**: number of balls with no runs in an over
-#' * **runs_per_over**: Runs for each over
-#' * **run_rate**: run rate for each over
+#' **season**: years representing IPL season
+#' **match_id**: match codes
+#' **batting_team**: name of batting team
+#' **bowling_team**: name of bowling team
+#' **inning**: innings of the match
+#' **over**: overs of the inning
+#' **wicket**: number of wickets in each over
+#' **dot_balls**: number of balls with no runs in an over
+#' **runs_per_over**: Runs for each over
+#' **run_rate**: run rate for each over
 #' @references [Kaggle IPL Data Analysis](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data)
 #' @name cricket
 #' @examples

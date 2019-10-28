@@ -5,16 +5,16 @@
 \alias{cricket}
 \title{Cricket data set for different seasons of Indian Premiere League}
 \format{A tibble with 8560 rows and 11 variables:
-* **season**: years representing IPL season
-* **match_id**: match codes
-* **batting_team**: name of batting team
-* **bowling_team**: name of bowling team
-* **inning**: innings of the match
-* **over**: overs of the inning
-* **wicket**: number of wickets in each over
-* **dot_balls**: number of balls with no runs in an over
-* **runs_per_over**: Runs for each over
-* **run_rate**: run rate for each over}
+**season**: years representing IPL season
+**match_id**: match codes
+**batting_team**: name of batting team
+**bowling_team**: name of bowling team
+**inning**: innings of the match
+**over**: overs of the inning
+**wicket**: number of wickets in each over
+**dot_balls**: number of balls with no runs in an over
+**runs_per_over**: Runs for each over
+**run_rate**: run rate for each over}
 \usage{
 cricket
 }
