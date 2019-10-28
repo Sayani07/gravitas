@@ -10,3 +10,4 @@ doc/
 doc
 inst/doc
 inst/*.html
+.Rproj.user
