@@ -1,6 +1,6 @@
 #' Runs a shiny app demonstrating functionalities of gravitas
 #'
-#' Runs a local shiny app that demonstrates how distributions of univariate #' time series can be explored across bivariate time granularities
+#' Runs a local shiny app that demonstrates how distributions of univariate time series can be explored across bivariate time granularities
 #'
 #' @author Sayani Gupta
 #' @return opens a local shiny app

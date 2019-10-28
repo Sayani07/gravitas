@@ -40,7 +40,7 @@
 #' )
 #'
 #' cricket_tsibble %>%
-#'   prob_plot("inning_match", "over_inning",
+#'   prob_plot("inning", "over",
 #'     hierarchy_tbl = hierarchy_model,
 #'     response = "runs_per_over",
 #'     plot_type = "lv"
