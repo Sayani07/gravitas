@@ -32,7 +32,7 @@ library(lvplot)
 Package `gravitas` is not only restricted to temporal data. An application on cricket follows to illustrate how this package can be generalized in other applications. 
 
 
-The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by teams representing different cities in India. In a Twenty20 game the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls.Hence, a hierarchy table like this can be construed for this game format.
+The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by teams representing different cities in India. In a Twenty20 game, the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. Hence, a hierarchy table like this can be construed for this game format.
 
 ```{r hierarchy, echo=FALSE}
 hierarchy_model <- tibble::tibble(units = c("index", "ball", "over", "inning", "match"), 
@@ -49,18 +49,17 @@ library(tibble)
 glimpse(cricket)
 ```
 
+ be answered with such a data set. We will explore a few to understand how the package can help answer some of the questions.
 
-There are many interesting questions that can possibly be answered with such a data set. We will explore a few to understand how the package can help answer some of the questions.
 
-
-<!-- Mumbai Indians(MI) and Delhi Daredevils (DD) are two teams which played from 2010 to 2015, in which MI always qualified in top 4, and DD never made it to top 4. It would be interesting to see the difference in their strategies throughout all matches in these seasons. The following two questions might help us partially understand their strategies/performances.  -->
+<!-- Mumbai Indians(MI) and Delhi Daredevils (DD) are two teams that played from 2010 to 2015, in which MI always qualified in top 4, and DD never made it to top 4. It would be interesting to see the difference in their strategies throughout all matches in these seasons. The following two questions might help us partially understand their strategies/performances.  -->
 
 <!-- - Q1: How their run rates vary depending on if they bat first or 2nd? -->
 
 <!-- <!-- - Q2: Is there a chance that they are more likely to win if they bat first? --> 
-<!-- - Q2: Which team is more consistent in their approach in terms of run rate across different overs of the innings? -->
+<!-- - Q2: Which team is more consistent in their approach in terms of run-rate across different overs of the innings? -->
 
-Although there is no conventional time element in cricket, we can still represent the data set `cricket` through a `tsibble`, where each over, which represents an ordering from past to future, can form the `index` of the tsibble.  
+Although there is no conventional time granularity in cricket, we can still represent the data set `cricket` through a `tsibble`, where each over, which represents an ordering from past to future, can form the index of the tsibble.  
 
 
 
@@ -76,7 +75,7 @@ cricket_tsibble
 # How run rates vary depending on if a team bats first or second?
 
 We filtered the data for two top teams in IPL - Mumbai Indians and Chennai Super Kings. 
-Each inning of the match is plotted across facets and overs of the innings are plotted across the x-axis. It can be observed from the letter value plot that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability in runs increase as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.
+Each inning of the match is plotted across facets and overs of the innings are plotted across the x-axis. It can be observed from the letter value plot that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability of runs increases as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.
   
 ```{r}
 cricket_tsibble %>%
@@ -106,11 +105,11 @@ cricket_tsibble %>%
 
 # Do wickets and dot balls affect the runs differently across overs?
 
-A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. The number of wickets per can be thought to be a measure of good fielding. It might be interesting to see how good fielding or bowling affect runs per over differently.
+A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. The number of wickets per can be thought to be a measure of good fielding. It might be interesting to see how good fielding or bowling effect runs per over differently.
 
-Now, number of wickets/dot balls per over do not appear in the hierarchy table, but they can still be thought of as granularities since they are constructed for each index (over) of the tsibble. The relationship is not periodic because number of wickets that are dismissed or dot balls that are being bowled changes across overs. This is unlike the periodic relationship for units specified in the hierarchy table. 
+Now, the number of wickets/dot balls per over does not appear in the hierarchy table, but they can still be thought of as granularities since they are constructed for each index (over) of the tsibble. The relationship is not periodic because of the number of wickets that are dismissed or dot balls that are being bowled changes across overs. This is unlike the periodic relationship for units specified in the hierarchy table. 
 
-`gran_advice` is employed to check if it would be appropriate to plot wickets and dot balls across overs. The output suggests that the pair (dot_ball, over) is a harmony for our data set, but the pair (wicket, over) is a clash. It also gives us the number of observations per categorization. The number of observations for 2, 3 or 4 wickets are too low to plot a distribution, implying there are hardly any overs in which 2 or more wickets are dismissed.  The number of observations for more than 5 dot balls in any over is again very low suggesting those are rare cases.
+`gran_advice` is employed to check if it would be appropriate to plot wickets and dot balls across overs. The output suggests that the pair (dot_ball, over) is a harmony for our data set, but the pair (wicket, over) is a clash. It also gives us the number of observations per categorization. The number of observations of 2, 3 or 4 wickets are too few to plot a distribution, implying there are hardly any overs in which 2 or more wickets are dismissed.  The number of observations for more than 5 dot balls in any over is again very low suggesting those are even rarer cases.
 
 
 ```{r}
@@ -128,10 +127,10 @@ cricket_tsibble %>%
 ```
 
 
-Hence, we filter our data set to retain only those overs where number of wickets or dot balls are less than or equal to 2. Some pairs of granularities should still be analyzed with caution as suggested by `gran_advice`. Area quantile plots are drawn across overs of the innings, faceted by either number of dot balls (first) or number of wickets (second). The dark black line represents the median, whereas the orange and green represents the area between 25th and 75th percentile and between 10th and 90th percentile respectively. For both the plots, runs per over decreases as we move from left to right, implying runs decreases as number of dot balls or wickets increases.
+Hence, we filter our data set to retain only those overs where the number of wickets or dot balls are less than, or equal to 2. Some pairs of granularities should still be analyzed with caution as suggested by `gran_advice`. Area quantile plots are drawn across overs of the innings, faceted by either number of dot balls (first) or the number of wickets (second). The dark black line represents the median, whereas the orange and green represent the area between the 25th and 75th percentile and between the 10th and 90th percentile respectively. For both the plots, runs per over decreases as we move from left to right, implying runs decreases as the number of dot balls or wickets increases.
 
 
-Moreover, tt seems like with zero or one wicket, there is still an upward trend in runs across overs of the innings, whereas the same is not true for dot balls more than 0 per over.
+Moreover, it seems like with zero or one wicket overs, there is still an upward trend in runs across overs of the innings, whereas the same is not true for dot balls more than 0 per over.
 
 
 
