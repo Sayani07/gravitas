@@ -3,7 +3,7 @@
 \docType{data}
 \name{cricket}
 \alias{cricket}
-\title{Cricket data set for different seasons of Indian Premiere League}
+\title{Cricket data set for different seasons of Indian Premier League}
 \format{A tibble with 8560 rows and 11 variables:
 **season**: years representing IPL season
 **match_id**: match codes
@@ -19,7 +19,7 @@
 cricket
 }
 \description{
-The Indian Premiere League played by teams representing
+The Indian Premier League played by teams representing
 different cities in India from 2008 to 2016
 }
 \examples{

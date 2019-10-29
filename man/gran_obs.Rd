@@ -16,10 +16,10 @@ gran_obs(.data, gran1, gran2, hierarchy_tbl = NULL)
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships for non-temporal case.}
 
-\item{...}{Added arguments to be passed}
+\item{...}{Added arguments to be passed.}
 }
 \value{
-A tibble with number of obseervations for each granularities
+A tibble with number of obseervations for each granularity.
 }
 \description{
 Cross tabulation of granularities

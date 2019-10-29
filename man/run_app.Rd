@@ -10,7 +10,7 @@ run_app()
 opens a local shiny app
 }
 \description{
-Runs a local shiny app that demonstrates how distributions of univariate #' time series can be explored across bivariate time granularities
+Runs a local shiny app that demonstrates how distributions of univariate time series can be explored across bivariate time granularities
 }
 \examples{
 \dontrun{
