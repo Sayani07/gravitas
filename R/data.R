@@ -53,7 +53,7 @@
 #'   convert_fct = c(1, 6, 20, 2, 1))
 #'# Compute granularities ----
 #' cricket_tsibble %>%
-#'   create_gran("ball_over",
+#'   create_gran("over_inning",
 #'                hierarchy_model)
 #' # Visualise distribution of runs across granularities ----
 #' cricket_tsibble %>%

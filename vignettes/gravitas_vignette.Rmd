@@ -1,4 +1,4 @@
-a---
+---
 title: "Exploring probability distributions for bivariate temporal granularities"
 author: "Sayani Gupta<hr>"
 output: 
