@@ -35,8 +35,9 @@ cricket_tsibble <- cricket \%>\%
   as_tsibble(index = data_index)
 # set the hierarchy of the units in a table ----
 hierarchy_model <- tibble::tibble(
-  units = c("index", "ball", "over", "inning", "match"),
-  convert_fct = c(1, 6, 20, 2, 1))
+  units = c("index", "over", "inning", "match"),
+  convert_fct = c(1, 20, 2, 1)
+)
 # Compute granularities ----
 cricket_tsibble \%>\%
   create_gran("over_inning",

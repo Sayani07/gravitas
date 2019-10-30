@@ -17,8 +17,22 @@ hierarchy_model <- tibble::tibble(
   units = c("index", "over", "inning", "match"),
   convert_fct = c(1, 20, 2, 1))
 
+harmony_tbl <- tibble::tibble(facet_variable = c("hour_day","wknd_wday",
+               "wknd_wday", "hhour_hour",
+               "wknd_wday","hhour_hour",
+"hour_day"),
+x_variable = c("hhour_hour","hhour_hour",
+                   "hhour_day", "hour_day",
+                   "hour_day","wknd_wday",
+                   "wknd_wday"),
+facet_levels = c(24, 2, 2, 2, 2, 2, 24),
+x_levels = c(2, 2, 48, 24, 24, 2, 2))
+
+harmony_tbl$facet_levels <- as.integer(harmony_tbl$facet_levels)
+harmony_tbl$x_levels <- as.integer(harmony_tbl$x_levels)
 
 # common tests for temporal and non-temporal data
+
 
 test_that("tsibble input", {
   expect_is(x, c("tbl_ts", "tbl_df", "tbl", "data.frame"))
@@ -29,6 +43,12 @@ test_that("tibble output", {
   expect_is(harmony(x, lgran = "hour", ugran = "week"), c("tbl_df", "tbl", "data.frame"))
 })
 
+
+test_that("norun check runs in create_gran",{
+expect_equal(smart_meter10 %>%
+   harmony(ugran = "day",
+           filter_in = "wknd_wday"),harmony_tbl)
+})
 
 test_that("harmony error with null input", {
   expect_error(harmony(), "argument \".data\" is missing, with no default")

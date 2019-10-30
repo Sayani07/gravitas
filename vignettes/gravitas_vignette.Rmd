@@ -172,7 +172,7 @@ Let us now look at all the harmonies that we can examine. Fortunately, we are le
 ```{r harmony, echo=TRUE}
 smart_meter10 %>% harmony(
   ugran = "month",
-  filter_out = c("hhour")
+  filter_out = c("hhour", "fortnight")
 )
 ```
 
