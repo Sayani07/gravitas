@@ -402,7 +402,7 @@ server <- function(input, output, session) {
 
       expr(
         prob_plot(
-          .data = !!file_name(),
+          .data = !!sym(file_name()),
           gran1 = !!input$facet,
           gran2 = !!input$xcol,
           response = !!input$ycol,
