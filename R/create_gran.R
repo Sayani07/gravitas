@@ -28,13 +28,13 @@
 #'   search_gran(highest_unit = "week")
 #'
 #' # Screen harmonies from the search list
-#'
+#'\dontrun{
 #' smart_meter10 %>%
 #'   harmony(
 #'     ugran = "day",
 #'     filter_in = "wknd_wday"
 #'   )
-#'
+#'}
 #' # visualize probability distribution of
 #' # the harmony pair (wknd_wday, hour_day)
 #' smart_meter10 %>%
@@ -48,7 +48,6 @@
 #'   ) +
 #'   scale_y_sqrt()
 #'
-#'\dontrun{
 #'#' # Compute granularities for non-temporal data
 #'
 #'library(tsibble)
@@ -57,8 +56,8 @@
 #' as_tsibble(index = data_index)
 #'
 #' hierarchy_model <- tibble::tibble(
-#'   units = c("index", "ball", "over", "inning", "match"),
-#'   convert_fct = c(1, 6, 20, 2, 1)
+#'   units = c("index", "over", "inning", "match"),
+#'   convert_fct = c(1, 20, 2, 1)
 #' )
 #' cricket_tsibble %>%
 #'   create_gran(
@@ -81,7 +80,6 @@
 #'   hierarchy_tbl = hierarchy_model,
 #'   validate_col = "over"
 #' )
-#' }
 #' @export
 create_gran <- function(.data, gran1 = NULL, hierarchy_tbl = NULL,
                         label = TRUE,

@@ -44,13 +44,13 @@ smart_meter10 \%>\%
   search_gran(highest_unit = "week")
 
 # Screen harmonies from the search list
-
+\dontrun{
 smart_meter10 \%>\%
   harmony(
     ugran = "day",
     filter_in = "wknd_wday"
   )
-
+}
 # visualize probability distribution of
 # the harmony pair (wknd_wday, hour_day)
 smart_meter10 \%>\%
@@ -64,7 +64,6 @@ filter(customer_id == 10017936) \%>\%
   ) +
   scale_y_sqrt()
 
-\dontrun{
 #' # Compute granularities for non-temporal data
 
 library(tsibble)
@@ -97,5 +96,4 @@ validate_gran(cricket_tsibble,
   hierarchy_tbl = hierarchy_model,
   validate_col = "over"
 )
-}
 }
