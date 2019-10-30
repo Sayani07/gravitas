@@ -1,6 +1,6 @@
 Package: gravitas
 Type: Package
-Title: Granularity visualisation of temporal data
+Title: Explore Probability Distributions for Bivariate Temporal Granularities
 Version: 0.0.0.9000
 Authors@R: 
     c(person(given = "Sayani",
@@ -52,12 +52,13 @@ Suggests:
     readr
 VignetteBuilder: knitr
 Maintainer: Sayani Gupta <gupta.sayani@gmail.com>
-Description: Provides tools for exploring large quantities of temporal data 
-             across different deconstructions of time.
-             Computes circular, aperiodic, single-order-up or 
-             multiple-order-up granularities and advises on which
-             combinations of granularities to explore and through which 
-             distribution plots.
+Description: Provides tools for systematically exploring large quantities of 
+             temporal data across different temporal granularities
+             (deconstructions of time) by visualizing probability distributions. 
+             'gravitas' computes circular, aperiodic,
+             single-order-up or multiple-order-up granularities and
+             advises on which combinations of granularities to explore
+             and through which distribution plots.
 BugReports: https://github.com/Sayani07/gravitas/issues
 License: GPL-3
 URL: https://github.com/Sayani07/gravitas/
