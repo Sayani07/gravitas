@@ -39,7 +39,8 @@ This vignette describes the tools in the package `gravitas` for systematically e
 
 # Analysis of smart meter data
 
-The `smart_meter10` data set in the package is a [tsibble](https://tsibble.tidyverts.org/) providing the energy consumption for ten households from [customer trials](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter). 
+The `smart_meter10` data set in the package is a [tsibble](https://tsibble.tidyverts.org/) providing the energy consumption for ten households from [customer trials](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter). It is hard to derive insights when we try to visualize periodicity in the data for all households. For example, if we plot the energy consumption across each hour of the day, the structure of the data suggests that there are several data points for each hour of the day for just one household. Hence, for several households, there will be a blob of points for each hour of the day. 
+
 
 
 ```{r data_look}
@@ -53,7 +54,6 @@ smart_meter10 %>% select(customer_id,
 <!-- To have an understanding of how different the energy consumption for each household of the trial is, energy consumption is plotted against time with each transition state indicating one household for a sample. If we plot the raw data for all of them, it is difficult to get insights into their behavior.  -->
 
 
-It is hard to derive insights when we try to visualize periodicity in the data for all households. For example, if we plot the energy consumption across each hour of the day, the structure of the data suggests that there are several data points for each hour of the day for just one household. Hence, for several households, there will be a blob of points for each hour of the day. 
 
 <!-- # ```{r, echo=FALSE, out.width="100%"} -->
 <!-- # # smart_p <- smart_meter10 %>% -->
@@ -74,9 +74,12 @@ It is hard to derive insights when we try to visualize periodicity in the data f
 <!-- # ``` -->
 
 
-So the question is how to explore systematically multiple perspectives of this smart meter data across different time granularities? The solution is to visualize the probability distributions across these granularities to find regular / nearly-periodic patterns or anomalies in behaviors.
+So the question is how to explore systematically multiple perspectives of this 
+smart meter data across different time granularities to find regular patterns 
+or anomalies in behaviors? One way can be by visualizing the probability 
+distributions across these granularities.
 
-Let us see how we can analyze the energy behavior of these households by making allowances for the following aspects of time granularities: Computation, interaction and visualization. 
+Let us see how we can explore the energy behavior of a couple of households by making allowances for the following aspects of time granularities: Computation, interaction and visualization. 
 
 
 ## Computation
@@ -209,7 +212,8 @@ cust1 <- smart_meter10 %>%
                             "hour_day",
                             response = "general_supply_kwh",
                             plot_type = "boxplot") +
-  scale_y_sqrt()
+  scale_y_sqrt() +
+  ggtitle("Energy consumption distribution for customer id: 10006704")
 ```
 
 ```{r hd_dw2, echo=TRUE}
@@ -219,13 +223,16 @@ cust2 <- smart_meter10 %>%
                             "hour_day",
                             response = "general_supply_kwh",
                             plot_type = "boxplot") +
-  scale_y_sqrt()
+  scale_y_sqrt() + 
+  ggtitle("Energy consumption distribution for customer id: 10017936")
 ```
 
 ```{r cust, echo=FALSE}
 cust1
 cust2
 ```
+
+Similarly, we can plot the other harmony pairs and decide if they are useful in deriving insights about the energy behavior of the customers. 
 
 ## Future development
 
@@ -239,6 +246,8 @@ cust2
 
 Thanks to PhD supervisors [Prof. Rob J Hyndman](https://robjhyndman.com/), [Prof. Dianne Cook](http://dicook.org/) and [Google Summer of Code 2019](https://summerofcode.withgoogle.com/) mentor [Prof. Antony Unwin](http://rosuda.org/~unwin/) for their support and always leading by example. The fine balance of encouraging me to work on my ideas and stepping in to help when I need has made the development of this package a great learning experience for me.
 
-Moreover, I want to thank my cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for always lending an ear and sharing their wisdom and experience of developing R packages whenever needed. 
+Moreover, I want to thank my cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University, especially [Mitchell O'Hara-Wild](https://www.mitchelloharawild.com/) and [Nicholas Spyrison](https://github.com/nspyrison) for always lending an ear and sharing their wisdom and experience of developing R packages, with such kindness. 
+
+
 
 
