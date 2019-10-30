@@ -105,8 +105,7 @@ library(lvplot)
 
 ### Visualize probability distribution of the harmony pair (wknd_wday, hour_day)
 
-Area quantile plots are drawn across hours of the day faceted by weekend/weekday. The black line represents the median, whereas the orange and green represent the area between the 25th and 75th percentile and between 10th and 90th percentile respectively. 
-For this household, median energy consumption for the early morning hours is extremely high for weekends compared to weekdays. The energy behavior is skewed to the left, where the 10th and 25th percentile are very close to each other in both weekend/weekday.
+Box plots are drawn across hours of the day faceted by weekend/weekday for a household in the data `smart_meter10` in the package. It is interesting to see the difference in energy consumption in the early morning hours (1 am - 7 am) for weekdays and weekends. The interquartile range is the same in these hours, however, median energy consumption for these hours is higher for weekends compared to weekdays. The distribution for the rest of the day is not significantly different for weekdays and weekends, implying their energy behavior after 7 am remains more or less similar.
 
  
 ```{r probplot} 
@@ -116,20 +115,16 @@ smart_meter10 %>%
      gran1 = "wknd_wday",
      gran2 = "hour_day",
      response = "general_supply_kwh",
-     plot_type = "quantile",
-     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
-   scale_y_sqrt()
+     plot_type = "boxplot") +
+   scale_y_sqrt() + scale_x_discrete(breaks = seq(0, 23, 3))
 ```    
 
 ## Example: non-temporal case
 
 `cricket` data set in the package can be explored by explicitly defining a hierarchy table as follows:
 
-#### Visualize granularities for non-temporal data
 
-Each inning of the match is plotted across facets and overs of the innings are plotted across the x-axis. It can be observed from the letter value plot that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability in runs increases as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.
-
-```{r cricket}
+```{r cricketread}
 library(tsibble)
 cricket_tsibble <- cricket %>%
  mutate(data_index = row_number()) %>%
@@ -144,6 +139,14 @@ cricket_tsibble <- cricket %>%
      "over_inning",
      hierarchy_model
    )
+```
+
+
+#### Visualize granularities for non-temporal data
+
+Letter value plot of total runs per over is shown overs of the innings (x-axis) and innings of the match (facet). It can be observed that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability in runs increases as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.
+
+```{r cricket}
 
    cricket_tsibble %>%
    filter(batting_team %in% c("Mumbai Indians",
@@ -164,7 +167,7 @@ This package takes tsibble as the data input. Tsibble provides a data class of t
 
 Thanks to PhD supervisors [Prof. Rob J Hyndman](https://robjhyndman.com/), [Prof. Dianne Cook](http://dicook.org/) and [Google Summer of Code 2019](https://summerofcode.withgoogle.com/) mentor [Prof. Antony Unwin](http://rosuda.org/~unwin/) for their support and always leading by example. The fine balance of encouraging me to work on my ideas and stepping in to help when I need has made the development of this package a great learning experience for me.
 
-Moreover, I want to thank my cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University for always lending an ear and sharing their wisdom and experience of developing R packages whenever needed. 
+Moreover, I want to thank my cohort at [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team), Monash University, especially [Mitchell O'Hara-Wild](https://www.mitchelloharawild.com/) and [Nicholas Spyrison](https://github.com/nspyrison) for always lending an ear and sharing their wisdom and experience of developing R packages, with such kindness. 
 
 
 

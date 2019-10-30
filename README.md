@@ -18,7 +18,7 @@ coverage](https://codecov.io/gh/Sayani07/gravitas/branch/master/graph/badge.svg)
 
 Package `gravitas` provides a tool to examine the probability
 distribution of univariate time series across bivariate temporal
-granularities using range of graphics in `ggplot2` through the
+granularities using a range of graphics in `ggplot2` through the
 following:
 
   - create multiple-order-up circular or aperiodic temporal
@@ -31,14 +31,14 @@ following:
 
   - recommending appropriate probability distribution plots of the time
     series variable across the bivariate granularities based on the
-    levels of the bivariate granularties and their interaction.
+    levels of the bivariate granularities and their interaction.
 
 `gravitas` is not restricted to temporal data. It can be utilized in
 non-temporal cases for which a hierarchical structure can be construed
 similar to time. The hierarchical structure of time creates a natural
 nested ordering. For example, hours are nested within days, days within
-weeks, weeks within months, and so on. Similarly, if a periiodic nesting
-exist for a non-temporal application, `gravitas` can be used to explore
+weeks, weeks within months, and so on. Similarly, if a periodic nesting
+exists for a non-temporal application, `gravitas` can be used to explore
 the probability distribution of a continuous random variable.
 
 ## Installation
@@ -76,7 +76,7 @@ gravitas::run\_app().
   - Get all possible harmonies with `harmony()`
 
   - Get recommendations on choosing more appropriate distribution plots
-    and advice on interaction between granularities, number of
+    and advice on the interaction between granularities, number of
     observations available for drawing probability distributions for
     chosen granularities with `gran_advice()`
 
@@ -88,8 +88,8 @@ gravitas::run\_app().
 
 ## Example: temporal case
 
-The probability distribution of the energy consumption for ten
-households from [customer
+The probability distribution of energy consumption for ten households
+from [customer
 trials](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter)
 can be explored as follows:
 
@@ -131,14 +131,15 @@ library(lvplot)
 
 ### Visualize probability distribution of the harmony pair (wknd\_wday, hour\_day)
 
-Area quantile plots are drawn across hours of the day faceted by
-weekend/weekday. The black line represents the median, whereas the
-orange and green represents the area between 25th and 75th percentile
-and between 10th and 90th percentile respectively. For this household,
-median energy consumption for the early morning hours is extremely high
-for weekends compared to weekdays. The energy behavior is skewed to the
-left, where 10th and 25th percentile are very close to each other in
-both weekend/weekday.
+Box plots are drawn across hours of the day faceted by weekend/weekday
+for a household in the data `smart_meter10` in the package. It is
+interesting to see the difference in energy consumption in the early
+morning hours (1 am - 7 am) for weekdays and weekends. The interquartile
+range is the same in these hours, however, median energy consumption for
+these hours is higher for weekends compared to weekdays. The
+distribution for the rest of the day is not significantly different for
+weekdays and weekends, implying their energy behavior after 7 am remains
+more or less similar.
 
 ``` r
 smart_meter10 %>%
@@ -147,9 +148,8 @@ smart_meter10 %>%
      gran1 = "wknd_wday",
      gran2 = "hour_day",
      response = "general_supply_kwh",
-     plot_type = "quantile",
-     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)) +
-   scale_y_sqrt()
+     plot_type = "boxplot") +
+   scale_y_sqrt() + scale_x_discrete(breaks = seq(0, 23, 3))
 ```
 
 <img src="man/figures/README-probplot-1.png" width="100%" />
@@ -165,7 +165,7 @@ Each inning of the match is plotted across facets and overs of the
 innings are plotted across the x-axis. It can be observed from the
 letter value plot that there is no clear upward shift in runs in the
 second innings as compared to the first innings. The variability in runs
-increase as the teams approach towards the end of the innings, as
+increases as the teams approach towards the end of the innings, as
 observed through the longer and more distinct letter values.
 
 ``` r
@@ -186,7 +186,7 @@ cricket_tsibble <- cricket %>%
  )
  cricket_tsibble %>%
    create_gran(
-     "ball_over",
+     "over_inning",
      hierarchy_model
    )
 #> # A tsibble: 8,560 x 12 [1]
@@ -203,7 +203,10 @@ cricket_tsibble <- cricket %>%
 #>  9   2008        2 Chennai Sup… Kings XI Pu…      1     9      0         1
 #> 10   2008        2 Chennai Sup… Kings XI Pu…      1    10      0         2
 #> # … with 8,550 more rows, and 4 more variables: runs_per_over <dbl>,
-#> #   run_rate <dbl>, data_index <int>, ball_over <fct>
+#> #   run_rate <dbl>, data_index <int>, over_inning <fct>
+```
+
+``` r
 
    cricket_tsibble %>%
    filter(batting_team %in% c("Mumbai Indians",
@@ -235,13 +238,16 @@ Cook](http://dicook.org/) and [Google Summer of
 Code 2019](https://summerofcode.withgoogle.com/) mentor [Prof. Antony
 Unwin](http://rosuda.org/~unwin/) for their support and always leading
 by example. The fine balance of encouraging me to work on my ideas and
-stepping in to help when I need has made the devlopment of this package
+stepping in to help when I need has made the development of this package
 a great learning experience for me.
 
 Moreover, I want to thank my cohort at
 [NUMBATS](https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team),
-Monash University for always lending an ear and sharing their wisdom and
-experience of developing R packages whenever needed.
+Monash University, especially [Mitchell
+O’Hara-Wild](https://www.mitchelloharawild.com/) and [Nicholas
+Spyrison](https://github.com/nspyrison) for always lending an ear and
+sharing their wisdom and experience of developing R packages, with such
+kindness.
 
 ## Reporting and issues
 
