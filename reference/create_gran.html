@@ -240,7 +240,7 @@ December.</p></td>
 )
 <span class='no'>cricket_tsibble</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>create_gran</span>(
-    <span class='st'>"ball_over"</span>,
+    <span class='st'>"over_inning"</span>,
     <span class='no'>hierarchy_model</span>
   )</div><div class='output co'>#&gt; # A tsibble: 8,560 x 12 [1]
 #&gt;    season match_id batting_team bowling_team inning  over wicket dot_balls
@@ -256,7 +256,7 @@ December.</p></td>
 #&gt;  9   2008        2 Chennai Sup… Kings XI Pu…      1     9      0         1
 #&gt; 10   2008        2 Chennai Sup… Kings XI Pu…      1    10      0         2
 #&gt; # … with 8,550 more rows, and 4 more variables: runs_per_over &lt;dbl&gt;,
-#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;, ball_over &lt;fct&gt;</div><div class='input'>
+#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;, over_inning &lt;fct&gt;</div><div class='input'>
   <span class='no'>cricket_tsibble</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>batting_team</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Mumbai Indians"</span>,
                              <span class='st'>"Chennai Super Kings"</span>))<span class='kw'>%&gt;%</span>

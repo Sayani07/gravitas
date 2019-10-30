@@ -174,7 +174,7 @@ different cities in India from 2008 to 2016</p>
   <span class='kw'>convert_fct</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>6</span>, <span class='fl'>20</span>, <span class='fl'>2</span>, <span class='fl'>1</span>))
 <span class='co'># Compute granularities ----</span>
 <span class='no'>cricket_tsibble</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='create_gran.html'>create_gran</a></span>(<span class='st'>"ball_over"</span>,
+  <span class='fu'><a href='create_gran.html'>create_gran</a></span>(<span class='st'>"over_inning"</span>,
                <span class='no'>hierarchy_model</span>)</div><div class='output co'>#&gt; # A tsibble: 8,560 x 12 [1]
 #&gt;    season match_id batting_team bowling_team inning  over wicket dot_balls
 #&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
@@ -189,7 +189,7 @@ different cities in India from 2008 to 2016</p>
 #&gt;  9   2008        2 Chennai Sup… Kings XI Pu…      1     9      0         1
 #&gt; 10   2008        2 Chennai Sup… Kings XI Pu…      1    10      0         2
 #&gt; # … with 8,550 more rows, and 4 more variables: runs_per_over &lt;dbl&gt;,
-#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;, ball_over &lt;fct&gt;</div><div class='input'><span class='co'># Visualise distribution of runs across granularities ----</span>
+#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;, over_inning &lt;fct&gt;</div><div class='input'><span class='co'># Visualise distribution of runs across granularities ----</span>
 <span class='no'>cricket_tsibble</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>batting_team</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Mumbai Indians"</span>,
                              <span class='st'>"Chennai Super Kings"</span>))<span class='kw'>%&gt;%</span>

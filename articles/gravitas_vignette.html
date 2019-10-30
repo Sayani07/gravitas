@@ -109,7 +109,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <div id="analysis-of-smart-meter-data" class="section level1">
 <h1 class="hasAnchor">
 <a href="#analysis-of-smart-meter-data" class="anchor"></a>Analysis of smart meter data</h1>
-<p>The <code>smart_meter10</code> data set in the package is a <a href="https://tsibble.tidyverts.org/">tsibble</a> providing the energy consumption for ten households from <a href="https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter">customer trials</a>.</p>
+<p>The <code>smart_meter10</code> data set in the package is a <a href="https://tsibble.tidyverts.org/">tsibble</a> providing the energy consumption for ten households from <a href="https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter">customer trials</a>. It is hard to derive insights when we try to visualize periodicity in the data for all households. For example, if we plot the energy consumption across each hour of the day, the structure of the data suggests that there are several data points for each hour of the day for just one household. Hence, for several households, there will be a blob of points for each hour of the day.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(customer_id,</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">                         reading_datetime,</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">                         general_supply_kwh,</a>
@@ -133,7 +133,6 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; #   controlled_load_kwh &lt;dbl&gt;, gross_generation_kwh &lt;dbl&gt;,</span></a>
 <a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; #   net_generation_kwh &lt;dbl&gt;, other_kwh &lt;dbl&gt;</span></a></code></pre></div>
 <!-- To have an understanding of how different the energy consumption for each household of the trial is, energy consumption is plotted against time with each transition state indicating one household for a sample. If we plot the raw data for all of them, it is difficult to get insights into their behavior.  -->
-<p>It is hard to derive insights when we try to visualize periodicity in the data for all households. For example, if we plot the energy consumption across each hour of the day, the structure of the data suggests that there are several data points for each hour of the day for just one household. Hence, for several households, there will be a blob of points for each hour of the day.</p>
 <!-- # ```{r, echo=FALSE, out.width="100%"} -->
 <!-- # # smart_p <- smart_meter10 %>% -->
 <!-- # #            ggplot() + -->
@@ -151,8 +150,8 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <!-- # -->
 <!-- # knitr::include_graphics("man/figures/smart_allcust_period.gif") -->
 <!-- # ``` -->
-<p>So the question is how to explore systematically multiple perspectives of this smart meter data across different time granularities? The solution is to visualize the probability distributions across these granularities to find regular / nearly-periodic patterns or anomalies in behaviors.</p>
-<p>Let us see how we can analyze the energy behavior of these households by making allowances for the following aspects of time granularities: Computation, interaction and visualization.</p>
+<p>So the question is how to explore systematically multiple perspectives of this smart meter data across different time granularities to find regular patterns or anomalies in behaviors? One way can be by visualizing the probability distributions across these granularities.</p>
+<p>Let us see how we can explore the energy behavior of a couple of households by making allowances for the following aspects of time granularities: Computation, interaction and visualization.</p>
 <div id="computation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#computation" class="anchor"></a>Computation</h2>
@@ -315,15 +314,18 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a class="sourceLine" id="cb10-4" data-line-number="4">                            <span class="st">"hour_day"</span>,</a>
 <a class="sourceLine" id="cb10-5" data-line-number="5">                            <span class="dt">response =</span> <span class="st">"general_supply_kwh"</span>,</a>
 <a class="sourceLine" id="cb10-6" data-line-number="6">                            <span class="dt">plot_type =</span> <span class="st">"boxplot"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>()</a></code></pre></div>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Energy consumption distribution for customer id: 10006704"</span>)</a></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">cust2 &lt;-<span class="st"> </span>smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(customer_id <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">10017936</span>))<span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"wknd_wday"</span>,</a>
 <a class="sourceLine" id="cb11-4" data-line-number="4">                            <span class="st">"hour_day"</span>,</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5">                            <span class="dt">response =</span> <span class="st">"general_supply_kwh"</span>,</a>
 <a class="sourceLine" id="cb11-6" data-line-number="6">                            <span class="dt">plot_type =</span> <span class="st">"boxplot"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>()</a></code></pre></div>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Energy consumption distribution for customer id: 10017936"</span>)</a></code></pre></div>
 <p><img src="gravitas_vignette_files/figure-html/cust-1.png" width="768" style="display: block; margin: auto;"><img src="gravitas_vignette_files/figure-html/cust-2.png" width="768" style="display: block; margin: auto;"></p>
+<p>Similarly, we can plot the other harmony pairs and decide if they are useful in deriving insights about the energy behavior of the customers.</p>
 </div>
 <div id="future-development" class="section level2">
 <h2 class="hasAnchor">
@@ -338,7 +340,7 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <h2 class="hasAnchor">
 <a href="#acknowledgements" class="anchor"></a>Acknowledgements</h2>
 <p>Thanks to PhD supervisors <a href="https://robjhyndman.com/">Prof. Rob J Hyndman</a>, <a href="http://dicook.org/">Prof. Dianne Cook</a> and <a href="https://summerofcode.withgoogle.com/">Google Summer of Code 2019</a> mentor <a href="http://rosuda.org/~unwin/">Prof. Antony Unwin</a> for their support and always leading by example. The fine balance of encouraging me to work on my ideas and stepping in to help when I need has made the development of this package a great learning experience for me.</p>
-<p>Moreover, I want to thank my cohort at <a href="https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team">NUMBATS</a>, Monash University for always lending an ear and sharing their wisdom and experience of developing R packages whenever needed.</p>
+<p>Moreover, I want to thank my cohort at <a href="https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team">NUMBATS</a>, Monash University, especially <a href="https://www.mitchelloharawild.com/">Mitchell O’Hara-Wild</a> and <a href="https://github.com/nspyrison">Nicholas Spyrison</a> for always lending an ear and sharing their wisdom and experience of developing R packages, with such kindness.</p>
 </div>
 </div>
   </div>

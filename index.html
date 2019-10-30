@@ -97,13 +97,13 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>Package <code>gravitas</code> provides a tool to examine the probability distribution of univariate time series across bivariate temporal granularities using range of graphics in <code>ggplot2</code> through the following:</p>
+<p>Package <code>gravitas</code> provides a tool to examine the probability distribution of univariate time series across bivariate temporal granularities using a range of graphics in <code>ggplot2</code> through the following:</p>
 <ul>
 <li><p>create multiple-order-up circular or aperiodic temporal granularities.</p></li>
 <li><p>categorize pairs of granularities as either <em>harmony</em> or <em>clash</em>, where harmonies are pairs of granularities that aid exploratory data analysis, and clashes are pairs that are incompatible with each other for exploratory analysis.</p></li>
-<li><p>recommending appropriate probability distribution plots of the time series variable across the bivariate granularities based on the levels of the bivariate granularties and their interaction.</p></li>
+<li><p>recommending appropriate probability distribution plots of the time series variable across the bivariate granularities based on the levels of the bivariate granularities and their interaction.</p></li>
 </ul>
-<p><code>gravitas</code> is not restricted to temporal data. It can be utilized in non-temporal cases for which a hierarchical structure can be construed similar to time. The hierarchical structure of time creates a natural nested ordering. For example, hours are nested within days, days within weeks, weeks within months, and so on. Similarly, if a periiodic nesting exist for a non-temporal application, <code>gravitas</code> can be used to explore the probability distribution of a continuous random variable.</p>
+<p><code>gravitas</code> is not restricted to temporal data. It can be utilized in non-temporal cases for which a hierarchical structure can be construed similar to time. The hierarchical structure of time creates a natural nested ordering. For example, hours are nested within days, days within weeks, weeks within months, and so on. Similarly, if a periodic nesting exists for a non-temporal application, <code>gravitas</code> can be used to explore the probability distribution of a continuous random variable.</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -127,7 +127,7 @@
 <li><p>Build any temporal granularity with <code><a href="reference/create_gran.html">create_gran()</a></code></p></li>
 <li><p>Check if two temporal granularities are harmonies with <code><a href="reference/is_harmony.html">is_harmony()</a></code></p></li>
 <li><p>Get all possible harmonies with <code><a href="reference/harmony.html">harmony()</a></code></p></li>
-<li><p>Get recommendations on choosing more appropriate distribution plots and advice on interaction between granularities, number of observations available for drawing probability distributions for chosen granularities with <code><a href="reference/gran_advice.html">gran_advice()</a></code></p></li>
+<li><p>Get recommendations on choosing more appropriate distribution plots and advice on the interaction between granularities, number of observations available for drawing probability distributions for chosen granularities with <code><a href="reference/gran_advice.html">gran_advice()</a></code></p></li>
 <li><p>Validate if the created granularity matches your already existing column with <code><a href="reference/validate_gran.html">validate_gran()</a></code></p></li>
 <li><p>Explore probability distribution across bivariate temporal granularities with <code><a href="reference/prob_plot.html">prob_plot()</a></code></p></li>
 </ul>
@@ -135,7 +135,7 @@
 <div id="example-temporal-case" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-temporal-case" class="anchor"></a>Example: temporal case</h2>
-<p>The probability distribution of the energy consumption for ten households from <a href="https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter">customer trials</a> can be explored as follows:</p>
+<p>The probability distribution of energy consumption for ten households from <a href="https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter">customer trials</a> can be explored as follows:</p>
 <div id="search-for-granularities" class="section level3">
 <h3 class="hasAnchor">
 <a href="#search-for-granularities" class="anchor"></a>Search for granularities</h3>
@@ -173,16 +173,15 @@
 <div id="visualize-probability-distribution-of-the-harmony-pair-wknd_wday-hour_day" class="section level3">
 <h3 class="hasAnchor">
 <a href="#visualize-probability-distribution-of-the-harmony-pair-wknd_wday-hour_day" class="anchor"></a>Visualize probability distribution of the harmony pair (wknd_wday, hour_day)</h3>
-<p>Area quantile plots are drawn across hours of the day faceted by weekend/weekday. The black line represents the median, whereas the orange and green represents the area between 25th and 75th percentile and between 10th and 90th percentile respectively. For this household, median energy consumption for the early morning hours is extremely high for weekends compared to weekdays. The energy behavior is skewed to the left, where 10th and 25th percentile are very close to each other in both weekend/weekday.</p>
+<p>Box plots are drawn across hours of the day faceted by weekend/weekday for a household in the data <code>smart_meter10</code> in the package. It is interesting to see the difference in energy consumption in the early morning hours (1 am - 7 am) for weekdays and weekends. The interquartile range is the same in these hours, however, median energy consumption for these hours is higher for weekends compared to weekdays. The distribution for the rest of the day is not significantly different for weekdays and weekends, implying their energy behavior after 7 am remains more or less similar.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(customer_id <span class="op">==</span><span class="st"> </span><span class="dv">10017936</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="reference/prob_plot.html">prob_plot</a></span>(</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4">     <span class="dt">gran1 =</span> <span class="st">"wknd_wday"</span>,</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">     <span class="dt">gran2 =</span> <span class="st">"hour_day"</span>,</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6">     <span class="dt">response =</span> <span class="st">"general_supply_kwh"</span>,</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">     <span class="dt">plot_type =</span> <span class="st">"quantile"</span>,</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">     <span class="dt">quantile_prob =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="st">   </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>()</a></code></pre></div>
+<a class="sourceLine" id="cb5-7" data-line-number="7">     <span class="dt">plot_type =</span> <span class="st">"boxplot"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="st">   </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() <span class="op">+</span><span class="st"> </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="dv">23</span>, <span class="dv">3</span>))</a></code></pre></div>
 <p><img src="reference/figures/README-probplot-1.png" width="100%"></p>
 </div>
 </div>
@@ -193,7 +192,7 @@
 <div id="visualize-granularities-for-non-temporal-data" class="section level4">
 <h4 class="hasAnchor">
 <a href="#visualize-granularities-for-non-temporal-data" class="anchor"></a>Visualize granularities for non-temporal data</h4>
-<p>Each inning of the match is plotted across facets and overs of the innings are plotted across the x-axis. It can be observed from the letter value plot that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability in runs increase as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.</p>
+<p>Each inning of the match is plotted across facets and overs of the innings are plotted across the x-axis. It can be observed from the letter value plot that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability in runs increases as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tsibble)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; Warning: package 'tsibble' was built under R version 3.5.2</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; </span></a>
@@ -211,7 +210,7 @@
 <a class="sourceLine" id="cb6-15" data-line-number="15"> )</a>
 <a class="sourceLine" id="cb6-16" data-line-number="16"> cricket_tsibble <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb6-17" data-line-number="17"><span class="st">   </span><span class="kw"><a href="reference/create_gran.html">create_gran</a></span>(</a>
-<a class="sourceLine" id="cb6-18" data-line-number="18">     <span class="st">"ball_over"</span>,</a>
+<a class="sourceLine" id="cb6-18" data-line-number="18">     <span class="st">"over_inning"</span>,</a>
 <a class="sourceLine" id="cb6-19" data-line-number="19">     hierarchy_model</a>
 <a class="sourceLine" id="cb6-20" data-line-number="20">   )</a>
 <a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; # A tsibble: 8,560 x 12 [1]</span></a>
@@ -228,15 +227,15 @@
 <a class="sourceLine" id="cb6-32" data-line-number="32"><span class="co">#&gt;  9   2008        2 Chennai Sup… Kings XI Pu…      1     9      0         1</span></a>
 <a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt; 10   2008        2 Chennai Sup… Kings XI Pu…      1    10      0         2</span></a>
 <a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt; # … with 8,550 more rows, and 4 more variables: runs_per_over &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co">#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;, ball_over &lt;fct&gt;</span></a>
-<a class="sourceLine" id="cb6-36" data-line-number="36"></a>
-<a class="sourceLine" id="cb6-37" data-line-number="37">   cricket_tsibble <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-38" data-line-number="38"><span class="st">   </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(batting_team <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Mumbai Indians"</span>,</a>
-<a class="sourceLine" id="cb6-39" data-line-number="39">                              <span class="st">"Chennai Super Kings"</span>))<span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-40" data-line-number="40"><span class="st">   </span><span class="kw"><a href="reference/prob_plot.html">prob_plot</a></span>(<span class="st">"inning"</span>, <span class="st">"over"</span>,</a>
-<a class="sourceLine" id="cb6-41" data-line-number="41">   hierarchy_model,</a>
-<a class="sourceLine" id="cb6-42" data-line-number="42">   <span class="dt">response =</span> <span class="st">"runs_per_over"</span>,</a>
-<a class="sourceLine" id="cb6-43" data-line-number="43">   <span class="dt">plot_type =</span> <span class="st">"lv"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co">#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;, over_inning &lt;fct&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">   cricket_tsibble <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(batting_team <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Mumbai Indians"</span>,</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">                              <span class="st">"Chennai Super Kings"</span>))<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="st">   </span><span class="kw"><a href="reference/prob_plot.html">prob_plot</a></span>(<span class="st">"inning"</span>, <span class="st">"over"</span>,</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">   hierarchy_model,</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">   <span class="dt">response =</span> <span class="st">"runs_per_over"</span>,</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">   <span class="dt">plot_type =</span> <span class="st">"lv"</span>)</a></code></pre></div>
 <p><img src="reference/figures/README-cricket-1.png" width="100%"></p>
 </div>
 </div>
@@ -249,8 +248,8 @@
 <div id="acknowledgements" class="section level2">
 <h2 class="hasAnchor">
 <a href="#acknowledgements" class="anchor"></a>Acknowledgements</h2>
-<p>Thanks to PhD supervisors <a href="https://robjhyndman.com/">Prof. Rob J Hyndman</a>, <a href="http://dicook.org/">Prof. Dianne Cook</a> and <a href="https://summerofcode.withgoogle.com/">Google Summer of Code 2019</a> mentor <a href="http://rosuda.org/~unwin/">Prof. Antony Unwin</a> for their support and always leading by example. The fine balance of encouraging me to work on my ideas and stepping in to help when I need has made the devlopment of this package a great learning experience for me.</p>
-<p>Moreover, I want to thank my cohort at <a href="https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team">NUMBATS</a>, Monash University for always lending an ear and sharing their wisdom and experience of developing R packages whenever needed.</p>
+<p>Thanks to PhD supervisors <a href="https://robjhyndman.com/">Prof. Rob J Hyndman</a>, <a href="http://dicook.org/">Prof. Dianne Cook</a> and <a href="https://summerofcode.withgoogle.com/">Google Summer of Code 2019</a> mentor <a href="http://rosuda.org/~unwin/">Prof. Antony Unwin</a> for their support and always leading by example. The fine balance of encouraging me to work on my ideas and stepping in to help when I need has made the development of this package a great learning experience for me.</p>
+<p>Moreover, I want to thank my cohort at <a href="https://www.monash.edu/news/articles/team-profile-monash-business-analytics-team">NUMBATS</a>, Monash University, especially <a href="https://www.mitchelloharawild.com/">Mitchell O’Hara-Wild</a> and <a href="https://github.com/nspyrison">Nicholas Spyrison</a> for always lending an ear and sharing their wisdom and experience of developing R packages, with such kindness.</p>
 </div>
 <div id="reporting-and-issues" class="section level2">
 <h2 class="hasAnchor">
