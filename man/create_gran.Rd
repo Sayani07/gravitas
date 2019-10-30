@@ -78,7 +78,7 @@ hierarchy_model <- tibble::tibble(
 )
 cricket_tsibble \%>\%
   create_gran(
-    "ball_over",
+    "over_inning",
     hierarchy_model
   )
 

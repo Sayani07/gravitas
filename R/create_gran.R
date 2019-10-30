@@ -121,7 +121,7 @@ create_gran <- function(.data, gran1 = NULL, hierarchy_tbl = NULL,
 
 
   if (any(class(x) %in% c("POSIXct", "POSIXt"))) {
-    temp_create_gran(.data, gran1, ...)
+    temp_create_gran(.data, gran1, label,  ...)
   } else {
     if (is.null(hierarchy_tbl)) {
       stop("Hierarchy table must be provided
