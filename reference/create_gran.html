@@ -234,8 +234,8 @@ December.</p></td>
 <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>data_index</span>)
 
 <span class='no'>hierarchy_model</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
-  <span class='kw'>units</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"index"</span>, <span class='st'>"ball"</span>, <span class='st'>"over"</span>, <span class='st'>"inning"</span>, <span class='st'>"match"</span>),
-  <span class='kw'>convert_fct</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>6</span>, <span class='fl'>20</span>, <span class='fl'>2</span>, <span class='fl'>1</span>)
+  <span class='kw'>units</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"index"</span>, <span class='st'>"over"</span>, <span class='st'>"inning"</span>, <span class='st'>"match"</span>),
+  <span class='kw'>convert_fct</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>20</span>, <span class='fl'>2</span>, <span class='fl'>1</span>)
 )
 <span class='no'>cricket_tsibble</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>create_gran</span>(
@@ -269,7 +269,7 @@ December.</p></td>
   <span class='kw'>gran</span> <span class='kw'>=</span> <span class='st'>"over_inning"</span>,
   <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='no'>hierarchy_model</span>,
   <span class='kw'>validate_col</span> <span class='kw'>=</span> <span class='st'>"over"</span>
-)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
+)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

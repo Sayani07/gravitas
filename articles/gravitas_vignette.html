@@ -246,22 +246,24 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <p>Let us now look at all the harmonies that we can examine. Fortunately, we are left with only 13 out of 30 visualizations. We can also play with the argument <code>facet_h</code>, which represents the maximum number of levels allowed for the facet variable, to reduce or increase the number of harmonies.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">smart_meter10 <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/harmony.html">harmony</a></span>(</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">  <span class="dt">ugran =</span> <span class="st">"month"</span>,</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="dt">filter_out =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hhour"</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="dt">filter_out =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hhour"</span>, <span class="st">"fortnight"</span>)</a>
 <a class="sourceLine" id="cb7-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; # A tibble: 38 x 4</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;    facet_variable  x_variable facet_levels x_levels</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;    &lt;chr&gt;           &lt;chr&gt;             &lt;int&gt;    &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  1 day_week        hour_day              7       24</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  2 day_fortnight   hour_day             14       24</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  3 day_month       hour_day             31       24</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  4 week_fortnight  hour_day              2       24</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  5 week_month      hour_day              5       24</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  6 fortnight_month hour_day              3       24</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  7 day_month       hour_week            31      168</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  8 week_fortnight  hour_week             2      168</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  9 week_month      hour_week             5      168</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; 10 fortnight_month hour_week             3      168</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; # … with 28 more rows</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; # A tibble: 13 x 4</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;    facet_variable x_variable facet_levels x_levels</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;             &lt;int&gt;    &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  1 day_week       hour_day              7       24</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  2 day_month      hour_day             31       24</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  3 week_month     hour_day              5       24</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  4 day_month      hour_week            31      168</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  5 week_month     hour_week             5      168</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  6 day_week       hour_month            7      744</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  7 hour_day       day_week             24        7</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  8 day_month      day_week             31        7</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  9 week_month     day_week              5        7</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; 10 hour_day       day_month            24       31</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; 11 day_week       day_month             7       31</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; 12 hour_day       week_month           24        5</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; 13 day_week       week_month            7        5</span></a></code></pre></div>
 </div>
 <div id="visualization" class="section level2">
 <h2 class="hasAnchor">
