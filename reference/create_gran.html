@@ -197,7 +197,7 @@ December.</p></td>
   <span class='fu'><a href='search_gran.html'>search_gran</a></span>(<span class='kw'>highest_unit</span> <span class='kw'>=</span> <span class='st'>"week"</span>)</div><div class='output co'>#&gt; [1] "hhour_hour" "hhour_day"  "hhour_week" "hour_day"   "hour_week" 
 #&gt; [6] "day_week"  </div><div class='input'>
 <span class='co'># Screen harmonies from the search list</span>
-
+<span class='co'># \dontrun{</span>
 <span class='no'>smart_meter10</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='harmony.html'>harmony</a></span>(
     <span class='kw'>ugran</span> <span class='kw'>=</span> <span class='st'>"day"</span>,
@@ -211,7 +211,7 @@ December.</p></td>
 #&gt; 4 hhour_hour     hour_day              2       24
 #&gt; 5 wknd_wday      hour_day              2       24
 #&gt; 6 hhour_hour     wknd_wday             2        2
-#&gt; 7 hour_day       wknd_wday            24        2</div><div class='input'>
+#&gt; 7 hour_day       wknd_wday            24        2</div><div class='input'><span class='co'># }</span>
 <span class='co'># visualize probability distribution of</span>
 <span class='co'># the harmony pair (wknd_wday, hour_day)</span>
 <span class='no'>smart_meter10</span> <span class='kw'>%&gt;%</span>
@@ -224,7 +224,6 @@ December.</p></td>
     <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>)
   ) +
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_sqrt</a></span>()</div><div class='img'><img src='create_gran-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># \dontrun{</span>
 <span class='co'>#' # Compute granularities for non-temporal data</span>
 
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)</div><div class='output co'>#&gt; <span class='message'></span>
@@ -270,8 +269,7 @@ December.</p></td>
   <span class='kw'>gran</span> <span class='kw'>=</span> <span class='st'>"over_inning"</span>,
   <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='no'>hierarchy_model</span>,
   <span class='kw'>validate_col</span> <span class='kw'>=</span> <span class='st'>"over"</span>
-)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'># }
-</div></pre>
+)</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
