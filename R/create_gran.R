@@ -63,7 +63,7 @@
 #'   create_gran(
 #'     "over_inning",
 #'     hierarchy_model
-#'   )
+#'   ) %>% View
 #'
 #'   cricket_tsibble %>%
 #'   filter(batting_team %in% c("Mumbai Indians",

@@ -35,8 +35,8 @@
 #'   as_tsibble(index = data_index)
 #'
 #' hierarchy_model <- tibble::tibble(
-#'   units = c("index", "ball", "over", "inning", "match"),
-#'   convert_fct = c(1, 6, 20, 2, 1)
+#'   units = c("index", "over", "inning", "match"),
+#'   convert_fct = c(1, 20, 2, 1)
 #' )
 #'
 #' cricket_tsibble %>%

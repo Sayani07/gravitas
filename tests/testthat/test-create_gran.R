@@ -13,15 +13,9 @@ cricket_tsibble <- cricket %>%
   tsibble::as_tsibble(index = data_index)
 
 hierarchy_model <- tibble::tibble(
-  units = c(
-    "index",
-    "ball",
-    "over",
-    "inning",
-    "match"
-  ),
-  convert_fct = c(1, 6, 20, 2, 1)
-)
+  units = c("index", "over", "inning", "match"),
+  convert_fct = c(1, 20, 2, 1))
+
 
 # common tests for temporal and non-temporal data
 
@@ -92,11 +86,11 @@ test_that("create grans creates a
           factor for non-temporal data", {
   expect_is(
     create_gran(cricket_tsibble,
-      "ball_inning",
+      "inning_match",
       hierarchy_tbl = hierarchy_model
     ) %>%
       as_tibble() %>%
-      .$ball_inning,
+      .$inning_match,
     "factor"
   )
 })
@@ -108,7 +102,7 @@ test_that("create grans throws error
   expect_error(
     create_gran(
       cricket_tsibble,
-      "ball_inning"
+      "inning_match"
     ),
     "Hierarchy table must be provided\n           when class of index of the tsibble\n           is not date-time"
   )
@@ -120,7 +114,7 @@ test_that("create grans throws error if
   expect_error(
     create_gran(
       cricket_tsibble,
-      "balls_inning",
+      "innings_match",
       hierarchy_model
     ),
     "lower part of granularity must be\n           listed as an element in the hierarchy table"
@@ -132,7 +126,7 @@ test_that("create grans throws error
   expect_error(
     create_gran(
       cricket_tsibble,
-      "ball_innings",
+      "inning_matchs",
       hierarchy_model
     ),
     "upper part of granularity must be\n           listed as an element in the hierarchy table"

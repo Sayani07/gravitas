@@ -13,15 +13,8 @@ cricket_tsibble <- cricket %>%
   tsibble::as_tsibble(index = data_index)
 
 hierarchy_model <- tibble::tibble(
-  units = c(
-    "index",
-    "ball",
-    "over",
-    "inning",
-    "match"
-  ),
-  convert_fct = c(1, 6, 20, 2, 1)
-)
+  units = c("index", "over", "inning", "match"),
+  convert_fct = c(1, 20, 2, 1))
 
 # common tests for temporal and non-temporal data
 
@@ -69,7 +62,7 @@ test_that("throws error with no hierarchy table
   expect_error(
     is_harmony(
       cricket_tsibble,
-      "ball_inning",
+      "inning_match",
       "over_match"
     ),
     "Hierarchy table must be provided\n           when class of index of the tsibble\n           is not date-time"
@@ -80,7 +73,7 @@ test_that("throws error with incorrect input for granularity 1", {
   expect_error(
     is_harmony(
       cricket_tsibble,
-      "balls_inning",
+      "innings_match",
       "over_match",
       hierarchy_model
     ),
@@ -93,7 +86,7 @@ test_that("throws error with incorrect input for granularity 2", {
   expect_error(
     is_harmony(
       cricket_tsibble,
-      "ball_inning",
+      "inning_match",
       "over_matchgh",
       hierarchy_model
     ),

@@ -13,15 +13,8 @@ cricket_tsibble <- cricket %>%
   tsibble::as_tsibble(index = data_index)
 
 hierarchy_model <- tibble::tibble(
-  units = c(
-    "index",
-    "ball",
-    "over",
-    "inning",
-    "match"
-  ),
-  convert_fct = c(1, 6, 20, 2, 1)
-)
+  units = c("index", "over", "inning", "match"),
+  convert_fct = c(1, 20, 2, 1))
 
 # common tests for temporal and non-temporal data
 
@@ -72,7 +65,7 @@ test_that("throws error with no hierarchy table
   expect_error(
     gran_advice(
       cricket_tsibble,
-      "ball_over",
+      "inning_match",
       "over_inning"
     ),
     "Hierarchy table must be provided\n           when class of index of the tsibble\n           is not date-time"
@@ -83,7 +76,7 @@ test_that("throws error with incorrect input for granularities", {
   expect_error(
     gran_advice(
       cricket_tsibble,
-      "balls_over",
+      "innings_match",
       "over_inning",
       hierarchy_model
     ),
