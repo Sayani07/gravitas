@@ -406,7 +406,7 @@ gran_tbl <- function(.data,
 #' @param gran2 The second temporal granularity in the pair.
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships for non-temporal case.
 #' @param ... Added arguments to be passed.
-#' @return A tibble with number of obseervations for each granularity.
+#' @return A tibble with number of observations for each granularity.
 #' @examples
 #' library(tsibbledata)
 #' vic_elec %>% gran_obs("hour_day", "day_week")
