@@ -35,6 +35,11 @@ sm15 <- sm_cust50 %>%
 
 smart_meter10 <- sm_cust50 %>% filter(customer_id %in% sm10$customer_id)
 
-smart_meter10 <- smart_meter10 %>% as_tsibble()
+smart_meter10 <- smart_meter10 %>%
+                 as_tsibble() %>%
+                 select(customer_id,
+                        reading_datetime,
+                        general_supply_kwh)
+
 
 save(smart_meter10, file = "data/smart_meter10.RData", compress = "xz")

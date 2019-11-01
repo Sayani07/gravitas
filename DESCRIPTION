@@ -38,8 +38,6 @@ Imports:
   lvplot,
   ggridges,
   shiny,
-  shinythemes,
-  shinyalert,
   RColorBrewer,
   ineq,
   magrittr,
@@ -50,6 +48,8 @@ Suggests:
     testthat (>= 2.1.0),
     covr,
     knitr,
+    shinythemes,
+    shinyalert,
     rmarkdown,
     readr
 VignetteBuilder: knitr

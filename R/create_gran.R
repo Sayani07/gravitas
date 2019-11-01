@@ -9,13 +9,16 @@
 #' @param .data A tsibble object.
 #' @param gran1 the granularity to be created. For temporal data, any
 #' combination of "second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight
-#' ,"month", "quarter", "semester" or "year" can be chosen in the form of finer #' to coarser unit. For example, for the granularity hour of the week, value is
+#' ,"month", "quarter", "semester" or "year" can be chosen in the form of finer
+#'  to coarser unit. For example, for the granularity hour of the week, value is
 #' "hour_week".
 #' @param label Logical. TRUE will display the month as an ordered factor of
-#' character string such as "January", "February". FALSE will display the month #' as an ordered factor such as 1 to 12, where 1 stands for January and 12 for
+#' character string such as "January", "February". FALSE will display the month
+#'  as an ordered factor such as 1 to 12, where 1 stands for January and 12 for
 #' December.
 #' @param abbr logical. FALSE will display abbreviated labels.
-#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and #' their relationships.
+#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units
+#' and their relationships.
 #' @param ... Other arguments passed on to individual methods.
 #' @return A tsibble with an additional column of granularity.
 #
@@ -212,10 +215,10 @@ dynamic_build_gran <- function(x, lgran = NULL, ugran = NULL, hierarchy_tbl = NU
 
 #' @param .data A tsibble object.
 #' @param gran the granularity to be created for validation.
-#' @param hierarchy_tbl A hierarchy table
-#' @param validate_col A column in the data which acts as validator
+#' @param hierarchy_tbl A hierarchy table.
+#' @param validate_col A column in the data which acts as validator.
 #' @param ... Other arguments passed on to individual methods.
-#' @return A tsibble with an additional column of granularity
+#' @return A tsibble with an additional column of granularity.
 #'
 #' @examples
 #' library(dplyr)

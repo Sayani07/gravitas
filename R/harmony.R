@@ -8,7 +8,7 @@
 #' @param lgran For "regular" tsibble, lgran is the interval of the tsibble.
 #' It needs to be specified for "irregular" time intervals. Typically serves as the finest unit required for analysis.
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and
-#' their relationships
+#' their relationships.
 #' @param facet_h highest level of facets allowed.
 #' @param filter_in Choices of temporal units to be kept. Can be column names if #' required granularity already exists in the tsibble. For example, a column with public holidays which needs to be treated as granularity, can be included here for checking how it interacts with other granularities.
 #' @param filter_out Choices of temporal units to be discarded.
