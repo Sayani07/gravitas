@@ -115,23 +115,21 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a class="sourceLine" id="cb1-3" data-line-number="3">                         general_supply_kwh,</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4">                         <span class="kw">everything</span>()</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; # A tsibble: 259,235 x 8 [30m] &lt;UTC&gt;</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; # A tsibble: 259,235 x 3 [30m] &lt;UTC&gt;</span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; # Key:       customer_id [10]</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt;    customer_id reading_datetime    general_supply_… event_key</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;    &lt;chr&gt;       &lt;dttm&gt;                         &lt;dbl&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;  1 10006704    2012-06-01 10:00:00            0.24          0</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;  2 10006704    2012-06-01 10:30:00            0.245         0</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;  3 10006704    2012-06-01 11:00:00            0.206         0</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt;  4 10006704    2012-06-01 11:30:00            0.217         0</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;  5 10006704    2012-06-01 12:00:00            0.214         0</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt;  6 10006704    2012-06-01 12:30:00            0.23          0</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt;  7 10006704    2012-06-01 13:00:00            0.898         0</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt;  8 10006704    2012-06-01 13:30:00            0.197         0</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt;  9 10006704    2012-06-01 14:00:00            0.255         0</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; 10 10006704    2012-06-01 14:30:00            0.199         0</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; # … with 259,225 more rows, and 4 more variables:</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt; #   controlled_load_kwh &lt;dbl&gt;, gross_generation_kwh &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt; #   net_generation_kwh &lt;dbl&gt;, other_kwh &lt;dbl&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt;    customer_id reading_datetime    general_supply_kwh</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;    &lt;chr&gt;       &lt;dttm&gt;                           &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;  1 10006704    2012-06-01 10:00:00              0.24 </span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;  2 10006704    2012-06-01 10:30:00              0.245</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;  3 10006704    2012-06-01 11:00:00              0.206</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt;  4 10006704    2012-06-01 11:30:00              0.217</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;  5 10006704    2012-06-01 12:00:00              0.214</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt;  6 10006704    2012-06-01 12:30:00              0.23 </span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt;  7 10006704    2012-06-01 13:00:00              0.898</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt;  8 10006704    2012-06-01 13:30:00              0.197</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt;  9 10006704    2012-06-01 14:00:00              0.255</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; 10 10006704    2012-06-01 14:30:00              0.199</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; # … with 259,225 more rows</span></a></code></pre></div>
 <!-- To have an understanding of how different the energy consumption for each household of the trial is, energy consumption is plotted against time with each transition state indicating one household for a sample. If we plot the raw data for all of them, it is difficult to get insights into their behavior.  -->
 <!-- # ```{r, echo=FALSE, out.width="100%"} -->
 <!-- # # smart_p <- smart_meter10 %>% -->

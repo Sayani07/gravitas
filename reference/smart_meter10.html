@@ -48,7 +48,7 @@ Smart Grid Smart City (SGSC) project
 New South Wales
 and areas in Sydney.
 It contains half hourly interval meter readings (KWh)
-of electricity consumption and generation of households." />
+of electricity consumption of households." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -144,28 +144,30 @@ Smart Grid Smart City (SGSC) project
 New South Wales
 and areas in Sydney.
 It contains half hourly interval meter readings (KWh)
-of electricity consumption and generation of households.</p>
+of electricity consumption of households.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>smart_meter10</span>)</pre>
+    <pre class="usage"><span class='no'>smart_meter10</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A tsibble with 259, 235 rows and 3 columns:
-* **customer_id**: household ID
-* **reading_datetime**: Date time for which data is recorded (index)
-* **general_supply_kwh**:electricity supplied to this household</p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <p>A tsibble with 259, 235 rows and 3 columns.</p><dl class='dl-horizontal'>
+ <dt>customer_id</dt><dd><p>household ID</p></dd>
+ <dt>reading_datetime</dt><dd><p>Date time for which data is recorded (index)</p></dd>
+ <dt>general_supply_kwh</dt><dd><p>electricity supplied to this household</p></dd>
 
-    <p>[Department of the Environment and Energy, Australia](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter)</p>
+</dl>
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p><a href='https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter'>https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter</a></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#format">Format</a></li>
-      <li><a href="#references">References</a></li>
+      <li><a href="#source">Source</a></li>
     </ul>
 
   </div>
