@@ -9,6 +9,7 @@
 ^data-raw$
 ^\.csv$
 ^docs$
+^doc$
 ^tic\.R$
 ^cran-comments.\md$
 ^_pkgdown\.yml$

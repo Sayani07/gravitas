@@ -19,7 +19,7 @@ gran_obs(.data, gran1, gran2, hierarchy_tbl = NULL)
 \item{...}{Added arguments to be passed.}
 }
 \value{
-A tibble with number of obseervations for each granularity.
+A tibble with number of observations for each granularity.
 }
 \description{
 Cross tabulation of granularities

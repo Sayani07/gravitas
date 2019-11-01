@@ -15,7 +15,7 @@ is_harmony(.data, gran1, gran2, hierarchy_tbl = NULL, facet_h = NULL)
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships.}
 
-\item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.}
+\item{facet_h}{levels of facet variable for which faceting is allowed while plotting bivariate temporal granularities.}
 }
 \value{
 TRUE if two granularties are harmonies.
