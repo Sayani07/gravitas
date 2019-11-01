@@ -103,7 +103,7 @@ search_gran <- function(.data,
     gran2_set <- units[index_gran1:index_gran2]
 
     # all possible granularities from lowest to highest units except ones that have been filtered in separately
-    gran <- paste(gran1 = combn(gran2_set, 2)[1, ], gran2 = combn(gran2_set, 2)[2, ], sep = "_")
+    gran <- paste(gran1 = utils::combn(gran2_set, 2)[1, ], gran2 = utils::combn(gran2_set, 2)[2, ], sep = "_")
 
     gran_split <- stringr::str_split(gran, "_", 2) %>%
       unlist() %>%
@@ -119,7 +119,7 @@ search_gran <- function(.data,
       }
       # if all filter_in are column variables
       if (all(filter_in %in% c("wknd_wday", data_names) == TRUE)) {
-        gran_sub <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
+        gran_sub <- paste(gran1 = utils::combn(gran_split, 2)[1, ], gran2 = utils::combn(gran_split, 2)[2, ], sep = "_")
 
         gran <- c(gran_sub, filter_in)
       }
@@ -130,7 +130,7 @@ search_gran <- function(.data,
         filter_in_sub <- filter_in[match(units, filter_in)]
         filter_in_sub <- filter_in_sub[!is.na(filter_in_sub)]
         gran_split <- c(filter_in_sub, gran_split) %>% unique()
-        gran_sub <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
+        gran_sub <- paste(gran1 = utils::combn(gran_split, 2)[1, ], gran2 = utils::combn(gran_split, 2)[2, ], sep = "_")
 
         # all are temporal units
         if (all(filter_in %in% units) == TRUE) {
@@ -153,7 +153,7 @@ search_gran <- function(.data,
       filter_out <- filter_out[match(units, filter_out)]
       filter_out <- filter_out[!is.na(filter_out)]
       gran_split <- gran_split[-match(filter_out, gran_split)]
-      gran <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
+      gran <- paste(gran1 = utils::combn(gran_split, 2)[1, ], gran2 = utils::combn(gran_split, 2)[2, ], sep = "_")
     }
 
     return(gran)

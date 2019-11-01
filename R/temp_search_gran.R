@@ -52,7 +52,7 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
   index_gran2 <- granularity %>% match(x = ugran)
   gran2_set <- lookup_table$units[index_gran1:index_gran2]
 
-  gran <- paste(gran1 = combn(gran2_set, 2)[1, ], gran2 = combn(gran2_set, 2)[2, ], sep = "_")
+  gran <- paste(gran1 = utils::combn(gran2_set, 2)[1, ], gran2 = utils::combn(gran2_set, 2)[2, ], sep = "_")
 
   gran_split <- stringr::str_split(gran, "_", 2) %>%
     unlist() %>%
@@ -66,7 +66,7 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
     }
     # if all filter_in are column variables
     if (all(filter_in %in% c("wknd_wday", data_names) == TRUE)) {
-      gran_sub <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
+      gran_sub <- paste(gran1 = utils::combn(gran_split, 2)[1, ], gran2 = utils::combn(gran_split, 2)[2, ], sep = "_")
 
       gran <- c(gran_sub, filter_in)
     }
@@ -76,7 +76,7 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
       filter_in_sub <- filter_in[match(granularity, filter_in)]
       filter_in_sub <- filter_in_sub[!is.na(filter_in_sub)]
       gran_split <- c(filter_in_sub, gran_split) %>% unique()
-      gran_sub <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
+      gran_sub <- paste(gran1 = utils::combn(gran_split, 2)[1, ], gran2 = utils::combn(gran_split, 2)[2, ], sep = "_")
 
       # all are temporal units
       if (all(filter_in %in% granularity) == TRUE) {
@@ -98,7 +98,7 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
     filter_out <- filter_out[match(granularity, filter_out)]
     filter_out <- filter_out[!is.na(filter_out)]
     gran_split <- gran_split[-match(filter_out, gran_split)]
-    gran <- paste(gran1 = combn(gran_split, 2)[1, ], gran2 = combn(gran_split, 2)[2, ], sep = "_")
+    gran <- paste(gran1 = utils::combn(gran_split, 2)[1, ], gran2 = utils::combn(gran_split, 2)[2, ], sep = "_")
   }
 
   return(gran)
