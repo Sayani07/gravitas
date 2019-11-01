@@ -4,7 +4,6 @@
 ^README\.Rmd$
 ^appveyor\.yml$
 ^codecov\.yml$
-^harmony_tbl\.Rda
 ^doc$
 ^Meta$
 ^data-raw$
