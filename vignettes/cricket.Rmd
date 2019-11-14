@@ -66,6 +66,7 @@ knitr::kable(hierarchy_model, format = "markdown")
 
 
 ```{r crickread}
+library(tsibble)
 cricket_tsibble <- cricket %>%
   mutate(data_index = row_number()) %>%
   as_tsibble(index = data_index)
@@ -110,7 +111,7 @@ A dot ball is a delivery bowled without any runs scored off it. The number of do
 
 Now, the number of wickets/dot balls per over does not appear in the hierarchy table, but they can still be thought of as granularities since they are constructed for each index (over) of the tsibble. The relationship is not periodic because of the number of wickets that are dismissed or dot balls that are being bowled changes across overs. This is unlike the periodic relationship for units specified in the hierarchy table. 
 
-`gran_advice` is employed to check if it would be appropriate to plot wickets and dot balls across overs. The output suggests that the pair (dot_ball, over) is a harmony for our data set, but the pair (wicket, over) is a clash. It also gives us the number of observations per categorization. The number of observations of 2, 3 or 4 wickets are too few to plot a distribution, implying there are hardly any overs in which 2 or more wickets are dismissed.  The number of observations for more than 5 dot balls in any over is again very low suggesting those are even rarer cases.
+`gran_advice` is employed to check if it would be appropriate to plot wickets and dot balls across overs. The output suggests that the pairs (dot_balls, over) and (wicket, over) are clashes. It also gives us the number of observations per categorization. The number of observations of 2, 3 or 4 wickets are too few to plot a distribution, implying there are hardly any overs in which 2 or more wickets are dismissed.  The number of observations for more than 5 dot balls in any over is again very low suggesting those are even rarer cases.
 
 
 ```{r exwicket}

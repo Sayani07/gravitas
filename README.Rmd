@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 [![Travis-CI Build Status](https://travis-ci.org/Sayani07/gravitas.svg?branch=master)](https://travis-ci.org/Sayani07/gravitas)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/Sayani07/gravitas?branch=master&svg=true)](https://ci.appveyor.com/project/Sayani07/gravitas)
 [![Codecov test coverage](https://codecov.io/gh/Sayani07/gravitas/branch/master/graph/badge.svg)](https://codecov.io/gh/Sayani07/gravitas?branch=master)
-
+[![CRAN Status Badge](http://www.r-pkg.org/badges/version/gravitas)](https://cran.r-project.org/package=gravitas)
 
 
 <!-- badges: end -->

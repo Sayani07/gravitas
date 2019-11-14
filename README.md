@@ -11,6 +11,8 @@ Status](https://travis-ci.org/Sayani07/gravitas.svg?branch=master)](https://trav
 status](https://ci.appveyor.com/api/projects/status/github/Sayani07/gravitas?branch=master&svg=true)](https://ci.appveyor.com/project/Sayani07/gravitas)
 [![Codecov test
 coverage](https://codecov.io/gh/Sayani07/gravitas/branch/master/graph/badge.svg)](https://codecov.io/gh/Sayani07/gravitas?branch=master)
+[![CRAN Status
+Badge](http://www.r-pkg.org/badges/version/gravitas)](https://cran.r-project.org/package=gravitas)
 
 <!-- badges: end -->
 
@@ -159,15 +161,6 @@ smart_meter10 %>%
 `cricket` data set in the package can be explored by explicitly defining
 a hierarchy table as follows:
 
-#### Visualize granularities for non-temporal data
-
-Each inning of the match is plotted across facets and overs of the
-innings are plotted across the x-axis. It can be observed from the
-letter value plot that there is no clear upward shift in runs in the
-second innings as compared to the first innings. The variability in runs
-increases as the teams approach towards the end of the innings, as
-observed through the longer and more distinct letter values.
-
 ``` r
 library(tsibble)
 #> Warning: package 'tsibble' was built under R version 3.5.2
@@ -205,6 +198,15 @@ cricket_tsibble <- cricket %>%
 #> # … with 8,550 more rows, and 4 more variables: runs_per_over <dbl>,
 #> #   run_rate <dbl>, data_index <int>, over_inning <fct>
 ```
+
+#### Visualize granularities for non-temporal data
+
+Letter value plot of total runs per over is shown overs of the innings
+(x-axis) and innings of the match (facet). It can be observed that there
+is no clear upward shift in runs in the second innings as compared to
+the first innings. The variability in runs increases as the teams
+approach towards the end of the innings, as observed through the longer
+and more distinct letter values.
 
 ``` r
 
