@@ -190,10 +190,6 @@
 <h2 class="hasAnchor">
 <a href="#example-non-temporal-case" class="anchor"></a>Example: non-temporal case</h2>
 <p><code>cricket</code> data set in the package can be explored by explicitly defining a hierarchy table as follows:</p>
-<div id="visualize-granularities-for-non-temporal-data" class="section level4">
-<h4 class="hasAnchor">
-<a href="#visualize-granularities-for-non-temporal-data" class="anchor"></a>Visualize granularities for non-temporal data</h4>
-<p>Each inning of the match is plotted across facets and overs of the innings are plotted across the x-axis. It can be observed from the letter value plot that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability in runs increases as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(tsibble)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; Warning: package 'tsibble' was built under R version 3.5.2</span></a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; </span></a>
@@ -229,6 +225,10 @@
 <a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt; 10   2008        2 Chennai Sup… Kings XI Pu…      1    10      0         2</span></a>
 <a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt; # … with 8,550 more rows, and 4 more variables: runs_per_over &lt;dbl&gt;,</span></a>
 <a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co">#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;, over_inning &lt;fct&gt;</span></a></code></pre></div>
+<div id="visualize-granularities-for-non-temporal-data" class="section level4">
+<h4 class="hasAnchor">
+<a href="#visualize-granularities-for-non-temporal-data" class="anchor"></a>Visualize granularities for non-temporal data</h4>
+<p>Letter value plot of total runs per over is shown overs of the innings (x-axis) and innings of the match (facet). It can be observed that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability in runs increases as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">   cricket_tsibble <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(batting_team <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Mumbai Indians"</span>,</a>
@@ -264,6 +264,8 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=gravitas">https://​cloud.r-project.org/​package=gravitas</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/Sayani07/gravitas">https://​github.com/​Sayani07/​gravitas</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/Sayani07/gravitas/issues">https://​github.com/​Sayani07/​gravitas/​issues</a>
@@ -294,6 +296,7 @@
 <li><a href="https://travis-ci.org/Sayani07/gravitas"><img src="https://travis-ci.org/Sayani07/gravitas.svg?branch=master" alt="Travis-CI Build Status"></a></li>
 <li><a href="https://ci.appveyor.com/project/Sayani07/gravitas"><img src="https://ci.appveyor.com/api/projects/status/github/Sayani07/gravitas?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
 <li><a href="https://codecov.io/gh/Sayani07/gravitas?branch=master"><img src="https://codecov.io/gh/Sayani07/gravitas/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://cran.r-project.org/package=gravitas"><img src="http://www.r-pkg.org/badges/version/gravitas" alt="CRAN Status Badge"></a></li>
 </ul>
 </div>
 </div>
