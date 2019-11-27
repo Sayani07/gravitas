@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+# naniar <img src="man/figures/logo.png" align="right" height=140/>
+
 [![Travis-CI Build
 Status](https://travis-ci.org/Sayani07/gravitas.svg?branch=master)](https://travis-ci.org/Sayani07/gravitas)
 [![AppVeyor build
