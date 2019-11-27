@@ -107,7 +107,7 @@ cricket_tsibble %>%
 
 # Do wickets and dot balls affect the runs differently across overs?
 
-A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. The number of wickets per can be thought to be a measure of good fielding. It might be interesting to see how good fielding or bowling effect runs per over differently.
+A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. The number of wickets per over can be thought to be a measure of good fielding. It might be interesting to see how good fielding or bowling effect runs per over differently.
 
 Now, the number of wickets/dot balls per over does not appear in the hierarchy table, but they can still be thought of as granularities since they are constructed for each index (over) of the tsibble. The relationship is not periodic because of the number of wickets that are dismissed or dot balls that are being bowled changes across overs. This is unlike the periodic relationship for units specified in the hierarchy table. 
 
