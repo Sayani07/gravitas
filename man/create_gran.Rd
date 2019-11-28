@@ -12,13 +12,16 @@ create_gran(.data, gran1 = NULL, hierarchy_tbl = NULL, label = TRUE,
 
 \item{gran1}{the granularity to be created. For temporal data, any
 combination of "second", "minute", "qhour", "hhour", "hour", "day", "week", "fortnight
-,"month", "quarter", "semester" or "year" can be chosen in the form of finer #' to coarser unit. For example, for the granularity hour of the week, value is
+,"month", "quarter", "semester" or "year" can be chosen in the form of finer
+ to coarser unit. For example, for the granularity hour of the week, value is
 "hour_week".}
 
-\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and #' their relationships.}
+\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units
+and their relationships.}
 
 \item{label}{Logical. TRUE will display the month as an ordered factor of
-character string such as "January", "February". FALSE will display the month #' as an ordered factor such as 1 to 12, where 1 stands for January and 12 for
+character string such as "January", "February". FALSE will display the month
+ as an ordered factor such as 1 to 12, where 1 stands for January and 12 for
 December.}
 
 \item{abbr}{logical. FALSE will display abbreviated labels.}

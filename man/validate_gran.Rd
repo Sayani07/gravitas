@@ -12,14 +12,14 @@ validate_gran(.data, gran = NULL, hierarchy_tbl = NULL,
 
 \item{gran}{the granularity to be created for validation.}
 
-\item{hierarchy_tbl}{A hierarchy table}
+\item{hierarchy_tbl}{A hierarchy table.}
 
-\item{validate_col}{A column in the data which acts as validator}
+\item{validate_col}{A column in the data which acts as validator.}
 
 \item{...}{Other arguments passed on to individual methods.}
 }
 \value{
-A tsibble with an additional column of granularity
+A tsibble with an additional column of granularity.
 }
 \description{
 Validate created granularities with existing columns
