@@ -1,11 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# gravitas
-
 <!-- badges: start -->
 
-# naniar <img src="man/figures/logo.png" align="right" height=140/>
+# gravitas <img src="man/figures/logo.png" align="right" height=140/>
 
 [![Travis-CI Build
 Status](https://travis-ci.org/Sayani07/gravitas.svg?branch=master)](https://travis-ci.org/Sayani07/gravitas)
