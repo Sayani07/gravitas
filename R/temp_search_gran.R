@@ -11,7 +11,7 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
   }
 
   if (tsibble::is_regular(.data)) {
-    interval_ts <- tsibble::interval(.data)
+    interval_ts <- tsibble::interval(.data) %>% unlist()
     data_interval <- interval_ts[interval_ts != 0]
     if (is.null(lgran)) {
       lgran_iden <- names(data_interval)
