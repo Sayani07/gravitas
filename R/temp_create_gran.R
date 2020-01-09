@@ -60,7 +60,7 @@ temp_create_gran <- function(.data,
 
     # check if lgran is less than interval
     if (tsibble::is_regular(.data)) {
-      interval_ts <- tsibble::interval(.data)
+      interval_ts <- tsibble::interval(.data) %>% unlist()
       data_interval <- interval_ts[interval_ts != 0]
       lgran_iden <- names(data_interval)
       lgran_multiple <- data_interval[[1]]
