@@ -47,13 +47,13 @@ search_gran <- function(.data,
   else if (!(highest_unit %in% hierarchy_tbl$units)) {
     stop("highest unit must be listed as an element in the  hierarchy table")
   }
-
+ browser()
   # Put the first element of the vector units as the lowest most unit desired - default
   if (is.null(lowest_unit)) {
     if (any(class(x) %in% c("POSIXct", "POSIXt"))) {
       # put the interval of the tsibble as default of lowest_unit if it is missing
       if (tsibble::is_regular(.data)) {
-        interval_ts <- tsibble::interval(.data)
+        interval_ts <- tsibble::interval(.data) %>% unlist() # new tsibble structure edit
         data_interval <- interval_ts[interval_ts != 0]
         lgran_iden <- names(data_interval)
         lgran_multiple <- data_interval[[1]]
@@ -160,7 +160,7 @@ search_gran <- function(.data,
   }
 }
 
-
+n
 
 dynamic_g_order <- function(lower_gran = NULL, upper_gran = NULL, hierarchy_tbl = NULL, order = NULL, ...) {
   units <- hierarchy_tbl$units
