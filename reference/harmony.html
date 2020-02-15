@@ -8,6 +8,13 @@
 
 <title>Get possible set of harmonies for a given tsibble — harmony • gravitas</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -44,6 +51,7 @@
 <meta property="og:title" content="Get possible set of harmonies for a given tsibble — harmony" />
 <meta property="og:description" content="Interaction of pair of granularities, categorised as harmony and clash. harmony () screens out harmony pairs from
 list of all possible pairs of granularities." />
+<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -137,8 +145,16 @@ list of all possible pairs of granularities." />
 list of all possible pairs of granularities.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>harmony</span>(<span class='no'>.data</span>, <span class='kw'>ugran</span> <span class='kw'>=</span> <span class='st'>"year"</span>, <span class='kw'>lgran</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>filter_in</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>filter_out</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>harmony</span>(
+  <span class='no'>.data</span>,
+  <span class='kw'>ugran</span> <span class='kw'>=</span> <span class='st'>"year"</span>,
+  <span class='kw'>lgran</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>filter_in</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>filter_out</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -160,7 +176,7 @@ It needs to be specified for "irregular" time intervals. Typically serves as the
     <tr>
       <th>hierarchy_tbl</th>
       <td><p>A hierarchy table specifying the hierarchy of units and
-their relationships</p></td>
+their relationships.</p></td>
     </tr>
     <tr>
       <th>filter_in</th>
@@ -194,7 +210,7 @@ exploratory aid.</p>
 #&gt; 1 day_week       hour_day              7       24
 #&gt; 2 hour_day       day_week             24        7</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>

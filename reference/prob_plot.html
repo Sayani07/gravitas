@@ -8,6 +8,13 @@
 
 <title>Plotting probability distributions across granularities — prob_plot • gravitas</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -43,6 +50,7 @@
 
 <meta property="og:title" content="Plotting probability distributions across granularities — prob_plot" />
 <meta property="og:description" content="Plot probability distribution of univariate series across bivariate temporal granularities." />
+<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -135,10 +143,19 @@
     <p>Plot probability distribution of univariate series across bivariate temporal granularities.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>prob_plot</span>(<span class='no'>.data</span>, <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.1</span>,
-  <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>, <span class='fl'>0.99</span>), <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>symmetric</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>prob_plot</span>(
+  <span class='no'>.data</span>,
+  <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>, <span class='fl'>0.99</span>),
+  <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>symmetric</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -223,7 +240,7 @@
     <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"lv"</span>
   )</div><div class='img'><img src='prob_plot-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
