@@ -4,10 +4,19 @@
 \alias{prob_plot}
 \title{Plotting probability distributions across granularities}
 \usage{
-prob_plot(.data, gran1 = NULL, gran2 = NULL, hierarchy_tbl = NULL,
-  response = NULL, plot_type = NULL, quantile_prob = c(0.01, 0.1,
-  0.25, 0.5, 0.75, 0.9, 0.99), facet_h = NULL, symmetric = TRUE,
-  alpha = 0.8, ...)
+prob_plot(
+  .data,
+  gran1 = NULL,
+  gran2 = NULL,
+  hierarchy_tbl = NULL,
+  response = NULL,
+  plot_type = NULL,
+  quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99),
+  facet_h = NULL,
+  symmetric = TRUE,
+  alpha = 0.8,
+  ...
+)
 }
 \arguments{
 \item{.data}{a tsibble}

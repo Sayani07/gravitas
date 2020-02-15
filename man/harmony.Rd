@@ -4,8 +4,16 @@
 \alias{harmony}
 \title{Get possible set of harmonies for a given tsibble}
 \usage{
-harmony(.data, ugran = "year", lgran = NULL, hierarchy_tbl = NULL,
-  filter_in = NULL, filter_out = NULL, facet_h = NULL, ...)
+harmony(
+  .data,
+  ugran = "year",
+  lgran = NULL,
+  hierarchy_tbl = NULL,
+  filter_in = NULL,
+  filter_out = NULL,
+  facet_h = NULL,
+  ...
+)
 }
 \arguments{
 \item{.data}{A tsibble object.}

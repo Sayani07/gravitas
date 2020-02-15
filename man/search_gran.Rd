@@ -4,8 +4,15 @@
 \alias{search_gran}
 \title{Search for granularities}
 \usage{
-search_gran(.data, lowest_unit = NULL, highest_unit = NULL,
-  hierarchy_tbl = NULL, filter_in = NULL, filter_out = NULL, ...)
+search_gran(
+  .data,
+  lowest_unit = NULL,
+  highest_unit = NULL,
+  hierarchy_tbl = NULL,
+  filter_in = NULL,
+  filter_out = NULL,
+  ...
+)
 }
 \arguments{
 \item{.data}{A tsibble object.}

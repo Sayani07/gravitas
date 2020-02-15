@@ -4,8 +4,13 @@
 \alias{validate_gran}
 \title{Validate created granularities with existing columns}
 \usage{
-validate_gran(.data, gran = NULL, hierarchy_tbl = NULL,
-  validate_col = NULL, ...)
+validate_gran(
+  .data,
+  gran = NULL,
+  hierarchy_tbl = NULL,
+  validate_col = NULL,
+  ...
+)
 }
 \arguments{
 \item{.data}{A tsibble object.}

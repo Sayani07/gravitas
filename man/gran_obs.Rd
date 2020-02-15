@@ -15,8 +15,6 @@ gran_obs(.data, gran1, gran2, hierarchy_tbl = NULL)
 \item{gran2}{The second temporal granularity in the pair.}
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units and their relationships for non-temporal case.}
-
-\item{...}{Added arguments to be passed.}
 }
 \value{
 A tibble with number of observations for each granularity.

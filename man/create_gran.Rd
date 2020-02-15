@@ -4,8 +4,14 @@
 \alias{create_gran}
 \title{Build dynamic temporal granularities}
 \usage{
-create_gran(.data, gran1 = NULL, hierarchy_tbl = NULL, label = TRUE,
-  abbr = TRUE, ...)
+create_gran(
+  .data,
+  gran1 = NULL,
+  hierarchy_tbl = NULL,
+  label = TRUE,
+  abbr = TRUE,
+  ...
+)
 }
 \arguments{
 \item{.data}{A tsibble object.}
