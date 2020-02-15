@@ -405,7 +405,6 @@ gran_tbl <- function(.data,
 #' @param gran1 One of the temporal granularities to check for harmonies.
 #' @param gran2 The second temporal granularity in the pair.
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships for non-temporal case.
-#' @param ... Added arguments to be passed.
 #' @return A tibble with number of observations for each granularity.
 #' @examples
 #' library(tsibbledata)
