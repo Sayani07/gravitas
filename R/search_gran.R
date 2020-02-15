@@ -47,7 +47,6 @@ search_gran <- function(.data,
   else if (!(highest_unit %in% hierarchy_tbl$units)) {
     stop("highest unit must be listed as an element in the  hierarchy table")
   }
- browser()
   # Put the first element of the vector units as the lowest most unit desired - default
   if (is.null(lowest_unit)) {
     if (any(class(x) %in% c("POSIXct", "POSIXt"))) {
@@ -159,8 +158,6 @@ search_gran <- function(.data,
     return(gran)
   }
 }
-
-n
 
 dynamic_g_order <- function(lower_gran = NULL, upper_gran = NULL, hierarchy_tbl = NULL, order = NULL, ...) {
   units <- hierarchy_tbl$units
