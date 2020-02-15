@@ -1,5 +1,5 @@
 ---
-  output: github_document
+ output: github_document
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -135,7 +135,7 @@ cricket_tsibble <- cricket %>%
    units = c("index", "ball", "over", "inning", "match"),
    convert_fct = c(1, 6, 20, 2, 1)
  )
- cricket_tsibble %>%
+ cricket_tsibble %>% 
    create_gran(
      "over_inning",
      hierarchy_model
