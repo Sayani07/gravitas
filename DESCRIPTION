@@ -55,11 +55,11 @@ Suggests:
 VignetteBuilder: knitr
 Maintainer: Sayani Gupta <gupta.sayani@gmail.com>
 Description: Provides tools for systematically exploring large quantities of 
-             temporal data across different temporal granularities
+             temporal data across cyclic temporal granularities
              (deconstructions of time) by visualizing probability distributions. 
-             'gravitas' computes circular, aperiodic,
-             single-order-up or multiple-order-up granularities and
-             advises on which combinations of granularities to explore
+             'gravitas' computes circular, quasi-circular, aperiodic,
+             single-order-up or multiple-order-up cyclic granularities and
+             advises on which combinations of cyclic granularities to explore
              and through which distribution plots.
 BugReports: https://github.com/Sayani07/gravitas/issues
 License: GPL-3
