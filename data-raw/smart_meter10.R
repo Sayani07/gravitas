@@ -10,6 +10,7 @@ library(gravitas)
 library(readr)
 
 
+
 smart_meter_data_raw <- read_rds("inst/extdata/smart_meter_data_raw.rds")
 
 smart_meter_data <- smart_meter_data_raw %>%
