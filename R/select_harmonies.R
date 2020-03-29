@@ -28,14 +28,20 @@
 #'library(philentropy)
 #'harmony_tbl <- smart_meter10 %>% harmony(
 #'  ugran = "week",
-#'  filter_out = c("hhour")
-)
-
-#'rank_harmony(harmony_tbl, dist_harmony_data)
+#'  filter_out = c("hhour"))
+#'rank_harmony(smart_meter10, harmony_tbl = harmony_tbl, "general_supply_kwh")
+#'
+#'harmony_tbl <- PBS %>% harmony(
+#'  ugran = "year")
+#'rank_harmony(PBS, harmony_tbl = harmony_tbl, "Cost")
 
 # rank harmony table
-rank_harmony <- function(harmony_tbl, dist_harmony_data)
+rank_harmony <- function(.data, harmony_tbl, response)
 {
+  #step1_data <- step1(.data, harmony_tbl, response)
+
+  dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response)
+
   mean_max <- unlist(dist_harmony_data)
   harmony_sort <- harmony_tbl %>%
     mutate(dist = mean_max) %>%
@@ -44,11 +50,12 @@ rank_harmony <- function(harmony_tbl, dist_harmony_data)
 }
 
 
-# loop through all elements of the harmony table
-#  for handling one harmony pair
-#  uses dist_harmony_pair used for calculating max pairiwise
-#  distance for one harmony pair
-dist_harmony_tbl <- function(step1_data){
+# loop through all harmony pairs in the harmony table
+# uses dist_harmony_pair used for calculating max pairiwise
+# distance for one harmony pair
+
+dist_harmony_tbl <- function(.data, harmony_tbl, response){
+  step1_data <- step1(.data, harmony_tbl, response)
   (1: length(step1_data)) %>%
     purrr::map(function(rowi){
       step_datai <- step1_data %>%
@@ -98,11 +105,9 @@ dist_harmony_pair <-function(step1_datai)
     step4[k] <- row_of_col_max
     #step5 <- mean(step4)
   }
-  max(step4)
+  mean(step4)
   #return(step5)
 }
-
-
 
 # create two granularities at once
 create_gran_pair <-  function(.data, gran1, gran2)
@@ -116,7 +121,6 @@ create_gran_pair <-  function(.data, gran1, gran2)
 #harmony_data <-create_harmony_data(.data, harmony_tbl, response)
 
 # step1 for each element of the list formed
-
 step1 <- function(.data, harmony_tbl, response){
 
   harmony_data <-create_harmony_data(.data, harmony_tbl, response)
@@ -138,7 +142,7 @@ step1 <- function(.data, harmony_tbl, response){
 # create data for each row of harmony table
 # a list created with a tsibble in each element corresponding to each row of the harmony table
 # create_harmony_data(smart_meter10, harmony_tbl, "general_supply_kwh")
-create_harmony_data <- function(.data, harmony_tbl, response)
+create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NULL)
 {
   (1:nrow(harmony_tbl)) %>% purrr::map(function(rowi){
     .data %>% create_gran_pair(harmony_tbl$facet_variable[rowi],
@@ -149,16 +153,13 @@ create_harmony_data <- function(.data, harmony_tbl, response)
                     .data[[response]])
   })
 }
+# already put
+#step1_data <- step1(.data, harmony_tbl, response)
 
-step1_data <- step1(.data, harmony_tbl, response)
+# already put
+# dist_harmony_data <- dist_harmony_tbl(step1_data)
 
-dist_harmony_data <- dist_harmony_tbl(step1_data)
-
-
-
-
-
-compute_JSD <- function(x, y)
+compute_JSD <- function(x, y, message = FALSE)
 {
   mat <- rbind(x, y)
   return(JSD(mat))
@@ -168,5 +169,3 @@ density_extractx <- function(x)
 {
   density(x)$y
 }
-
-
