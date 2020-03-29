@@ -28,7 +28,7 @@ search_gran <- function(.data,
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
   # if class is timestamp, then use predefined lookup table, have to state hierarchy table for non-temporal data
-  if (any(class(x) %in% c("POSIXct", "POSIXt"))) {
+  if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date"))) {
     hierarchy_tbl <- lookup_table
   }
   else if (is.null(hierarchy_tbl)) {
