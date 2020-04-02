@@ -121,7 +121,7 @@ create_gran <- function(.data, gran1 = NULL, hierarchy_tbl = NULL,
   }
 
 
-  if (any(class(x) %in% c("POSIXct", "POSIXt"))) {
+  if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date", "yearweek", "yearquarter"))) {
     temp_create_gran(.data, gran1, label,  ...)
   } else {
     if (is.null(hierarchy_tbl)) {
@@ -180,7 +180,7 @@ dynamic_build_gran <- function(x, lgran = NULL, ugran = NULL, hierarchy_tbl = NU
   }
 
 
-  if (any(class(x) %in% c("POSIXct", "POSIXt"))) {
+  if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date", "yearweek", "yearquarter"))) {
     value <- build_gran(x, lgran = lgran, ugran = ugran, ...)
   }
   else {
@@ -285,7 +285,7 @@ create_single_gran <- function(x,
   units <- hierarchy_tbl$units
   convert_fct <- hierarchy_tbl$convert_fct
 
-  if (any(class(x) %in% c("POSIXct", "POSIXt"))) {
+  if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date", "yearweek", "yearquarter"))) {
     ugran <- g_order(lgran, order = 1)
     value <- build_gran(x,
                         lgran = lgran,

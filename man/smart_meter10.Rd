@@ -4,12 +4,14 @@
 \name{smart_meter10}
 \alias{smart_meter10}
 \title{Smart meter data for ten households}
-\format{A tsibble with 259, 235 rows and 3 columns.
+\format{
+A tsibble with 259, 235 rows and 3 columns.
 \describe{
  \item{customer_id}{household ID}
  \item{reading_datetime}{Date time for which data is recorded (index)}
  \item{general_supply_kwh}{electricity supplied to this household}
-}}
+}
+}
 \source{
 \url{https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter}
 }

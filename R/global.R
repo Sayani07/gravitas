@@ -24,5 +24,6 @@ utils::globalVariables(
     "data_mutate_obj",
     "gini_meas",
     "total_gini_meas",
-    "quantiles")
+    "quantiles",
+    "mean_max_variation")
 )

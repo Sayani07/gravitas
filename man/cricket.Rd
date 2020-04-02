@@ -4,7 +4,8 @@
 \name{cricket}
 \alias{cricket}
 \title{Cricket data set for different seasons of Indian Premier League}
-\format{A tibble with 8560 rows and 11 variables.
+\format{
+A tibble with 8560 rows and 11 variables.
 \describe{
  \item{season}{years representing IPL season}
  \item{match_id}{match codes}
@@ -16,7 +17,8 @@
  \item{dot_balls}{number of balls with no runs in an over}
  \item{runs_per_over}{Runs for each over}
  \item{run_rate}{run rate for each over}
- }}
+ }
+}
 \source{
 \url{https://www.kaggle.com/josephgpinto/ipl-data-analysis/data}
 }

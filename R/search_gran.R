@@ -28,7 +28,7 @@ search_gran <- function(.data,
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
   # if class is timestamp, then use predefined lookup table, have to state hierarchy table for non-temporal data
-  if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date"))) {
+  if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date", "yearweek", "yearquarter"))){
     hierarchy_tbl <- lookup_table
   }
   else if (is.null(hierarchy_tbl)) {
@@ -49,7 +49,7 @@ search_gran <- function(.data,
   }
   # Put the first element of the vector units as the lowest most unit desired - default
   if (is.null(lowest_unit)) {
-    if (any(class(x) %in% c("POSIXct", "POSIXt"))) {
+    if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date", "yearweek", "yearquarter"))) {
       # put the interval of the tsibble as default of lowest_unit if it is missing
       if (tsibble::is_regular(.data)) {
         interval_ts <- tsibble::interval(.data) %>% unlist() # new tsibble structure edit
