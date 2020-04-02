@@ -39,8 +39,10 @@ rank_harmony <- function(.data = NULL,
 
   mean_max <- unlist(dist_harmony_data)
   harmony_sort <- harmony_tbl %>%
-    dplyr::mutate(mean_max_variation = mean_max) %>%
+    dplyr::mutate(mean_max_variation = round(mean_max,2)) %>%
     dplyr::arrange(dplyr::desc(mean_max_variation))
+
+
   harmony_sort
 }
 
