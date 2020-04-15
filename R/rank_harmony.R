@@ -19,12 +19,14 @@
 #' library(purrr)
 #' library(magrittr)
 #' library(philentropy)
-#' harmonies <- smart_meter10 %>% harmony(
-#'  ugran = "week",
-#'  filter_out = c("hhour"))
-#'rank_harmony(smart_meter10, harmony_tbl = harmonies,response =  "general_supply_kwh")
-#'
-#' harmony_tbl <- PBS %>% harmony(ugran = "semester")
+#' harmonies <- smart_meter10 %>%
+#'  harmony(ugran = "month",
+#'          filter_out = c("hhour", "fortnight"))
+#' .data = smart_meter10
+#' response  = "general_supply_kwh"
+#' harmony_tbl =  harmonies
+#' .data %>% rank_harmony(harmony_tbl = harmonies, response = "general_supply_kwh")
+#' harmony_tbl <- PBS %>% harmony(ugran = "year")
 #'rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
 #' @export rank_harmony
 # rank harmony table
@@ -40,7 +42,8 @@ rank_harmony <- function(.data = NULL,
   mean_max <- unlist(dist_harmony_data)
   harmony_sort <- harmony_tbl %>%
     dplyr::mutate(mean_max_variation = round(mean_max,2)) %>%
-    dplyr::arrange(dplyr::desc(mean_max_variation))
+    dplyr::arrange(dplyr::desc(mean_max_variation)) %>%
+    dplyr::filter(!is.na(mean_max_variation))
 
 
   harmony_sort
@@ -94,7 +97,10 @@ dist_harmony_pair <-function(step1_datai, prob)
         #message(paste0("K:",k," I:",i," J:", j))
         dist[i, j] <- compute_JSD(m1, m2)
         # row_of_col_max[j] <- max(dist[, j])
-        row_of_col_max <- max(dist)
+        dist[dist == 0] <- NA
+        max_dist <- max(dist, na.rm = TRUE)
+        min_dist <- min(dist, na.rm = TRUE)
+        row_of_col_max <- max_dist/(nrow(step1_datai) *(max_dist - min_dist))
         # maximum of the entire matrix
       }
     }
@@ -102,7 +108,7 @@ dist_harmony_pair <-function(step1_datai, prob)
     step4[k] <- row_of_col_max
     #step5 <- mean(step4)
   }
-  mean(step4)
+  mean(step4, na.rm = TRUE)
   #return(step5)
 }
 
@@ -117,8 +123,9 @@ create_gran_pair <-  function(.data, gran1, gran2)
 
 #harmony_data <-create_harmony_data(.data, harmony_tbl, response)
 
-# step1 for each element of the list formed
-step1 <- function(.data, harmony_tbl, response){
+# <- for each element of the list formed
+
+step1 <- function(.data, harmony_tbl, response = NULL){
 
   harmony_data <-create_harmony_data(.data, harmony_tbl, response)
 
@@ -130,9 +137,13 @@ step1 <- function(.data, harmony_tbl, response){
  #responsei <- create_harmony_datai[[response]]
 
     harmony_datai %>%
-       tidyr::pivot_wider(names_from = namesi[2],
-               values_from = response)
-               #values_fn = list( responsei = list))
+      dplyr::mutate(
+        response = harmony_datai[[response]]
+      ) %>%
+      dplyr::select(-!!response) %>%
+      tidyr::pivot_wider(names_from = namesi[2],
+               values_from = response,
+               values_fn = list(response = list))
   })
 }
 

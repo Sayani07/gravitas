@@ -38,11 +38,13 @@ library(gravitas)
 library(purrr)
 library(magrittr)
 library(philentropy)
-harmonies <- smart_meter10 \%>\% harmony(
- ugran = "week",
- filter_out = c("hhour"))
-rank_harmony(smart_meter10, harmony_tbl = harmonies,response =  "general_supply_kwh")
-
-harmony_tbl <- PBS \%>\% harmony(ugran = "semester")
+harmonies <- smart_meter10 \%>\%
+ harmony(ugran = "month",
+         filter_out = c("hhour", "fortnight"))
+.data = smart_meter10
+response  = "general_supply_kwh"
+harmony_tbl =  harmonies
+.data \%>\% rank_harmony(harmony_tbl = harmonies, response = "general_supply_kwh")
+harmony_tbl <- PBS \%>\% harmony(ugran = "year")
 rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
 }
