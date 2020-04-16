@@ -66,10 +66,10 @@ dist_harmony_tbl <- function(.data, harmony_tbl, response, prob){
 # average of max pairwise distance for one harmony pair
 dist_harmony_pair <-function(step1_datai, prob)
 {
+  colnames(step1_datai) <- paste0("L",colnames(step1_datai))
   colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
 
   step2 <- NULL
-
   for (i in 1:length(colNms)) {
     step2[[i]] <- lapply(step1_datai[[colNms[i]]], quantile_extractx)
   }
@@ -99,7 +99,7 @@ dist_harmony_pair <-function(step1_datai, prob)
         dist[dist == 0] <- NA
         max_dist <- max(dist, na.rm = TRUE)
         min_dist <- min(dist, na.rm = TRUE)
-        row_of_col_max <- max_dist/(nrow(step1_datai) *(max_dist - min_dist))
+        row_of_col_max <- dplyr::if_else(max_dist - min_dist==0, 0, max_dist/(nrow(step1_datai) *(max_dist - min_dist)))
         # maximum of the entire matrix
       }
     }

@@ -37,7 +37,6 @@ library(dplyr)
 library(gravitas)
 library(purrr)
 library(magrittr)
-library(philentropy)
 harmonies <- smart_meter10 \%>\%
  harmony(ugran = "month",
          filter_out = c("hhour", "fortnight"))
