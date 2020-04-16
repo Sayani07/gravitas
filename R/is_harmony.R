@@ -5,7 +5,8 @@
 #' @param gran1 One of the temporal granularities to check for harmonies.
 #' @param gran2 The second temporal granularity in the pair.
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units and their relationships.
-#' @param facet_h levels of facet variable for which faceting is allowed while plotting bivariate temporal granularities.
+#' @param facet_h highest level of facet variable that can be considered in harmony pair.
+#' @param x_h highest level of x-axis variable that can be considered in harmony pair.
 #' @return TRUE if two granularties are harmonies.
 #' @examples
 #' library(tsibbledata)
@@ -16,7 +17,8 @@ is_harmony <- function(.data,
                        gran1,
                        gran2,
                        hierarchy_tbl = NULL,
-                       facet_h = NULL) {
+                       facet_h = NULL,
+                       x_h = NULL) {
   # data must be tsibble
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
@@ -31,12 +33,16 @@ is_harmony <- function(.data,
   # All possible combination that are missing
   cmbmiss <- any(harmony_object$nobs == 0)
   facet_nlevel <- harmony_object[, 1] %>% dplyr::distinct()
+  x_nlevel <- harmony_object[, 2] %>% dplyr::distinct()
 
   if (is.null(facet_h)) {
     facet_h <- 31
   }
+  if (is.null(x_h)) {
+    x_h <- 48
+  }
 
-  if (cmbmiss == "TRUE" | nrow(facet_nlevel) > facet_h) {
+  if (cmbmiss == "TRUE" | nrow(facet_nlevel) > facet_h | nrow(x_nlevel) > x_h ) {
     return_output <- "FALSE"
   } else {
     return_output <- "TRUE"
