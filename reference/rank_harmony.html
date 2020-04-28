@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Check if two temporal granularities are harmonies — is_harmony • gravitas</title>
+<title>Plotting probability distributions across granularities — rank_harmony • gravitas</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="Check if two temporal granularities are harmonies — is_harmony" />
-<meta property="og:description" content="Interaction of pair of granularities, categorised as harmony and clash" />
+<meta property="og:title" content="Plotting probability distributions across granularities — rank_harmony" />
+<meta property="og:description" content="Plot probability distribution of univariate series across bivariate temporal granularities." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -137,22 +137,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Check if two temporal granularities are harmonies</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/is_harmony.R'><code>R/is_harmony.R</code></a></small>
-    <div class="hidden name"><code>is_harmony.Rd</code></div>
+    <h1>Plotting probability distributions across granularities</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/rank_harmony.R'><code>R/rank_harmony.R</code></a></small>
+    <div class="hidden name"><code>rank_harmony.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Interaction of pair of granularities, categorised as harmony and clash</p>
+    <p>Plot probability distribution of univariate series across bivariate temporal granularities.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>is_harmony</span>(
-  <span class='no'>.data</span>,
-  <span class='no'>gran1</span>,
-  <span class='no'>gran2</span>,
-  <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>x_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+    <pre class="usage"><span class='fu'>rank_harmony</span>(
+  <span class='kw'>.data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>harmony_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.99</span>, <span class='fl'>0.01</span>)
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -160,37 +158,69 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.data</th>
-      <td><p>A tsibble object.</p></td>
+      <td><p>a tsibble.</p></td>
     </tr>
     <tr>
-      <th>gran1</th>
-      <td><p>One of the temporal granularities to check for harmonies.</p></td>
+      <th>harmony_tbl</th>
+      <td><p>A tibble of harmonies and their levels obtained from the function().</p></td>
     </tr>
     <tr>
-      <th>gran2</th>
-      <td><p>The second temporal granularity in the pair.</p></td>
+      <th>response</th>
+      <td><p>response variable.</p></td>
     </tr>
     <tr>
-      <th>hierarchy_tbl</th>
-      <td><p>A hierarchy table specifying the hierarchy of units and their relationships.</p></td>
-    </tr>
-    <tr>
-      <th>facet_h</th>
-      <td><p>highest level of facet variable that can be considered in harmony pair.</p></td>
-    </tr>
-    <tr>
-      <th>x_h</th>
-      <td><p>highest level of x-axis variable that can be considered in harmony pair.</p></td>
+      <th>prob</th>
+      <td><p>numeric vector of probabilities with values in [0,1].</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>TRUE if two granularties are harmonies.</p>
+    <p>A tibble of harmonies and their levels ranked ion descending order of average maximum pairwise distance of the harmony pairs.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span> <span class='fu'>is_harmony</span>(<span class='st'>"hour_day"</span>, <span class='st'>"day_week"</span>)</div><div class='output co'>#&gt; [1] "TRUE"</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lvplot</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>gravitas</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>purrr</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>magrittr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘magrittr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:purrr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    set_names</span></div><div class='input'><span class='no'>harmonies</span> <span class='kw'>&lt;-</span> <span class='no'>smart_meter10</span> <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='harmony.html'>harmony</a></span>(<span class='kw'>ugran</span> <span class='kw'>=</span> <span class='st'>"month"</span>,
+         <span class='kw'>filter_out</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hhour"</span>, <span class='st'>"fortnight"</span>))
+<span class='no'>.data</span> <span class='kw'>=</span> <span class='no'>smart_meter10</span>
+<span class='no'>response</span>  <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>
+<span class='no'>harmony_tbl</span> <span class='kw'>=</span>  <span class='no'>harmonies</span>
+<span class='no'>.data</span> <span class='kw'>%&gt;%</span> <span class='fu'>rank_harmony</span>(<span class='kw'>harmony_tbl</span> <span class='kw'>=</span> <span class='no'>harmonies</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 5
+#&gt;    facet_variable x_variable facet_levels x_levels mean_max_variation
+#&gt;    &lt;chr&gt;          &lt;chr&gt;             &lt;int&gt;    &lt;int&gt;              &lt;dbl&gt;
+#&gt;  1 week_month     hour_day              5       24               1.03
+#&gt;  2 day_week       day_month             7       31               1.03
+#&gt;  3 day_week       hour_day              7       24               1.02
+#&gt;  4 day_month      hour_day             31       24               1.02
+#&gt;  5 week_month     day_week              5        7               1.02
+#&gt;  6 hour_day       week_month           24        5               1.02
+#&gt;  7 hour_day       day_week             24        7               1.01
+#&gt;  8 day_month      day_week             31        7               1.01
+#&gt;  9 hour_day       day_month            24       31               1.01
+#&gt; 10 day_week       week_month            7        5               1.01</div><div class='input'><span class='no'>harmony_tbl</span> <span class='kw'>&lt;-</span> <span class='no'>PBS</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='harmony.html'>harmony</a></span>(<span class='kw'>ugran</span> <span class='kw'>=</span> <span class='st'>"year"</span>)
+<span class='fu'>rank_harmony</span>(<span class='no'>PBS</span>, <span class='kw'>harmony_tbl</span> <span class='kw'>=</span> <span class='no'>harmony_tbl</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"Cost"</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 5
+#&gt;    facet_variable   x_variable       facet_levels x_levels mean_max_variation
+#&gt;    &lt;chr&gt;            &lt;chr&gt;                   &lt;int&gt;    &lt;int&gt;              &lt;dbl&gt;
+#&gt;  1 month_quarter    quarter_year                3        4               1.12
+#&gt;  2 month_quarter    quarter_semester            3        2               1.1 
+#&gt;  3 quarter_year     month_quarter               4        3               1.07
+#&gt;  4 month_semester   semester_year               6        2               1.06
+#&gt;  5 month_quarter    semester_year               3        2               1.05
+#&gt;  6 quarter_semester month_quarter               2        3               1   
+#&gt;  7 semester_year    month_quarter               2        3               1   
+#&gt;  8 semester_year    month_semester              2        6               1   
+#&gt;  9 semester_year    quarter_semester            2        2               1   
+#&gt; 10 quarter_semester semester_year               2        2               1   </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
