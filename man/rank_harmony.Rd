@@ -19,8 +19,6 @@ rank_harmony(
 \item{response}{response variable.}
 
 \item{prob}{numeric vector of probabilities with values in [0,1].}
-
-\item{...}{other arguments to be passed for customising the obtained ggplot object.}
 }
 \value{
 A tibble of harmonies and their levels ranked ion descending order of average maximum pairwise distance of the harmony pairs.

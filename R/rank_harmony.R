@@ -6,7 +6,6 @@
 #' @param harmony_tbl A tibble of harmonies and their levels obtained from the function().
 #' @param response response variable.
 #' @param prob numeric vector of probabilities with values in [0,1].
-#' @param ... other arguments to be passed for customising the obtained ggplot object.
 #' @return  A tibble of harmonies and their levels ranked ion descending order of average maximum pairwise distance of the harmony pairs.
 #
 #' @examples
@@ -34,7 +33,7 @@ rank_harmony <- function(.data = NULL,
                          response = NULL,
                          prob = seq(0.01, 0.99, 0.01))
 {
-  #step1_data <- step1(.data, harmony_tbl, response)
+  # <- _data <- step1(.data, harmony_tbl, response)
 
   dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob)
 
@@ -78,6 +77,8 @@ dist_harmony_pair <-function(step1_datai, prob)
   step3 <- rep(list(diag(nrow(step1_datai))), length(colNms))
   #step4 <- matrix(NA, ncol = nrow(rowTibb), nrow = length(colNms))
   step4 <- array(NA, dim = length(colNms))
+  prob <- array(NA, dim = length(colNms))
+  a <- array(NA, dim = length(colNms))
   ## Logic
   # for each of the list 7 DOW
   #__ find the stepped sum difference of density vector elements
@@ -95,16 +96,21 @@ dist_harmony_pair <-function(step1_datai, prob)
         m2 <- step2[[k]][[j]]
         #message(paste0("K:",k," I:",i," J:", j))
         dist[i, j] <- compute_JSD(m1, m2)
-        # row_of_col_max[j] <- max(dist[, j])
         dist[dist == 0] <- NA
-        max_dist <- max(dist, na.rm = TRUE)
-        min_dist <- min(dist, na.rm = TRUE)
-        row_of_col_max <- dplyr::if_else(max_dist - min_dist==0, 0, max_dist/(nrow(step1_datai) *(max_dist - min_dist)))
+        # row_of_col_max[j] <- max(dist[, j])
         # maximum of the entire matrix
       }
     }
+
+    max_dist <- max(dist, na.rm = TRUE)
+    min_dist <- min(dist, na.rm = TRUE)
+    row_of_col_max <- dplyr::if_else(max_dist - min_dist==0, 0, max_dist/(nrow(step1_datai) *(max_dist - min_dist)))
+    dist[lower.tri(dist)] <- NA
+    len_uniq_dist <- nrow(step1_datai)^2 - length(which(is.na(dist)))
+    prob[k] <- (1- 1/len_uniq_dist)
+    a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
     #step3[[k]] <- dist
-    step4[k] <- row_of_col_max
+    step4[k] <- max_dist/a[k]
     #step5 <- mean(step4)
   }
   mean(step4, na.rm = TRUE)
