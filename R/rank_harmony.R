@@ -113,7 +113,7 @@ dist_harmony_pair <-function(step1_datai, prob)
     step4[k] <- max_dist/a[k]
     #step5 <- mean(step4)
   }
-  mean(step4, na.rm = TRUE)
+  max(step4, na.rm = TRUE)
   #return(step5)
 }
 
