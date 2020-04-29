@@ -145,17 +145,40 @@ search_gran <- function(.data,
     }
 
     # # to remove units in the list of gran which are mentioned in filter_out
-    else if (!is.null(filter_out)) {
+    gran_out <- NA
+    if (!is.null(filter_out)) {
       if (!all(filter_out %in% units)) {
         stop("temporal units to be filtered out not found: make sure vector contains units which are between lowest_unit and highest_unit")
       }
       filter_out <- filter_out[match(units, filter_out)]
       filter_out <- filter_out[!is.na(filter_out)]
-      gran_split <- gran_split[-match(filter_out, gran_split)]
-      gran <- paste(gran1 = utils::combn(gran_split, 2)[1, ], gran2 = utils::combn(gran_split, 2)[2, ], sep = "_")
-    }
 
-    return(gran)
+      if("wknd_wday" %in% gran)
+      {
+        gran <- gran[gran!="wknd_wday"]
+      }
+
+      gran_split <- stringr::str_split(gran, "_", 2) %>%
+        unlist() %>%
+        unique()
+
+
+      gran_split <- gran_split[-match(filter_out, gran_split)]
+
+      gran_out <- paste(gran1 = utils::combn(gran_split, 2)[1, ], gran2 = utils::combn(gran_split, 2)[2, ], sep = "_")
+
+      if("wknd_wday" %in% filter_in)
+      {
+        gran <- c(gran_out, "wknd_wday")
+      }
+      else
+      {
+        gran <- gran_out
+      }
+    }
+      #gran_return <- unique(c(gran, gran_out))
+      #gran_return <- gran_return[!is.na(gran_return)]
+ return(gran)
   }
 }
 
