@@ -150,7 +150,8 @@
   <span class='kw'>.data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>harmony_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.99</span>, <span class='fl'>0.01</span>)
+  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.99</span>, <span class='fl'>0.01</span>),
+  <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -171,6 +172,10 @@
     <tr>
       <th>prob</th>
       <td><p>numeric vector of probabilities with values in [0,1].</p></td>
+    </tr>
+    <tr>
+      <th>hierarchy_tbl</th>
+      <td><p>A hierarchy table specifying the hierarchy of units</p></td>
     </tr>
     </table>
 
@@ -198,29 +203,29 @@
 <span class='no'>.data</span> <span class='kw'>%&gt;%</span> <span class='fu'>rank_harmony</span>(<span class='kw'>harmony_tbl</span> <span class='kw'>=</span> <span class='no'>harmonies</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 5
 #&gt;    facet_variable x_variable facet_levels x_levels mean_max_variation
 #&gt;    &lt;chr&gt;          &lt;chr&gt;             &lt;int&gt;    &lt;int&gt;              &lt;dbl&gt;
-#&gt;  1 day_week       day_month             7       31               1.1 
-#&gt;  2 week_month     day_week              5        7               1.08
-#&gt;  3 week_month     hour_day              5       24               1.07
-#&gt;  4 day_week       hour_day              7       24               1.06
-#&gt;  5 hour_day       day_month            24       31               1.05
-#&gt;  6 day_month      hour_day             31       24               1.04
-#&gt;  7 day_month      day_week             31        7               1.04
-#&gt;  8 hour_day       week_month           24        5               1.04
-#&gt;  9 hour_day       day_week             24        7               1.03
-#&gt; 10 day_week       week_month            7        5               1.03</div><div class='input'><span class='no'>harmony_tbl</span> <span class='kw'>&lt;-</span> <span class='no'>PBS</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='harmony.html'>harmony</a></span>(<span class='kw'>ugran</span> <span class='kw'>=</span> <span class='st'>"year"</span>)
+#&gt;  1 hour_day       week_month           24        5               0.2 
+#&gt;  2 hour_day       day_week             24        7               0.17
+#&gt;  3 day_month      day_week             31        7               0.12
+#&gt;  4 hour_day       day_month            24       31               0.11
+#&gt;  5 day_month      hour_day             31       24               0.06
+#&gt;  6 day_week       day_month             7       31               0.03
+#&gt;  7 day_week       hour_day              7       24               0.01
+#&gt;  8 week_month     hour_day              5       24               0.01
+#&gt;  9 week_month     day_week              5        7               0.01
+#&gt; 10 day_week       week_month            7        5               0.01</div><div class='input'><span class='no'>harmony_tbl</span> <span class='kw'>&lt;-</span> <span class='no'>PBS</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='harmony.html'>harmony</a></span>(<span class='kw'>ugran</span> <span class='kw'>=</span> <span class='st'>"year"</span>)
 <span class='fu'>rank_harmony</span>(<span class='no'>PBS</span>, <span class='kw'>harmony_tbl</span> <span class='kw'>=</span> <span class='no'>harmony_tbl</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"Cost"</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 5
 #&gt;    facet_variable   x_variable       facet_levels x_levels mean_max_variation
 #&gt;    &lt;chr&gt;            &lt;chr&gt;                   &lt;int&gt;    &lt;int&gt;              &lt;dbl&gt;
-#&gt;  1 month_quarter    quarter_year                3        4               1.22
-#&gt;  2 quarter_year     month_quarter               4        3               1.1 
-#&gt;  3 month_quarter    quarter_semester            3        2               1.1 
-#&gt;  4 month_quarter    semester_year               3        2               1.07
-#&gt;  5 month_semester   semester_year               6        2               1.07
-#&gt;  6 quarter_semester month_quarter               2        3               1   
-#&gt;  7 semester_year    month_quarter               2        3               1   
-#&gt;  8 semester_year    month_semester              2        6               1   
-#&gt;  9 semester_year    quarter_semester            2        2               1   
-#&gt; 10 quarter_semester semester_year               2        2               1   </div></pre>
+#&gt;  1 month_semester   semester_year               6        2               0.07
+#&gt;  2 quarter_year     month_quarter               4        3               0.04
+#&gt;  3 semester_year    quarter_semester            2        2               0.02
+#&gt;  4 quarter_semester month_quarter               2        3               0.01
+#&gt;  5 semester_year    month_quarter               2        3               0.01
+#&gt;  6 semester_year    month_semester              2        6               0.01
+#&gt;  7 month_quarter    quarter_semester            3        2               0.01
+#&gt;  8 month_quarter    quarter_year                3        4               0.01
+#&gt;  9 month_quarter    semester_year               3        2               0.01
+#&gt; 10 quarter_semester semester_year               2        2               0.01</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
