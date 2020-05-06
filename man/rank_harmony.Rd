@@ -8,7 +8,8 @@ rank_harmony(
   .data = NULL,
   harmony_tbl = NULL,
   response = NULL,
-  prob = seq(0.01, 0.99, 0.01)
+  prob = seq(0.01, 0.99, 0.01),
+  hierarchy_tbl = NULL
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ rank_harmony(
 \item{response}{response variable.}
 
 \item{prob}{numeric vector of probabilities with values in [0,1].}
+
+\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units}
 }
 \value{
 A tibble of harmonies and their levels ranked ion descending order of average maximum pairwise distance of the harmony pairs.

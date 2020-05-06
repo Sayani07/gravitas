@@ -6,6 +6,7 @@
 #' @param harmony_tbl A tibble of harmonies and their levels obtained from the function().
 #' @param response response variable.
 #' @param prob numeric vector of probabilities with values in [0,1].
+#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units
 #' @return  A tibble of harmonies and their levels ranked ion descending order of average maximum pairwise distance of the harmony pairs.
 #
 #' @examples
@@ -31,18 +32,17 @@
 rank_harmony <- function(.data = NULL,
                          harmony_tbl = NULL,
                          response = NULL,
-                         prob = seq(0.01, 0.99, 0.01))
+                         prob = seq(0.01, 0.99, 0.01), hierarchy_tbl = NULL)
 {
   # <- _data <- step1(.data, harmony_tbl, response)
 
-  dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob)
+  dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob, hierarchy_tbl)
 
   mean_max <- unlist(dist_harmony_data)
   harmony_sort <- harmony_tbl %>%
     dplyr::mutate(mean_max_variation = round(mean_max,2)) %>%
     dplyr::arrange(dplyr::desc(mean_max_variation)) %>%
     dplyr::filter(!is.na(mean_max_variation))
-
 
   harmony_sort
 }
@@ -52,8 +52,8 @@ rank_harmony <- function(.data = NULL,
 # uses dist_harmony_pair used for calculating max pairiwise
 # distance for one harmony pair
 
-dist_harmony_tbl <- function(.data, harmony_tbl, response, prob){
-  step1_data <- step1(.data, harmony_tbl, response)
+dist_harmony_tbl <- function(.data, harmony_tbl, response, prob, hierarchy_tbl = NULL){
+  step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl)
   (1: length(step1_data)) %>%
     purrr::map(function(rowi){
       step_datai <- step1_data %>%
@@ -79,6 +79,10 @@ dist_harmony_pair <-function(step1_datai, prob)
   step4 <- array(NA, dim = length(colNms))
   prob <- array(NA, dim = length(colNms))
   a <- array(NA, dim = length(colNms))
+  new_a <- array(NA, dim = length(colNms))
+  b <- array(NA, dim = length(colNms))
+  mu <- array(NA, dim = length(colNms))
+  sigma <- array(NA, dim = length(colNms))
   ## Logic
   # for each of the list 7 DOW
   #__ find the stepped sum difference of density vector elements
@@ -104,25 +108,107 @@ dist_harmony_pair <-function(step1_datai, prob)
 
     max_dist <- max(dist, na.rm = TRUE)
     min_dist <- min(dist, na.rm = TRUE)
-    row_of_col_max <- dplyr::if_else(max_dist - min_dist==0, 0, max_dist/(nrow(step1_datai) *(max_dist - min_dist)))
+    # row_of_col_max <- dplyr::if_else(max_dist - min_dist==0, 0, max_dist/(nrow(step1_datai) *(max_dist - min_dist)))
+
+
+    # Fisher–Tippett–Gnedenko theorem
+    # dist[lower.tri(dist)] <- NA
+    # len_uniq_dist <- nrow(step1_datai)^2 - length(which(is.na(dist)))
+    # prob[k] <- (1- 1/len_uniq_dist)
+    # a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
+    # step4[k] <- max_dist/a[k]
+
+    #earlier version
+    # row_of_col_max <- dplyr::if_else(max_dist - min_dist==0, 0, max_dist/(nrow(step1_datai) *(max_dist - min_dist)))
+    # step4[k] <- row_of_col_max
+
+    # version with mu and sigma
+   dist[lower.tri(dist)] <- NA
+   len_uniq_dist <- nrow(step1_datai)^2 - length(which(is.na(dist)))
+   prob[k] <- (1- 1/len_uniq_dist)
+   mu[k] <- mean(dist, na.rm = TRUE)
+   sigma[k] <- stats::sd(dist, na.rm = TRUE)
+   a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
+
+   new_a[k] <- mu[k] - sigma[k]*a[k]
+   b[k] <- sigma[k]/a[k]
+   step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - new_a[k])/(b[k]))
+  }
+  stats::median(step4, na.rm = TRUE)/log(length(colNms))
+  #max(step4, na.rm = TRUE)
+  #return(step5)
+}
+
+dist_harmony_pair_gamma <-function(step1_datai, prob)
+{
+  colnames(step1_datai) <- paste0("L",colnames(step1_datai))
+  colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
+
+  step2 <- NULL
+  for (i in 1:length(colNms)) {
+    step2[[i]] <- lapply(step1_datai[[colNms[i]]], quantile_extractx)
+  }
+
+  #rowTibb <- step1_datai
+  step3 <- rep(list(diag(nrow(step1_datai))), length(colNms))
+  #step4 <- matrix(NA, ncol = nrow(rowTibb), nrow = length(colNms))
+  step4 <- array(NA, dim = length(colNms))
+  prob <- array(NA, dim = length(colNms))
+  a <- array(NA, dim = length(colNms))
+  new_a <- array(NA, dim = length(colNms))
+  b <- array(NA, dim = length(colNms))
+  alpha <- array(NA, dim = length(colNms))
+  beta <- array(NA, dim = length(colNms))
+  mu <- array(NA, dim = length(colNms))
+  sigma <- array(NA, dim = length(colNms))
+  ## Logic
+  # for each of the list 7 DOW
+  #__ find the stepped sum difference of density vector elements
+  for (k in 1:length(colNms)){
+
+    dist <- matrix(NA,
+                   nrow = nrow(step1_datai),
+                   ncol = nrow(step1_datai)) ## Matrix
+    row_of_col_max <- NULL
+    for(i in 1:nrow(step1_datai))
+    {
+      for (j in 1:nrow(step1_datai))
+      {
+        m1 <- step2[[k]][[i]]
+        m2 <- step2[[k]][[j]]
+        #message(paste0("K:",k," I:",i," J:", j))
+        dist[i, j] <- compute_JSD(m1, m2)
+        dist[dist == 0] <- NA
+        # row_of_col_max[j] <- max(dist[, j])
+        # maximum of the entire matrix
+      }
+    }
+
+    max_dist <- max(dist, na.rm = TRUE)
+    min_dist <- min(dist, na.rm = TRUE)
+
     dist[lower.tri(dist)] <- NA
     len_uniq_dist <- nrow(step1_datai)^2 - length(which(is.na(dist)))
     prob[k] <- (1- 1/len_uniq_dist)
-    a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
-    #step3[[k]] <- dist
-    step4[k] <- max_dist/a[k]
-    #step5 <- mean(step4)
+    mu[k] <- mean(dist, na.rm = TRUE)
+    sigma[k] <- stats::sd(dist, na.rm = TRUE)
+    alpha[k] <- (mu[k]/sigma[k])^2
+    beta[k] <- sigma[k]^2/mu[k]
+    a[k] <- 1/beta[k]
+    b[k] <- a[k]*(log(len_uniq_dist) + (alpha[k]-1)*(log(log(len_uniq_dist))) - log(gamma(alpha[k])))
+    step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
   }
-  max(step4, na.rm = TRUE)
+  stats::median(step4, na.rm = TRUE)/log(length(colNms))
+  #max(step4, na.rm = TRUE)
   #return(step5)
 }
 
 # create two granularities at once
-create_gran_pair <-  function(.data, gran1, gran2)
+create_gran_pair <-  function(.data, gran1, gran2, hierarchy_tbl = NULL)
 {
   .data %>%
-    create_gran(gran1) %>%
-    create_gran(gran2)
+    create_gran(gran1, hierarchy_tbl) %>%
+    create_gran(gran2, hierarchy_tbl)
 }
 
 
@@ -130,9 +216,9 @@ create_gran_pair <-  function(.data, gran1, gran2)
 
 # <- for each element of the list formed
 
-step1 <- function(.data, harmony_tbl, response = NULL){
+step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL){
 
-  harmony_data <-create_harmony_data(.data, harmony_tbl, response)
+  harmony_data <-create_harmony_data(.data, harmony_tbl, response,hierarchy_tbl)
 
   (1: length(harmony_data)) %>%
   purrr::map(function(rowi){
@@ -155,11 +241,11 @@ step1 <- function(.data, harmony_tbl, response = NULL){
 # create data for each row of harmony table
 # a list created with a tsibble in each element corresponding to each row of the harmony table
 # create_harmony_data(smart_meter10, harmony_tbl, "general_supply_kwh")
-create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NULL)
+create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NULL, hierarchy_tbl = NULL)
 {
   (1:nrow(harmony_tbl)) %>% purrr::map(function(rowi){
     .data %>% create_gran_pair(harmony_tbl$facet_variable[rowi],
-                               harmony_tbl$x_variable[rowi]) %>%
+                               harmony_tbl$x_variable[rowi], hierarchy_tbl) %>%
       tibble::as_tibble() %>%
       dplyr::select(harmony_tbl$facet_variable[rowi],
                     harmony_tbl$x_variable[rowi],
