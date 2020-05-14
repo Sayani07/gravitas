@@ -25,5 +25,7 @@ utils::globalVariables(
     "gini_meas",
     "total_gini_meas",
     "quantiles",
-    "mean_max_variation")
+    "mean_max_variation",
+    "newds",
+    "freqx")
 )
