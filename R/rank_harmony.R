@@ -46,7 +46,7 @@ rank_harmony <- function(.data = NULL,
 
   mean_max <- unlist(dist_harmony_data)
   harmony_sort <- harmony_tbl %>%
-    dplyr::mutate(mean_max_variation = round(mean_max,2)) %>%
+    dplyr::mutate(mean_max_variation = round(mean_max,5)) %>%
     dplyr::arrange(dplyr::desc(mean_max_variation)) %>%
     dplyr::filter(!is.na(mean_max_variation))
 
@@ -58,7 +58,7 @@ rank_harmony <- function(.data = NULL,
 # uses dist_harmony_pair used for calculating max pairiwise
 # distance for one harmony pair
 
-dist_harmony_tbl <- function(.data, harmony_tbl, response, prob, dist_distribution, hierarchy_tbl = NULL){
+dist_harmony_tbl <- function(.data, harmony_tbl, response, prob, dist_distribution = NULL, hierarchy_tbl = NULL){
   step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl)
   (1: length(step1_data)) %>%
     purrr::map(function(rowi){
@@ -140,12 +140,13 @@ dist_harmony_pair <-function(step1_datai, prob = seq(0.01, 0.99, 0.01), dist_dis
    len_uniq_dist <- nrow(step1_datai)^2 - length(which(is.na(dist)))
    #dist_vector <- matrix(NA, nrow = length(colNms), ncol = len_uniq_dist)
    prob[k] <- (1- 1/len_uniq_dist)
+
    mu[k] <- mean(dist, na.rm = TRUE)
    sigma[k] <- stats::sd(dist, na.rm = TRUE)
-   a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
 
    if(dist_distribution == "normal")
    {
+     a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
    new_a[k] <- mu[k] + sigma[k]*a[k]
    b[k] <- sigma[k]/a[k]
    step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - new_a[k])/(b[k]))
@@ -155,8 +156,9 @@ dist_harmony_pair <-function(step1_datai, prob = seq(0.01, 0.99, 0.01), dist_dis
    {
    alpha[k] <- (mu[k]/sigma[k])^2
    beta[k] <- sigma[k]^2/mu[k]
+   b[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
    a[k] <- 1/beta[k]
-   b[k] <- a[k]*(log(len_uniq_dist) + (alpha[k]-1)*(log(log(len_uniq_dist))) - log(gamma(alpha[k])))
+   #b[k] <- a[k]*(log(len_uniq_dist) + (alpha[k]-1)*(log(log(len_uniq_dist))) - log(gamma(alpha[k])))
    step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
    }
 
