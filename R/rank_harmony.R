@@ -40,7 +40,7 @@ rank_harmony <- function(.data = NULL,
                          dist_distribution = "normal",
                          hierarchy_tbl = NULL)
 {
-  # <- _data <- step1(.data, harmony_tbl, response)
+  # <- _data <- <- <- step1(.data, harmony_tbl, response)
 
   dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob, dist_distribution, hierarchy_tbl)
 
@@ -58,7 +58,8 @@ rank_harmony <- function(.data = NULL,
 # uses dist_harmony_pair used for calculating max pairiwise
 # distance for one harmony pair
 
-dist_harmony_tbl <- function(.data, harmony_tbl, response, prob, dist_distribution = NULL, hierarchy_tbl = NULL){
+dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
+                             dist_distribution = NULL, hierarchy_tbl = NULL){
   step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl)
   (1: length(step1_data)) %>%
     purrr::map(function(rowi){
@@ -70,7 +71,8 @@ dist_harmony_tbl <- function(.data, harmony_tbl, response, prob, dist_distributi
 }
 
 # average of max pairwise distance for one harmony pair
-dist_harmony_pair <-function(step1_datai, prob = seq(0.01, 0.99, 0.01), dist_distribution = "normal")
+dist_harmony_pair <-function(step1_datai, prob = seq(0.01, 0.99, 0.01),
+                             dist_distribution = "normal")
 {
   colnames(step1_datai) <- paste0("L",colnames(step1_datai))
   colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
@@ -144,6 +146,12 @@ dist_harmony_pair <-function(step1_datai, prob = seq(0.01, 0.99, 0.01), dist_dis
    mu[k] <- mean(dist, na.rm = TRUE)
    sigma[k] <- stats::sd(dist, na.rm = TRUE)
 
+   if(dist_distribution == "general")
+   {
+     a[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
+     step4[k] <- max_dist/a[k]
+   }
+
    if(dist_distribution == "normal")
    {
      a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
@@ -162,24 +170,34 @@ dist_harmony_pair <-function(step1_datai, prob = seq(0.01, 0.99, 0.01), dist_dis
    step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
    }
 
+   if(dist_distribution == "chisq")
+   {
+     alpha[k] <- length(prob) - 1
+     beta[k] <- 1/2
+     b[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
+     a[k] <- 1/beta[k]
+     #b[k] <- a[k]*(log(len_uniq_dist) + (alpha[k]-1)*(log(log(len_uniq_dist))) - log(gamma(alpha[k])))
+     step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
+   }
+
    if(dist_distribution == "weibull")
    {
-   K[k] <-  (sigma[k]/ mu[k])^(-1.086)
-   lambda[k] <- mu[k]/gamma(1+1/K[k])
-   b[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
-   cd[k] <- exp(-b[k]/lambda[k])^K[k]
-   pd[k] <- (K[k]/lambda[k])*(b[k]/lambda[k])^(K[k]-1)*exp(-b[k]/lambda[k])^(K[k])
-   a[k] <- cd[k]/ pd[k]
+   K[k] <-  (sigma[k]/ mu[k])^(-1.086) #can change later
+   lambda[k] <- mu[k]/gamma(1+1/K[k]) #can change later
+   b[k] <- stats::quantile(as.vector(dist), prob = 1 - prob[k], type = 8, na.rm = TRUE)
+   #cd[k] <- exp(-b[k]/lambda[k])^K[k]
+   #pd[k] <- (K[k]/lambda[k])*(b[k]/lambda[k])^(K[k]-1)*exp(-b[k]/lambda[k])^(K[k])
+   #a[k] <- cd[k]/ pd[k]
+   a[k] <- (((1/lambda[k])^K[k])*K[k]*(b[k]^(K[k]-1)))^(-1)
    step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
    }
    d<- as.vector(dist)
    d <- d[!is.na(d)]
    dist_vector <- rbind(dist_vector,d)
-
   }
   row.names(dist_vector)
   normalised_value <- stats::median(step4, na.rm = TRUE)/log(length(colNms))
-  value <- list(val = normalised_value, distvec = dist_vector[,-1])
+  value <- list(val = normalised_value, distvec = dist_vector)
   value
   #max(step4, na.rm = TRUE)
   #return(step5)
