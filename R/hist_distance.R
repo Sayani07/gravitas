@@ -50,7 +50,7 @@ data_gran <- create_gran_pair(.data,
       dplyr::select(!!gran1, !!gran2, !!response)%>%
       tidyr::pivot_wider(names_from = !!gran1,
                          values_from = !!response,
-                         values_fn = list(response =mean))
+                         values_fn = list(response = list))
 
    z <- dist_harmony_pair(data_gran, dist_distribution)
    distvector <- z$distvec
