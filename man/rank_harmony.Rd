@@ -50,7 +50,8 @@ harmony(ugran = "month",
 .data = sm
 response  = "general_supply_kwh"
 harmony_tbl =  harmonies
-smart_harmony <- .data \%>\% rank_harmony(harmony_tbl = harmonies, response = "general_supply_kwh")
+smart_harmony <- .data \%>\% rank_harmony(harmony_tbl = harmonies,
+response = "general_supply_kwh")
 harmony_tbl <- PBS \%>\% harmony(ugran = "year")
 rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
 }

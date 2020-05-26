@@ -42,7 +42,8 @@ Imports:
   ineq,
   magrittr,
   utils,
-  tidyselect
+  tidyselect,
+  EnvStats
 Suggests:
     tsibbledata (>= 0.1.0),
     purrr (>= 0.3.2),

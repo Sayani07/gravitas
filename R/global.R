@@ -27,5 +27,6 @@ utils::globalVariables(
     "quantiles",
     "mean_max_variation",
     "newds",
-    "freqx")
+    "freqx",
+    "..density..")
 )

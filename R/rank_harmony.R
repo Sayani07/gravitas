@@ -28,7 +28,8 @@
 #' .data = sm
 #' response  = "general_supply_kwh"
 #' harmony_tbl =  harmonies
-#' smart_harmony <- .data %>% rank_harmony(harmony_tbl = harmonies, response = "general_supply_kwh")
+#' smart_harmony <- .data %>% rank_harmony(harmony_tbl = harmonies,
+#' response = "general_supply_kwh")
 #' harmony_tbl <- PBS %>% harmony(ugran = "year")
 #'rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
 #' @export rank_harmony
@@ -375,7 +376,7 @@ step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL){
         response = harmony_datai[[response]]
       ) %>%
       dplyr::select(-!!response) %>%
-      tidyr::pivot_wider(names_from = namesi[2],
+      tidyr::pivot_wider(names_from = namesi[1],
                values_from = response,
                values_fn = list(response = list))
   })

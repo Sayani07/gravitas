@@ -6,6 +6,10 @@ library(lubridate)
 library(readr)
 library(dplyr)
 
+# PUT THESE IN THE DESCRIPTION IF YOU TEST THE APP
+# shinythemes,
+# shinyalert,
+
 vic_elec <- tsibbledata::vic_elec
 harmony_tbl <- read_csv("harmony_table.csv")
 
