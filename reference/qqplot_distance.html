@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plotting probability distributions across granularities — rank_harmony • gravitas</title>
+<title>Plotting QQ-plot of distances between probability distributions — qqplot_distance • gravitas</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="Plotting probability distributions across granularities — rank_harmony" />
-<meta property="og:description" content="Plot probability distribution of univariate series across bivariate temporal granularities." />
+<meta property="og:title" content="Plotting QQ-plot of distances between probability distributions — qqplot_distance" />
+<meta property="og:description" content="Plotting empirical and theoretical distribution of distances to understand best fit" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -137,21 +137,21 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plotting probability distributions across granularities</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/rank_harmony.R'><code>R/rank_harmony.R</code></a></small>
-    <div class="hidden name"><code>rank_harmony.Rd</code></div>
+    <h1>Plotting QQ-plot of distances between probability distributions</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/qqplot_distance.R'><code>R/qqplot_distance.R</code></a></small>
+    <div class="hidden name"><code>qqplot_distance.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plot probability distribution of univariate series across bivariate temporal granularities.</p>
+    <p>Plotting empirical and theoretical distribution of distances to understand best fit</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rank_harmony</span>(
+    <pre class="usage"><span class='fu'>qqplot_distance</span>(
   <span class='kw'>.data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>harmony_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.99</span>, <span class='fl'>0.01</span>),
-  <span class='kw'>dist_distribution</span> <span class='kw'>=</span> <span class='st'>"normal"</span>,
   <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
@@ -163,8 +163,12 @@
       <td><p>a tsibble.</p></td>
     </tr>
     <tr>
-      <th>harmony_tbl</th>
-      <td><p>A tibble of harmonies and their levels obtained from the function().</p></td>
+      <th>gran1</th>
+      <td><p>the granularity which is to be placed across facets. Can be column names if required granularity already exists in the tsibble. For example, a column with public holidays which needs to be treated as granularity, can be included here.</p></td>
+    </tr>
+    <tr>
+      <th>gran2</th>
+      <td><p>the granularity to be placed across x-axis. Can be column names if required granularity already exists in the tsibble.</p></td>
     </tr>
     <tr>
       <th>response</th>
@@ -173,10 +177,6 @@
     <tr>
       <th>prob</th>
       <td><p>numeric vector of probabilities with values in [0,1].</p></td>
-    </tr>
-    <tr>
-      <th>dist_distribution</th>
-      <td><p>Underlying distribution of distances. Look at hist_distance()</p></td>
     </tr>
     <tr>
       <th>hierarchy_tbl</th>
@@ -199,29 +199,29 @@
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>magrittr</span>)
 <span class='no'>sm</span> <span class='kw'>&lt;-</span> <span class='no'>smart_meter10</span> <span class='kw'>%&gt;%</span>
 <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>customer_id</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10017936</span>))
-<span class='no'>harmonies</span> <span class='kw'>&lt;-</span> <span class='no'>sm</span> <span class='kw'>%&gt;%</span>
-<span class='fu'><a href='harmony.html'>harmony</a></span>(<span class='kw'>ugran</span> <span class='kw'>=</span> <span class='st'>"month"</span>,
-       <span class='kw'>filter_in</span> <span class='kw'>=</span> <span class='st'>"wknd_wday"</span>,
-       <span class='kw'>filter_out</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hhour"</span>, <span class='st'>"fortnight"</span>))
 <span class='no'>.data</span> <span class='kw'>=</span> <span class='no'>sm</span>
+<span class='no'>gran1</span> <span class='kw'>=</span> <span class='st'>"wknd_wday"</span>
+<span class='no'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>
 <span class='no'>response</span>  <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>
-<span class='no'>harmony_tbl</span> <span class='kw'>=</span>  <span class='no'>harmonies</span>
-<span class='no'>smart_harmony</span> <span class='kw'>&lt;-</span> <span class='no'>.data</span> <span class='kw'>%&gt;%</span> <span class='fu'>rank_harmony</span>(<span class='kw'>harmony_tbl</span> <span class='kw'>=</span> <span class='no'>harmonies</span>,
-<span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>)
-<span class='no'>harmony_tbl</span> <span class='kw'>&lt;-</span> <span class='no'>PBS</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='harmony.html'>harmony</a></span>(<span class='kw'>ugran</span> <span class='kw'>=</span> <span class='st'>"year"</span>)
-<span class='fu'>rank_harmony</span>(<span class='no'>PBS</span>, <span class='kw'>harmony_tbl</span> <span class='kw'>=</span> <span class='no'>harmony_tbl</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"Cost"</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 5
-#&gt;    facet_variable   x_variable       facet_levels x_levels mean_max_variation
-#&gt;    &lt;chr&gt;            &lt;chr&gt;                   &lt;int&gt;    &lt;int&gt;              &lt;dbl&gt;
-#&gt;  1 semester_year    month_semester              2        6            0.0712 
-#&gt;  2 month_quarter    quarter_year                3        4            0.0381 
-#&gt;  3 quarter_semester semester_year               2        2            0.0178 
-#&gt;  4 month_quarter    semester_year               3        2            0.0126 
-#&gt;  5 quarter_semester month_quarter               2        3            0.00994
-#&gt;  6 month_semester   semester_year               6        2            0.00902
-#&gt;  7 semester_year    quarter_semester            2        2            0.00829
-#&gt;  8 semester_year    month_quarter               2        3            0.00733
-#&gt;  9 month_quarter    quarter_semester            3        2            0.00616
-#&gt; 10 quarter_year     month_quarter               4        3            0.00537</div></pre>
+<span class='no'>.data</span> <span class='kw'>%&gt;%</span> <span class='fu'>qqplot_distance</span>(<span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"wknd_wday"</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
+#&gt; <span class='warning'>* Use `values_fn = list` to suppress this warning.</span>
+#&gt; <span class='warning'>* Use `values_fn = length` to identify where the duplicates arise</span>
+#&gt; <span class='warning'>* Use `values_fn = {summary_fun}` to summarise duplicates</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* `` -&gt; ...1</span>
+#&gt; <span class='message'>* `` -&gt; ...2</span>
+#&gt; <span class='message'>* `` -&gt; ...3</span>
+#&gt; <span class='message'>* `` -&gt; ...4</span>
+#&gt; <span class='message'>* `` -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='img'><img src='qqplot_distance-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>.data</span> <span class='kw'>%&gt;%</span> <span class='fu'>qqplot_distance</span>(<span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"day_week"</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
+#&gt; <span class='warning'>* Use `values_fn = list` to suppress this warning.</span>
+#&gt; <span class='warning'>* Use `values_fn = length` to identify where the duplicates arise</span>
+#&gt; <span class='warning'>* Use `values_fn = {summary_fun}` to summarise duplicates</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
+#&gt; <span class='message'>* `` -&gt; ...1</span>
+#&gt; <span class='message'>* `` -&gt; ...2</span>
+#&gt; <span class='message'>* `` -&gt; ...3</span>
+#&gt; <span class='message'>* `` -&gt; ...4</span>
+#&gt; <span class='message'>* `` -&gt; ...5</span>
+#&gt; <span class='message'>* ...</span></div><div class='img'><img src='qqplot_distance-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
