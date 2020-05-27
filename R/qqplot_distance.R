@@ -39,7 +39,8 @@ qqplot_distance <- function(.data = NULL,
                                   gran1,
                                   gran2,
                                   response,
-                                  prob = seq(0.01, 0.99, 0.01))
+                                  prob = seq(0.01, 0.99, 0.01),
+                                  hierarchy_tbl)
   graphics::par(mfrow = c(2, 2))
   #
   #    if(dist_distribution=="normal")
@@ -100,6 +101,7 @@ qqplot_distance <- function(.data = NULL,
   #             xlab = "theoretical",
   #             ylab = "empirical",
   #             main = "chisq")
+  #N <- unique(new_distvector$freqx)
   EnvStats::qqPlot(new_distvector$freqx, distribution = "chisq", param.list = list(df = 98), add.line = TRUE,  ylab = "empirical",main = "Chi-squared")
 
 }
