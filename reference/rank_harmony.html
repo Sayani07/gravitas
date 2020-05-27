@@ -151,7 +151,7 @@
   <span class='kw'>harmony_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.99</span>, <span class='fl'>0.01</span>),
-  <span class='kw'>dist_distribution</span> <span class='kw'>=</span> <span class='st'>"normal"</span>,
+  <span class='kw'>dist_distribution</span> <span class='kw'>=</span> <span class='st'>"chisq"</span>,
   <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
@@ -212,16 +212,16 @@
 <span class='fu'>rank_harmony</span>(<span class='no'>PBS</span>, <span class='kw'>harmony_tbl</span> <span class='kw'>=</span> <span class='no'>harmony_tbl</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"Cost"</span>)</div><div class='output co'>#&gt; # A tibble: 10 x 5
 #&gt;    facet_variable   x_variable       facet_levels x_levels mean_max_variation
 #&gt;    &lt;chr&gt;            &lt;chr&gt;                   &lt;int&gt;    &lt;int&gt;              &lt;dbl&gt;
-#&gt;  1 semester_year    month_semester              2        6            0.0712 
-#&gt;  2 month_quarter    quarter_year                3        4            0.0381 
-#&gt;  3 quarter_semester semester_year               2        2            0.0178 
-#&gt;  4 month_quarter    semester_year               3        2            0.0126 
-#&gt;  5 quarter_semester month_quarter               2        3            0.00994
-#&gt;  6 month_semester   semester_year               6        2            0.00902
-#&gt;  7 semester_year    quarter_semester            2        2            0.00829
-#&gt;  8 semester_year    month_quarter               2        3            0.00733
-#&gt;  9 month_quarter    quarter_semester            3        2            0.00616
-#&gt; 10 quarter_year     month_quarter               4        3            0.00537</div></pre>
+#&gt;  1 semester_year    quarter_semester            2        2            0.0178 
+#&gt;  2 month_semester   semester_year               6        2            0.0128 
+#&gt;  3 semester_year    month_quarter               2        3            0.0126 
+#&gt;  4 quarter_year     month_quarter               4        3            0.0105 
+#&gt;  5 semester_year    month_semester              2        6            0.00902
+#&gt;  6 quarter_semester semester_year               2        2            0.00829
+#&gt;  7 quarter_semester month_quarter               2        3            0.00616
+#&gt;  8 month_quarter    quarter_semester            3        2            0.00171
+#&gt;  9 month_quarter    semester_year               3        2            0.00097
+#&gt; 10 month_quarter    quarter_year                3        4            0.00075</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
