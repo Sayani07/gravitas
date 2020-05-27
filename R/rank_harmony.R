@@ -38,7 +38,7 @@ rank_harmony <- function(.data = NULL,
                          harmony_tbl = NULL,
                          response = NULL,
                          prob = seq(0.01, 0.99, 0.01),
-                         dist_distribution = "normal",
+                         dist_distribution = "chisq",
                          hierarchy_tbl = NULL)
 {
   # <- _data <- <- <- step1(.data, harmony_tbl, response)
@@ -72,7 +72,8 @@ dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
 }
 
 # average of max pairwise distance for one harmony pair
-dist_harmony_pair <-function(step1_datai, prob = seq(0.01, 0.99, 0.01),
+dist_harmony_pair <-function(step1_datai,
+                             prob = seq(0.01, 0.99, 0.01),
                              dist_distribution = "normal")
 {
   colnames(step1_datai) <- paste0("L",colnames(step1_datai))
@@ -163,16 +164,27 @@ dist_harmony_pair <-function(step1_datai, prob = seq(0.01, 0.99, 0.01),
 
    if(dist_distribution == "gamma")
    {
+    # fit_dist <- MASS::fitdistr(dist, densfun = "gamma")
+    # if(method == "MME")
+    # {
    alpha[k] <- (mu[k]/sigma[k])^2
    beta[k] <- sigma[k]^2/mu[k]
-   b[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
-   a[k] <- 1/beta[k]
+   # }
+   #  if(method == "MLE")
+   #  {
+   #    alpha[k] = fit_dist$estimate[[1]]
+   #    beta[k] = 1/fit_dist$estimate[[2]]
+   #  }
+    b[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
+    a[k] <- 1/beta[k]
+
    #b[k] <- a[k]*(log(len_uniq_dist) + (alpha[k]-1)*(log(log(len_uniq_dist))) - log(gamma(alpha[k])))
    step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
    }
 
    if(dist_distribution == "chisq")
    {
+     #MASS::fitdistr(dist, densfun = "chi-squared")
      alpha[k] <- length(prob) - 1
      beta[k] <- 1/2
      b[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
@@ -376,7 +388,7 @@ step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL){
         response = harmony_datai[[response]]
       ) %>%
       dplyr::select(-!!response) %>%
-      tidyr::pivot_wider(names_from = namesi[1],
+      tidyr::pivot_wider(names_from = namesi[2],
                values_from = response,
                values_fn = list(response = list))
   })

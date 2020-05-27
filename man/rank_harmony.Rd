@@ -9,7 +9,7 @@ rank_harmony(
   harmony_tbl = NULL,
   response = NULL,
   prob = seq(0.01, 0.99, 0.01),
-  dist_distribution = "normal",
+  dist_distribution = "chisq",
   hierarchy_tbl = NULL
 )
 }
