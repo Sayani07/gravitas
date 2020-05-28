@@ -178,7 +178,9 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
   <span class="fu"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"inning"</span>, <span class="st">"over"</span>,
   <span class="no">hierarchy_model</span>,
   <span class="kw">response</span> <span class="kw">=</span> <span class="st">"runs_per_over"</span>,
-  <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"lv"</span>)</pre></body></html></div>
+  <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"lv"</span>)
+<span class="co">#&gt; Joining, by = c("inning", "over")</span>
+<span class="co">#&gt; Joining, by = c("inning", "over")</span></pre></body></html></div>
 <p><img src="cricket_files/figure-html/cricex-1.png" width="768" style="display: block; margin: auto;"></p>
 <!-- # Is there a chance that they are more likely to win if they bat first? -->
 <!-- ```{r} -->
@@ -286,6 +288,8 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
             <span class="kw">response</span> <span class="kw">=</span> <span class="st">"runs_per_over"</span>,
             <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"quantile"</span>,
             <span class="kw">quantile_prob</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>))
+<span class="co">#&gt; Joining, by = c("over", "dot_balls")</span>
+<span class="co">#&gt; Joining, by = c("over", "dot_balls")</span>
 <span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Some combinations of granularities have less than 30 observations.</span>
 <span class="co">#&gt;             Check gran_obs() to find combinations which have low observations.</span>
 <span class="co">#&gt;             Analyze the distribution of these combinations with caution.</span></pre></body></html></div>
@@ -297,7 +301,9 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
             <span class="no">hierarchy_model</span>,
             <span class="kw">response</span> <span class="kw">=</span> <span class="st">"runs_per_over"</span>,
             <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"quantile"</span>,
-            <span class="kw">quantile_prob</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>))</pre></body></html></div>
+            <span class="kw">quantile_prob</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>))
+<span class="co">#&gt; Joining, by = c("over", "wicket")</span>
+<span class="co">#&gt; Joining, by = c("over", "wicket")</span></pre></body></html></div>
 <p><img src="cricket_files/figure-html/exwicketplot-1.png" width="768" style="display: block; margin: auto;"></p>
 <!-- ```{r} -->
 <!-- cricket_tsibble %>% -->

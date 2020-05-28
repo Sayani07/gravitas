@@ -318,7 +318,13 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
                             <span class="kw">response</span> <span class="kw">=</span> <span class="st">"general_supply_kwh"</span>,
                             <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"boxplot"</span>) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Energy consumption distribution for customer id: 10006704"</span>)</pre></body></html></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Energy consumption distribution for customer id: 10006704"</span>)
+<span class="co">#&gt; Joining, by = c("wknd_wday", "hour_day")</span>
+<span class="co">#&gt; Warning: Column `wknd_wday` joining character vector and factor, coercing into</span>
+<span class="co">#&gt; character vector</span>
+<span class="co">#&gt; Joining, by = c("wknd_wday", "hour_day")</span>
+<span class="co">#&gt; Warning: Column `wknd_wday` joining character vector and factor, coercing into</span>
+<span class="co">#&gt; character vector</span></pre></body></html></div>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">cust2</span> <span class="kw">&lt;-</span> <span class="no">smart_meter10</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">customer_id</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10017936</span>))<span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"wknd_wday"</span>,
@@ -326,7 +332,13 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
                             <span class="kw">response</span> <span class="kw">=</span> <span class="st">"general_supply_kwh"</span>,
                             <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"boxplot"</span>) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Energy consumption distribution for customer id: 10017936"</span>)</pre></body></html></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Energy consumption distribution for customer id: 10017936"</span>)
+<span class="co">#&gt; Joining, by = c("wknd_wday", "hour_day")</span>
+<span class="co">#&gt; Warning: Column `wknd_wday` joining character vector and factor, coercing into</span>
+<span class="co">#&gt; character vector</span>
+<span class="co">#&gt; Joining, by = c("wknd_wday", "hour_day")</span>
+<span class="co">#&gt; Warning: Column `wknd_wday` joining character vector and factor, coercing into</span>
+<span class="co">#&gt; character vector</span></pre></body></html></div>
 <p><img src="gravitas_vignette_files/figure-html/cust-1.png" width="768" style="display: block; margin: auto;"><img src="gravitas_vignette_files/figure-html/cust-2.png" width="768" style="display: block; margin: auto;"></p>
 <p>Similarly, we can plot the other harmony pairs and decide if they are useful in deriving insights about the energy behavior of the customers.</p>
 </div>
