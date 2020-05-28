@@ -102,8 +102,7 @@ qqplot_distance <- function(.data = NULL,
   #             ylab = "empirical",
   #             main = "chisq")
   #N <- unique(new_distvector$freqx)
-  EnvStats::qqPlot(new_distvector$freqx, distribution = "chisq", param.list = list(df = 98), add.line = TRUE,  ylab = "empirical",main = "Chi-squared")
-
+  EnvStats::qqPlot(new_distvector$freqx, distribution = "chisq", param.list = list(df = 98), add.line = TRUE,  ylab = "empirical",main = "Chi-squared"
 }
 
 # qqPlot(new_distvector$freqx, distribution = "chisq", param.list = list(df = 551), add.line = TRUE)

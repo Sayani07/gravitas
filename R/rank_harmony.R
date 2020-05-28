@@ -204,10 +204,21 @@ dist_harmony_pair <-function(step1_datai,
    step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
    }
 
-   if(dist_distribution == "chisq")
+   if(dist_distribution == "chisq_98")
    {
      #MASS::fitdistr(dist, densfun = "chi-squared")
      alpha[k] <- length(prob) - 1
+     beta[k] <- 1/2
+     b[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
+     a[k] <- 1/beta[k]
+     #b[k] <- a[k]*(log(len_uniq_dist) + (alpha[k]-1)*(log(log(len_uniq_dist))) - log(gamma(alpha[k])))
+     step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
+   }
+
+   if(dist_distribution == "chisq_1")
+   {
+     #MASS::fitdistr(dist, densfun = "chi-squared")
+     alpha[k] <-  1
      beta[k] <- 1/2
      b[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
      a[k] <- 1/beta[k]
