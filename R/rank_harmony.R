@@ -39,17 +39,39 @@ rank_harmony <- function(.data = NULL,
                          response = NULL,
                          prob = seq(0.01, 0.99, 0.01),
                          dist_distribution = "chisq",
-                         hierarchy_tbl = NULL)
+                         hierarchy_tbl = NULL,
+                         alpha = 0.05)
 {
   # <- _data <- <- <- step1(.data, harmony_tbl, response)
 
   dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob, dist_distribution, hierarchy_tbl)
 
-  mean_max <- unlist(dist_harmony_data)
+  comp_dist <- dist_harmony_data %>%
+    unlist %>%
+    matrix(ncol = 2, byrow = TRUE) %>%
+    as_tibble(.name_repair = "unique")
+
+# all for n = 100
+# taken from Tests for the Exponential, Weibull and Gumbel Distributions Based on the Stabilized Probability Plot
+    if(alpha == 0.05){
+      galpa <- 0.073
+    }
+    else if (alpha == 0.1){
+      galpa <- 0.066
+    }
+  else if (alpha == 0.01){
+    galpa <- 0.089
+    }
+
+  mean_max <- comp_dist$...1
+  max_norm_stat <- comp_dist$...2
   harmony_sort <- harmony_tbl %>%
-    dplyr::mutate(mean_max_variation = round(mean_max,5)) %>%
+    dplyr::mutate(mean_max_variation = round(mean_max,5),
+                  max_norm_s = max_norm_stat) %>%
     dplyr::arrange(dplyr::desc(mean_max_variation)) %>%
-    dplyr::filter(!is.na(mean_max_variation))
+    dplyr::filter(!is.na(mean_max_variation),
+                  max_norm_s>=galpa) %>%
+    dplyr::select(-max_norm_s)
 
   harmony_sort
 }
@@ -67,7 +89,7 @@ dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
       step_datai <- step1_data %>%
         magrittr::extract2(rowi)
       z <- dist_harmony_pair(step_datai, prob, dist_distribution)
-      z$val
+      c(z$val, z$max_norm_stat)
     })
 }
 
@@ -210,7 +232,8 @@ dist_harmony_pair <-function(step1_datai,
   }
   row.names(dist_vector)
   normalised_value <- stats::median(step4, na.rm = TRUE)/log(length(colNms))
-  value <- list(val = normalised_value, distvec = dist_vector)
+  max_norm <- max(step4)
+  value <- list(val = normalised_value, distvec = dist_vector, max_norm_stat = max_norm)
   value
   #max(step4, na.rm = TRUE)
   #return(step5)
@@ -388,7 +411,7 @@ step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL){
         response = harmony_datai[[response]]
       ) %>%
       dplyr::select(-!!response) %>%
-      tidyr::pivot_wider(names_from = namesi[2],
+      tidyr::pivot_wider(names_from = namesi[1],
                values_from = response,
                values_fn = list(response = list))
   })
