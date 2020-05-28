@@ -24,12 +24,12 @@
 #'
 #' vic_elec %>% prob_plot(
 #'   gran1 = "day_week", gran2 = "hour_day",
-#'   response = "Demand", plot_type = "violin",
+#'   response = "Demand", plot_type = "quantile",
 #'   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-#'   symmetric = TRUE, outlier.colour = "red",
+#'   symmetric = TRUE,
+#'    outlier.colour = "red",
 #'   outlier.shape = 2, palette = "Dark2"
 #' )
-
 #'
 #' cricket_tsibble <- cricket %>%
 #'   mutate(data_index = row_number()) %>%
@@ -58,6 +58,7 @@ prob_plot <- function(.data,
                       facet_h = NULL,
                       symmetric = TRUE,
                       alpha = 0.8,
+                      threshold_nobs = NULL,
                       # begin = 0,
                       # end = 1,
                       # direction = 1,
@@ -102,20 +103,23 @@ prob_plot <- function(.data,
 
   gran_pair_obs =  data_mutate %>% gran_tbl(gran1, gran2, hierarchy_tbl)
 
+  if(is.null(threshold_nobs))
+  {
   if(plot_type == "boxplot"){
-    obs_threshold <- 10
+    threshold_nobs <- 10
   }
   else if (plot_type == "quantile"){
-    obs_threshold <- max(10, length(quantile_prob))
+    threshold_nobs <- max(10, length(quantile_prob))
   }
   else {
-    obs_threshold <- 30
+    threshold_nobs <- 30
+  }
   }
 
 
-  data_sub1 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% dplyr::left_join(gran_pair_obs) %>%  dplyr::filter(nobs<=obs_threshold)
+  data_sub1 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% dplyr::left_join(gran_pair_obs) %>%  dplyr::filter(nobs<=threshold_nobs)
 
-  data_sub2 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% dplyr::left_join(gran_pair_obs) %>%  dplyr::filter(nobs>obs_threshold)
+  data_sub2 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% dplyr::left_join(gran_pair_obs) %>%  dplyr::filter(nobs>threshold_nobs)
 
   x_var <- dplyr::if_else(plot_type == "ridge", response, gran2)
   y_var <- dplyr::if_else(plot_type == "ridge", gran2, response)
@@ -136,7 +140,7 @@ if(nrow(data_sub1)!=0)
   p <- p +
     ggplot2::geom_point(data = data_sub1,
                ggplot2::aes(x = .data[[x_var]],
-                                y = .data[[y_var]]),alpha = 0.5,...)
+                                y = .data[[y_var]]),alpha = 0.5,colour = "red",...)
   }
 
     if(nrow(data_sub2)!=0)
@@ -197,8 +201,8 @@ plot_return <- p +
                             " plot across ",
                             gran2,
                             " given ",
-                            gran1))
-    #ggplot2::scale_fill_brewer()
+                            gran1)) +
+    ggplot2::scale_fill_brewer(palette = "Dark2")
 
   gran_warn(.data,
             gran1,
