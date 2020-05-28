@@ -10,7 +10,7 @@
 #' @param response response variable to be plotted.
 #' @param facet_h levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.
 #' @param quantile_prob numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "decile" plot.
-#' @param symmetric If TRUE, symmetic quantile area plot is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd and ideally the quantile_prob should be a symmetric vector with median at the middle position.
+#' @param symmetric If TRUE, symmetic quantile area <- is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd and ideally the quantile_prob should be a symmetric vector with median at the middle position.
 #' @param alpha level of transperancy for the quantile area
 #' @param ... other arguments to be passed for customising the obtained ggplot object.
 #' @return a ggplot object which can be customised as usual.
@@ -29,6 +29,7 @@
 #'   symmetric = TRUE, outlier.colour = "red",
 #'   outlier.shape = 2, palette = "Dark2"
 #' )
+
 #'
 #' cricket_tsibble <- cricket %>%
 #'   mutate(data_index = row_number()) %>%
@@ -89,6 +90,7 @@ prob_plot <- function(.data,
   }
 
   ## making data mutate and basic ggplot object without a geom
+
   data_mutate <- .data %>%
     create_gran(gran1,
                 hierarchy_tbl = hierarchy_tbl
@@ -96,47 +98,62 @@ prob_plot <- function(.data,
     create_gran(gran2,
                 hierarchy_tbl = hierarchy_tbl
     )
+  # conditional ggplot2 (if number iof observation few then show scatter plot)
+
+  gran_pair_obs =  data_mutate %>% gran_tbl(gran1, gran2, hierarchy_tbl)
+
+  data_sub1 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs<=30)
+
+  data_sub2 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs>30)
 
   x_var <- dplyr::if_else(plot_type == "ridge", response, gran2)
   y_var <- dplyr::if_else(plot_type == "ridge", gran2, response)
 
-  p <- data_mutate %>%
-    tibble::as_tibble(.name_repair = "minimal") %>%
-    ggplot2::ggplot(ggplot2::aes(x = data_mutate[[x_var]],
-                                 y = data_mutate[[y_var]]
-    )) +
-    ggplot2::facet_wrap(~ data_mutate[[gran1]]) +
-    ggplot2::ggtitle(paste0(plot_type,
-                            " plot across ",
-                            gran2, "on x-axis",
-                            " given ",
-                            gran1, "on facets"
-    )) +
-    ggplot2::xlab(gran2) + ggplot2::ylab(response) +
-    ggplot2::scale_fill_brewer()
+   # <- data_mutate %>%
+   #  tibble::as_tibble(.name_repair = "minimal") %>%
+    p <- data_mutate %>%
+      ggplot2::ggplot(ggplot2::aes(x = .data[[x_var]],
+                                      y = .data[[y_var]]))
+
+  if(nrow(data_sub1)==0 )
+  {
+    p_nobs <- p
+  }
+
+if(nrow(data_sub1)!=0)
+  {
+  p_nobs <- p +
+    geom_point(data = data_sub1,
+               ggplot2::aes(x = .data[[x_var]],
+                                y = .data[[y_var]]),
+               colour = "red",
+               alpha = 0.5)
+  }
+
 
   if (plot_type == "boxplot") {
-    plot <- p + ggplot2::geom_boxplot(...)
+    plot <- p_nobs +
+      ggplot2::geom_boxplot(data = data_sub2,...)
   }
   else if (plot_type == "violin") {
-    plot <- p + ggplot2::geom_violin(...)
+    plot <- p_nobs + ggplot2::geom_violin(data = data_sub2, ...)
   }
 
   else if (plot_type == "lv") {
     plot <-
-      p + lvplot::geom_lv(ggplot2::aes(fill = ..LV..),
+      p_nobs + lvplot::geom_lv(data = data_sub2, ggplot2::aes(fill = ..LV..),
                   k = 5,
                   ...
       )
   }
 
   else if (plot_type == "ridge") {
-    plot <- p +
-      ggridges::geom_density_ridges(...)
+    plot <- p_nobs +
+      ggridges::geom_density_ridges(data = data_sub2,...)
   }
 
   else if (plot_type == "quantile") {
-    plot <- quantile_plot(.data,
+    plot <- quantile_plot(.data = data_sub2,
                           gran1,
                           gran2,
                           hierarchy_tbl,
@@ -148,23 +165,29 @@ prob_plot <- function(.data,
     )
   }
 
-  plot_return <- plot +
-    ggplot2::theme(
-      legend.position = "bottom",
-      strip.text = ggplot2::element_text(
-        size = 7,
-        margin = ggplot2::margin()
-      )
-    ) +
+    # +
+    # ggplot2::ggtitle(paste0(plot_type,
+    #                         " plot across ",
+    #                         gran2, "on x-axis",
+    #                         " given ",
+    #                         gran1, "on facets"
+    #)) +
+    # ggplot2::xlab(gran2) + ggplot2::ylab(response) +
+    # ggplot2::scale_fill_brewer()
+
+
+plot_return <- plot +
+    ggplot2::facet_wrap(vars(!!sym(gran1))) +
+    ggplot2::theme(legend.position = "bottom",
+                   strip.text = ggplot2::element_text(size = 7,margin = ggplot2::margin())) +
     ggplot2::ylab(y_var) +
     ggplot2::xlab(x_var) +
-    ggplot2::ggtitle(paste0(
-      plot_type,
-      " plot across ",
-      gran2,
-      " given ",
-      gran1
-    ))
+    ggplot2::ggtitle(paste0(plot_type,
+                            " plot across ",
+                            gran2,
+                            " given ",
+                            gran1))
+    #ggplot2::scale_fill_brewer()
 
   gran_warn(.data,
             gran1,
@@ -208,14 +231,18 @@ quantile_plot <- function(.data,
   quantile_funs <- purrr::map(p, ~ purrr::partial(stats::quantile, probs = .x, na.rm = TRUE)) %>%
     rlang::set_names(nm = quantile_names)
 
-  data_mutate <- .data %>%
-    create_gran(gran1,
-      hierarchy_tbl = hierarchy_tbl
-    ) %>%
-    create_gran(gran2,
-      hierarchy_tbl = hierarchy_tbl
-    )
+  data_mutate <- .data
 
+  # will feed in data_mutate directly no requirement of
+  # creating the granularities again
+  # %>%
+  #   create_gran(gran1,
+  #     hierarchy_tbl = hierarchy_tbl
+  #   ) %>%
+  #   create_gran(gran2,
+  #     hierarchy_tbl = hierarchy_tbl
+  #   )
+  #
 
   data_mutate_obj <- data_mutate %>%
     tibble::as_tibble() %>%
