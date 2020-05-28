@@ -41,7 +41,6 @@ qqplot_distance <- function(.data = NULL,
                                   response,
                                   prob = seq(0.01, 0.99, 0.01),
                                   hierarchy_tbl)
-  dev.new()
   graphics::par(mfrow = c(2, 2))
   #
   #    if(dist_distribution=="normal")

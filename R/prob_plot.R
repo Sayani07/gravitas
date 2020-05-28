@@ -23,7 +23,7 @@
 #' library(dplyr)
 #'
 #' vic_elec %>% prob_plot(
-#'   gran1 = "month_year", gran2 = "hour_week",
+#'   gran1 = "day_week", gran2 = "hour_day",
 #'   response = "Demand", plot_type = "violin",
 #'   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
 #'   symmetric = TRUE, outlier.colour = "red",
@@ -113,9 +113,9 @@ prob_plot <- function(.data,
   }
 
 
-  data_sub1 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs<=obs_threshold)
+  data_sub1 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% dplyr::left_join(gran_pair_obs) %>%  dplyr::filter(nobs<=obs_threshold)
 
-  data_sub2 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs>obs_threshold)
+  data_sub2 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% dplyr::left_join(gran_pair_obs) %>%  dplyr::filter(nobs>obs_threshold)
 
   x_var <- dplyr::if_else(plot_type == "ridge", response, gran2)
   y_var <- dplyr::if_else(plot_type == "ridge", gran2, response)
@@ -134,11 +134,9 @@ prob_plot <- function(.data,
 if(nrow(data_sub1)!=0)
   {
   p <- p +
-    geom_point(data = data_sub1,
+    ggplot2::geom_point(data = data_sub1,
                ggplot2::aes(x = .data[[x_var]],
-                                y = .data[[y_var]]),
-               colour = "red",
-               alpha = 0.5)
+                                y = .data[[y_var]]),alpha = 0.5,...)
   }
 
     if(nrow(data_sub2)!=0)
@@ -190,7 +188,7 @@ if(nrow(data_sub1)!=0)
 
 
 plot_return <- p +
-    ggplot2::facet_wrap(vars(!!sym(gran1))) +
+    ggplot2::facet_wrap(dplyr::vars(!!rlang::sym(gran1))) +
     ggplot2::theme(legend.position = "bottom",
                    strip.text = ggplot2::element_text(size = 7,margin = ggplot2::margin())) +
     ggplot2::ylab(y_var) +

@@ -35,7 +35,7 @@ prob_plot(
 
 \item{facet_h}{levels of facet variable for which facetting is allowed while plotting bivariate temporal granularities.}
 
-\item{symmetric}{If TRUE, symmetic quantile area plot is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd and ideally the quantile_prob should be a symmetric vector with median at the middle position.}
+\item{symmetric}{If TRUE, symmetic quantile area <- is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd and ideally the quantile_prob should be a symmetric vector with median at the middle position.}
 
 \item{alpha}{level of transperancy for the quantile area}
 
@@ -55,8 +55,8 @@ library(lvplot)
 library(dplyr)
 
 vic_elec \%>\% prob_plot(
-  gran1 = "hour_day", gran2 = "day_week",
-  response = "Demand", plot_type = "quantile",
+  gran1 = "month_year", gran2 = "hour_week",
+  response = "Demand", plot_type = "violin",
   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
   symmetric = TRUE, outlier.colour = "red",
   outlier.shape = 2, palette = "Dark2"
