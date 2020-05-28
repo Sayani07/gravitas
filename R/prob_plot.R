@@ -102,9 +102,9 @@ prob_plot <- function(.data,
 
   gran_pair_obs =  data_mutate %>% gran_tbl(gran1, gran2, hierarchy_tbl)
 
-  data_sub1 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs<=30)
+  data_sub1 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs<=1800)
 
-  data_sub2 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs>30)
+  data_sub2 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs>1800)
 
   x_var <- dplyr::if_else(plot_type == "ridge", response, gran2)
   y_var <- dplyr::if_else(plot_type == "ridge", gran2, response)
@@ -115,14 +115,14 @@ prob_plot <- function(.data,
       ggplot2::ggplot(ggplot2::aes(x = .data[[x_var]],
                                       y = .data[[y_var]]))
 
-  if(nrow(data_sub1)==0 )
+  if(nrow(data_sub1)==0 & nrow(data_sub2)==0)
   {
-    p_nobs <- p
+    plot <- p
   }
 
 if(nrow(data_sub1)!=0)
   {
-  p_nobs <- p +
+  p <- p +
     geom_point(data = data_sub1,
                ggplot2::aes(x = .data[[x_var]],
                                 y = .data[[y_var]]),
@@ -130,30 +130,31 @@ if(nrow(data_sub1)!=0)
                alpha = 0.5)
   }
 
-
-  if (plot_type == "boxplot") {
-    plot <- p_nobs +
-      ggplot2::geom_boxplot(data = data_sub2,...)
-  }
-  else if (plot_type == "violin") {
-    plot <- p_nobs + ggplot2::geom_violin(data = data_sub2, ...)
-  }
+    if(nrow(data_sub2)!=0)
+    {
+      if (plot_type == "boxplot") {
+        p <- p +
+          ggplot2::geom_boxplot(data = data_sub2,...)
+      }
+    else if (plot_type == "violin") {
+      p <- p + ggplot2::geom_violin(data = data_sub2, ...)
+    }
 
   else if (plot_type == "lv") {
-    plot <-
-      p_nobs + lvplot::geom_lv(data = data_sub2, ggplot2::aes(fill = ..LV..),
+    p <-
+      p + lvplot::geom_lv(data = data_sub2, ggplot2::aes(fill = ..LV..),
                   k = 5,
                   ...
       )
   }
 
   else if (plot_type == "ridge") {
-    plot <- p_nobs +
+    p <- p +
       ggridges::geom_density_ridges(data = data_sub2,...)
   }
 
   else if (plot_type == "quantile") {
-    plot <- quantile_plot(.data = data_sub2,
+    p <- quantile_plot(.data = data_sub2,
                           gran1,
                           gran2,
                           hierarchy_tbl,
@@ -164,6 +165,7 @@ if(nrow(data_sub1)!=0)
                           ...
     )
   }
+    }
 
     # +
     # ggplot2::ggtitle(paste0(plot_type,
@@ -176,7 +178,7 @@ if(nrow(data_sub1)!=0)
     # ggplot2::scale_fill_brewer()
 
 
-plot_return <- plot +
+plot_return <- p +
     ggplot2::facet_wrap(vars(!!sym(gran1))) +
     ggplot2::theme(legend.position = "bottom",
                    strip.text = ggplot2::element_text(size = 7,margin = ggplot2::margin())) +
@@ -193,9 +195,7 @@ plot_return <- plot +
             gran1,
             gran2,
             hierarchy_tbl = hierarchy_tbl,
-            response = response,
-            ...
-  )
+            response = response,...)
 
   return(plot_return)
 }
