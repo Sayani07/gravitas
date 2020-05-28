@@ -23,8 +23,8 @@
 #' library(dplyr)
 #'
 #' vic_elec %>% prob_plot(
-#'   gran1 = "hour_day", gran2 = "day_week",
-#'   response = "Demand", plot_type = "quantile",
+#'   gran1 = "month_year", gran2 = "hour_week",
+#'   response = "Demand", plot_type = "violin",
 #'   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
 #'   symmetric = TRUE, outlier.colour = "red",
 #'   outlier.shape = 2, palette = "Dark2"
@@ -102,9 +102,20 @@ prob_plot <- function(.data,
 
   gran_pair_obs =  data_mutate %>% gran_tbl(gran1, gran2, hierarchy_tbl)
 
-  data_sub1 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs<=1800)
+  if(plot_type == "boxplot"){
+    obs_threshold <- 10
+  }
+  else if (plot_type == "quantile"){
+    obs_threshold <- max(10, length(quantile_prob))
+  }
+  else {
+    obs_threshold <- 30
+  }
 
-  data_sub2 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs>1800)
+
+  data_sub1 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs<=obs_threshold)
+
+  data_sub2 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% left_join(gran_pair_obs) %>%  dplyr::filter(nobs>obs_threshold)
 
   x_var <- dplyr::if_else(plot_type == "ridge", response, gran2)
   y_var <- dplyr::if_else(plot_type == "ridge", gran2, response)
