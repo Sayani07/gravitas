@@ -40,6 +40,7 @@ rank_harmony <- function(.data = NULL,
                          prob = seq(0.01, 0.99, 0.01),
                          dist_distribution = "chisq",
                          hierarchy_tbl = NULL,
+                         dist_ordered = TRUE,
                          alpha = 0.05)
 {
   # <- _data <- <- <- step1(.data, harmony_tbl, response)
@@ -82,7 +83,7 @@ rank_harmony <- function(.data = NULL,
 # distance for one harmony pair
 
 dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
-                             dist_distribution = NULL, hierarchy_tbl = NULL){
+                             dist_distribution = NULL, hierarchy_tbl = NULL,...){
   step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl)
   (1: length(step1_data)) %>%
     purrr::map(function(rowi){
@@ -96,7 +97,7 @@ dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
 # average of max pairwise distance for one harmony pair
 dist_harmony_pair <-function(step1_datai,
                              prob = seq(0.01, 0.99, 0.01),
-                             dist_distribution = "normal")
+                             dist_distribution = "normal", dist_ordered = TRUE)
 {
   colnames(step1_datai) <- paste0("L",colnames(step1_datai))
   colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
@@ -142,6 +143,11 @@ dist_harmony_pair <-function(step1_datai,
         dist[dist == 0] <- NA
         # row_of_col_max[j] <- max(dist[, j])
         # maximum of the entire matrix
+        if(dist_ordered)
+        {
+          # just picking up consecutive ordered distances (1, 2), (2, 3) and removing (1, 3)
+         if(j!=i+1) dist[i, j] <-NA
+        }
       }
     }
 
@@ -204,7 +210,7 @@ dist_harmony_pair <-function(step1_datai,
    step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
    }
 
-   if(dist_distribution == "chisq_98")
+   if(dist_distribution == "chisq")
    {
      #MASS::fitdistr(dist, densfun = "chi-squared")
      alpha[k] <- length(prob) - 1
