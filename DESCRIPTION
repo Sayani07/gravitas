@@ -1,7 +1,7 @@
 Package: gravitas
 Type: Package
 Title: Explore Probability Distributions for Bivariate Temporal Granularities
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: 
     c(person(given = "Sayani",
              family = "Gupta",

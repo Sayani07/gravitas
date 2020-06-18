@@ -1,3 +1,7 @@
+# gravitas 0.1.3
+
+This is a maintenance release to make it compatible with tsibble v0.9.0
+
 # gravitas 0.1.2
 
 This is a maintenance release due to the changes in tsibble_0.8.6.
