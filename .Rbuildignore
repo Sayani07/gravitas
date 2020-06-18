@@ -14,3 +14,15 @@
 ^cran-comments.\md$
 ^_pkgdown\.yml$
 ^CRAN-RELEASE$
+^histogram_distance\.R$
+^permutation_new\.R$
+^qqplot_distance\.R$
+^threshold_harmonies\.R$
+^threshold_permutation\.R$
+^rank_harmony\.R$
+
+
+
+
+
+

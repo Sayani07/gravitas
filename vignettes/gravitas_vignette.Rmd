@@ -127,7 +127,7 @@ library(ggplot2)
 library(dplyr)
 library(tibble)
 smart_meter10 %>%
-  filter(customer_id %in% c(10006704, 10017936)) %>% 
+  filter(customer_id %in% c("10006704", "10017936")) %>% 
   create_gran("day_fortnight") %>%
   ggplot2::ggplot(aes(
     x = as.factor(day_fortnight),

@@ -12,6 +12,7 @@
 #' @param quantile_prob numeric vector of probabilities with value in [0,1]  whose sample quantiles are wanted. Default is set to "decile" plot.
 #' @param symmetric If TRUE, symmetic quantile area <- is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd and ideally the quantile_prob should be a symmetric vector with median at the middle position.
 #' @param alpha level of transperancy for the quantile area
+#' @param threshold_nobs the minimum number of observations below which only points would be plotted
 #' @param ... other arguments to be passed for customising the obtained ggplot object.
 #' @return a ggplot object which can be customised as usual.
 #
@@ -22,9 +23,11 @@
 #' library(lvplot)
 #' library(dplyr)
 #'
-#' vic_elec %>% prob_plot(
+#' smart_meter10 %>%
+#' filter(customer_id %in% c("10017936")) %>%
+#' prob_plot(
 #'   gran1 = "day_week", gran2 = "hour_day",
-#'   response = "Demand", plot_type = "quantile",
+#'   response = "general_supply_kwh", plot_type = "quantile",
 #'   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
 #'   symmetric = TRUE,
 #'    outlier.colour = "red",
@@ -167,6 +170,11 @@ if(nrow(data_sub1)!=0)
   }
 
   else if (plot_type == "quantile") {
+
+
+
+
+
     p <- quantile_plot(.data = data_sub2,
                           gran1,
                           gran2,
@@ -212,14 +220,6 @@ plot_return <- p +
 
   return(plot_return)
 }
-
-
-
-
-
-
-
-
 
 ## ----quantile_plot
 
@@ -374,7 +374,9 @@ quantile_plot <- function(.data,
 
 ## ----ribbon_function
 
-ribbon_function <- function(i, ymin, ymax, x, gran1, gran2, group, color_set, alpha) {
+ribbon_function <- function(i, ymin, ymax, x,
+                            gran1, gran2, group,
+                            color_set, alpha) {
   rlang::expr(
     ggplot2::geom_ribbon(ggplot2::aes(
       ymin = data_mutate_obj[[!!ymin[i]]],

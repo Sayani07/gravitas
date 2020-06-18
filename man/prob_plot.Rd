@@ -15,6 +15,7 @@ prob_plot(
   facet_h = NULL,
   symmetric = TRUE,
   alpha = 0.8,
+  threshold_nobs = NULL,
   ...
 )
 }
@@ -39,6 +40,8 @@ prob_plot(
 
 \item{alpha}{level of transperancy for the quantile area}
 
+\item{threshold_nobs}{the minimum number of observations below which only points would be plotted}
+
 \item{...}{other arguments to be passed for customising the obtained ggplot object.}
 }
 \value{
@@ -54,11 +57,14 @@ library(tsibble)
 library(lvplot)
 library(dplyr)
 
-vic_elec \%>\% prob_plot(
-  gran1 = "month_year", gran2 = "hour_week",
-  response = "Demand", plot_type = "violin",
+smart_meter10 \%>\%
+filter(customer_id \%in\% c("10017936")) \%>\%
+prob_plot(
+  gran1 = "day_week", gran2 = "hour_day",
+  response = "general_supply_kwh", plot_type = "quantile",
   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-  symmetric = TRUE, outlier.colour = "red",
+  symmetric = TRUE,
+   outlier.colour = "red",
   outlier.shape = 2, palette = "Dark2"
 )
 

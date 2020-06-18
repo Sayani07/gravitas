@@ -9,8 +9,10 @@ rank_harmony(
   harmony_tbl = NULL,
   response = NULL,
   prob = seq(0.01, 0.99, 0.01),
-  dist_distribution = "chisq",
-  hierarchy_tbl = NULL
+  dist_distribution = "normal",
+  hierarchy_tbl = NULL,
+  dist_ordered = TRUE,
+  alpha = 0.05
 )
 }
 \arguments{
@@ -25,9 +27,13 @@ rank_harmony(
 \item{dist_distribution}{Underlying distribution of distances. Look at hist_distance()}
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units}
+
+\item{dist_ordered}{if levels of the time granularity is ordered.}
+
+\item{alpha}{significance level}
 }
 \value{
-A tibble of harmonies and their levels ranked ion descending order of average maximum pairwise distance of the harmony pairs.
+A tibble of harmonies and their levels ranked in descending order of average maximum pairwise distance of the harmony pairs.
 }
 \description{
 Plot probability distribution of univariate series across bivariate temporal granularities.
@@ -43,15 +49,6 @@ library(purrr)
 library(magrittr)
 sm <- smart_meter10 \%>\%
 filter(customer_id \%in\% c(10017936))
-harmonies <- sm \%>\%
-harmony(ugran = "month",
-       filter_in = "wknd_wday",
-       filter_out = c("hhour", "fortnight"))
 .data = sm
 response  = "general_supply_kwh"
-harmony_tbl =  harmonies
-smart_harmony <- .data \%>\% rank_harmony(harmony_tbl = harmonies,
-response = "general_supply_kwh")
-harmony_tbl <- PBS \%>\% harmony(ugran = "year")
-rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
 }

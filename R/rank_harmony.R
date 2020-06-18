@@ -8,7 +8,9 @@
 #' @param prob numeric vector of probabilities with values in [0,1].
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units
 #' @param dist_distribution Underlying distribution of distances. Look at hist_distance()
-#' @return  A tibble of harmonies and their levels ranked ion descending order of average maximum pairwise distance of the harmony pairs.
+#' @param dist_ordered if levels of the time granularity is ordered.
+#' @param alpha significance level
+#' @return  A tibble of harmonies and their levels ranked in descending order of average maximum pairwise distance of the harmony pairs.
 #
 #' @examples
 #' library(tsibbledata)
@@ -21,36 +23,36 @@
 #' library(magrittr)
 #' sm <- smart_meter10 %>%
 #' filter(customer_id %in% c(10017936))
-#' harmonies <- sm %>%
-#' harmony(ugran = "month",
-#'        filter_in = "wknd_wday",
-#'        filter_out = c("hhour", "fortnight"))
+# harmonies <- sm %>%
+# harmony(ugran = "month",
+#        filter_in = "wknd_wday",
+#        filter_out = c("hhour", "fortnight"))
 #' .data = sm
 #' response  = "general_supply_kwh"
-#' harmony_tbl =  harmonies
-#' smart_harmony <- .data %>% rank_harmony(harmony_tbl = harmonies,
-#' response = "general_supply_kwh")
-#' harmony_tbl <- PBS %>% harmony(ugran = "year")
-#'rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
-#' @export rank_harmony
-# rank harmony table
+# harmony_tbl =  harmonies
+# smart_harmony <- .data %>% rank_harmony(harmony_tbl = harmonies,
+# response = "general_supply_kwh", dist_ordered = FALSE)
+# harmony_tbl <- PBS %>% harmony(ugran = "year")
+# rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
+# rank_harmony
+
 rank_harmony <- function(.data = NULL,
                          harmony_tbl = NULL,
                          response = NULL,
                          prob = seq(0.01, 0.99, 0.01),
-                         dist_distribution = "chisq",
+                         dist_distribution = "normal",
                          hierarchy_tbl = NULL,
                          dist_ordered = TRUE,
                          alpha = 0.05)
 {
   # <- _data <- <- <- step1(.data, harmony_tbl, response)
 
-  dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob, dist_distribution, hierarchy_tbl)
+  dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob, dist_distribution, hierarchy_tbl, dist_ordered)
 
   comp_dist <- dist_harmony_data %>%
     unlist %>%
     matrix(ncol = 2, byrow = TRUE) %>%
-    as_tibble(.name_repair = "unique")
+    tibble::as_tibble(.name_repair = "unique")
 
 # all for n = 100
 # taken from Tests for the Exponential, Weibull and Gumbel Distributions Based on the Stabilized Probability Plot
@@ -67,12 +69,12 @@ rank_harmony <- function(.data = NULL,
   mean_max <- comp_dist$...1
   max_norm_stat <- comp_dist$...2
   harmony_sort <- harmony_tbl %>%
-    dplyr::mutate(mean_max_variation = round(mean_max,5),
-                  max_norm_s = max_norm_stat) %>%
+    dplyr::mutate(mean_max_variation = round(mean_max,5)) %>%
+    #dplyr::mutate(max_norm_s = max_norm_stat) %>%
     dplyr::arrange(dplyr::desc(mean_max_variation)) %>%
-    dplyr::filter(!is.na(mean_max_variation),
-                  max_norm_s>=galpa) %>%
-    dplyr::select(-max_norm_s)
+    #dplyr::filter(max_norm_s>=galpa) %>%
+    #dplyr::select(-max_norm_s) %>%
+    dplyr::filter(!is.na(mean_max_variation))
 
   harmony_sort
 }
@@ -83,13 +85,13 @@ rank_harmony <- function(.data = NULL,
 # distance for one harmony pair
 
 dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
-                             dist_distribution = NULL, hierarchy_tbl = NULL,...){
+                             dist_distribution = NULL, hierarchy_tbl = NULL,dist_ordered,...){
   step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl)
   (1: length(step1_data)) %>%
     purrr::map(function(rowi){
       step_datai <- step1_data %>%
         magrittr::extract2(rowi)
-      z <- dist_harmony_pair(step_datai, prob, dist_distribution)
+      z <- dist_harmony_pair(step_datai, prob, dist_distribution, dist_ordered,...)
       c(z$val, z$max_norm_stat)
     })
 }
@@ -97,7 +99,7 @@ dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
 # average of max pairwise distance for one harmony pair
 dist_harmony_pair <-function(step1_datai,
                              prob = seq(0.01, 0.99, 0.01),
-                             dist_distribution = "normal", dist_ordered = TRUE)
+                             dist_distribution = "normal", dist_ordered = TRUE,...)
 {
   colnames(step1_datai) <- paste0("L",colnames(step1_datai))
   colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
@@ -143,7 +145,7 @@ dist_harmony_pair <-function(step1_datai,
         dist[dist == 0] <- NA
         # row_of_col_max[j] <- max(dist[, j])
         # maximum of the entire matrix
-        if(dist_ordered)
+        if(dist_ordered == "TRUE")
         {
           # just picking up consecutive ordered distances (1, 2), (2, 3) and removing (1, 3)
          if(j!=i+1) dist[i, j] <-NA
@@ -184,10 +186,24 @@ dist_harmony_pair <-function(step1_datai,
 
    if(dist_distribution == "normal")
    {
+   # the original one from paper
+   # a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
+   # new_a[k] <- mu[k] + sigma[k]*a[k]
+   # b[k] <- sigma[k]/a[k]
+   # step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - new_a[k])/(b[k]))
+
+   b[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
+   a[k] <- 1/(len_uniq_dist)*stats::dnorm(b[k])
+   step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - b[k])/a[k])
+   }
+
+
+   if(dist_distribution == "normal_nonstd")
+   {
      a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
-   new_a[k] <- mu[k] + sigma[k]*a[k]
-   b[k] <- sigma[k]/a[k]
-   step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - new_a[k])/(b[k]))
+     new_a[k] <- mu[k] + sigma[k]*a[k]
+     b[k] <- sigma[k]/a[k]
+     step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - new_a[k])/(b[k]))
    }
 
    if(dist_distribution == "gamma")
@@ -500,3 +516,4 @@ quantile_extractx <- function(x =  NULL, prob = seq(0.01, 0.99, by = 0.01))
 {
   stats::quantile(x, prob, type=8, na.rm = TRUE)
 }
+

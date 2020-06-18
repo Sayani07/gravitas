@@ -24,11 +24,11 @@
 #' gran1 = "wknd_wday"
 #' gran2 = "hour_day"
 #' response  = "general_supply_kwh"
-#' .data %>% histogram_distance(gran1 = "wknd_wday", gran2 = "hour_day",
-#' response = "general_supply_kwh")
-#' .data %>% histogram_distance(gran1 = "day_week", gran2 = "hour_day",
-#' response = "general_supply_kwh")
-#' @export histogram_distance
+# .data %>% histogram_distance(gran1 = "wknd_wday", gran2 = "hour_day",
+# response = "general_supply_kwh")
+# .data %>% histogram_distance(gran1 = "day_week", gran2 = "hour_day",
+# response = "general_supply_kwh")
+# @export histogram_distance
 
 histogram_distance <- function(.data = NULL,
                                gran1 = NULL,
