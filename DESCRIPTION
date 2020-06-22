@@ -41,8 +41,7 @@ Imports:
   RColorBrewer,
   ineq,
   magrittr,
-  utils,
-  tidyselect
+  utils
 Suggests:
     tsibbledata (>= 0.1.0),
     purrr (>= 0.3.2),
