@@ -2,7 +2,6 @@ context("screening list of harmonies")
 
 x <- tsibbledata::vic_elec
 
-
 library(gravitas)
 library(ggplot2)
 library(dplyr)

@@ -22,7 +22,7 @@ library(dplyr)
 library(ggplot2)
 
 smart_meter10 \%>\%
-filter(customer_id == 10017936) \%>\%
+filter(customer_id == "10017936") \%>\%
   gran_advice(gran1 = "wknd_wday",
             gran2 = "hour_day")
 

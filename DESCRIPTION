@@ -42,29 +42,24 @@ Imports:
   ineq,
   magrittr,
   utils,
-  tidyselect,
-  EnvStats,
-  rcompanion
+  tidyselect
 Suggests:
     tsibbledata (>= 0.1.0),
     purrr (>= 0.3.2),
     testthat (>= 2.1.0),
     covr,
     knitr,
-    shinythemes,
-    shinyalert,
     rmarkdown,
-    readr,
-    philentropy
+    readr
 VignetteBuilder: knitr
 Maintainer: Sayani Gupta <gupta.sayani@gmail.com>
 Description: Provides tools for systematically exploring large quantities of 
-             temporal data across nonlinear temporal granularities
+             temporal data across cyclic temporal granularities
              (deconstructions of time) by visualizing probability distributions.
-             Nonlinear time granularities can be circular, quasi-circular or 
-             aperiodic. 'gravitas' computes nonlinear
+             Cyclic time granularities can be circular, quasi-circular or 
+             aperiodic. 'gravitas' computes cyclic
              single-order-up or multiple-order-up granularities, check the
-             feasibility of creating plots for any two nonlinear granularities
+             feasibility of creating plots for any two cyclic granularities
              and recommend probability distributions plots for exploring
              periodicity in the data.
 BugReports: https://github.com/Sayani07/gravitas/issues

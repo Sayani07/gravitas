@@ -218,7 +218,7 @@ cust1 <- smart_meter10 %>%
 
 ```{r hd_dw2, echo=TRUE}
 cust2 <- smart_meter10 %>% 
-  filter(customer_id %in% c(10017936))%>% 
+  filter(customer_id %in% c("10017936"))%>% 
   prob_plot("wknd_wday",
                             "hour_day",
                             response = "general_supply_kwh",

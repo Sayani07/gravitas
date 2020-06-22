@@ -111,7 +111,7 @@ Box plots are drawn across hours of the day faceted by weekend/weekday for a hou
  
 ```{r probplot} 
 smart_meter10 %>%
- filter(customer_id == 10017936) %>%
+ filter(customer_id == "10017936") %>%
    prob_plot(
      gran1 = "wknd_wday",
      gran2 = "hour_day",
