@@ -11,7 +11,7 @@
 ^docs$
 ^doc$
 ^tic\.R$
-^cran-comments.\md$
+^cran-comments\.md$
 ^_pkgdown\.yml$
 ^CRAN-RELEASE$
 ^histogram_distance\.R$
@@ -22,3 +22,6 @@
 ^rank_harmony\.R$
 ^gravitas_check\.R$
 ^inst/shiny-examples$
+^NEWS\.md$
+^README\.md$
+
