@@ -32,7 +32,6 @@ library(tsibble)
 
 Temporal data are available at various resolutions depending on the context. Often in time series analysis, data collected at finer scales needs to be explored also at coarser temporal scales. This approach requires deconstructing time in various possible ways leading to linear (e.g. days, weeks), circular (e.g. day-of-week) or aperiodic (e.g. day-of-month) time granularities. The hierarchical structure of time also creates a natural nested ordering resulting in single or multiple order-up granularities. For a conventional Gregorian calendar, examples of single-order-up granularity include hour-of-day and minute-of-hour, while examples of multiple-order-up granularity may include hour-of-week or minute-of-day. All of these granularities might be useful in throwing light on the periodicity of the data.  
 
-
 Exploration of large quantities of temporal data across so many different deconstructions of time becomes clumsy without a systematic approach. 
 
 This vignette describes the tools in the package `gravitas` for systematically exploring large quantities of temporal data across different time deconstructions by visualizing the probability distributions using a range of graphics in `ggplot2`.
@@ -44,11 +43,7 @@ The `smart_meter10` data set in the package is a [tsibble](https://tsibble.tidyv
 
 
 ```{r data_look}
-smart_meter10 %>% select(customer_id,
-                         reading_datetime,
-                         general_supply_kwh,
-                         everything()
-)
+smart_meter10
 ```
 
 <!-- To have an understanding of how different the energy consumption for each household of the trial is, energy consumption is plotted against time with each transition state indicating one household for a sample. If we plot the raw data for all of them, it is difficult to get insights into their behavior.  -->
@@ -90,8 +85,7 @@ Typically, the first thing we should have at our disposal for examining periodic
 
 
 ```{r search_gran}
-library(tsibble)
-interval(smart_meter10)
+tsibble::interval(smart_meter10)
 smart_meter10 %>% search_gran()
 ```
 
