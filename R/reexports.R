@@ -1,7 +1,3 @@
-#' @importFrom magrittr %>%
+#' @importFrom dplyr %>%
 #' @export
-magrittr::`%>%`
-
-#' @importFrom stats density
-#' @export
-stats::density
+dplyr::`%>%`
