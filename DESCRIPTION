@@ -43,14 +43,15 @@ Imports:
   magrittr,
   utils
 Suggests:
+    knitr,
     tsibbledata (>= 0.1.0),
-    purrr (>= 0.3.2),
+    purrr (>= 0.3.2), 
     testthat (>= 2.1.0),
     covr,
-    knitr,
     rmarkdown,
     readr
-VignetteBuilder: knitr
+VignetteBuilder: 
+    knitr
 Maintainer: Sayani Gupta <gupta.sayani@gmail.com>
 Description: Provides tools for systematically exploring large quantities of 
              temporal data across cyclic temporal granularities
@@ -67,4 +68,4 @@ URL: https://github.com/Sayani07/gravitas/
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.0  
