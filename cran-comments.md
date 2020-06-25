@@ -1,14 +1,18 @@
+Fixed the warning Non-file package-anchored link(s) in documentation object 'reexports.Rd':  ‘[magrittr]{%>%}’ and resubmitted to CRAN.
+
 ## Test environments
 
-* local x86_64-apple-darwin15.6.0, R 3.5.1 
-* travis: oldrel, release, devel
-* win-builder (devel)
+* local mac OS install, R 4.0.0
+* rhub::check(c("debian-gcc-release", "macos-highsierra-release-cran", "solaris-x86-patched", "windows-x86_64-release"))
+* devtools::check_win_devel()
 
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note
 
-* This is a new release.
+* This is a new release. New submission. Package was archived on CRAN
+
+## check_rhub()
 
 ## Re-submission
 
