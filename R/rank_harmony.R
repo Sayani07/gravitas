@@ -104,76 +104,47 @@ dist_harmony_pair <-function(step1_datai,
 {
   colnames(step1_datai) <- paste0("L",colnames(step1_datai))
   colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
+  lencol <- length(colNms)
+  lenrow <- nrow(step1_datai)
 
   step2 <- NULL
-  for (i in 1:length(colNms)) {
+  for (i in 1:lencol) {
     step2[[i]] <- lapply(step1_datai[[colNms[i]]], quantile_extractx)
   }
 
-  #rowTibb <- step1_datai
-  step3 <- rep(list(diag(nrow(step1_datai))), length(colNms))
-  #step4 <- matrix(NA, ncol = nrow(rowTibb), nrow = length(colNms))
-  step4 <- array(NA, dim = length(colNms))
-  prob <- array(NA, dim = length(colNms))
-  a <- array(NA, dim = length(colNms))
-  new_a <- array(NA, dim = length(colNms))
-  b <- array(NA, dim = length(colNms))
-  mu <- array(NA, dim = length(colNms))
-  sigma <- array(NA, dim = length(colNms))
-  alpha <- array(NA, dim = length(colNms))
-  beta <- array(NA, dim = length(colNms))
-  lambda <- array(NA, dim = length(colNms))
-  K <- array(NA, dim = length(colNms))
-  cd <- array(NA, dim = length(colNms))
-  pd <- array(NA, dim = length(colNms))
+  step3 <- rep(list(diag(lenrow)), lencol)
+
+  step4 <- prob <- a <-  b <- mu <- sigma <- array(NA, dim = lencol)
+
   dist_vector <- vector()
   ## Logic
   #__ find the stepped sum difference of density vector elements
-  for (k in 1:length(colNms)){
+  for (k in 1:lencol){
 
     dist <- matrix(NA,
-                   nrow = nrow(step1_datai),
-                   ncol = nrow(step1_datai)) ## Matrix
+                   nrow = lenrow,
+                   ncol = lenrow) ## Matrix
     row_of_col_max <- NULL
-    for(i in 1:nrow(step1_datai))
+    for(i in 1:(lenrow-1))
     {
-      for (j in 1:nrow(step1_datai))
+      for (j in (i+1):lenrow)
       {
         m1 <- step2[[k]][[i]]
         m2 <- step2[[k]][[j]]
-        #message(paste0("K:",k," I:",i," J:", j))
         dist[i, j] <- compute_JSD(m1, m2)
         dist[dist == 0] <- NA
-        # row_of_col_max[j] <- max(dist[, j])
-        # maximum of the entire matrix
-        if(dist_ordered == "TRUE")
+        if(dist_ordered)
         {
-          # just picking up consecutive ordered distances (1, 2), (2, 3) and removing (1, 3)
+
           if(j!=i+1) dist[i, j] <-NA
         }
       }
     }
 
     max_dist <- max(dist, na.rm = TRUE)
-    min_dist <- min(dist, na.rm = TRUE)
-    # row_of_col_max <- dplyr::if_else(max_dist - min_dist==0, 0, max_dist/(nrow(step1_datai) *(max_dist - min_dist)))
-
-
-    # Fisher–Tippett–Gnedenko theorem
-    # dist[lower.tri(dist)] <- NA
-    # len_uniq_dist <- nrow(step1_datai)^2 - length(which(is.na(dist)))
-    # prob[k] <- (1- 1/len_uniq_dist)
-    # a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
-    # step4[k] <- max_dist/a[k]
-
-    #earlier version
-    # row_of_col_max <- dplyr::if_else(max_dist - min_dist==0, 0, max_dist/(nrow(step1_datai) *(max_dist - min_dist)))
-    # step4[k] <- row_of_col_max
-
 
     dist[lower.tri(dist)] <- NA
-    len_uniq_dist <- nrow(step1_datai)^2 - length(which(is.na(dist)))
-    #dist_vector <- matrix(NA, nrow = length(colNms), ncol = len_uniq_dist)
+    len_uniq_dist <- lenrow^2 - length(which(is.na(dist)))
     prob[k] <- (1- 1/len_uniq_dist)
 
     mu[k] <- mean(dist, na.rm = TRUE)
@@ -187,234 +158,22 @@ dist_harmony_pair <-function(step1_datai,
 
     if(dist_distribution == "normal")
     {
-      # the original one from paper
-      # a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
-      # new_a[k] <- mu[k] + sigma[k]*a[k]
-      # b[k] <- sigma[k]/a[k]
-      # step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - new_a[k])/(b[k]))
-
       b[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
-      a[k] <- 1/(len_uniq_dist)*stats::dnorm(b[k])
+      a[k] <- 1/(len_uniq_dist*stats::dnorm(b[k]))
       step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - b[k])/a[k])
     }
 
 
-    if(dist_distribution == "normal_nonstd")
-    {
-      a[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
-      new_a[k] <- mu[k] + sigma[k]*a[k]
-      b[k] <- sigma[k]/a[k]
-      step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - new_a[k])/(b[k]))
-    }
-
-    if(dist_distribution == "gamma")
-    {
-      # fit_dist <- MASS::fitdistr(dist, densfun = "gamma")
-      # if(method == "MME")
-      # {
-      alpha[k] <- (mu[k]/sigma[k])^2
-      beta[k] <- sigma[k]^2/mu[k]
-      # }
-      #  if(method == "MLE")
-      #  {
-      #    alpha[k] = fit_dist$estimate[[1]]
-      #    beta[k] = 1/fit_dist$estimate[[2]]
-      #  }
-      b[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
-      a[k] <- 1/beta[k]
-
-      #b[k] <- a[k]*(log(len_uniq_dist) + (alpha[k]-1)*(log(log(len_uniq_dist))) - log(gamma(alpha[k])))
-      step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
-    }
-
-    if(dist_distribution == "chisq")
-    {
-      #MASS::fitdistr(dist, densfun = "chi-squared")
-      alpha[k] <- length(prob) - 1
-      beta[k] <- 1/2
-      b[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
-      a[k] <- 1/beta[k]
-      #b[k] <- a[k]*(log(len_uniq_dist) + (alpha[k]-1)*(log(log(len_uniq_dist))) - log(gamma(alpha[k])))
-      step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
-    }
-
-    if(dist_distribution == "chisq_1")
-    {
-      #MASS::fitdistr(dist, densfun = "chi-squared")
-      alpha[k] <-  1
-      beta[k] <- 1/2
-      b[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
-      a[k] <- 1/beta[k]
-      #b[k] <- a[k]*(log(len_uniq_dist) + (alpha[k]-1)*(log(log(len_uniq_dist))) - log(gamma(alpha[k])))
-      step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
-    }
-
-    if(dist_distribution == "weibull")
-    {
-      K[k] <-  (sigma[k]/ mu[k])^(-1.086) #can change later
-      lambda[k] <- mu[k]/gamma(1+1/K[k]) #can change later
-      b[k] <- stats::quantile(as.vector(dist), prob = 1 - prob[k], type = 8, na.rm = TRUE)
-      #cd[k] <- exp(-b[k]/lambda[k])^K[k]
-      #pd[k] <- (K[k]/lambda[k])*(b[k]/lambda[k])^(K[k]-1)*exp(-b[k]/lambda[k])^(K[k])
-      #a[k] <- cd[k]/ pd[k]
-      a[k] <- (((1/lambda[k])^K[k])*K[k]*(b[k]^(K[k]-1)))^(-1)
-      step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
-    }
     d<- as.vector(dist)
     d <- d[!is.na(d)]
     dist_vector <- rbind(dist_vector,d)
   }
   row.names(dist_vector)
-  normalised_value <- stats::median(step4, na.rm = TRUE)/log(length(colNms))
+  normalised_value <- stats::median(step4, na.rm = TRUE)/log(lencol)
   max_norm <- max(step4)
   value <- list(val = normalised_value, distvec = dist_vector, max_norm_stat = max_norm)
   value
-  #max(step4, na.rm = TRUE)
-  #return(step5)
 }
-
-
-# lengthy code
-
-
-# dist_harmony_pair_gamma <-function(step1_datai, prob)
-# {
-#   colnames(step1_datai) <- paste0("L",colnames(step1_datai))
-#   colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
-#
-#   step2 <- NULL
-#   for (i in 1:length(colNms)) {
-#     step2[[i]] <- lapply(step1_datai[[colNms[i]]], quantile_extractx)
-#   }
-#
-#   #rowTibb <- step1_datai
-#   step3 <- rep(list(diag(nrow(step1_datai))), length(colNms))
-#   #step4 <- matrix(NA, ncol = nrow(rowTibb), nrow = length(colNms))
-#   step4 <- array(NA, dim = length(colNms))
-#   prob <- array(NA, dim = length(colNms))
-#   a <- array(NA, dim = length(colNms))
-#   new_a <- array(NA, dim = length(colNms))
-#   b <- array(NA, dim = length(colNms))
-#   alpha <- array(NA, dim = length(colNms))
-#   beta <- array(NA, dim = length(colNms))
-#   mu <- array(NA, dim = length(colNms))
-#   sigma <- array(NA, dim = length(colNms))
-#   K <- array(NA, dim = length(colNms))
-#   lambda <- array(NA, dim = length(colNms))
-#   cd <- array(NA, dim = length(colNms))
-#   pd <- array(NA, dim = length(colNms))
-#   ## Logic
-#   # for each of the list 7 DOW
-#   #__ find the stepped sum difference of density vector elements
-#   for (k in 1:length(colNms)){
-#
-#     dist <- matrix(NA,
-#                    nrow = nrow(step1_datai),
-#                    ncol = nrow(step1_datai)) ## Matrix
-#     row_of_col_max <- NULL
-#     for(i in 1:nrow(step1_datai))
-#     {
-#       for (j in 1:nrow(step1_datai))
-#       {
-#         m1 <- step2[[k]][[i]]
-#         m2 <- step2[[k]][[j]]
-#         #message(paste0("K:",k," I:",i," J:", j))
-#         dist[i, j] <- compute_JSD(m1, m2)
-#         dist[dist == 0] <- NA
-#         # row_of_col_max[j] <- max(dist[, j])
-#         # maximum of the entire matrix
-#       }
-#     }
-#
-#     max_dist <- max(dist, na.rm = TRUE)
-#     min_dist <- min(dist, na.rm = TRUE)
-#
-#     dist[lower.tri(dist)] <- NA
-#     len_uniq_dist <- nrow(step1_datai)^2 - length(which(is.na(dist)))
-#     prob[k] <- (1- 1/len_uniq_dist)
-#     mu[k] <- mean(dist, na.rm = TRUE)
-#     sigma[k] <- stats::sd(dist, na.rm = TRUE)
-#     alpha[k] <- (mu[k]/sigma[k])^2
-#     beta[k] <- sigma[k]^2/mu[k]
-#     a[k] <- 1/beta[k]
-#     b[k] <- a[k]*(log(len_uniq_dist) + (alpha[k]-1)*(log(log(len_uniq_dist))) - log(gamma(alpha[k])))
-#     step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
-#   }
-#   stats::median(step4, na.rm = TRUE)/log(length(colNms))
-#   #max(step4, na.rm = TRUE)
-#   #return(step5)
-# }
-#
-#
-#
-# dist_harmony_pair_weibull <-function(step1_datai, prob)
-# {
-#   colnames(step1_datai) <- paste0("L",colnames(step1_datai))
-#   colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
-#
-#   step2 <- NULL
-#   for (i in 1:length(colNms)) {
-#     step2[[i]] <- lapply(step1_datai[[colNms[i]]], quantile_extractx)
-#   }
-#
-#   #rowTibb <- step1_datai
-#   step3 <- rep(list(diag(nrow(step1_datai))), length(colNms))
-#   #step4 <- matrix(NA, ncol = nrow(rowTibb), nrow = length(colNms))
-#   step4 <- array(NA, dim = length(colNms))
-#   prob <- array(NA, dim = length(colNms))
-#   a <- array(NA, dim = length(colNms))
-#   new_a <- array(NA, dim = length(colNms))
-#   b <- array(NA, dim = length(colNms))
-#   alpha <- array(NA, dim = length(colNms))
-#   beta <- array(NA, dim = length(colNms))
-#   mu <- array(NA, dim = length(colNms))
-#   sigma <- array(NA, dim = length(colNms))
-#   K <- array(NA, dim = length(colNms))
-#   lambda <- array(NA, dim = length(colNms))
-#   cd <- array(NA, dim = length(colNms))
-#   pd <- array(NA, dim = length(colNms))
-#
-#
-#   for (k in 1:length(colNms)){
-#
-#     dist <- matrix(NA,
-#                    nrow = nrow(step1_datai),
-#                    ncol = nrow(step1_datai)) ## Matrix
-#     row_of_col_max <- NULL
-#     for(i in 1:nrow(step1_datai))
-#     {
-#       for (j in 1:nrow(step1_datai))
-#       {
-#         m1 <- step2[[k]][[i]]
-#         m2 <- step2[[k]][[j]]
-#         #message(paste0("K:",k," I:",i," J:", j))
-#         dist[i, j] <- compute_JSD(m1, m2)
-#         dist[dist == 0] <- NA
-#         # row_of_col_max[j] <- max(dist[, j])
-#         # maximum of the entire matrix
-#       }
-#     }
-#
-#     max_dist <- max(dist, na.rm = TRUE)
-#     min_dist <- min(dist, na.rm = TRUE)
-#
-#     dist[lower.tri(dist)] <- NA
-#     len_uniq_dist <- nrow(step1_datai)^2 - length(which(is.na(dist)))
-#     prob[k] <- (1- 1/len_uniq_dist)
-#     mu[k] <- mean(dist, na.rm = TRUE)
-#     sigma[k] <- stats::sd(dist, na.rm = TRUE)
-#     K[k] <-  (sigma[k]/ mu[k])^(-1.086)
-#     lambda[k] <- mu[k]/gamma(1+1/K[k])
-#     b[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
-#     cd[k] <- exp(-b[k]/lambda[k])^K[k]
-#     pd[k] <- (K[k]/lambda[k])*(b[k]/lambda[k])^(K[k]-1)*exp(-b[k]/lambda[k])^(K[k])
-#     a[k] <- cd[k]/ pd[k]
-#     step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist -  b[k])/a[k])
-#   }
-#   stats::median(step4, na.rm = TRUE)/log(length(colNms))
-#   #max(step4, na.rm = TRUE)
-#   #return(step5)
-# }
 
 # create two granularities at once
 create_gran_pair <-  function(.data, gran1, gran2, hierarchy_tbl = NULL)
