@@ -194,7 +194,7 @@ dist_harmony_pair <-function(step1_datai,
    # step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - new_a[k])/(b[k]))
 
    b[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
-   a[k] <- 1/(len_uniq_dist)*stats::dnorm(b[k])
+   a[k] <- 1/(len_uniq_dist*stats::dnorm(b[k]))
    step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - b[k])/a[k])
    }
 
