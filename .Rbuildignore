@@ -19,7 +19,6 @@
 ^qqplot_distance\.R$
 ^threshold_harmonies\.R$
 ^threshold_permutation\.R$
-^rank_harmony\.R$
 ^gravitas_check\.R$
 ^inst/shiny-examples$
 ^NEWS\.md$
