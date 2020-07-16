@@ -68,14 +68,15 @@ rank_harmony <- function(.data = NULL,
   }
 
   mean_max <- comp_dist$...1
-  max_norm_stat <- comp_dist$...2
+  max_distance <- comp_dist$...2
   harmony_sort <- harmony_tbl %>%
-    dplyr::mutate(mean_max_variation = round(mean_max,5)) %>%
-    #dplyr::mutate(max_norm_s = max_norm_stat) %>%
-    dplyr::arrange(dplyr::desc(mean_max_variation)) %>%
+    dplyr::mutate(MMPD = round(mean_max,5),
+                  max_pd = round(max_distance,5)) %>%
+    dplyr::arrange(dplyr::desc(MMPD)) %>%
+    dplyr::mutate(r = rank(-max_pd)) %>%
     #dplyr::filter(max_norm_s>=galpa) %>%
     #dplyr::select(-max_norm_s) %>%
-    dplyr::filter(!is.na(mean_max_variation))
+    dplyr::filter(!is.na(MMPD))
 
   harmony_sort
 }
@@ -93,7 +94,7 @@ dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
       step_datai <- step1_data %>%
         magrittr::extract2(rowi)
       z <- dist_harmony_pair(step_datai, prob, dist_distribution, dist_ordered,...)
-      c(z$val, z$max_norm_stat)
+      c(z$val, z$max_distance)
     })
 }
 
@@ -168,10 +169,26 @@ dist_harmony_pair <-function(step1_datai,
     d <- d[!is.na(d)]
     dist_vector <- rbind(dist_vector,d)
   }
+
   row.names(dist_vector)
-  normalised_value <- stats::median(step4, na.rm = TRUE)/log(lencol)
-  max_norm <- max(step4)
-  value <- list(val = normalised_value, distvec = dist_vector, max_norm_stat = max_norm)
+
+  # normalised max of normalised max
+
+  nmax_nmax <- stats::median(step4, na.rm = TRUE)/log(lencol)
+
+  # unnormalised max of normalised max
+
+  max_nmax <- max(step4)
+
+  # normalised max of unormalised max
+
+  nmax_max <- stats::median(max_dist, na.rm = TRUE)/log(lencol)
+
+  # unnormalised max of unormalised max
+
+  max_max <- max(max_dist, na.rm = TRUE)
+
+  value <- list(val = nmax_nmax, distvec = dist_vector, max_distance = max_max)
   value
 }
 
