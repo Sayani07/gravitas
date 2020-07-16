@@ -16,15 +16,13 @@
 #' library(purrr)
 #' library(magrittr)
 #' sm <- smart_meter10 %>%
-#' filter(customer_id %in% c(10017936))
+#' filter(customer_id %in% c("10017936"))
 #' .data = sm
 #' gran1 = "wknd_wday"
 #' gran2 = "hour_day"
 #' response  = "general_supply_kwh"
-# .data %>% histogram_distance(gran1 = "wknd_wday", gran2 = "hour_day",
-# response = "general_supply_kwh")
-# .data %>% histogram_distance(gran1 = "day_week", gran2 = "hour_day",
-# response = "general_supply_kwh")
+#'global_harmony <-  .data %>% global_threshold(harmony_tbl = harmonies,
+#' response = "general_supply_kwh")
 
 global_threshold <- function(.data = NULL,
                                 harmony_tbl = NULL,
@@ -36,7 +34,7 @@ global_threshold <- function(.data = NULL,
     rank_harmony(harmony_tbl = harmonies,
                  response, dist_ordered = FALSE)
 
-  MMPD_sample_lst <- (1:5) %>%
+  MMPD_sample_lst <- (1:20) %>%
     purrr::map(function(i){
       response_sample <-  sample(.data[[response]], size = nrow(.data))
       data_sample <- .data %>%
