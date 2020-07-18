@@ -24,7 +24,7 @@
 #' library(dplyr)
 #'
 #' smart_meter10 %>%
-#' filter(customer_id %in% c("10017936")) %>%
+#' dplyr::filter(customer_id %in% c("10017936")) %>%
 #' prob_plot(
 #'   gran1 = "day_week", gran2 = "hour_day",
 #'   response = "general_supply_kwh", plot_type = "quantile",
@@ -173,8 +173,6 @@ if(nrow(data_sub1)!=0)
 
 
 
-
-
     p <- quantile_plot(.data = data_sub2,
                           gran1,
                           gran2,
@@ -246,16 +244,6 @@ quantile_plot <- function(.data,
 
   data_mutate <- .data
 
-  # will feed in data_mutate directly no requirement of
-  # creating the granularities again
-  # %>%
-  #   create_gran(gran1,
-  #     hierarchy_tbl = hierarchy_tbl
-  #   ) %>%
-  #   create_gran(gran2,
-  #     hierarchy_tbl = hierarchy_tbl
-  #   )
-  #
 
   data_mutate_obj <- data_mutate %>%
     tibble::as_tibble() %>%
@@ -358,15 +346,15 @@ quantile_plot <- function(.data,
 
 
     plot <- data_pcntl %>%
-      ggplot2::ggplot(ggplot2::aes(
+      ggplot2::ggplot() +
+      ggplot2::geom_line(ggplot2::aes(
         x = data_pcntl[[gran2]],
         y = value,
         group = as.factor(quantiles),
         color = quantiles
       )) +
-      ggplot2::geom_line() +
       ggplot2::facet_wrap(~ data_pcntl[[gran1]]) +
-      ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_pcntl[[gran2]])))) +
+      #ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_pcntl[[gran2]])))) +
       ggplot2::scale_fill_brewer()
   }
   return(plot)
