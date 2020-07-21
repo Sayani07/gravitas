@@ -28,13 +28,14 @@ global_threshold <- function(.data = NULL,
                                 harmony_tbl = NULL,
                                 response = NULL,
                                 prob = seq(0.01,0.99, 0.01),
-                                hierarchy_tbl = NULL)
+                                hierarchy_tbl = NULL,...)
 {
   MMPD_obs <-  .data %>%
     rank_harmony(harmony_tbl = harmonies,
-                 response, dist_ordered = FALSE)
+                 response, ...)
 
-  MMPD_sample_lst <- (1:20) %>%
+nsamp = 2
+MMPD_sample_lst <- (1:nsamp) %>%
     purrr::map(function(i){
       response_sample <-  sample(.data[[response]], size = nrow(.data))
       data_sample <- .data %>%
@@ -46,52 +47,67 @@ global_threshold <- function(.data = NULL,
 
   data_sample %>%
     rank_harmony(harmony_tbl = harmonies, response, dist_ordered = FALSE) %>%
-    select(mean_max_variation)
+    select(MMPD, max_pd)
     })
 
-  right_quantile <- stats::quantile(unlist(MMPD_sample_lst), probs = 0.95)
-  MMPD_obs %>% mutate(global_threshold = mean_max_variation > right_quantile)
-
-
-  # do it for every harmony pair in the harmony table
-  return_val <- (1:nrow(harmony_tbl)) %>% purrr::map(function(rowi){
-    cyc_grans <- harmony_tbl%>% magrittr::extract(rowi,)
-    facet_var <- cyc_grans$facet_variable
-    x_var <- cyc_grans$x_variable
-
-    # MMPD sample values for each harmony pair
-    z <- pvalue_harmony_pair(.data, gran1 = facet_var, gran2 = x_var, response)
-
-    # obs value of MMPD for every harmony pair
-    data_pair <- create_gran_pair(.data,
-                                  gran1 = facet_var,
-                                  gran2 = x_var,
-                                  hierarchy_tbl) %>%
-      tibble::as_tibble()
-
-    obs <- data_pair %>%
-      dplyr::select(facet_var, x_var, !!response) %>%
-      dplyr::mutate(
-        response = .data[[response]]
-      ) %>%
-      dplyr::select(-!!response) %>%
-      tidyr::pivot_wider(names_from = facet_var,
-                         values_from = response,
-                         values_fn = list(response = list)) %>%
-      dist_harmony_pair()
-
-    MMPD_obs <- obs$val
-
-    # get MMPD samples for all pairs
-    right_quantile <- stats::quantile(unlist(z), probs = 0.95)
-    MMPD_obs > right_quantile
+MMPD_sample <- (1:nsamp) %>%
+  purrr::map(function(i){
+    MMPD_sample_lst %>% magrittr::extract2(i) %>%  select(MMPD)
   })
 
-  return_val_un <- unlist(return_val)
-  #return_val_obs <- unlist(MMPD_obs)
-  harmony_tbl %>%
-    dplyr::mutate(threshold = return_val_un)
+maxpd_sample <- (1:nsamp) %>%
+  purrr::map(function(i){
+    MMPD_sample_lst %>% magrittr::extract2(i) %>%  select(max_pd)
+  })
+
+  right_quantile_MMPD <- stats::quantile(unlist(MMPD_sample), probs = 0.95)
+  right_quantile_maxpd <- stats::quantile(unlist(maxpd_sample), probs = 0.95)
+  MMPD_obs %>% mutate(gt_MMPD = MMPD > right_quantile_MMPD,
+                      gt_maxpd = max_pd > right_quantile_maxpd)
 }
+
+# not relevant now
+
+#   # do it for every harmony pair in the harmony table
+#   return_val <- (1:nrow(harmony_tbl)) %>% purrr::map(function(rowi){
+#     cyc_grans <- harmony_tbl%>% magrittr::extract(rowi,)
+#     facet_var <- cyc_grans$facet_variable
+#     x_var <- cyc_grans$x_variable
+#
+#     # MMPD sample values for each harmony pair
+#     z <- pvalue_harmony_pair(.data, gran1 = facet_var, gran2 = x_var, response)
+#
+#     # obs value of MMPD for every harmony pair
+#     data_pair <- create_gran_pair(.data,
+#                                   gran1 = facet_var,
+#                                   gran2 = x_var,
+#                                   hierarchy_tbl) %>%
+#       tibble::as_tibble()
+#
+#     obs <- data_pair %>%
+#       dplyr::select(facet_var, x_var, !!response) %>%
+#       dplyr::mutate(
+#         response = .data[[response]]
+#       ) %>%
+#       dplyr::select(-!!response) %>%
+#       tidyr::pivot_wider(names_from = facet_var,
+#                          values_from = response,
+#                          values_fn = list(response = list)) %>%
+#       dist_harmony_pair()
+#
+#     MMPD_obs <- obs$val
+#
+#     # get MMPD samples for all pairs
+#     right_quantile <- stats::quantile(unlist(z), probs = 0.95)
+#     #MMPD_obs > right_quantile
+#     right_quantile
+#   })
+#
+#   return_val_un <- unlist(return_val)
+#   #return_val_obs <- unlist(MMPD_obs)
+#   harmony_tbl %>%
+#     dplyr::mutate(threshold = return_val_un)
+# }
 
 pvalue_harmony_pair <- function(.data = NULL,
                                 gran1 = NULL,
