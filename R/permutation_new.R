@@ -85,7 +85,6 @@ pvalue_harmony_pair <- function(.data = NULL,
 
   data_pair <- create_gran_pair(.data, gran1, gran2, hierarchy_tbl) %>% tibble::as_tibble()
 
-
   MMPD_sample_lst <- (1:5) %>%
     purrr::map(function(i){
 

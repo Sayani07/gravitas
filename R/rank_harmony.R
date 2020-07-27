@@ -31,7 +31,7 @@
 #' response  = "general_supply_kwh"
 #' harmony_tbl =  harmonies
 #' smart_harmony <- .data %>% rank_harmony(harmony_tbl = harmonies,
-#' response = "general_supply_kwh", dist_ordered = FALSE)
+#' response = "general_supply_kwh", dist_ordered = TRUE)
 #' harmony_tbl <- PBS %>% harmony(ugran = "year")
 #' rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
 #' @export rank_harmony
@@ -44,11 +44,12 @@ rank_harmony <- function(.data = NULL,
                             dist_distribution = "normal",
                             hierarchy_tbl = NULL,
                             dist_ordered = TRUE,
-                            alpha = 0.05)
+                            alpha = 0.05,
+                            step1_data = NULL)
 {
   # <- _data <- <- <- step1(.data, harmony_tbl, response)
 
-  dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob, dist_distribution, hierarchy_tbl, dist_ordered)
+  dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob, dist_distribution, hierarchy_tbl, dist_ordered, step1_data)
 
   comp_dist <- dist_harmony_data %>%
     unlist %>%
@@ -87,8 +88,10 @@ rank_harmony <- function(.data = NULL,
 # distance for one harmony pair
 
 dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
-                             dist_distribution = NULL, hierarchy_tbl = NULL,dist_ordered,...){
+                             dist_distribution = NULL, hierarchy_tbl = NULL,dist_ordered, step1_data = NULL,...){
+  if(is.null(step1_data)){
   step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl)
+  }
   (1: length(step1_data)) %>%
     purrr::map(function(rowi){
       step_datai <- step1_data %>%
@@ -96,7 +99,7 @@ dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
       z <- dist_harmony_pair(step_datai, prob, dist_distribution, dist_ordered,...)
       c(z$val, z$max_distance)
     })
-}
+  }
 
 # average of max pairwise distance for one harmony pair
 dist_harmony_pair <-function(step1_datai,
@@ -148,8 +151,8 @@ dist_harmony_pair <-function(step1_datai,
     len_uniq_dist <- lenrow^2 - length(which(is.na(dist)))
     prob[k] <- (1- 1/len_uniq_dist)
 
-    mu[k] <- mean(dist, na.rm = TRUE)
-    sigma[k] <- stats::sd(dist, na.rm = TRUE)
+    mu[k] <- 98
+    sigma[k] <- 2*98
 
     if(dist_distribution == "general")
     {
@@ -159,11 +162,17 @@ dist_harmony_pair <-function(step1_datai,
 
     if(dist_distribution == "normal")
     {
-      b[k] <- stats::quantile(as.vector(dist), prob = prob[k], type = 8, na.rm = TRUE)
-      a[k] <- 1/(len_uniq_dist*stats::dnorm(b[k]))
+      b[k] <- stats::qnorm(p = prob[k], mean = mu[k], sd = sigma[k])
+      a[k] <- 1/(len_uniq_dist*stats::dnorm(b[k], mean = mu[k], sd = sigma[k]))
       step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - b[k])/a[k])
     }
 
+    if(dist_distribution == "normal")
+    {
+      b[k] <- stats::qnorm(p = prob[k], mean = mu[k], sd = sigma[k])
+      a[k] <- 1/(len_uniq_dist*stats::dnorm(b[k], mean = mu[k], sd = sigma[k]))
+      step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - b[k])/a[k])
+    }
 
     d<- as.vector(dist)
     d <- d[!is.na(d)]

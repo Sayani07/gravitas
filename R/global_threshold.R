@@ -23,18 +23,19 @@
 #' response  = "general_supply_kwh"
 #'global_harmony <-  .data %>% global_threshold(harmony_tbl = harmonies,
 #' response = "general_supply_kwh")
-
+#' @export
 global_threshold <- function(.data = NULL,
                                 harmony_tbl = NULL,
                                 response = NULL,
                                 prob = seq(0.01,0.99, 0.01),
-                                hierarchy_tbl = NULL,...)
+                                hierarchy_tbl = NULL,
+                               step1_data = NULL, ...)
 {
   MMPD_obs <-  .data %>%
     rank_harmony(harmony_tbl = harmonies,
-                 response, ...)
+                 response, step1_data = step1_data, ...)
 
-nsamp = 2
+nsamp = 20
 MMPD_sample_lst <- (1:nsamp) %>%
     purrr::map(function(i){
       response_sample <-  sample(.data[[response]], size = nrow(.data))
@@ -46,7 +47,7 @@ MMPD_sample_lst <- (1:nsamp) %>%
         dplyr::select(-response)
 
   data_sample %>%
-    rank_harmony(harmony_tbl = harmonies, response, dist_ordered = FALSE) %>%
+    rank_harmony(harmony_tbl = harmonies, response, dist_ordered = FALSE, step1_data = step1_data) %>%
     select(MMPD, max_pd)
     })
 
@@ -60,8 +61,8 @@ maxpd_sample <- (1:nsamp) %>%
     MMPD_sample_lst %>% magrittr::extract2(i) %>%  select(max_pd)
   })
 
-  right_quantile_MMPD <- stats::quantile(unlist(MMPD_sample), probs = 0.95)
-  right_quantile_maxpd <- stats::quantile(unlist(maxpd_sample), probs = 0.95)
+  right_quantile_MMPD <- stats::quantile(unlist(MMPD_sample), probs = 0.9)
+  right_quantile_maxpd <- stats::quantile(unlist(maxpd_sample), probs = 0.9)
   MMPD_obs %>% mutate(gt_MMPD = MMPD > right_quantile_MMPD,
                       gt_maxpd = max_pd > right_quantile_maxpd)
 }

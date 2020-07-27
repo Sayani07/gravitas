@@ -32,7 +32,8 @@
 #'   symmetric = TRUE,
 #'    outlier.colour = "red",
 #'   outlier.shape = 2, palette = "Dark2"
-#' )
+#' ) + scale_y_continuous(breaks = c(0.01, 0.1, 1.00))
+#'
 #'
 #' cricket_tsibble <- cricket %>%
 #'   mutate(data_index = row_number()) %>%
@@ -304,6 +305,19 @@ quantile_plot <- function(.data,
       )
     )
 
+    ggplot2::ggplot(data = data_mutate_obj) +
+      ggplot2::geom_ribbon(ggplot2::aes(
+        ymin = data_mutate_obj[[ymin]],
+        ymax = data_mutate_obj[[ymax]],
+        x = data_mutate_obj[[gran2]],
+        group = data_mutate_obj[[gran1]],
+        colour = color_set
+      ),
+      ,
+      fill = color_set,
+      alpha = alpha
+      )
+
 
     plot <- eval(sum_expr(l)) +
       ggplot2::geom_line(ggplot2::aes(
@@ -342,8 +356,6 @@ quantile_plot <- function(.data,
         quantiles := quantiles,
         value := value
       )
-
-
 
     plot <- data_pcntl %>%
       ggplot2::ggplot() +

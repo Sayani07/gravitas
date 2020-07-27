@@ -15,6 +15,10 @@
 ^_pkgdown\.yml$
 ^CRAN-RELEASE$
 ^histogram_distance\.R$
+^iter1-alleq\.R$
+^iter2-vary-facets\.R$
+^iter3-vary-x\.R$
+^iter4-vary-all\.R$
 ^permutation_new\.R$
 ^qqplot_distance\.R$
 ^threshold_harmonies\.R$
