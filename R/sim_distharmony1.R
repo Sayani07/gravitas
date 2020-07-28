@@ -1,9 +1,8 @@
 #' Selecting harmonies with significant difference in distributions for two cyclic granularities
 #'
 #' @param .data a tsibble.
-#' @param response response variable.
-#' @param harmony_tbl A tibble of harmonies and their levels obtained from the function().
-#' @param prob numeric vector of probabilities with values in [0,1].
+#' @param ntimes the size of the sample
+#' @param sim_dist the distribution to be generated using package distributional
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units
 #
 #' @examples

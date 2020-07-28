@@ -13,11 +13,9 @@ sim_distharmony1(
 \arguments{
 \item{.data}{a tsibble.}
 
-\item{response}{response variable.}
+\item{ntimes}{the size of the sample}
 
-\item{harmony_tbl}{A tibble of harmonies and their levels obtained from the function().}
-
-\item{prob}{numeric vector of probabilities with values in [0,1].}
+\item{sim_dist}{the distribution to be generated using package distributional}
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units}
 }
