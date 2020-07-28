@@ -22,11 +22,11 @@ ntimes <- 500
 
 
 step1_data <- list(
-  bind_cols(data_1 %>% slice(rep(1:n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nA*nB)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
+  dplyr::bind_cols(data_1 %>% dplyr::slice(rep(1:dplyr::n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nA*nB)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
                                                                                                                                                     values_from = ...3,
                                                                                                                                                     values_fn = list(...3 = list)),
 
-  bind_cols(data_2 %>% slice(rep(1:n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nB*nA)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
+  dplyr::bind_cols(data_2 %>% dplyr::slice(rep(1:dplyr::n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nB*nA)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
                                                                                                                                                     values_from = ...3,
                                                                                                                                                     values_fn = list(...3 = list)))
 
@@ -45,8 +45,8 @@ sim_distharmony1 <- function(.data,
 
   data_1 <- expand.grid(lev_facet, lev_x)
 
-  bind_cols(data_1 %>%
-    slice(rep(1:n(), each = ntimes)),
+  dplyr::bind_cols(data_1 %>%
+    dplyr::slice(rep(1:dplyr::n(), each = ntimes)),
   sim_dist %>%
     generate(ntimes*nfacet*nx)) %>%
   as_tibble() %>%
@@ -94,14 +94,14 @@ create_sim_pair <- function(data1,
   nB <-data1 %>% distinct(Var2) %>% nrow()
 
   list(
-    bind_cols(data1 %>% slice(rep(1:n(), each = ntimes)), sim_dist %>%
+    dplyr::bind_cols(data1 %>% dplyr::slice(rep(1:dplyr::n(), each = ntimes)), sim_dist %>%
                 generate(ntimes*nA*nB)) %>%
       as_tibble() %>%
       pivot_wider(names_from = Var1,
                   values_from = ...3,
                   values_fn = list(...3 = list)),
 
-    bind_cols(data2 %>% slice(rep(1:n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nB*nA)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
+    dplyr::bind_cols(data2 %>% dplyr::slice(rep(1:dplyr::n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nB*nA)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
                                                                                                                                                       values_from = ...3,
                                                                                                                                                       values_fn = list(...3 = list)))
 

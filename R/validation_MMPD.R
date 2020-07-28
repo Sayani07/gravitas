@@ -7,7 +7,6 @@ library(gravitas)
 library(purrr)
 library(magrittr)
 library(distributional)
-
 sm <- smart_meter10 %>%
 filter(customer_id %in% c("10017936"))
 
@@ -66,28 +65,28 @@ data_4 <- expand.grid(lev_D, lev_E)
 ntimes <- 500
 
   step1_data <- list(
-  bind_cols(data_1 %>% slice(rep(1:n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nA*nB)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
+  dplyr::bind_cols(data_1 %>% dplyr::slice(rep(1:dplyr::n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nA*nB)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
                                                                                                                                                     values_from = ...3,
                                                                                                                                                     values_fn = list(...3 = list)),
 
-  bind_cols(data_2 %>% slice(rep(1:n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nC*nB)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
-                                                                                                                                                    values_from = ...3,
-                                                                                                                                                    values_fn = list(...3 = list)),
-
-
-  bind_cols(data_3 %>% slice(rep(1:n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nD*nC)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
+  dplyr::bind_cols(data_2 %>% dplyr::slice(rep(1:dplyr::n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nC*nB)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
                                                                                                                                                     values_from = ...3,
                                                                                                                                                     values_fn = list(...3 = list)),
 
 
-  bind_cols(data_4 %>% slice(rep(1:n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nD*nE)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
+  dplyr::bind_cols(data_3 %>% dplyr::slice(rep(1:dplyr::n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nD*nC)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
+                                                                                                                                                    values_from = ...3,
+                                                                                                                                                    values_fn = list(...3 = list)),
+
+
+  dplyr::bind_cols(data_4 %>% dplyr::slice(rep(1:dplyr::n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes*nD*nE)) %>% as_tibble() %>% pivot_wider(names_from = Var1,
                                                                                                                                                     values_from = ...3,
                                                                                                                                                     values_fn = list(...3 = list))
   )
 
 iter1 <- (1:nrow(data_lev)) %>%
       purrr::map_df(function(i){
-        bind_cols(data_lev[i,] %>% slice(rep(1:n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes))    })
+        dplyr::bind_cols(data_lev[i,] %>% dplyr::slice(rep(1:n(), each = ntimes)), dist_normal(mu = 2, sigma = 5) %>% generate(ntimes))    })
 
 iter1 <- iter1 %>%
   mutate(index = row_number()) %>%

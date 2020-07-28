@@ -1,5 +1,4 @@
 # Iteration 1: all distributions are equal
-
 hierarchy_model <- tibble::tibble(
   units = c("A", "B", "C", "D"),
   convert_fct = c(3, 5, 7, 24)
@@ -33,7 +32,7 @@ ntimes <- 500
 step1_data <-list(
   data_1 %>%
     arrange(Var2, Var1) %>%
-    slice(rep(1:n(), each = ntimes)) %>%
+    dplyr::slice(rep(1:dplyr::n(), each = ntimes)) %>%
     mutate(sim_dist = unlist((1:length(lev_B)) %>%
                                purrr::map(function(i){
                                  dist_normal(mu = i, sigma = 5*i) %>% generate(ntimes*nA)
@@ -44,7 +43,7 @@ step1_data <-list(
 
   data_2 %>%
     arrange(Var2, Var1) %>%
-    slice(rep(1:n(), each = ntimes)) %>%
+    dplyr::slice(rep(1:dplyr::n(), each = ntimes)) %>%
     mutate(sim_dist = unlist((1:length(lev_B)) %>%
                                purrr::map(function(i){
                                  dist_normal(mu = i, sigma = 5*i) %>% generate(ntimes*nC)
@@ -54,7 +53,7 @@ step1_data <-list(
 
   data_3 %>%
     arrange(Var2, Var1) %>%
-    slice(rep(1:n(), each = ntimes)) %>%
+    dplyr::slice(rep(1:dplyr::n(), each = ntimes)) %>%
     mutate(sim_dist = unlist((1:length(lev_C)) %>%
                                purrr::map(function(i){
                                  dist_normal(mu = i, sigma = 5*i) %>% generate(ntimes*nD)
@@ -65,7 +64,7 @@ step1_data <-list(
 
   data_4 %>%
     arrange(Var2, Var1) %>%
-    slice(rep(1:n(), each = ntimes)) %>%
+    dplyr::slice(rep(1:dplyr::n(), each = ntimes)) %>%
     mutate(sim_dist = unlist((1:length(lev_E)) %>%
                                purrr::map(function(i){
                                  dist_normal(mu = i, sigma = 5*i) %>% generate(ntimes*nD)
