@@ -34,7 +34,6 @@
 #' response = "general_supply_kwh", dist_ordered = FALSE)
 #' harmony_tbl <- PBS %>% harmony(ugran = "year")
 #' rank_harmony_v0(PBS, harmony_tbl = harmony_tbl, response = "Cost")
-#' @export rank_harmony_v0
 #' @export create_harmony_data
 
 rank_harmony_v0 <- function(.data = NULL,
