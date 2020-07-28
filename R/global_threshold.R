@@ -24,6 +24,7 @@
 #'global_harmony <-  .data %>% global_threshold(harmony_tbl = harmonies,
 #' response = "general_supply_kwh")
 #' @export global_threshold
+#'
 global_threshold <- function(.data = NULL,
                                 harmony_tbl = NULL,
                                 response = NULL,

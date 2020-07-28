@@ -9,7 +9,9 @@ global_threshold(
   harmony_tbl = NULL,
   response = NULL,
   prob = seq(0.01, 0.99, 0.01),
-  hierarchy_tbl = NULL
+  hierarchy_tbl = NULL,
+  step1_data = NULL,
+  ...
 )
 }
 \arguments{
@@ -36,9 +38,11 @@ library(gravitas)
 library(purrr)
 library(magrittr)
 sm <- smart_meter10 \%>\%
-filter(customer_id \%in\% c(10017936))
+filter(customer_id \%in\% c("10017936"))
 .data = sm
 gran1 = "wknd_wday"
 gran2 = "hour_day"
 response  = "general_supply_kwh"
+global_harmony <-  .data \%>\% global_threshold(harmony_tbl = harmonies,
+response = "general_supply_kwh")
 }

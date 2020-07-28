@@ -19,6 +19,10 @@
 ^iter2-vary-facets\.R$
 ^iter3-vary-x\.R$
 ^iter4-vary-all\.R$
+^iter5-vary-facet-diffdist\.R$
+^iter4-vary-all\.R$
+^min_example_iter\.R$
+^sim_distharmony1\.R$
 ^permutation_new\.R$
 ^qqplot_distance\.R$
 ^threshold_harmonies\.R$
@@ -27,4 +31,5 @@
 ^inst/shiny-examples$
 ^NEWS\.md$
 ^README\.md$
+
 

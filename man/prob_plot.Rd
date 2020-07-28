@@ -58,7 +58,7 @@ library(lvplot)
 library(dplyr)
 
 smart_meter10 \%>\%
-filter(customer_id \%in\% c("10017936")) \%>\%
+dplyr::filter(customer_id \%in\% c("10017936")) \%>\%
 prob_plot(
   gran1 = "day_week", gran2 = "hour_day",
   response = "general_supply_kwh", plot_type = "quantile",
@@ -66,7 +66,8 @@ prob_plot(
   symmetric = TRUE,
    outlier.colour = "red",
   outlier.shape = 2, palette = "Dark2"
-)
+) + scale_y_continuous(breaks = c(0.01, 0.1, 1.00))
+
 
 cricket_tsibble <- cricket \%>\%
   mutate(data_index = row_number()) \%>\%

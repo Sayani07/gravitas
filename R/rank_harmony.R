@@ -151,8 +151,8 @@ dist_harmony_pair <-function(step1_datai,
     len_uniq_dist <- lenrow^2 - length(which(is.na(dist)))
     prob[k] <- (1- 1/len_uniq_dist)
 
-    mu[k] <- 98
-    sigma[k] <- 2*98
+    mu[k] <- mean(dist, na.rm = TRUE)
+    sigma[k] <- stats::sd(dist, na.rm = TRUE)
 
     if(dist_distribution == "general")
     {

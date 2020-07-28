@@ -12,7 +12,8 @@ rank_harmony(
   dist_distribution = "normal",
   hierarchy_tbl = NULL,
   dist_ordered = TRUE,
-  alpha = 0.05
+  alpha = 0.05,
+  step1_data = NULL
 )
 }
 \arguments{
@@ -57,7 +58,7 @@ harmony(ugran = "month",
 response  = "general_supply_kwh"
 harmony_tbl =  harmonies
 smart_harmony <- .data \%>\% rank_harmony(harmony_tbl = harmonies,
-response = "general_supply_kwh", dist_ordered = FALSE)
+response = "general_supply_kwh", dist_ordered = TRUE)
 harmony_tbl <- PBS \%>\% harmony(ugran = "year")
 rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
 }
