@@ -28,5 +28,10 @@ utils::globalVariables(
     "mean_max_variation",
     "newds",
     "freqx",
-    "..density..")
-)
+    "..density..",
+    "MMPD",
+    "Var1",
+    "Var2",
+    "dist",
+    "harmonies"
+))

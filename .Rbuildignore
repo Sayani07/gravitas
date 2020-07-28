@@ -25,7 +25,7 @@
 ^sim_distharmony1\.R$
 ^permutation_new\.R$
 ^qqplot_distance\.R$
-^threshold_harmonies\.R$
+^threshold\_harmonies\.R$
 ^threshold_permutation\.R$
 ^gravitas_check\.R$
 ^inst/shiny-examples$

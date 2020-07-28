@@ -5,8 +5,9 @@
 #' @param harmony_tbl A tibble of harmonies and their levels obtained from the function().
 #' @param prob numeric vector of probabilities with values in [0,1].
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units
-#
+#' @param step1_data If the data across all harmony pairs available in list
 #' @examples
+#' \dontrun{
 #' library(tsibbledata)
 #' library(ggplot2)
 #' library(tsibble)
@@ -18,13 +19,18 @@
 #' sm <- smart_meter10 %>%
 #' filter(customer_id %in% c("10017936"))
 #' .data = sm
+#' harmonies <- sm %>%
+#' harmony(ugran = "month",
+#'        filter_in = "wknd_wday",
+#'        filter_out = c("hhour", "fortnight"))
 #' gran1 = "wknd_wday"
 #' gran2 = "hour_day"
 #' response  = "general_supply_kwh"
-#'global_harmony <-  .data %>% global_threshold(harmony_tbl = harmonies,
+#' global_harmony <-  sm %>%
+#' global_threshold(harmony_tbl = harmonies,
 #' response = "general_supply_kwh")
-#' @export global_threshold
-#'
+#' }
+#' @export
 global_threshold <- function(.data = NULL,
                                 harmony_tbl = NULL,
                                 response = NULL,
@@ -42,29 +48,29 @@ MMPD_sample_lst <- (1:nsamp) %>%
       response_sample <-  sample(.data[[response]], size = nrow(.data))
       data_sample <- .data %>%
   dplyr::mutate(response = response_sample)%>%
-  select(-!!response) %>%
+  dplyr::select(-!!response) %>%
         dplyr::mutate(
           !!response := response) %>%
         dplyr::select(-response)
 
   data_sample %>%
     rank_harmony(harmony_tbl = harmonies, response, dist_ordered = FALSE, step1_data = step1_data) %>%
-    select(MMPD, max_pd)
+    dplyr::select(MMPD, max_pd)
     })
 
 MMPD_sample <- (1:nsamp) %>%
   purrr::map(function(i){
-    MMPD_sample_lst %>% magrittr::extract2(i) %>%  select(MMPD)
+    MMPD_sample_lst %>% magrittr::extract2(i) %>%  dplyr::select(MMPD)
   })
 
 maxpd_sample <- (1:nsamp) %>%
   purrr::map(function(i){
-    MMPD_sample_lst %>% magrittr::extract2(i) %>%  select(max_pd)
+    MMPD_sample_lst %>% magrittr::extract2(i) %>%  dplyr::select(max_pd)
   })
 
   right_quantile_MMPD <- stats::quantile(unlist(MMPD_sample), probs = 0.9)
   right_quantile_maxpd <- stats::quantile(unlist(maxpd_sample), probs = 0.9)
-  MMPD_obs %>% mutate(gt_MMPD = MMPD > right_quantile_MMPD,
+  MMPD_obs %>% dplyr::mutate(gt_MMPD = MMPD > right_quantile_MMPD,
                       gt_maxpd = max_pd > right_quantile_maxpd)
 }
 

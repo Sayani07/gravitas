@@ -15,7 +15,7 @@
 #' library(tidyr)
 #' harmonies <- tibble::tibble(facet_variable = c("A", "B"),x_variable  = c("B","A"), facet_levels = c(2, 3),x_levels = c(3, 2))
 #'.data = harmonies[1,]
-#'data <- sim_distharmony1(.data, sim_dist =  c(rep(dist_normal(mu = 2, sigma = 5),3), rep(dist_normal(mu = 5, sigma = 10), 3)))
+#'data <- sim_distharmony1(.data, sim_dist =  c(rep(distributional::dist_normal(mu = 2, sigma = 5),3), rep(distributional::dist_normal(mu = 5, sigma = 10), 3)))
 #'data %>% select(-dist) %>% unnest(sim_dist) %>%
 #'ggplot(aes(x = Var2, y = sim_dist)) +
 #'facet_wrap(~Var1) + geom_boxplot()
@@ -38,7 +38,7 @@
 
 sim_distharmony1 <- function(.data,
                              ntimes = 500,
-                             sim_dist = dist_normal(mu = 2, sigma = 5)){
+                             sim_dist = distributional::dist_normal(mu = 2, sigma = 5)){
 
   nfacet <- .data$facet_levels
   nx <- .data$x_levels
@@ -56,10 +56,10 @@ sim_distharmony1 <- function(.data,
   lev_x <- paste0(.data$x_variable, 1:nx)
 
   data_1 <- expand.grid(lev_facet, lev_x) %>%
-    mutate(dist = sim_dist)
+    dplyr::mutate(dist = sim_dist)
   #sim_dist <- dist_normal(mu = 1:6, sigma = 3)
 
-  data_1 %>% group_by(Var1, Var2)  %>%
-    mutate(sim_dist = generate(dist, ntimes))
+  data_1 %>% dplyr::group_by(Var1, Var2)  %>%
+    dplyr::mutate(sim_dist = distributional::generate(dist, ntimes))
 }
 

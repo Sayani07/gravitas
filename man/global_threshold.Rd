@@ -24,11 +24,14 @@ global_threshold(
 \item{prob}{numeric vector of probabilities with values in [0,1].}
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units}
+
+\item{step1_data}{If the data across all harmony pairs available in list}
 }
 \description{
 Selecting harmonies with significant difference in distributions for two cyclic granularities
 }
 \examples{
+\dontrun{
 library(tsibbledata)
 library(ggplot2)
 library(tsibble)
@@ -40,9 +43,15 @@ library(magrittr)
 sm <- smart_meter10 \%>\%
 filter(customer_id \%in\% c("10017936"))
 .data = sm
+harmonies <- sm \%>\%
+harmony(ugran = "month",
+       filter_in = "wknd_wday",
+       filter_out = c("hhour", "fortnight"))
 gran1 = "wknd_wday"
 gran2 = "hour_day"
 response  = "general_supply_kwh"
-global_harmony <-  .data \%>\% global_threshold(harmony_tbl = harmonies,
+global_harmony <-  sm \%>\%
+global_threshold(harmony_tbl = harmonies,
 response = "general_supply_kwh")
+}
 }
