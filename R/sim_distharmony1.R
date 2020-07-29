@@ -31,8 +31,8 @@
 #'   response = "general_supply_kwh"
 #'   global_harmony_iter1 <-  smart_meter10 %>%
 #'   global_threshold(harmony_tbl = harmonies,
-#'   response, step1_data = step1_data,
-#'    response, hierarchy_tbl = hierarchy_model)
+#'   response, hierarchy_tbl = hierarchy_model,
+#'   create_gran_data = FALSE)
 #' @export sim_distharmony1
 
 sim_distharmony1 <- function(.data,

@@ -45,11 +45,11 @@ rank_harmony <- function(.data = NULL,
                             hierarchy_tbl = NULL,
                             dist_ordered = TRUE,
                             alpha = 0.05,
-                            step1_data = NULL)
+                            create_gran_data = TRUE)
 {
   # <- _data <- <- <- step1(.data, harmony_tbl, response)
 
-  dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob, dist_distribution, hierarchy_tbl, dist_ordered, step1_data)
+  dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob, dist_distribution, hierarchy_tbl, dist_ordered, create_gran_data)
 
   comp_dist <- dist_harmony_data %>%
     unlist %>%
@@ -70,6 +70,7 @@ rank_harmony <- function(.data = NULL,
 
   mean_max <- comp_dist$...1
   max_distance <- comp_dist$...2
+
   harmony_sort <- harmony_tbl %>%
     dplyr::mutate(MMPD = round(mean_max,5),
                   max_pd = round(max_distance,5)) %>%
@@ -88,15 +89,13 @@ rank_harmony <- function(.data = NULL,
 # distance for one harmony pair
 
 dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
-                             dist_distribution = NULL, hierarchy_tbl = NULL,dist_ordered, step1_data = NULL,...){
-  if(is.null(step1_data)){
-  step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl)
-  }
+                             dist_distribution = NULL, hierarchy_tbl = NULL, dist_ordered = NULL, create_gran_data = NULL,...){
+  step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl,create_gran_data,...)
   (1: length(step1_data)) %>%
     purrr::map(function(rowi){
       step_datai <- step1_data %>%
         magrittr::extract2(rowi)
-      z <- dist_harmony_pair(step_datai, prob, dist_distribution, dist_ordered,...)
+      z <- dist_harmony_pair(step_datai, prob, dist_distribution, dist_ordered,create_gran_data,...)
       c(z$val, z$max_distance)
     })
   }
@@ -104,7 +103,7 @@ dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
 # average of max pairwise distance for one harmony pair
 dist_harmony_pair <-function(step1_datai,
                              prob = seq(0.01, 0.99, 0.01),
-                             dist_distribution = "normal", dist_ordered = TRUE,...)
+                             dist_distribution = "normal", dist_ordered,create_gran_data,...)
 {
   colnames(step1_datai) <- paste0("L",colnames(step1_datai))
   colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
@@ -214,9 +213,9 @@ create_gran_pair <-  function(.data, gran1, gran2, hierarchy_tbl = NULL)
 
 # <- for each element of the list formed
 
-step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL){
+step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL, create_gran_data = NULL,...){
 
-  harmony_data <-create_harmony_data(.data, harmony_tbl, response,hierarchy_tbl)
+  harmony_data <-create_harmony_data(.data, harmony_tbl, response, hierarchy_tbl, create_gran_data)
 
   (1: length(harmony_data)) %>%
     purrr::map(function(rowi){
@@ -239,8 +238,11 @@ step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL){
 # create data for each row of harmony table
 # a list created with a tsibble in each element corresponding to each row of the harmony table
 # create_harmony_data(smart_meter10, harmony_tbl, "general_supply_kwh")
-create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NULL, hierarchy_tbl = NULL)
+create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NULL, hierarchy_tbl = NULL,
+                                create_gran_data= TRUE,...)
 {
+  if(create_gran_data)
+  {
   (1:nrow(harmony_tbl)) %>% purrr::map(function(rowi){
     .data %>% create_gran_pair(harmony_tbl$facet_variable[rowi],
                                harmony_tbl$x_variable[rowi], hierarchy_tbl) %>%
@@ -249,6 +251,11 @@ create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NUL
                     harmony_tbl$x_variable[rowi],
                     .data[[tidyselect::all_of(response)]])
   })
+  }
+  else
+  {
+    return(.data)
+  }
 }
 # already put
 #step1_data <- step1(.data, harmony_tbl, response)

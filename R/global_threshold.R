@@ -5,7 +5,6 @@
 #' @param harmony_tbl A tibble of harmonies and their levels obtained from the function().
 #' @param prob numeric vector of probabilities with values in [0,1].
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units
-#' @param step1_data If the data across all harmony pairs available in list
 #' @examples
 #' \dontrun{
 #' library(tsibbledata)
@@ -36,25 +35,58 @@ global_threshold <- function(.data = NULL,
                                 response = NULL,
                                 prob = seq(0.01,0.99, 0.01),
                                 hierarchy_tbl = NULL,
-                               step1_data = NULL, ...)
+                                create_gran_data = TRUE,
+                                nsamp = 20,
+                                dist_ordered = TRUE,...)
 {
   MMPD_obs <-  .data %>%
     rank_harmony(harmony_tbl = harmonies,
-                 response, step1_data = step1_data, ...)
+                 response = response,
+                 create_gran_data = create_gran_data,
+                 dist_ordered = dist_ordered,...)
 
-nsamp = 20
+
 MMPD_sample_lst <- (1:nsamp) %>%
     purrr::map(function(i){
-      response_sample <-  sample(.data[[response]], size = nrow(.data))
+
+      if(create_gran_data)
+      {
+        response_sample <-  sample(.data[[response]], size = nrow(.data))
+
       data_sample <- .data %>%
   dplyr::mutate(response = response_sample)%>%
   dplyr::select(-!!response) %>%
         dplyr::mutate(
           !!response := response) %>%
         dplyr::select(-response)
+      }
+
+      else{
+
+        .data <- (1:length(.data)) %>%
+          purrr::map(function(i){
+            .data %>% magrittr::extract2(i) %>%  dplyr::mutate(id = i)
+          })
+
+        data <- bind_rows(.data)
+        response_sample <-  sample(data[[response]], size = nrow(data))
+
+        data_sample <- data %>%
+          dplyr::mutate(response = response_sample)%>%
+          dplyr::select(-!!response) %>%
+          dplyr::mutate(
+            !!response := response) %>%
+          dplyr::select(id, everything(), - response)
+
+        data_sample <- split(data_sample, data_sample$id)
+        data_sample <- map(data_sample, ~ (.x %>% select(-1)))
+      }
 
   data_sample %>%
-    rank_harmony(harmony_tbl = harmonies, response, dist_ordered = FALSE, step1_data = step1_data) %>%
+    rank_harmony(harmony_tbl = harmonies,
+                 response = response,
+                 create_gran_data = create_gran_data,
+                 dist_ordered = dist_ordered,...) %>%
     dplyr::select(MMPD, max_pd)
     })
 
