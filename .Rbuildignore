@@ -31,5 +31,6 @@
 ^inst/shiny-examples$
 ^NEWS\.md$
 ^README\.md$
+^check\_gt\.R
 
 

@@ -13,7 +13,7 @@ rank_harmony(
   hierarchy_tbl = NULL,
   dist_ordered = TRUE,
   alpha = 0.05,
-  step1_data = NULL
+  create_gran_data = TRUE
 )
 }
 \arguments{

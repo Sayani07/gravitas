@@ -10,7 +10,9 @@ global_threshold(
   response = NULL,
   prob = seq(0.01, 0.99, 0.01),
   hierarchy_tbl = NULL,
-  step1_data = NULL,
+  create_gran_data = TRUE,
+  nsamp = 20,
+  dist_ordered = TRUE,
   ...
 )
 }
@@ -24,8 +26,6 @@ global_threshold(
 \item{prob}{numeric vector of probabilities with values in [0,1].}
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units}
-
-\item{step1_data}{If the data across all harmony pairs available in list}
 }
 \description{
 Selecting harmonies with significant difference in distributions for two cyclic granularities

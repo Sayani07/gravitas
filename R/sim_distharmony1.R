@@ -20,19 +20,13 @@
 #'facet_wrap(~Var1) + geom_boxplot()
 #'data %>% select(-dist) %>% unnest(sim_dist) %>%
 #' ggplot(aes(x = Var1, y = sim_dist)) +
-#' facet_wrap(~Var2) + geom_boxplot()
+#' facet_wrap'(~Var2) + geom_boxplot()
 #'  dat1 <- data %>% select(-dist) %>%
 #'  unnest(sim_dist) %>%
 #'  pivot_wider(names_from = Var1, values_from  = sim_dist)
 #'  dat2 <- data %>% select(-dist) %>%
 #'   unnest(sim_dist) %>%
 #'   pivot_wider(names_from = Var2, values_from  = sim_dist)
-#'   step1_data <- list(dat1, dat2)
-#'   response = "general_supply_kwh"
-#'   global_harmony_iter1 <-  smart_meter10 %>%
-#'   global_threshold(harmony_tbl = harmonies,
-#'   response, hierarchy_tbl = hierarchy_model,
-#'   create_gran_data = FALSE)
 #' @export sim_distharmony1
 
 sim_distharmony1 <- function(.data,
