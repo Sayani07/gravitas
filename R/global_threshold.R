@@ -5,6 +5,9 @@
 #' @param harmony_tbl A tibble of harmonies and their levels obtained from the function().
 #' @param prob numeric vector of probabilities with values in [0,1].
 #' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units
+#' @param create_gran_data if data corresponding to a pair of cyclic granularity needs to be created
+#' @param nsamp sample size of permutation test to compute threshold
+#' @param dist_ordered if levels of the time granularity is ordered.
 #' @examples
 #' \dontrun{
 #' library(tsibbledata)

@@ -12,9 +12,13 @@
 #' library(distributional)
 #' library(magrittr)
 #' library(tidyr)
-#' harmonies <- tibble::tibble(facet_variable = c("A", "B"),x_variable  = c("B","A"), facet_levels = c(2, 3),x_levels = c(3, 2))
+#' harmonies <- tibble::tibble(facet_variable = c("A", "B"),
+#' x_variable  = c("B","A"), facet_levels = c(2, 3),x_levels = c(3, 2))
 #'.data = harmonies[1,]
-#'data <- sim_distharmony1(.data, sim_dist =  c(rep(distributional::dist_normal(mu = 2, sigma = 5),3), rep(distributional::dist_normal(mu = 5, sigma = 10), 3)))
+#'data <- sim_distharmony1(.data, sim_dist =
+#'  c(rep(distributional::dist_normal(mu = 2,
+#'  sigma = 5),3), rep(distributional::dist_normal(mu = 5,
+#'  sigma = 10), 3)))
 #'data %>% select(-dist) %>% unnest(sim_dist) %>%
 #'ggplot(aes(x = Var2, y = sim_dist)) +
 #'facet_wrap(~Var1) + geom_boxplot()

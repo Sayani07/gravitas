@@ -2,7 +2,7 @@
 #'
 #' Plot probability distribution of univariate series across bivariate temporal granularities.
 #'
-#' @param .data a tsibble.
+#' @param .data a tsibble, if cyclic granularity needs to be constructed or a list consisting of tibbles for each pair of cyclic granularity in the harmony table
 #' @param harmony_tbl A tibble of harmonies and their levels obtained from the function().
 #' @param response response variable.
 #' @param prob numeric vector of probabilities with values in [0,1].
@@ -10,6 +10,7 @@
 #' @param dist_distribution Underlying distribution of distances. Look at hist_distance()
 #' @param dist_ordered if levels of the time granularity is ordered.
 #' @param alpha significance level
+#' @param create_gran_data if data corresponding to a pair of cyclic granularity needs to be created
 #' @return  A tibble of harmonies and their levels ranked in descending order of average maximum pairwise distance of the harmony pairs.
 #
 #' @examples

@@ -26,6 +26,12 @@ global_threshold(
 \item{prob}{numeric vector of probabilities with values in [0,1].}
 
 \item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units}
+
+\item{create_gran_data}{if data corresponding to a pair of cyclic granularity needs to be created}
+
+\item{nsamp}{sample size of permutation test to compute threshold}
+
+\item{dist_ordered}{if levels of the time granularity is ordered.}
 }
 \description{
 Selecting harmonies with significant difference in distributions for two cyclic granularities

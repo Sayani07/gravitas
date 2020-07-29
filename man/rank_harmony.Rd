@@ -17,7 +17,7 @@ rank_harmony(
 )
 }
 \arguments{
-\item{.data}{a tsibble.}
+\item{.data}{a tsibble, if cyclic granularity needs to be constructed or a list consisting of tibbles for each pair of cyclic granularity in the harmony table}
 
 \item{harmony_tbl}{A tibble of harmonies and their levels obtained from the function().}
 
@@ -32,6 +32,8 @@ rank_harmony(
 \item{dist_ordered}{if levels of the time granularity is ordered.}
 
 \item{alpha}{significance level}
+
+\item{create_gran_data}{if data corresponding to a pair of cyclic granularity needs to be created}
 }
 \value{
 A tibble of harmonies and their levels ranked in descending order of average maximum pairwise distance of the harmony pairs.
