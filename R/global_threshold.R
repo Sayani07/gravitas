@@ -113,7 +113,7 @@ maxpd_sample <- (1:nsamp) %>%
                       #
   MMPD_sample <- unlist(MMPD_sample)
 
-  list(MMPD_tbl, MMPD_sample)
+  return(list(MMPD_tbl, MMPD_sample))
 }
 
 # not relevant now
