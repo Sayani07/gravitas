@@ -11,8 +11,8 @@ global_threshold(
   prob = seq(0.01, 0.99, 0.01),
   hierarchy_tbl = NULL,
   create_gran_data = TRUE,
-  nsamp = 20,
   dist_ordered = TRUE,
+  nsamp = 20,
   ...
 )
 }
@@ -29,9 +29,11 @@ global_threshold(
 
 \item{create_gran_data}{if data corresponding to a pair of cyclic granularity needs to be created}
 
+\item{dist_ordered}{if levels of the time granularity is ordered.}
+
 \item{nsamp}{sample size of permutation test to compute threshold}
 
-\item{dist_ordered}{if levels of the time granularity is ordered.}
+\item{...}{Other arguments passed on to individual methods.}
 }
 \description{
 Selecting harmonies with significant difference in distributions for two cyclic granularities
@@ -58,6 +60,6 @@ gran2 = "hour_day"
 response  = "general_supply_kwh"
 global_harmony <-  sm \%>\%
 global_threshold(harmony_tbl = harmonies,
-response = "general_supply_kwh")
+response = "general_supply_kwh", nsamp = 2)
 }
 }

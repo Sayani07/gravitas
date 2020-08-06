@@ -7,7 +7,8 @@
 sim_distharmony1(
   .data,
   ntimes = 500,
-  sim_dist = distributional::dist_normal(mu = 2, sigma = 5)
+  sim_dist = distributional::dist_normal(mu = 2, sigma = 5),
+  ...
 )
 }
 \arguments{
@@ -17,7 +18,7 @@ sim_distharmony1(
 
 \item{sim_dist}{the distribution to be generated using package distributional}
 
-\item{hierarchy_tbl}{A hierarchy table specifying the hierarchy of units}
+\item{...}{Other arguments passed on to individual methods.}
 }
 \description{
 Selecting harmonies with significant difference in distributions for two cyclic granularities

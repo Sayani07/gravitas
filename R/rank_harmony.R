@@ -36,7 +36,6 @@
 #' harmony_tbl <- PBS %>% harmony(ugran = "year")
 #' rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
 #' @export rank_harmony
-#' @export create_harmony_data
 
 rank_harmony <- function(.data = NULL,
                             harmony_tbl = NULL,
@@ -158,13 +157,6 @@ dist_harmony_pair <-function(step1_datai,
     {
       a[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
       step4[k] <- max_dist/a[k]
-    }
-
-    if(dist_distribution == "normal")
-    {
-      b[k] <- stats::qnorm(p = prob[k], mean = mu[k], sd = sigma[k])
-      a[k] <- 1/(len_uniq_dist*stats::dnorm(b[k], mean = mu[k], sd = sigma[k]))
-      step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - b[k])/a[k])
     }
 
     if(dist_distribution == "normal")

@@ -11,7 +11,6 @@
 #' @param dist_ordered if levels of the time granularity is ordered.
 #' @param alpha significance level
 #' @return  A tibble of harmonies and their levels ranked in descending order of average maximum pairwise distance of the harmony pairs.
-#' @export create_harmony_data
 
 rank_harmony_v0 <- function(.data = NULL,
                          harmony_tbl = NULL,

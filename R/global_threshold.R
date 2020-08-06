@@ -8,6 +8,7 @@
 #' @param create_gran_data if data corresponding to a pair of cyclic granularity needs to be created
 #' @param nsamp sample size of permutation test to compute threshold
 #' @param dist_ordered if levels of the time granularity is ordered.
+#' @param ... Other arguments passed on to individual methods.
 #' @examples
 #' \dontrun{
 #' library(tsibbledata)
@@ -30,7 +31,7 @@
 #' response  = "general_supply_kwh"
 #' global_harmony <-  sm %>%
 #' global_threshold(harmony_tbl = harmonies,
-#' response = "general_supply_kwh")
+#' response = "general_supply_kwh", nsamp = 2)
 #' }
 #' @export
 global_threshold <- function(.data = NULL,
@@ -39,8 +40,8 @@ global_threshold <- function(.data = NULL,
                                 prob = seq(0.01,0.99, 0.01),
                                 hierarchy_tbl = NULL,
                                 create_gran_data = TRUE,
-                                nsamp = 20,
-                                dist_ordered = TRUE,...)
+                                dist_ordered = TRUE,
+                                nsamp = 20,...)
 {
   MMPD_obs <-  .data %>%
     rank_harmony(harmony_tbl = harmonies,
@@ -71,7 +72,7 @@ MMPD_sample_lst <- (1:nsamp) %>%
             .data %>% magrittr::extract2(i) %>%  dplyr::mutate(id = i)
           })
 
-        data <- bind_rows(.data)
+        data <- dplyr::bind_rows(.data)
         response_sample <-  sample(data[[response]], size = nrow(data))
 
         data_sample <- data %>%
@@ -79,10 +80,10 @@ MMPD_sample_lst <- (1:nsamp) %>%
           dplyr::select(-!!response) %>%
           dplyr::mutate(
             !!response := response) %>%
-          dplyr::select(id, everything(), - response)
+          dplyr::select(id, dplyr::everything(), - response)
 
         data_sample <- split(data_sample, data_sample$id)
-        data_sample <- map(data_sample, ~ (.x %>% select(-1)))
+        data_sample <- purrr::map(data_sample, ~ (.x %>% select(-1)))
       }
 
   data_sample %>%
@@ -152,43 +153,43 @@ maxpd_sample <- (1:nsamp) %>%
 #     dplyr::mutate(threshold = return_val_un)
 # }
 
-pvalue_harmony_pair <- function(.data = NULL,
-                                gran1 = NULL,
-                                gran2 = NULL,
-                                response = NULL,
-                                size =NULL,
-                                hierarchy_tbl = NULL,  test = "median", tau = 0.95, r = 500, probs = 0.95,...)
-{
-  if(is.null(size)){
-    size = length(.data)
-  }
-  data_pair <- create_gran_pair(.data, gran1, gran2, hierarchy_tbl) %>% tibble::as_tibble()
-
-
-  MMPD_sample_lst <- (1:5) %>%
-    purrr::map(function(i){
-
-      # get the sample
-
-      response_sample <- sample(data_pair[[response]], nrow(data_pair))
-      MMPD_sample <- data_pair %>%
-        dplyr::select(!!gran1, !!gran2, !!response) %>%
-        # get data in required format for each sample
-        dplyr::mutate(
-          response = response_sample
-        ) %>%
-        dplyr::select(-!!response) %>%
-        tidyr::pivot_wider(names_from = !!gran1,
-                           values_from = response,
-                           values_fn = list(response = list)) %>%
-        # compute MMPD for each of these random sample
-        dist_harmony_pair()
-
-      MMPD_sample$val
-    })
-
-  MMPD_sample_lst
-  #right_quantile <- stats::quantile(unlist(MMPD_sample_lst), probs)
-  #MMPD_obs > right_quantile
-}
-
+# pvalue_harmony_pair <- function(.data = NULL,
+#                                 gran1 = NULL,
+#                                 gran2 = NULL,
+#                                 response = NULL,
+#                                 size =NULL,
+#                                 hierarchy_tbl = NULL,  test = "median", tau = 0.95, r = 500, probs = 0.95,...)
+# {
+#   if(is.null(size)){
+#     size = length(.data)
+#   }
+#   data_pair <- create_gran_pair(.data, gran1, gran2, hierarchy_tbl) %>% tibble::as_tibble()
+#
+#
+#   MMPD_sample_lst <- (1:5) %>%
+#     purrr::map(function(i){
+#
+#       # get the sample
+#
+#       response_sample <- sample(data_pair[[response]], nrow(data_pair))
+#       MMPD_sample <- data_pair %>%
+#         dplyr::select(!!gran1, !!gran2, !!response) %>%
+#         # get data in required format for each sample
+#         dplyr::mutate(
+#           response = response_sample
+#         ) %>%
+#         dplyr::select(-!!response) %>%
+#         tidyr::pivot_wider(names_from = !!gran1,
+#                            values_from = response,
+#                            values_fn = list(response = list)) %>%
+#         # compute MMPD for each of these random sample
+#         dist_harmony_pair()
+#
+#       MMPD_sample$val
+#     })
+#
+#   MMPD_sample_lst
+#   #right_quantile <- stats::quantile(unlist(MMPD_sample_lst), probs)
+#   #MMPD_obs > right_quantile
+# }
+#

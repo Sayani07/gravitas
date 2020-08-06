@@ -33,5 +33,7 @@ utils::globalVariables(
     "Var1",
     "Var2",
     "dist",
-    "harmonies"
+    "harmonies",
+    "id",
+    "max_pd"
 ))

@@ -3,7 +3,6 @@
 S3method(print,gran_advice)
 export("%>%")
 export(create_gran)
-export(create_harmony_data)
 export(global_threshold)
 export(gran_advice)
 export(gran_obs)

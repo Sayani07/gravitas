@@ -41,7 +41,9 @@ Imports:
   RColorBrewer,
   ineq,
   magrittr,
-  utils
+  utils,
+  distributional,
+  tidyselect
 Suggests:
     knitr,
     tsibbledata (>= 0.1.0),

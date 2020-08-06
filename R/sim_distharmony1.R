@@ -3,8 +3,7 @@
 #' @param .data a tsibble.
 #' @param ntimes the size of the sample
 #' @param sim_dist the distribution to be generated using package distributional
-#' @param hierarchy_tbl A hierarchy table specifying the hierarchy of units
-#
+#' @param ... Other arguments passed on to individual methods.
 #' @examples
 #' library(ggplot2)
 #' library(gravitas)
@@ -35,7 +34,7 @@
 
 sim_distharmony1 <- function(.data,
                              ntimes = 500,
-                             sim_dist = distributional::dist_normal(mu = 2, sigma = 5)){
+                             sim_dist = distributional::dist_normal(mu = 2, sigma = 5),...){
 
   nfacet <- .data$facet_levels
   nx <- .data$x_levels
