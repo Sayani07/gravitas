@@ -11,29 +11,6 @@
 #' @param dist_ordered if levels of the time granularity is ordered.
 #' @param alpha significance level
 #' @return  A tibble of harmonies and their levels ranked in descending order of average maximum pairwise distance of the harmony pairs.
-#
-#' @examples
-#' library(tsibbledata)
-#' library(ggplot2)
-#' library(tsibble)
-#' library(lvplot)
-#' library(dplyr)
-#' library(gravitas)
-#' library(purrr)
-#' library(magrittr)
-#' sm <- smart_meter10 %>%
-#' filter(customer_id %in% c("10017936"))
-#' harmonies <- sm %>%
-#' harmony(ugran = "month",
-#'        filter_in = "wknd_wday",
-#'        filter_out = c("hhour", "fortnight"))
-#' .data = sm
-#' response  = "general_supply_kwh"
-#' harmony_tbl =  harmonies
-#' smart_harmony <- .data %>% rank_harmony_v0(harmony_tbl = harmonies,
-#' response = "general_supply_kwh", dist_ordered = FALSE)
-#' harmony_tbl <- PBS %>% harmony(ugran = "year")
-#' rank_harmony_v0(PBS, harmony_tbl = harmony_tbl, response = "Cost")
 #' @export create_harmony_data
 
 rank_harmony_v0 <- function(.data = NULL,
