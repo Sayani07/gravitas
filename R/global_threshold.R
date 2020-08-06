@@ -34,6 +34,7 @@
 #' response = "general_supply_kwh", nsamp = 2)
 #' }
 #' @export
+
 global_threshold <- function(.data = NULL,
                                 harmony_tbl = NULL,
                                 response = NULL,
@@ -106,8 +107,13 @@ maxpd_sample <- (1:nsamp) %>%
 
   right_quantile_MMPD <- stats::quantile(unlist(MMPD_sample), probs = 0.9)
   right_quantile_maxpd <- stats::quantile(unlist(maxpd_sample), probs = 0.9)
-  MMPD_obs %>% dplyr::mutate(gt_MMPD = MMPD > right_quantile_MMPD,
-                      gt_maxpd = max_pd > right_quantile_maxpd)
+  MMPD_tbl <- MMPD_obs %>% dplyr::mutate(select_harmony = MMPD > right_quantile_MMPD,
+                             gt_MMPD = right_quantile_MMPD)
+                      #gt_maxpd = max_pd > right_quantile_maxpd)
+                      #
+  MMPD_sample <- unlist(MMPD_sample)
+
+  list(MMPD_tbl, MMPD_sample)
 }
 
 # not relevant now
