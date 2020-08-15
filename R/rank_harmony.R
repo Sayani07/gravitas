@@ -72,13 +72,17 @@ rank_harmony <- function(.data = NULL,
   max_distance <- comp_dist$...2
 
   harmony_sort <- harmony_tbl %>%
-    dplyr::mutate(MMPD = round(mean_max,3)) %>%
+    dplyr::mutate(MMPD = round(mean_max,2)) %>%
                   #max_pd = round(max_distance,5))
     dplyr::arrange(dplyr::desc(MMPD)) %>%
     #dplyr::mutate(r = rank(-max_pd)) %>%
     #dplyr::filter(max_norm_s>=galpa) %>%
     #dplyr::select(-max_norm_s) %>%
-    dplyr::filter(!is.na(MMPD))
+    dplyr::filter(!is.na(MMPD)) %>%
+    rename("facet" = "facet_variable",
+           "x" = "x_variable",
+           "facet_l" = "facet_levels",
+           "x_l" = "x_levels")
 
   harmony_sort
 }
