@@ -36,13 +36,13 @@
 #' @export
 
 global_threshold <- function(.data = NULL,
-                                harmony_tbl = NULL,
-                                response = NULL,
-                                prob = seq(0.01,0.99, 0.01),
-                                hierarchy_tbl = NULL,
-                                create_gran_data = TRUE,
-                                dist_ordered = TRUE,
-                                nsamp = 20,...)
+                             harmony_tbl = NULL,
+                             response = NULL,
+                             prob = seq(0.01,0.99, 0.01),
+                             hierarchy_tbl = NULL,
+                             create_gran_data = TRUE,
+                             dist_ordered = TRUE,
+                             nsamp = 20,...)
 {
   MMPD_obs <-  .data %>%
     rank_harmony(harmony_tbl = harmonies,
@@ -51,26 +51,27 @@ global_threshold <- function(.data = NULL,
                  dist_ordered = dist_ordered,...)
 
 
-MMPD_sample_lst <- (1:nsamp) %>%
-    purrr::map(function(i){
+  MMPD_sample_lst <- (1:nsamp) %>%
+    purrr::map(function(nsampi){
 
       if(create_gran_data)
       {
         response_sample <-  sample(.data[[response]], size = nrow(.data))
 
-      data_sample <- .data %>%
-  dplyr::mutate(response = response_sample)%>%
-  dplyr::select(-!!response) %>%
-        dplyr::mutate(
-          !!response := response) %>%
-        dplyr::select(-response)
+        data_sample <- .data %>%
+          dplyr::mutate(response = response_sample)%>%
+          dplyr::select(-!!response) %>%
+          dplyr::mutate(
+            !!response := response) %>%
+          dplyr::select(-response)
       }
 
       else{
 
         .data <- (1:length(.data)) %>%
-          purrr::map(function(lengthi){
-            .data %>% magrittr::extract2(lengthi) %>%  dplyr::mutate(id = lengthi)
+          purrr::map(function(i){
+            .data %>% magrittr::extract2(i) %>%
+              dplyr::mutate(id = i)
           })
 
         data <- dplyr::bind_rows(.data)%>% dplyr::ungroup()
@@ -81,40 +82,44 @@ MMPD_sample_lst <- (1:nsamp) %>%
           dplyr::select(-!!response) %>%
           dplyr::mutate(
             !!response := response) %>%
-          dplyr::select(id, dplyr::everything(), - response)
+          dplyr::select(id, everything(), - response)
 
         data_sample <- split(data_sample, data_sample$id)
         data_sample <- purrr::map(data_sample, ~ (.x %>% select(-1)))
       }
 
-  data_sample %>%
-    rank_harmony(harmony_tbl = harmonies,
-                 response = response,
-                 create_gran_data = create_gran_data,
-                 dist_ordered = dist_ordered,...) %>%
-    dplyr::select(MMPD)
+      data_sample %>%
+        rank_harmony(harmony_tbl = harmonies,
+                     response = response,
+                     create_gran_data = create_gran_data,
+                     dist_ordered = dist_ordered) %>%
+        dplyr::select(MMPD)
+
     })
 
-MMPD_sample <- (1:nsamp) %>%
-  purrr::map(function(i){
-    MMPD_sample_lst %>% magrittr::extract2(i) %>%  dplyr::select(MMPD)
-  })
+  # MMPD_sample <- (1:nsamp) %>%
+  #   purrr::map(function(i){
+  #     MMPD_sample_lst %>% magrittr::extract2(i) %>%  dplyr::select(MMPD)
+  #   })
+  #
+  # maxpd_sample <- (1:nsamp) %>%
+  #   purrr::map(function(i){
+  #     MMPD_sample_lst %>% magrittr::extract2(i) %>%  dplyr::select(max_pd)
+  #   })
 
-# maxpd_sample <- (1:nsamp) %>%
-#   purrr::map(function(i){
-#     MMPD_sample_lst %>% magrittr::extract2(i) %>%  dplyr::select(max_pd)
-#   })
 
-  right_quantile_MMPD <- stats::quantile(unlist(MMPD_sample), probs = 0.9)
-  #right_quantile_maxpd <- stats::quantile(unlist(maxpd_sample), probs = 0.9)
-  MMPD_tbl <- MMPD_obs %>%
-    dplyr::mutate(select_harmony = MMPD > right_quantile_MMPD,
-                             gt_MMPD = right_quantile_MMPD)
-                      #gt_maxpd = max_pd > right_quantile_maxpd)
-                      #
-  MMPD_sample <- unlist(MMPD_sample)
+  right_quantile_MMPD <- stats::quantile(unlist(MMPD_sample_lst), probs = 0.95)
+  #right_quantile_maxpd <- stats::quantile(unlist(maxpd_sample), probs = 0.95)
+  #MMPD_tbl <- MMPD_obs %>% dplyr::mutate(select_harmony = MMPD > right_quantile_MMPD,
+  #gt_0.95_MMPD = right_quantile_MMPD)
+  #gt_maxpd = max_pd > right_quantile_maxpd)
 
-  return(list(MMPD_tbl, MMPD_sample))
+  MMPD_obs <- MMPD_obs %>% mutate(threshold = right_quantile_MMPD) %>% dplyr::mutate(threshold = round(threshold,2)) %>% dplyr::mutate(MMPD = round(MMPD,2))
+
+
+  MMPD_sample <- unlist(MMPD_sample_lst)
+
+  return(list(MMPD_obs, MMPD_sample, right_quantile_MMPD))
 }
 
 # not relevant now
