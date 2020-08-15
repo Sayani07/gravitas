@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gravitas</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -147,17 +147,18 @@
     </div>
 
     <pre class="usage"><span class='fu'>prob_plot</span>(
-  <span class='no'>.data</span>,
-  <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>, <span class='fl'>0.99</span>),
-  <span class='kw'>facet_h</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>symmetric</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.8</span>,
-  <span class='no'>...</span>
+  <span class='kw'>.data</span>,
+  gran1 = <span class='kw'>NULL</span>,
+  gran2 = <span class='kw'>NULL</span>,
+  hierarchy_tbl = <span class='kw'>NULL</span>,
+  response = <span class='kw'>NULL</span>,
+  plot_type = <span class='kw'>NULL</span>,
+  quantile_prob = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>, <span class='fl'>0.99</span>),
+  facet_h = <span class='kw'>NULL</span>,
+  symmetric = <span class='fl'>TRUE</span>,
+  alpha = <span class='fl'>0.8</span>,
+  threshold_nobs = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -204,6 +205,10 @@
       <td><p>level of transperancy for the quantile area</p></td>
     </tr>
     <tr>
+      <th>threshold_nobs</th>
+      <td><p>the minimum number of observations below which only points would be plotted</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>other arguments to be passed for customising the obtained ggplot object.</p></td>
     </tr>
@@ -214,36 +219,37 @@
     <p>a ggplot object which can be customised as usual.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lvplot</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://tsibbledata.tidyverts.org'>tsibbledata</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://tsibble.tidyverts.org'>tsibble</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>lvplot</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
 
-<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span> <span class='fu'>prob_plot</span>(
-  <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"month_year"</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_week"</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"Demand"</span>, <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"violin"</span>,
-  <span class='kw'>quantile_prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>),
-  <span class='kw'>symmetric</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>outlier.colour</span> <span class='kw'>=</span> <span class='st'>"red"</span>,
-  <span class='kw'>outlier.shape</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='st'>"Dark2"</span>
-)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("month_year", "hour_week")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("month_year", "hour_week")</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Ignoring unknown parameters: outlier.colour, outlier.shape, palette</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Granularities chosen are Clashes.</span>
-#&gt; <span class='warning'>            </span>
-#&gt; <span class='warning'>You might be interested to look at the</span>
-#&gt; <span class='warning'>            set of harmonies using harmony(data).</span></div><div class='img'><img src='prob_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>cricket_tsibble</span> <span class='kw'>&lt;-</span> <span class='no'>cricket</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>data_index</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span>()) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>data_index</span>)
+<span class='kw'>smart_meter10</span> <span class='op'>%&gt;%</span>
+<span class='kw'>dplyr</span>::<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>customer_id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"10017936"</span>)) <span class='op'>%&gt;%</span>
+<span class='fu'>prob_plot</span>(
+  gran1 = <span class='st'>"day_week"</span>, gran2 = <span class='st'>"hour_day"</span>,
+  response = <span class='st'>"general_supply_kwh"</span>, plot_type = <span class='st'>"quantile"</span>,
+  quantile_prob = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.25</span>, <span class='fl'>0.5</span>, <span class='fl'>0.75</span>, <span class='fl'>0.9</span>),
+  symmetric = <span class='fl'>TRUE</span>,
+   outlier.colour = <span class='st'>"red"</span>,
+  outlier.shape = <span class='fl'>2</span>, palette = <span class='st'>"Dark2"</span>
+) <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span>(breaks = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.1</span>, <span class='fl'>1.00</span>))</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("day_week", "hour_day")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("day_week", "hour_day")</span></div><div class='img'><img src='prob_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 
-<span class='no'>hierarchy_model</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
-  <span class='kw'>units</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"index"</span>, <span class='st'>"over"</span>, <span class='st'>"inning"</span>, <span class='st'>"match"</span>),
-  <span class='kw'>convert_fct</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>20</span>, <span class='fl'>2</span>, <span class='fl'>1</span>)
+<span class='kw'>cricket_tsibble</span> <span class='op'>&lt;-</span> <span class='kw'>cricket</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(data_index = <span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span>()) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(index = <span class='kw'>data_index</span>)
+
+<span class='kw'>hierarchy_model</span> <span class='op'>&lt;-</span> <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
+  units = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"index"</span>, <span class='st'>"over"</span>, <span class='st'>"inning"</span>, <span class='st'>"match"</span>),
+  convert_fct = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>20</span>, <span class='fl'>2</span>, <span class='fl'>1</span>)
 )
 
-<span class='no'>cricket_tsibble</span> <span class='kw'>%&gt;%</span>
+<span class='kw'>cricket_tsibble</span> <span class='op'>%&gt;%</span>
   <span class='fu'>prob_plot</span>(<span class='st'>"inning"</span>, <span class='st'>"over"</span>,
-    <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='no'>hierarchy_model</span>,
-    <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"runs_per_over"</span>,
-    <span class='kw'>plot_type</span> <span class='kw'>=</span> <span class='st'>"lv"</span>
+    hierarchy_tbl = <span class='kw'>hierarchy_model</span>,
+    response = <span class='st'>"runs_per_over"</span>,
+    plot_type = <span class='st'>"lv"</span>
   )</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("inning", "over")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("inning", "over")</span></div><div class='img'><img src='prob_plot-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

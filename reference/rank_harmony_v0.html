@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Smart meter data for ten households — smart_meter10 • gravitas</title>
+<title>Plotting probability distributions across granularities — rank_harmony_v0 • gravitas</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,14 +52,8 @@
 
 
 
-<meta property="og:title" content="Smart meter data for ten households — smart_meter10" />
-<meta property="og:description" content="Customer Trial data conducted as part of
-Smart Grid Smart City (SGSC) project
-(2010-2014) based in Newcastle,
-New South Wales
-and areas in Sydney.
-It contains half hourly interval meter readings (KWh)
-of electricity consumption of households." />
+<meta property="og:title" content="Plotting probability distributions across granularities — rank_harmony_v0" />
+<meta property="og:description" content="Plot probability distribution of univariate series across bivariate temporal granularities." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -143,36 +137,66 @@ of electricity consumption of households." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Smart meter data for ten households</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>smart_meter10.Rd</code></div>
+    <h1>Plotting probability distributions across granularities</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/rank_harmony_v0.R'><code>R/rank_harmony_v0.R</code></a></small>
+    <div class="hidden name"><code>rank_harmony_v0.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Customer Trial data conducted as part of
-Smart Grid Smart City (SGSC) project
-(2010-2014) based in Newcastle,
-New South Wales
-and areas in Sydney.
-It contains half hourly interval meter readings (KWh)
-of electricity consumption of households.</p>
+    <p>Plot probability distribution of univariate series across bivariate temporal granularities.</p>
     </div>
 
-    <pre class="usage"><span class='kw'>smart_meter10</span></pre>
+    <pre class="usage"><span class='fu'>rank_harmony_v0</span>(
+  .data = <span class='kw'>NULL</span>,
+  harmony_tbl = <span class='kw'>NULL</span>,
+  response = <span class='kw'>NULL</span>,
+  prob = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.99</span>, <span class='fl'>0.01</span>),
+  dist_distribution = <span class='st'>"normal"</span>,
+  hierarchy_tbl = <span class='kw'>NULL</span>,
+  dist_ordered = <span class='fl'>TRUE</span>,
+  alpha = <span class='fl'>0.05</span>
+)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>.data</th>
+      <td><p>a tsibble.</p></td>
+    </tr>
+    <tr>
+      <th>harmony_tbl</th>
+      <td><p>A tibble of harmonies and their levels obtained from the function().</p></td>
+    </tr>
+    <tr>
+      <th>response</th>
+      <td><p>response variable.</p></td>
+    </tr>
+    <tr>
+      <th>prob</th>
+      <td><p>numeric vector of probabilities with values in [0,1].</p></td>
+    </tr>
+    <tr>
+      <th>dist_distribution</th>
+      <td><p>Underlying distribution of distances. Look at hist_distance()</p></td>
+    </tr>
+    <tr>
+      <th>hierarchy_tbl</th>
+      <td><p>A hierarchy table specifying the hierarchy of units</p></td>
+    </tr>
+    <tr>
+      <th>dist_ordered</th>
+      <td><p>if levels of the time granularity is ordered.</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>significance level</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tsibble with 259, 235 rows and 3 columns.</p><dl>
- <dt>customer_id</dt><dd><p>household ID</p></dd>
- <dt>reading_datetime</dt><dd><p>Date time for which data is recorded (index)</p></dd>
- <dt>general_supply_kwh</dt><dd><p>electricity supplied to this household</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    <p><a href='https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter'>https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter</a></p>
+    <p>A tibble of harmonies and their levels ranked in descending order of average maximum pairwise distance of the harmony pairs.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

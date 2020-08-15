@@ -89,7 +89,7 @@ useful for validating if number of observations are sufficient to compute probab
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gravitas</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -151,7 +151,7 @@ useful for validating if number of observations are sufficient to compute probab
 useful for validating if number of observations are sufficient to compute probability distributions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gran_obs</span>(<span class='no'>.data</span>, <span class='no'>gran1</span>, <span class='no'>gran2</span>, <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>gran_obs</span>(<span class='kw'>.data</span>, <span class='kw'>gran1</span>, <span class='kw'>gran2</span>, hierarchy_tbl = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,8 +179,8 @@ useful for validating if number of observations are sufficient to compute probab
     <p>A tibble with number of observations for each granularity.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span> <span class='fu'>gran_obs</span>(<span class='st'>"hour_day"</span>, <span class='st'>"day_week"</span>)</div><div class='output co'>#&gt; # A tibble: 7 x 25
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://tsibbledata.tidyverts.org'>tsibbledata</a></span>)
+<span class='kw'>vic_elec</span> <span class='op'>%&gt;%</span> <span class='fu'>gran_obs</span>(<span class='st'>"hour_day"</span>, <span class='st'>"day_week"</span>)</div><div class='output co'>#&gt; # A tibble: 7 x 25
 #&gt;   day_week   `0`   `1`   `2`   `3`   `4`   `5`   `6`   `7`   `8`   `9`  `10`
 #&gt;   &lt;ord&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 #&gt; 1 Mon        314   314   314   314   314   314   314   314   314   314   314

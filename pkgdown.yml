@@ -1,8 +1,6 @@
 pandoc: '2.2'
 pkgdown: 1.5.1.9000
-pkgdown_sha: ac78596154e403df5f4e683f2185d88225a0fea6
-articles:
-  cricket: cricket.html
-  gravitas_vignette: gravitas_vignette.html
-last_built: 2020-05-28T05:22Z
+pkgdown_sha: eae56f08694abebf93cdfc0dd8e9ede06d8c815f
+articles: []
+last_built: 2020-08-15T04:29Z
 

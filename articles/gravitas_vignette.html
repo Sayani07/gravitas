@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gravitas</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -117,26 +117,24 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <h1 class="hasAnchor">
 <a href="#analysis-of-smart-meter-data" class="anchor"></a>Analysis of smart meter data</h1>
 <p>The <code>smart_meter10</code> data set in the package is a <a href="https://tsibble.tidyverts.org/">tsibble</a> providing the energy consumption for ten households from <a href="https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter">customer trials</a>. It is hard to derive insights when we try to visualize periodicity in the data for all households. For example, if we plot the energy consumption across each hour of the day, the structure of the data suggests that there are several data points for each hour of the day for just one household. Hence, for several households, there will be a blob of points for each hour of the day.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">smart_meter10</span> <span class="kw">%&gt;%</span> <span class="fu">select</span>(<span class="no">customer_id</span>,
-                         <span class="no">reading_datetime</span>,
-                         <span class="no">general_supply_kwh</span>,
-                         <span class="fu">everything</span>()
-)
-<span class="co">#&gt; # A tsibble: 259,235 x 3 [30m] &lt;UTC&gt;</span>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw">smart_meter10</span>
+<span class="co">#&gt; # A tsibble: 293,874 x 3 [30m] &lt;UTC&gt;</span>
 <span class="co">#&gt; # Key:       customer_id [10]</span>
 <span class="co">#&gt;    customer_id reading_datetime    general_supply_kwh</span>
 <span class="co">#&gt;    &lt;chr&gt;       &lt;dttm&gt;                           &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 10006704    2012-06-01 10:00:00              0.24 </span>
-<span class="co">#&gt;  2 10006704    2012-06-01 10:30:00              0.245</span>
-<span class="co">#&gt;  3 10006704    2012-06-01 11:00:00              0.206</span>
-<span class="co">#&gt;  4 10006704    2012-06-01 11:30:00              0.217</span>
-<span class="co">#&gt;  5 10006704    2012-06-01 12:00:00              0.214</span>
-<span class="co">#&gt;  6 10006704    2012-06-01 12:30:00              0.23 </span>
-<span class="co">#&gt;  7 10006704    2012-06-01 13:00:00              0.898</span>
-<span class="co">#&gt;  8 10006704    2012-06-01 13:30:00              0.197</span>
-<span class="co">#&gt;  9 10006704    2012-06-01 14:00:00              0.255</span>
-<span class="co">#&gt; 10 10006704    2012-06-01 14:30:00              0.199</span>
-<span class="co">#&gt; # … with 259,225 more rows</span></pre></body></html></div>
+<span class="co">#&gt;  1 10006414    2012-02-10 08:00:00              0.141</span>
+<span class="co">#&gt;  2 10006414    2012-02-10 08:30:00              0.088</span>
+<span class="co">#&gt;  3 10006414    2012-02-10 09:00:00              0.078</span>
+<span class="co">#&gt;  4 10006414    2012-02-10 09:30:00              0.151</span>
+<span class="co">#&gt;  5 10006414    2012-02-10 10:00:00              0.146</span>
+<span class="co">#&gt;  6 10006414    2012-02-10 10:30:00              0.077</span>
+<span class="co">#&gt;  7 10006414    2012-02-10 11:00:00              0.052</span>
+<span class="co">#&gt;  8 10006414    2012-02-10 11:30:00              0.055</span>
+<span class="co">#&gt;  9 10006414    2012-02-10 12:00:00              0.055</span>
+<span class="co">#&gt; 10 10006414    2012-02-10 12:30:00              0.252</span>
+<span class="co">#&gt; # … with 293,864 more rows</span>
+</pre></div>
 <!-- To have an understanding of how different the energy consumption for each household of the trial is, energy consumption is plotted against time with each transition state indicating one household for a sample. If we plot the raw data for all of them, it is difficult to get insights into their behavior.  -->
 <!-- # ```{r, echo=FALSE, out.width="100%"} -->
 <!-- # # smart_p <- smart_meter10 %>% -->
@@ -165,10 +163,11 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <a href="#get-set-of-possible-granularities-with-search_gran" class="anchor"></a>Get set of possible granularities with <code>search_gran</code>
 </h3>
 <p>Typically, the first thing we should have at our disposal for examining periodicities of energy behavior across time granularities is to know the number of time granularities we can look at exhaustively. If we consider conventional time deconstructions for a Gregorian calendar (second, minute, half-hour, hour, day, week, fortnight, month, quarter, semester, year), the following time granularities can be considered for this analysis.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tsibble</span>)
-<span class="fu"><a href="https://tsibble.tidyverts.org/reference/regular.html">interval</a></span>(<span class="no">smart_meter10</span>)
-<span class="co">#&gt; 30m</span>
-<span class="no">smart_meter10</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/search_gran.html">search_gran</a></span>()
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="kw">tsibble</span>::<span class="fu"><a href="https://tsibble.tidyverts.org/reference/regular.html">interval</a></span>(<span class="kw">smart_meter10</span>)
+<span class="co">#&gt; &lt;interval[1]&gt;</span>
+<span class="co">#&gt; [1] 30m</span>
+<span class="kw">smart_meter10</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/search_gran.html">search_gran</a></span>()
 <span class="co">#&gt;  [1] "hhour_hour"         "hhour_day"          "hhour_week"        </span>
 <span class="co">#&gt;  [4] "hhour_fortnight"    "hhour_month"        "hhour_quarter"     </span>
 <span class="co">#&gt;  [7] "hhour_semester"     "hhour_year"         "hour_day"          </span>
@@ -180,22 +179,27 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <span class="co">#&gt; [25] "week_semester"      "week_year"          "fortnight_month"   </span>
 <span class="co">#&gt; [28] "fortnight_quarter"  "fortnight_semester" "fortnight_year"    </span>
 <span class="co">#&gt; [31] "month_quarter"      "month_semester"     "month_year"        </span>
-<span class="co">#&gt; [34] "quarter_semester"   "quarter_year"       "semester_year"</span></pre></body></html></div>
+<span class="co">#&gt; [34] "quarter_semester"   "quarter_year"       "semester_year"</span>
+</pre></div>
 <p>The interval of this tsibble is 30 minutes, and hence the default for <code>search_gran</code> in this case, provides temporal granularities ranging from half-hour to year. If these options are considered too many, the default options can be modified to limit the possibilities. For example, the most coarse temporal unit can be set to be a “month”.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r">
-<span class="no">smart_meter10</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/search_gran.html">search_gran</a></span>(<span class="kw">highest_unit</span> <span class="kw">=</span> <span class="st">"month"</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+
+<span class="kw">smart_meter10</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/search_gran.html">search_gran</a></span>(highest_unit = <span class="st">"month"</span>)
 <span class="co">#&gt;  [1] "hhour_hour"      "hhour_day"       "hhour_week"      "hhour_fortnight"</span>
 <span class="co">#&gt;  [5] "hhour_month"     "hour_day"        "hour_week"       "hour_fortnight" </span>
 <span class="co">#&gt;  [9] "hour_month"      "day_week"        "day_fortnight"   "day_month"      </span>
-<span class="co">#&gt; [13] "week_fortnight"  "week_month"      "fortnight_month"</span></pre></body></html></div>
+<span class="co">#&gt; [13] "week_fortnight"  "week_month"      "fortnight_month"</span>
+</pre></div>
 <p>This looks better. However, some intermediate temporal units might not be pertinent to the analysis and we might want to remove them from the list of granularities that we want to examine using the argument <code>filter_out</code> in <code>search_gran</code>.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r">
-<span class="no">smart_meter10</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/search_gran.html">search_gran</a></span>(<span class="kw">highest_unit</span> <span class="kw">=</span> <span class="st">"month"</span>,
-                              <span class="kw">filter_out</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hhour"</span>, <span class="st">"fortnight"</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit">
+
+<span class="kw">smart_meter10</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/search_gran.html">search_gran</a></span>(highest_unit = <span class="st">"month"</span>,
+                              filter_out = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hhour"</span>, <span class="st">"fortnight"</span>)
 )
 <span class="co">#&gt; [1] "hour_day"   "hour_week"  "hour_month" "day_week"   "day_month" </span>
-<span class="co">#&gt; [6] "week_month"</span></pre></body></html></div>
+<span class="co">#&gt; [6] "week_month"</span>
+</pre></div>
 </div>
 <div id="create-any-temporal-granularity-with-create_gran" class="section level3">
 <h3 class="hasAnchor">
@@ -204,25 +208,27 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <p>After we have the set of granularities to look at, we should be able to compute any granularity using <code>create_gran</code>. These can be be used for exploring the distribution of the time series across univariate temporal granularity or computing summary statistics across these categorizations.</p>
 <p>The data is filtered for two customers and a new granularity “day_fortnight” (day of the fortnight) is created and visualized to understand if the electricity consumption is different across days of the fortnight. From the <a href="https://amstat.tandfonline.com/doi/abs/10.1080/10618600.2017.1305277?journalCode=ucgs20#.XbOwLpMzZ24">letter value plot</a>, we can not clearly observe any pattern across days of the fortnight for each household.</p>
 <p>The difference in the distribution of energy consumption for these two households can be observed in the following plot. Let us see if we can derive any other insights than the otherwise obvious observation that in most cases the second household has much less consumption than the first one. If we consider letter value F as a regular behavior and letter values beyond F as not-so-regular behavior, we can conclude that the regular behavior of the first household is more stable than the second household. However, the distribution of tail of the first household is more variable, observed through distinct letter values, implying that their not-so-regular behavior is quite extreme.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">lvplot</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tibble</span>)
-<span class="no">smart_meter10</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">customer_id</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10006704</span>, <span class="fl">10017936</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/create_gran.html">create_gran</a></span>(<span class="st">"day_fortnight"</span>) <span class="kw">%&gt;%</span>
-  <span class="kw pkg">ggplot2</span><span class="kw ns">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(
-    <span class="kw">x</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="no">day_fortnight</span>),
-    <span class="kw">y</span> <span class="kw">=</span> <span class="no">general_supply_kwh</span>)) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"day_fortnight"</span>) +
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">lvplot</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tibble.tidyverse.org">tibble</a></span>)
+<span class="kw">smart_meter10</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">customer_id</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"10006704"</span>, <span class="st">"10017936"</span>)) <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/create_gran.html">create_gran</a></span>(<span class="st">"day_fortnight"</span>) <span class="op">%&gt;%</span>
+  <span class="kw">ggplot2</span>::<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(
+    x = <span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="kw">day_fortnight</span>),
+    y = <span class="kw">general_supply_kwh</span>)) <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span>(<span class="st">"day_fortnight"</span>) <span class="op">+</span>
   <span class="fu"><a href="https://rdrr.io/pkg/lvplot/man/geom_lv.html">geom_lv</a></span>(
-    <span class="kw">outlier.colour</span> <span class="kw">=</span> <span class="st">"red"</span>,
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="no">..LV..</span>),
-    <span class="kw">k</span> <span class="kw">=</span> <span class="fl">5</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(~<span class="no">customer_id</span>) +
-  <span class="fu"><a href="https://rdrr.io/pkg/lvplot/man/geom_lv.html">scale_fill_lv</a></span>() +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>()</pre></body></html></div>
+    outlier.colour = <span class="st">"red"</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(fill = <span class="kw">..LV..</span>),
+    k = <span class="fl">5</span>) <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span><span class="kw">customer_id</span>) <span class="op">+</span> 
+  <span class="fu"><a href="https://rdrr.io/pkg/lvplot/man/geom_lv.html">scale_fill_lv</a></span>() <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() 
+</pre></div>
 <p><img src="gravitas_vignette_files/figure-html/unnamed-chunk-1-1.png" width="768" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -232,25 +238,28 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <p>We can visualize the distribution of energy across univariate time granularities for deriving insights on periodic behavior. From the search list, we found that we can look at six granularities, that amounts to analyzing six graphics. However, what happens if we want to see the distribution of energy across two granularities at a time? This is equivalent to looking at the distribution of energy consumption across one granularity conditional on another one. One way can be to plot one of the granularities on the x-axis and another on the facet. Different perspectives of the data can be derived depending on where the granularities are places.</p>
 <p>So, what is the number of pairs of granularities we can look at? It is equivalent to taking 2 granularities from 6, which essentially means we need to examine 30 plots. The good news is, not all time granularities can be plotted together and we do not have to analyze so many plots!</p>
 <p>Harmony/clash can be identified to considerably reduce the number of visualizations that can aid exploratory analysis.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">smart_meter10</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="kw">gran1</span> <span class="kw">=</span> <span class="st">"hour_day"</span>,
-             <span class="kw">gran2</span> <span class="kw">=</span> <span class="st">"day_week"</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw">smart_meter10</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/is_harmony.html">is_harmony</a></span>(gran1 = <span class="st">"hour_day"</span>, 
+             gran2 = <span class="st">"day_week"</span>)
 <span class="co">#&gt; [1] "TRUE"</span>
 
-<span class="no">smart_meter10</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="kw">gran1</span> <span class="kw">=</span> <span class="st">"hour_day"</span>,
-             <span class="kw">gran2</span> <span class="kw">=</span> <span class="st">"day_week"</span>,
-             <span class="kw">facet_h</span> <span class="kw">=</span> <span class="fl">14</span>)
+<span class="kw">smart_meter10</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/is_harmony.html">is_harmony</a></span>(gran1 = <span class="st">"hour_day"</span>, 
+             gran2 = <span class="st">"day_week"</span>, 
+             facet_h = <span class="fl">14</span>)
 <span class="co">#&gt; [1] "FALSE"</span>
 
-<span class="no">smart_meter10</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/is_harmony.html">is_harmony</a></span>(<span class="kw">gran1</span> <span class="kw">=</span> <span class="st">"day_month"</span>,
-             <span class="kw">gran2</span> <span class="kw">=</span> <span class="st">"week_month"</span>)
-<span class="co">#&gt; [1] "FALSE"</span></pre></body></html></div>
+<span class="kw">smart_meter10</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/is_harmony.html">is_harmony</a></span>(gran1 = <span class="st">"day_month"</span>,
+             gran2 = <span class="st">"week_month"</span>)
+<span class="co">#&gt; [1] "FALSE"</span>
+</pre></div>
 <p>Let us now look at all the harmonies that we can examine. Fortunately, we are left with only 13 out of 30 visualizations. We can also play with the argument <code>facet_h</code>, which represents the maximum number of levels allowed for the facet variable, to reduce or increase the number of harmonies.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">smart_meter10</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/harmony.html">harmony</a></span>(
-  <span class="kw">ugran</span> <span class="kw">=</span> <span class="st">"month"</span>,
-  <span class="kw">filter_out</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hhour"</span>, <span class="st">"fortnight"</span>)
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">smart_meter10</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/harmony.html">harmony</a></span>(
+  ugran = <span class="st">"month"</span>,
+  filter_out = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"hhour"</span>, <span class="st">"fortnight"</span>)
 )
 <span class="co">#&gt; # A tibble: 10 x 4</span>
 <span class="co">#&gt;    facet_variable x_variable facet_levels x_levels</span>
@@ -264,14 +273,16 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <span class="co">#&gt;  7 hour_day       day_month            24       31</span>
 <span class="co">#&gt;  8 day_week       day_month             7       31</span>
 <span class="co">#&gt;  9 hour_day       week_month           24        5</span>
-<span class="co">#&gt; 10 day_week       week_month            7        5</span></pre></body></html></div>
+<span class="co">#&gt; 10 day_week       week_month            7        5</span>
+</pre></div>
 </div>
 <div id="visualization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualization" class="anchor"></a>Visualization</h2>
 <p>Now, we know the pairs of granularities that we need to look at using harmonies. Next, we want to visualize the distribution of the measured variable <code>general_supply_kwh</code> across these harmonies. This is possible through <code>prob_plot</code>. We have several options for visualizing statistical distributions and each comes with some pros and cons which we need to consider while choosing a good one for our context. Traditional methods of plotting distributions include boxplots and violin plots, while more recent methods include ridge plots, quantile plots or letter-value plots.</p>
 <p><code>gran_advice</code> provides checkpoints before plotting a distribution. It includes recommended distribution plots depending on the levels of the two granularities plotted. Assumptions are made to ensure the display is not too cluttered by the space occupied by various kinds of distribution plots. Moreover, it also provides advice on the number of observations to use for drawing the distribution plot so that one can ensure that they are enough before jumping on to plot a distribution. Furthermore, it advises if the number of observations varies significantly across facets or within facets.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">smart_meter10</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/gran_advice.html">gran_advice</a></span>(
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="kw">smart_meter10</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/gran_advice.html">gran_advice</a></span>(
   <span class="st">"week_month"</span>,
   <span class="st">"hour_day"</span>
 )
@@ -288,57 +299,56 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <span class="co">#&gt; # A tibble: 24 x 6</span>
 <span class="co">#&gt;    hour_day   `1`   `2`   `3`   `4`   `5`</span>
 <span class="co">#&gt;    &lt;fct&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 0         2474  2464  2518  2489   857</span>
-<span class="co">#&gt;  2 1         2470  2470  2518  2486   854</span>
-<span class="co">#&gt;  3 2         2469  2469  2520  2486   855</span>
-<span class="co">#&gt;  4 3         2468  2468  2522  2486   856</span>
-<span class="co">#&gt;  5 4         2467  2468  2521  2486   856</span>
-<span class="co">#&gt;  6 5         2468  2468  2520  2487   856</span>
-<span class="co">#&gt;  7 6         2470  2469  2519  2486   855</span>
-<span class="co">#&gt;  8 7         2470  2472  2518  2484   854</span>
-<span class="co">#&gt;  9 8         2470  2471  2519  2479   854</span>
-<span class="co">#&gt; 10 9         2470  2470  2520  2478   856</span>
-<span class="co">#&gt; # … with 14 more rows</span></pre></body></html></div>
+<span class="co">#&gt;  1 0         2827  2810  2825  2806   969</span>
+<span class="co">#&gt;  2 1         2827  2816  2828  2806   968</span>
+<span class="co">#&gt;  3 2         2825  2815  2830  2805   969</span>
+<span class="co">#&gt;  4 3         2826  2814  2832  2804   970</span>
+<span class="co">#&gt;  5 4         2826  2814  2828  2807   970</span>
+<span class="co">#&gt;  6 5         2826  2814  2824  2811   970</span>
+<span class="co">#&gt;  7 6         2827  2813  2825  2806   970</span>
+<span class="co">#&gt;  8 7         2828  2812  2826  2802   970</span>
+<span class="co">#&gt;  9 8         2828  2816  2827  2802   972</span>
+<span class="co">#&gt; 10 9         2826  2818  2828  2802   974</span>
+<span class="co">#&gt; # … with 14 more rows</span>
+</pre></div>
 <p>The function <code>gran_obs</code> can be employed to see if the number of observations per category is large enough to draw a distribution plot. In this case, the number of observations is much less on weekends compared to weekdays, but enough to have reliable estimates of distribution.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">smart_meter10</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/gran_obs.html">gran_obs</a></span>(
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">smart_meter10</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/gran_obs.html">gran_obs</a></span>(
   <span class="st">"week_month"</span>,
   <span class="st">"wknd_wday"</span>
 )
 <span class="co">#&gt; # A tibble: 2 x 6</span>
 <span class="co">#&gt;   wknd_wday   `1`   `2`   `3`   `4`   `5`</span>
 <span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span>
-<span class="co">#&gt; 1 Weekday   42348 42195 43144 42468 14695</span>
-<span class="co">#&gt; 2 Weekend   17008 17024 17347 17094  5912</span></pre></body></html></div>
+<span class="co">#&gt; 1 Weekday   48450 48224 48502 47965 16431</span>
+<span class="co">#&gt; 2 Weekend   19454 19252 19335 19360  6901</span>
+</pre></div>
 <p>Through <code>prob_plot</code> we can choose one from the list of recommended plots. Warnings are generated if users try to plot clashes, the number of facet variables is too high or the number of observations used to compute statistical summaries for distribution is not large enough. Currently, we can choose from “boxplot”, “violin”, “ridge”, “lv” or “quantile” to visualize distributions.</p>
 <p>We visualize the harmony pair (wknd_wday, hour_day) through a box plot. Boxplot of energy consumption is shown across wknd_wday (facet) and hour-day (x-axis) for the same two households. For the second household, outliers are less prominent implying their regular behavior is more stable. For the first household, energy behavior is not significantly different between weekdays and weekends. For the second household, median energy consumption for the early morning hours is extremely high for weekends compared to weekdays.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">cust1</span> <span class="kw">&lt;-</span> <span class="no">smart_meter10</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">customer_id</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10006704</span>)) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="kw">cust1</span> <span class="op">&lt;-</span> <span class="kw">smart_meter10</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">customer_id</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10006704</span>)) <span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"wknd_wday"</span>,
                             <span class="st">"hour_day"</span>,
-                            <span class="kw">response</span> <span class="kw">=</span> <span class="st">"general_supply_kwh"</span>,
-                            <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"boxplot"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() +
+                            response = <span class="st">"general_supply_kwh"</span>,
+                            plot_type = <span class="st">"boxplot"</span>) <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Energy consumption distribution for customer id: 10006704"</span>)
 <span class="co">#&gt; Joining, by = c("wknd_wday", "hour_day")</span>
-<span class="co">#&gt; Warning: Column `wknd_wday` joining character vector and factor, coercing into</span>
-<span class="co">#&gt; character vector</span>
 <span class="co">#&gt; Joining, by = c("wknd_wday", "hour_day")</span>
-<span class="co">#&gt; Warning: Column `wknd_wday` joining character vector and factor, coercing into</span>
-<span class="co">#&gt; character vector</span></pre></body></html></div>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">cust2</span> <span class="kw">&lt;-</span> <span class="no">smart_meter10</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">customer_id</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">10017936</span>))<span class="kw">%&gt;%</span>
+</pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="kw">cust2</span> <span class="op">&lt;-</span> <span class="kw">smart_meter10</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">customer_id</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"10017936"</span>))<span class="op">%&gt;%</span> 
   <span class="fu"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"wknd_wday"</span>,
                             <span class="st">"hour_day"</span>,
-                            <span class="kw">response</span> <span class="kw">=</span> <span class="st">"general_supply_kwh"</span>,
-                            <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"boxplot"</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() +
+                            response = <span class="st">"general_supply_kwh"</span>,
+                            plot_type = <span class="st">"boxplot"</span>) <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Energy consumption distribution for customer id: 10017936"</span>)
 <span class="co">#&gt; Joining, by = c("wknd_wday", "hour_day")</span>
-<span class="co">#&gt; Warning: Column `wknd_wday` joining character vector and factor, coercing into</span>
-<span class="co">#&gt; character vector</span>
 <span class="co">#&gt; Joining, by = c("wknd_wday", "hour_day")</span>
-<span class="co">#&gt; Warning: Column `wknd_wday` joining character vector and factor, coercing into</span>
-<span class="co">#&gt; character vector</span></pre></body></html></div>
+</pre></div>
 <p><img src="gravitas_vignette_files/figure-html/cust-1.png" width="768" style="display: block; margin: auto;"><img src="gravitas_vignette_files/figure-html/cust-2.png" width="768" style="display: block; margin: auto;"></p>
 <p>Similarly, we can plot the other harmony pairs and decide if they are useful in deriving insights about the energy behavior of the customers.</p>
 </div>

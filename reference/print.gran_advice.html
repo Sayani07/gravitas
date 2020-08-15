@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gravitas</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -147,7 +147,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for gran_advice</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='kw'>x</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -167,13 +167,13 @@
     <p>Print check points before visualizing distribution across bivariate granularities</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
 
-<span class='no'>smart_meter10</span> <span class='kw'>%&gt;%</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>customer_id</span> <span class='kw'>==</span> <span class='fl'>10017936</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='gran_advice.html'>gran_advice</a></span>(<span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"wknd_wday"</span>,
-            <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>)</div><div class='output co'>#&gt; The chosen granularities are harmonies 
+<span class='kw'>smart_meter10</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>customer_id</span> <span class='op'>==</span> <span class='st'>"10017936"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='gran_advice.html'>gran_advice</a></span>(gran1 = <span class='st'>"wknd_wday"</span>,
+            gran2 = <span class='st'>"hour_day"</span>)</div><div class='output co'>#&gt; The chosen granularities are harmonies 
 #&gt;  
 #&gt; Recommended plots are: violin lv quantile boxplot 
 #&gt;  
@@ -196,8 +196,7 @@
 #&gt;  8 7            908     366
 #&gt;  9 8            908     366
 #&gt; 10 9            908     366
-#&gt; # … with 14 more rows</div><div class='input'>
-</div></pre>
+#&gt; # … with 14 more rows</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

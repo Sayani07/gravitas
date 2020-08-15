@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gravitas</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -147,11 +147,11 @@
     </div>
 
     <pre class="usage"><span class='fu'>validate_gran</span>(
-  <span class='no'>.data</span>,
-  <span class='kw'>gran</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>validate_col</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>.data</span>,
+  gran = <span class='kw'>NULL</span>,
+  hierarchy_tbl = <span class='kw'>NULL</span>,
+  validate_col = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -184,20 +184,20 @@
     <p>A tsibble with an additional column of granularity.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='no'>cricket_tsibble</span> <span class='kw'>&lt;-</span> <span class='no'>cricket</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>data_index</span> <span class='kw'>=</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span>()) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(<span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>data_index</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://tsibble.tidyverts.org'>tsibble</a></span>)
+<span class='kw'>cricket_tsibble</span> <span class='op'>&lt;-</span> <span class='kw'>cricket</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(data_index = <span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span>()) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://tsibble.tidyverts.org/reference/as-tsibble.html'>as_tsibble</a></span>(index = <span class='kw'>data_index</span>)
 
-<span class='no'>hierarchy_model</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>tibble</span><span class='kw ns'>::</span><span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
-  <span class='kw'>units</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"index"</span>, <span class='st'>"ball"</span>, <span class='st'>"over"</span>, <span class='st'>"inning"</span>, <span class='st'>"match"</span>),
-  <span class='kw'>convert_fct</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>6</span>, <span class='fl'>20</span>, <span class='fl'>2</span>, <span class='fl'>1</span>)
+<span class='kw'>hierarchy_model</span> <span class='op'>&lt;-</span> <span class='kw'>tibble</span>::<span class='fu'><a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a></span>(
+  units = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"index"</span>, <span class='st'>"ball"</span>, <span class='st'>"over"</span>, <span class='st'>"inning"</span>, <span class='st'>"match"</span>),
+  convert_fct = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>6</span>, <span class='fl'>20</span>, <span class='fl'>2</span>, <span class='fl'>1</span>)
 )
-<span class='no'>cricket_tsibble</span> <span class='kw'>%&gt;%</span> <span class='fu'>validate_gran</span>(
-  <span class='kw'>gran</span> <span class='kw'>=</span> <span class='st'>"over_inning"</span>,
-  <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='no'>hierarchy_model</span>,
-  <span class='kw'>validate_col</span> <span class='kw'>=</span> <span class='st'>"over"</span>
+<span class='kw'>cricket_tsibble</span> <span class='op'>%&gt;%</span> <span class='fu'>validate_gran</span>(
+  gran = <span class='st'>"over_inning"</span>,
+  hierarchy_tbl = <span class='kw'>hierarchy_model</span>,
+  validate_col = <span class='st'>"over"</span>
 )</div><div class='output co'>#&gt; [1] FALSE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

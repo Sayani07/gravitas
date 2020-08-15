@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gravitas</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -147,12 +147,12 @@
     </div>
 
     <pre class="usage"><span class='fu'>histogram_distance</span>(
-  <span class='kw'>.data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.99</span>, <span class='fl'>0.01</span>),
-  <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  .data = <span class='kw'>NULL</span>,
+  gran1 = <span class='kw'>NULL</span>,
+  gran2 = <span class='kw'>NULL</span>,
+  response = <span class='kw'>NULL</span>,
+  prob = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.99</span>, <span class='fl'>0.01</span>),
+  hierarchy_tbl = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -186,24 +186,22 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lvplot</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>gravitas</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>purrr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>magrittr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘magrittr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:purrr’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    set_names</span></div><div class='input'><span class='no'>sm</span> <span class='kw'>&lt;-</span> <span class='no'>smart_meter10</span> <span class='kw'>%&gt;%</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>customer_id</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10017936</span>))
-<span class='no'>.data</span> <span class='kw'>=</span> <span class='no'>sm</span>
-<span class='no'>gran1</span> <span class='kw'>=</span> <span class='st'>"wknd_wday"</span>
-<span class='no'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>
-<span class='no'>response</span>  <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>
-<span class='no'>.data</span> <span class='kw'>%&gt;%</span> <span class='fu'>histogram_distance</span>(<span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"wknd_wday"</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>,
-<span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://tsibbledata.tidyverts.org'>tsibbledata</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://tsibble.tidyverts.org'>tsibble</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>lvplot</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/Sayani07/gravitas'>gravitas</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://purrr.tidyverse.org'>purrr</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>magrittr</span>)
+<span class='kw'>sm</span> <span class='op'>&lt;-</span> <span class='kw'>smart_meter10</span> <span class='op'>%&gt;%</span>
+<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>customer_id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"10017936"</span>))
+<span class='kw'>.data</span> <span class='op'>=</span> <span class='kw'>sm</span>
+<span class='kw'>gran1</span> <span class='op'>=</span> <span class='st'>"wknd_wday"</span>
+<span class='kw'>gran2</span> <span class='op'>=</span> <span class='st'>"hour_day"</span>
+<span class='kw'>response</span>  <span class='op'>=</span> <span class='st'>"general_supply_kwh"</span>
+<span class='kw'>.data</span> <span class='op'>%&gt;%</span> <span class='fu'>histogram_distance</span>(gran1 = <span class='st'>"wknd_wday"</span>, gran2 = <span class='st'>"hour_day"</span>,
+response = <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
 #&gt; <span class='warning'>* Use `values_fn = list` to suppress this warning.</span>
 #&gt; <span class='warning'>* Use `values_fn = length` to identify where the duplicates arise</span>
 #&gt; <span class='warning'>* Use `values_fn = {summary_fun}` to summarise duplicates</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
@@ -212,8 +210,8 @@
 #&gt; <span class='message'>* `` -&gt; ...3</span>
 #&gt; <span class='message'>* `` -&gt; ...4</span>
 #&gt; <span class='message'>* `` -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='histogram_distance-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>.data</span> <span class='kw'>%&gt;%</span> <span class='fu'>histogram_distance</span>(<span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"day_week"</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>,
-<span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
+#&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='histogram_distance-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>.data</span> <span class='op'>%&gt;%</span> <span class='fu'>histogram_distance</span>(gran1 = <span class='st'>"day_week"</span>, gran2 = <span class='st'>"hour_day"</span>,
+response = <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
 #&gt; <span class='warning'>* Use `values_fn = list` to suppress this warning.</span>
 #&gt; <span class='warning'>* Use `values_fn = length` to identify where the duplicates arise</span>
 #&gt; <span class='warning'>* Use `values_fn = {summary_fun}` to summarise duplicates</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>

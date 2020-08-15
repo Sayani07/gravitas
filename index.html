@@ -21,12 +21,12 @@
 <link href="docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Explore Probability Distributions for Bivariate Temporal Granularities">
 <meta property="og:description" content="Provides tools for systematically exploring large quantities of 
-             temporal data across nonlinear temporal granularities
+             temporal data across cyclic temporal granularities
              (deconstructions of time) by visualizing probability distributions.
-             Nonlinear time granularities can be circular, quasi-circular or 
-             aperiodic. gravitas computes nonlinear
+             Cyclic time granularities can be circular, quasi-circular or 
+             aperiodic. gravitas computes cyclic
              single-order-up or multiple-order-up granularities, check the
-             feasibility of creating plots for any two nonlinear granularities
+             feasibility of creating plots for any two cyclic granularities
              and recommend probability distributions plots for exploring
              periodicity in the data.">
 <meta property="og:image" content="/logo.png">
@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">gravitas</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -119,10 +119,14 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install gravitas from CRAN:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"gravitas"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"gravitas"</span>)  
+</pre></div>
 <p>You can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="co"># install.packages("devtools")</span>
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu">install_github</span>(<span class="st">"Sayani07/gravitas"</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># install.packages("devtools")</span>
+<span class="kw">devtools</span>::<span class="fu">install_github</span>(<span class="st">"Sayani07/gravitas"</span>)
+</pre></div>
 </div>
 <div id="quick-look" class="section level2">
 <h2 class="hasAnchor">
@@ -149,25 +153,28 @@
 <div id="search-for-granularities" class="section level3">
 <h3 class="hasAnchor">
 <a href="#search-for-granularities" class="anchor"></a>Search for granularities</h3>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">gravitas</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/Sayani07/gravitas">gravitas</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://dplyr.tidyverse.org">dplyr</a></span>)
 <span class="co">#&gt; Warning: package 'dplyr' was built under R version 3.5.2</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
 <span class="co">#&gt; Warning: package 'ggplot2' was built under R version 3.5.2</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">lvplot</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">lvplot</span>)
 
- <span class="no">smart_meter10</span> <span class="kw">%&gt;%</span>
-   <span class="fu"><a href="reference/search_gran.html">search_gran</a></span>(<span class="kw">highest_unit</span> <span class="kw">=</span> <span class="st">"week"</span>)
+ <span class="kw">smart_meter10</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="reference/search_gran.html">search_gran</a></span>(highest_unit = <span class="st">"week"</span>)
 <span class="co">#&gt; [1] "hhour_hour" "hhour_day"  "hhour_week" "hour_day"   "hour_week" </span>
-<span class="co">#&gt; [6] "day_week"</span></pre></div>
+<span class="co">#&gt; [6] "day_week"</span>
+</pre></div>
 </div>
 <div id="screen-harmonies-from-the-search-list" class="section level3">
 <h3 class="hasAnchor">
 <a href="#screen-harmonies-from-the-search-list" class="anchor"></a>Screen harmonies from the search list</h3>
-<div class="sourceCode" id="cb4"><pre class="r"> <span class="no">smart_meter10</span> <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+ <span class="kw">smart_meter10</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="reference/harmony.html">harmony</a></span>(
-     <span class="kw">ugran</span> <span class="kw">=</span> <span class="st">"day"</span>,
-     <span class="kw">filter_in</span> <span class="kw">=</span> <span class="st">"wknd_wday"</span>
+     ugran = <span class="st">"day"</span>,
+     filter_in = <span class="st">"wknd_wday"</span>
    )
 <span class="co">#&gt; # A tibble: 7 x 4</span>
 <span class="co">#&gt;   facet_variable x_variable facet_levels x_levels</span>
@@ -178,20 +185,23 @@
 <span class="co">#&gt; 4 hhour_hour     hour_day              2       24</span>
 <span class="co">#&gt; 5 wknd_wday      hour_day              2       24</span>
 <span class="co">#&gt; 6 hhour_hour     wknd_wday             2        2</span>
-<span class="co">#&gt; 7 hour_day       wknd_wday            24        2</span></pre></div>
+<span class="co">#&gt; 7 hour_day       wknd_wday            24        2</span>
+</pre></div>
 </div>
 <div id="visualize-probability-distribution-of-the-harmony-pair-wknd_wday-hour_day" class="section level3">
 <h3 class="hasAnchor">
 <a href="#visualize-probability-distribution-of-the-harmony-pair-wknd_wday-hour_day" class="anchor"></a>Visualize probability distribution of the harmony pair (wknd_wday, hour_day)</h3>
 <p>Box plots are drawn across hours of the day faceted by weekend/weekday for a household in the data <code>smart_meter10</code> in the package. It is interesting to see the difference in energy consumption in the early morning hours (1 am - 7 am) for weekdays and weekends. The interquartile range is the same in these hours, however, median energy consumption for these hours is higher for weekends compared to weekdays. The distribution for the rest of the day is not significantly different for weekdays and weekends, implying their energy behavior after 7 am remains more or less similar.</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="no">smart_meter10</span> <span class="kw">%&gt;%</span>
- <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">customer_id</span> <span class="kw">==</span> <span class="fl">10017936</span>) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">smart_meter10</span> <span class="op">%&gt;%</span>
+ <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">customer_id</span> <span class="op">==</span> <span class="fl">10017936</span>) <span class="op">%&gt;%</span>
    <span class="fu"><a href="reference/prob_plot.html">prob_plot</a></span>(
-     <span class="kw">gran1</span> <span class="kw">=</span> <span class="st">"wknd_wday"</span>,
-     <span class="kw">gran2</span> <span class="kw">=</span> <span class="st">"hour_day"</span>,
-     <span class="kw">response</span> <span class="kw">=</span> <span class="st">"general_supply_kwh"</span>,
-     <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"boxplot"</span>) +
-   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span>(<span class="kw">breaks</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">23</span>, <span class="fl">3</span>))</pre></div>
+     gran1 = <span class="st">"wknd_wday"</span>,
+     gran2 = <span class="st">"hour_day"</span>,
+     response = <span class="st">"general_supply_kwh"</span>,
+     plot_type = <span class="st">"boxplot"</span>) <span class="op">+</span>
+   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_sqrt</a></span>() <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html">scale_x_discrete</a></span>(breaks = <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">23</span>, <span class="fl">3</span>))
+</pre></div>
 <p><img src="reference/figures/README-probplot-1.png" width="100%"></p>
 </div>
 </div>
@@ -199,25 +209,26 @@
 <h2 class="hasAnchor">
 <a href="#example-non-temporal-case" class="anchor"></a>Example: non-temporal case</h2>
 <p><code>cricket</code> data set in the package can be explored by explicitly defining a hierarchy table as follows:</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tsibble</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tsibble.tidyverts.org">tsibble</a></span>)
 <span class="co">#&gt; Warning: package 'tsibble' was built under R version 3.5.2</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'tsibble'</span>
 <span class="co">#&gt; The following object is masked from 'package:dplyr':</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;     id</span>
-<span class="no">cricket_tsibble</span> <span class="kw">&lt;-</span> <span class="no">cricket</span> <span class="kw">%&gt;%</span>
- <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">data_index</span> <span class="kw">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span>()) <span class="kw">%&gt;%</span>
- <span class="fu"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html">as_tsibble</a></span>(<span class="kw">index</span> <span class="kw">=</span> <span class="no">data_index</span>)
+<span class="kw">cricket_tsibble</span> <span class="op">&lt;-</span> <span class="kw">cricket</span> <span class="op">%&gt;%</span>
+ <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(data_index = <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span>()) <span class="op">%&gt;%</span>
+ <span class="fu"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html">as_tsibble</a></span>(index = <span class="kw">data_index</span>)
 
- <span class="no">hierarchy_model</span> <span class="kw">&lt;-</span> <span class="kw pkg">tibble</span><span class="kw ns">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(
-   <span class="kw">units</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"index"</span>, <span class="st">"ball"</span>, <span class="st">"over"</span>, <span class="st">"inning"</span>, <span class="st">"match"</span>),
-   <span class="kw">convert_fct</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">6</span>, <span class="fl">20</span>, <span class="fl">2</span>, <span class="fl">1</span>)
+ <span class="kw">hierarchy_model</span> <span class="op">&lt;-</span> <span class="kw">tibble</span>::<span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(
+   units = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"index"</span>, <span class="st">"ball"</span>, <span class="st">"over"</span>, <span class="st">"inning"</span>, <span class="st">"match"</span>),
+   convert_fct = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">6</span>, <span class="fl">20</span>, <span class="fl">2</span>, <span class="fl">1</span>)
  )
- <span class="no">cricket_tsibble</span> <span class="kw">%&gt;%</span>
+ <span class="kw">cricket_tsibble</span> <span class="op">%&gt;%</span>
    <span class="fu"><a href="reference/create_gran.html">create_gran</a></span>(
      <span class="st">"over_inning"</span>,
-     <span class="no">hierarchy_model</span>
+     <span class="kw">hierarchy_model</span>
    )
 <span class="co">#&gt; # A tsibble: 8,560 x 12 [1]</span>
 <span class="co">#&gt;    season match_id batting_team bowling_team inning  over wicket dot_balls</span>
@@ -233,19 +244,22 @@
 <span class="co">#&gt;  9   2008        2 Chennai Sup… Kings XI Pu…      1     9      0         1</span>
 <span class="co">#&gt; 10   2008        2 Chennai Sup… Kings XI Pu…      1    10      0         2</span>
 <span class="co">#&gt; # … with 8,550 more rows, and 4 more variables: runs_per_over &lt;dbl&gt;,</span>
-<span class="co">#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;, over_inning &lt;fct&gt;</span></pre></div>
+<span class="co">#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;, over_inning &lt;fct&gt;</span>
+</pre></div>
 <div id="visualize-granularities-for-non-temporal-data" class="section level4">
 <h4 class="hasAnchor">
 <a href="#visualize-granularities-for-non-temporal-data" class="anchor"></a>Visualize granularities for non-temporal data</h4>
 <p>Letter value plot of total runs per over is shown overs of the innings (x-axis) and innings of the match (facet). It can be observed that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability in runs increases as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.</p>
-<div class="sourceCode" id="cb7"><pre class="r">
-   <span class="no">cricket_tsibble</span> <span class="kw">%&gt;%</span>
-   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">batting_team</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Mumbai Indians"</span>,
-                              <span class="st">"Chennai Super Kings"</span>))<span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+
+   <span class="kw">cricket_tsibble</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">batting_team</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Mumbai Indians"</span>,
+                              <span class="st">"Chennai Super Kings"</span>))<span class="op">%&gt;%</span>
    <span class="fu"><a href="reference/prob_plot.html">prob_plot</a></span>(<span class="st">"inning"</span>, <span class="st">"over"</span>,
-   <span class="no">hierarchy_model</span>,
-   <span class="kw">response</span> <span class="kw">=</span> <span class="st">"runs_per_over"</span>,
-   <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"lv"</span>)</pre></div>
+   <span class="kw">hierarchy_model</span>,
+   response = <span class="st">"runs_per_over"</span>,
+   plot_type = <span class="st">"lv"</span>)
+</pre></div>
 <p><img src="reference/figures/README-cricket-1.png" width="100%"></p>
 </div>
 </div>

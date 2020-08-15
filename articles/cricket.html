@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gravitas</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -113,9 +113,10 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <p>Package <code>gravitas</code> is not only restricted to temporal data. An application on cricket follows to illustrate how this package can be generalized in other applications.</p>
 <p>The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by teams representing different cities in India. In a Twenty20 game, the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. Therefore, a hierarchy can be construed for this game format.</p>
 <p>The ball by ball data for IPL season is sourced from <a href="https://www.kaggle.com/josephgpinto/ipl-data-analysis/data">Kaggle</a>. The <code>cricket</code> data set in the <code>gravitas</code> package summarizes the ball-by-ball data cross overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016).</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">gravitas</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tibble</span>)
-<span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(<span class="no">cricket</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/Sayani07/gravitas">gravitas</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tibble.tidyverse.org">tibble</a></span>)
+<span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(<span class="kw">cricket</span>)
 <span class="co">#&gt; Rows: 8,560</span>
 <span class="co">#&gt; Columns: 10</span>
 <span class="co">#&gt; $ season        &lt;dbl&gt; 2008, 2008, 2008, 2008, 2008, 2008, 2008, 2008, 2008, 2…</span>
@@ -127,18 +128,21 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <span class="co">#&gt; $ wicket        &lt;dbl&gt; 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0…</span>
 <span class="co">#&gt; $ dot_balls     &lt;dbl&gt; 4, 2, 4, 3, 3, 3, 1, 3, 1, 2, 1, 0, 2, 1, 0, 3, 0, 1, 0…</span>
 <span class="co">#&gt; $ runs_per_over &lt;dbl&gt; 5, 14, 2, 6, 9, 11, 9, 8, 13, 5, 19, 20, 4, 10, 18, 8, …</span>
-<span class="co">#&gt; $ run_rate      &lt;dbl&gt; 1, 2, 0, 1, 2, 2, 2, 1, 2, 1, 3, 3, 1, 2, 3, 1, 2, 3, 2…</span></pre></body></html></div>
+<span class="co">#&gt; $ run_rate      &lt;dbl&gt; 1, 2, 0, 1, 2, 2, 2, 1, 2, 1, 3, 3, 1, 2, 3, 1, 2, 3, 2…</span>
+</pre></div>
 <!-- Mumbai Indians(MI) and Delhi Daredevils (DD) are two teams that played from 2010 to 2015, in which MI always qualified in top 4, and DD never made it to top 4. It would be interesting to see the difference in their strategies throughout all matches in these seasons. The following two questions might help us partially understand their strategies/performances.  -->
 <!-- - Q1: How their run rates vary depending on if they bat first or 2nd? -->
 <!-- <!-- - Q2: Is there a chance that they are more likely to win if they bat first? -->
 <!-- - Q2: Which team is more consistent in their approach in terms of run-rate across different overs of the innings? -->
 <p>Although there is no conventional time granularity in cricket, we can still represent the data set <code>cricket</code> through a <code>tsibble</code>, where each over, which represents an ordering from past to future, can form the index of the tsibble. The hierarchy table would look like the following:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r">
-<span class="no">hierarchy_model</span> <span class="kw">&lt;-</span> <span class="kw pkg">tibble</span><span class="kw ns">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(
-  <span class="kw">units</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"index"</span>, <span class="st">"over"</span>, <span class="st">"inning"</span>, <span class="st">"match"</span>),
-  <span class="kw">convert_fct</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">20</span>, <span class="fl">2</span>, <span class="fl">1</span>))
+<div class="sourceCode" id="cb2"><pre class="downlit">
 
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="no">hierarchy_model</span>, <span class="kw">format</span> <span class="kw">=</span> <span class="st">"markdown"</span>)</pre></body></html></div>
+<span class="kw">hierarchy_model</span> <span class="op">&lt;-</span> <span class="kw">tibble</span>::<span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span>(
+  units = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"index"</span>, <span class="st">"over"</span>, <span class="st">"inning"</span>, <span class="st">"match"</span>),
+  convert_fct = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">20</span>, <span class="fl">2</span>, <span class="fl">1</span>))
+
+<span class="kw">knitr</span>::<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span>(<span class="kw">hierarchy_model</span>, format = <span class="st">"markdown"</span>)
+</pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left">units</th>
@@ -163,24 +167,28 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tsibble</span>)
-<span class="no">cricket_tsibble</span> <span class="kw">&lt;-</span> <span class="no">cricket</span> <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(<span class="kw">data_index</span> <span class="kw">=</span> <span class="fu">row_number</span>()) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html">as_tsibble</a></span>(<span class="kw">index</span> <span class="kw">=</span> <span class="no">data_index</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://tsibble.tidyverts.org">tsibble</a></span>)
+<span class="kw">cricket_tsibble</span> <span class="op">&lt;-</span> <span class="kw">cricket</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(data_index = <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span>()) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://tsibble.tidyverts.org/reference/as-tsibble.html">as_tsibble</a></span>(index = <span class="kw">data_index</span>)
+</pre></div>
 </div>
 <div id="how-run-rates-vary-depending-on-if-a-team-bats-first-or-second" class="section level1">
 <h1 class="hasAnchor">
 <a href="#how-run-rates-vary-depending-on-if-a-team-bats-first-or-second" class="anchor"></a>How run rates vary depending on if a team bats first or second?</h1>
 <p>We filtered the data for two top teams in IPL - Mumbai Indians and Chennai Super Kings. Each inning of the match is plotted across facets and overs of the innings are plotted across the x-axis. It can be observed from the letter value plot that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability of runs increases as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">cricket_tsibble</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">batting_team</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Mumbai Indians"</span>,
-                             <span class="st">"Chennai Super Kings"</span>))<span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="kw">cricket_tsibble</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">batting_team</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Mumbai Indians"</span>,
+                             <span class="st">"Chennai Super Kings"</span>))<span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"inning"</span>, <span class="st">"over"</span>,
-  <span class="no">hierarchy_model</span>,
-  <span class="kw">response</span> <span class="kw">=</span> <span class="st">"runs_per_over"</span>,
-  <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"lv"</span>)
+  <span class="kw">hierarchy_model</span>,
+  response = <span class="st">"runs_per_over"</span>,
+  plot_type = <span class="st">"lv"</span>)
 <span class="co">#&gt; Joining, by = c("inning", "over")</span>
-<span class="co">#&gt; Joining, by = c("inning", "over")</span></pre></body></html></div>
+<span class="co">#&gt; Joining, by = c("inning", "over")</span>
+</pre></div>
 <p><img src="cricket_files/figure-html/cricex-1.png" width="768" style="display: block; margin: auto;"></p>
 <!-- # Is there a chance that they are more likely to win if they bat first? -->
 <!-- ```{r} -->
@@ -202,10 +210,11 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <p>A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. The number of wickets per over can be thought to be a measure of good fielding. It might be interesting to see how good fielding or bowling effect runs per over differently.</p>
 <p>Now, the number of wickets/dot balls per over does not appear in the hierarchy table, but they can still be thought of as granularities since they are constructed for each index (over) of the tsibble. The relationship is not periodic because of the number of wickets that are dismissed or dot balls that are being bowled changes across overs. This is unlike the periodic relationship for units specified in the hierarchy table.</p>
 <p><code>gran_advice</code> is employed to check if it would be appropriate to plot wickets and dot balls across overs. The output suggests that the pairs (dot_balls, over) and (wicket, over) are clashes. It also gives us the number of observations per categorization. The number of observations of 2, 3 or 4 wickets are too few to plot a distribution, implying there are hardly any overs in which 2 or more wickets are dismissed. The number of observations for more than 5 dot balls in any over is again very low suggesting those are even rarer cases.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">cricket_tsibble</span> <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw">cricket_tsibble</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gran_advice.html">gran_advice</a></span>(<span class="st">"wicket"</span>,
             <span class="st">"over"</span>,
-            <span class="no">hierarchy_model</span>)
+            <span class="kw">hierarchy_model</span>)
 <span class="co">#&gt; The chosen granularities are clashes.</span>
 <span class="co">#&gt;         Consider looking at harmony() to obtain possible harmonies </span>
 <span class="co">#&gt;  </span>
@@ -239,11 +248,13 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <span class="co">#&gt; 17 17      268   141    17     2     0</span>
 <span class="co">#&gt; 18 18      251   140    35     2     0</span>
 <span class="co">#&gt; 19 19      242   140    43     3     0</span>
-<span class="co">#&gt; 20 20      182   169    67     9     1</span></pre></body></html></div>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">cricket_tsibble</span> <span class="kw">%&gt;%</span>
+<span class="co">#&gt; 20 20      182   169    67     9     1</span>
+</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw">cricket_tsibble</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/gran_advice.html">gran_advice</a></span>(<span class="st">"dot_balls"</span>,
             <span class="st">"over"</span>,
-            <span class="no">hierarchy_model</span>)
+            <span class="kw">hierarchy_model</span>)
 <span class="co">#&gt; The chosen granularities are clashes.</span>
 <span class="co">#&gt;         Consider looking at harmony() to obtain possible harmonies </span>
 <span class="co">#&gt;  </span>
@@ -277,33 +288,38 @@ https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-nani
 <span class="co">#&gt; 17 17       81   148   107    58    25     9     0</span>
 <span class="co">#&gt; 18 18       72   128   145    57    24     2     0</span>
 <span class="co">#&gt; 19 19       77   146   108    66    25     6     0</span>
-<span class="co">#&gt; 20 20       72   141   117    62    29     6     1</span></pre></body></html></div>
+<span class="co">#&gt; 20 20       72   141   117    62    29     6     1</span>
+</pre></div>
 <p>Hence, we filter our data set to retain those overs where the number of wickets or dot balls are less than, or equal to 2. Some pairs of granularities should still be analyzed with caution as suggested by <code>gran_advice</code>. Area quantile plots are drawn across overs of the innings, faceted by either number of dot balls (first) or the number of wickets (second). The dark black line represents the median, whereas the orange and green represent the area between the 25th and 75th percentile and between the 10th and 90th percentile respectively. For both the plots, runs per over decreases as we move from left to right, implying runs decreases as the number of dot balls or wickets increases.</p>
 <p>Moreover, it seems like with zero or one wicket overs, there is still an upward trend in runs across overs of the innings, whereas the same is not true for dot balls more than 0 per over.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">cricket_tsibble</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">dot_balls</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>)) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">cricket_tsibble</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">dot_balls</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>)) <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"dot_balls"</span>,
             <span class="st">"over"</span>,
-            <span class="no">hierarchy_model</span>,
-            <span class="kw">response</span> <span class="kw">=</span> <span class="st">"runs_per_over"</span>,
-            <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"quantile"</span>,
-            <span class="kw">quantile_prob</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>))
+            <span class="kw">hierarchy_model</span>,
+            response = <span class="st">"runs_per_over"</span>,
+            plot_type = <span class="st">"quantile"</span>,
+            quantile_prob = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>))
 <span class="co">#&gt; Joining, by = c("over", "dot_balls")</span>
 <span class="co">#&gt; Joining, by = c("over", "dot_balls")</span>
 <span class="co">#&gt; Warning in gran_warn(.data, gran1, gran2, hierarchy_tbl = hierarchy_tbl, : Some combinations of granularities have less than 30 observations.</span>
 <span class="co">#&gt;             Check gran_obs() to find combinations which have low observations.</span>
-<span class="co">#&gt;             Analyze the distribution of these combinations with caution.</span></pre></body></html></div>
+<span class="co">#&gt;             Analyze the distribution of these combinations with caution.</span>
+</pre></div>
 <p><img src="cricket_files/figure-html/exdotplot-1.png" width="768" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">cricket_tsibble</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">wicket</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>)) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="kw">cricket_tsibble</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="kw">wicket</span> <span class="op">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0</span>, <span class="fl">1</span>)) <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/prob_plot.html">prob_plot</a></span>(<span class="st">"wicket"</span>,
             <span class="st">"over"</span>,
-            <span class="no">hierarchy_model</span>,
-            <span class="kw">response</span> <span class="kw">=</span> <span class="st">"runs_per_over"</span>,
-            <span class="kw">plot_type</span> <span class="kw">=</span> <span class="st">"quantile"</span>,
-            <span class="kw">quantile_prob</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>))
+            <span class="kw">hierarchy_model</span>,
+            response = <span class="st">"runs_per_over"</span>,
+            plot_type = <span class="st">"quantile"</span>,
+            quantile_prob = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="fl">0.9</span>))
 <span class="co">#&gt; Joining, by = c("over", "wicket")</span>
-<span class="co">#&gt; Joining, by = c("over", "wicket")</span></pre></body></html></div>
+<span class="co">#&gt; Joining, by = c("over", "wicket")</span>
+</pre></div>
 <p><img src="cricket_files/figure-html/exwicketplot-1.png" width="768" style="display: block; margin: auto;"></p>
 <!-- ```{r} -->
 <!-- cricket_tsibble %>% -->

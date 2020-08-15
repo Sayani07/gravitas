@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plotting QQ-plot of distances between probability distributions — qqplot_distance • gravitas</title>
+<title>Selecting harmonies with significant difference in distributions for two cyclic granularities — sim_distharmony1 • gravitas</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="Plotting QQ-plot of distances between probability distributions — qqplot_distance" />
-<meta property="og:description" content="Plotting empirical and theoretical distribution of distances to understand best fit" />
+<meta property="og:title" content="Selecting harmonies with significant difference in distributions for two cyclic granularities — sim_distharmony1" />
+<meta property="og:description" content="Selecting harmonies with significant difference in distributions for two cyclic granularities" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gravitas</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -137,22 +137,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plotting QQ-plot of distances between probability distributions</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/qqplot_distance.R'><code>R/qqplot_distance.R</code></a></small>
-    <div class="hidden name"><code>qqplot_distance.Rd</code></div>
+    <h1>Selecting harmonies with significant difference in distributions for two cyclic granularities</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/sim_distharmony1.R'><code>R/sim_distharmony1.R</code></a></small>
+    <div class="hidden name"><code>sim_distharmony1.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plotting empirical and theoretical distribution of distances to understand best fit</p>
+    <p>Selecting harmonies with significant difference in distributions for two cyclic granularities</p>
     </div>
 
-    <pre class="usage"><span class='fu'>qqplot_distance</span>(
-  <span class='kw'>.data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>gran1</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.99</span>, <span class='fl'>0.01</span>),
-  <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+    <pre class="usage"><span class='fu'>sim_distharmony1</span>(
+  <span class='kw'>.data</span>,
+  ntimes = <span class='fl'>500</span>,
+  sim_dist = <span class='kw'>distributional</span>::<span class='fu'><a href='https://pkg.mitchelloharawild.com/distributional/reference/dist_normal.html'>dist_normal</a></span>(mu = <span class='fl'>2</span>, sigma = <span class='fl'>5</span>),
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -163,65 +161,20 @@
       <td><p>a tsibble.</p></td>
     </tr>
     <tr>
-      <th>gran1</th>
-      <td><p>the granularity which is to be placed across facets. Can be column names if required granularity already exists in the tsibble. For example, a column with public holidays which needs to be treated as granularity, can be included here.</p></td>
+      <th>ntimes</th>
+      <td><p>the size of the sample</p></td>
     </tr>
     <tr>
-      <th>gran2</th>
-      <td><p>the granularity to be placed across x-axis. Can be column names if required granularity already exists in the tsibble.</p></td>
+      <th>sim_dist</th>
+      <td><p>the distribution to be generated using package distributional</p></td>
     </tr>
     <tr>
-      <th>response</th>
-      <td><p>response variable.</p></td>
-    </tr>
-    <tr>
-      <th>prob</th>
-      <td><p>numeric vector of probabilities with values in [0,1].</p></td>
-    </tr>
-    <tr>
-      <th>hierarchy_tbl</th>
-      <td><p>A hierarchy table specifying the hierarchy of units</p></td>
+      <th>...</th>
+      <td><p>Other arguments passed on to individual methods.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble of harmonies and their levels ranked ion descending order of average maximum pairwise distance of the harmony pairs.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibble</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lvplot</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>gravitas</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>purrr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>magrittr</span>)
-<span class='no'>sm</span> <span class='kw'>&lt;-</span> <span class='no'>smart_meter10</span> <span class='kw'>%&gt;%</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>customer_id</span> <span class='kw'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10017936</span>))
-<span class='no'>.data</span> <span class='kw'>=</span> <span class='no'>sm</span>
-<span class='no'>gran1</span> <span class='kw'>=</span> <span class='st'>"wknd_wday"</span>
-<span class='no'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>
-<span class='no'>response</span>  <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>
-<span class='no'>.data</span> <span class='kw'>%&gt;%</span> <span class='fu'>qqplot_distance</span>(<span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"wknd_wday"</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
-#&gt; <span class='warning'>* Use `values_fn = list` to suppress this warning.</span>
-#&gt; <span class='warning'>* Use `values_fn = length` to identify where the duplicates arise</span>
-#&gt; <span class='warning'>* Use `values_fn = {summary_fun}` to summarise duplicates</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* `` -&gt; ...1</span>
-#&gt; <span class='message'>* `` -&gt; ...2</span>
-#&gt; <span class='message'>* `` -&gt; ...3</span>
-#&gt; <span class='message'>* `` -&gt; ...4</span>
-#&gt; <span class='message'>* `` -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='img'><img src='qqplot_distance-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>.data</span> <span class='kw'>%&gt;%</span> <span class='fu'>qqplot_distance</span>(<span class='kw'>gran1</span> <span class='kw'>=</span> <span class='st'>"day_week"</span>, <span class='kw'>gran2</span> <span class='kw'>=</span> <span class='st'>"hour_day"</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
-#&gt; <span class='warning'>* Use `values_fn = list` to suppress this warning.</span>
-#&gt; <span class='warning'>* Use `values_fn = length` to identify where the duplicates arise</span>
-#&gt; <span class='warning'>* Use `values_fn = {summary_fun}` to summarise duplicates</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* `` -&gt; ...1</span>
-#&gt; <span class='message'>* `` -&gt; ...2</span>
-#&gt; <span class='message'>* `` -&gt; ...3</span>
-#&gt; <span class='message'>* `` -&gt; ...4</span>
-#&gt; <span class='message'>* `` -&gt; ...5</span>
-#&gt; <span class='message'>* ...</span></div><div class='img'><img src='qqplot_distance-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

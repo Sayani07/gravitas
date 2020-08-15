@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">gravitas</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -147,13 +147,13 @@
     </div>
 
     <pre class="usage"><span class='fu'>search_gran</span>(
-  <span class='no'>.data</span>,
-  <span class='kw'>lowest_unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>highest_unit</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>hierarchy_tbl</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>filter_in</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>filter_out</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>.data</span>,
+  lowest_unit = <span class='kw'>NULL</span>,
+  highest_unit = <span class='kw'>NULL</span>,
+  hierarchy_tbl = <span class='kw'>NULL</span>,
+  filter_in = <span class='kw'>NULL</span>,
+  filter_out = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -194,8 +194,8 @@
     <p>Set of possible granularities.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tsibbledata</span>)
-<span class='no'>vic_elec</span> <span class='kw'>%&gt;%</span> <span class='fu'>search_gran</span>(<span class='kw'>lowest_unit</span> <span class='kw'>=</span> <span class='st'>"hour"</span>, <span class='kw'>highest_unit</span> <span class='kw'>=</span> <span class='st'>"month"</span>)</div><div class='output co'>#&gt;  [1] "hour_day"        "hour_week"       "hour_fortnight"  "hour_month"     
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://tsibbledata.tidyverts.org'>tsibbledata</a></span>)
+<span class='kw'>vic_elec</span> <span class='op'>%&gt;%</span> <span class='fu'>search_gran</span>(lowest_unit = <span class='st'>"hour"</span>, highest_unit = <span class='st'>"month"</span>)</div><div class='output co'>#&gt;  [1] "hour_day"        "hour_week"       "hour_fortnight"  "hour_month"     
 #&gt;  [5] "day_week"        "day_fortnight"   "day_month"       "week_fortnight" 
 #&gt;  [9] "week_month"      "fortnight_month"</div></pre>
   </div>
