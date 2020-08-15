@@ -228,18 +228,18 @@ response = <span class='st'>"general_supply_kwh"</span>, dist_ordered = <span cl
 <span class='fu'>rank_harmony</span>(<span class='kw'>PBS</span>, harmony_tbl = <span class='kw'>harmony_tbl</span>, response = <span class='st'>"Cost"</span>)</div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* `` -&gt; ...1</span>
 #&gt; <span class='message'>* `` -&gt; ...2</span></div><div class='output co'>#&gt; # A tibble: 10 x 5
-#&gt;    facet_variable   x_variable       facet_levels x_levels  MMPD
-#&gt;    &lt;chr&gt;            &lt;chr&gt;                   &lt;int&gt;    &lt;int&gt; &lt;dbl&gt;
-#&gt;  1 quarter_semester semester_year               2        2 0.018
-#&gt;  2 month_quarter    semester_year               3        2 0.013
-#&gt;  3 month_quarter    quarter_year                3        4 0.011
-#&gt;  4 month_semester   semester_year               6        2 0.009
-#&gt;  5 semester_year    quarter_semester            2        2 0.008
-#&gt;  6 semester_year    month_semester              2        6 0.007
-#&gt;  7 month_quarter    quarter_semester            3        2 0.006
-#&gt;  8 quarter_semester month_quarter               2        3 0.001
-#&gt;  9 semester_year    month_quarter               2        3 0.001
-#&gt; 10 quarter_year     month_quarter               4        3 0    </div></pre>
+#&gt;    facet            x                facet_l   x_l  MMPD
+#&gt;    &lt;chr&gt;            &lt;chr&gt;              &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
+#&gt;  1 quarter_semester semester_year          2     2  0.02
+#&gt;  2 semester_year    month_semester         2     6  0.01
+#&gt;  3 month_quarter    quarter_semester       3     2  0.01
+#&gt;  4 semester_year    quarter_semester       2     2  0.01
+#&gt;  5 month_quarter    quarter_year           3     4  0.01
+#&gt;  6 month_quarter    semester_year          3     2  0.01
+#&gt;  7 month_semester   semester_year          6     2  0.01
+#&gt;  8 quarter_semester month_quarter          2     3  0   
+#&gt;  9 quarter_year     month_quarter          4     3  0   
+#&gt; 10 semester_year    month_quarter          2     3  0   </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
