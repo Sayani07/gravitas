@@ -72,10 +72,10 @@ rank_harmony <- function(.data = NULL,
   max_distance <- comp_dist$...2
 
   harmony_sort <- harmony_tbl %>%
-    dplyr::mutate(MMPD = round(mean_max,5),
-                  max_pd = round(max_distance,5)) %>%
+    dplyr::mutate(MMPD = round(mean_max,3)) %>%
+                  #max_pd = round(max_distance,5))
     dplyr::arrange(dplyr::desc(MMPD)) %>%
-    dplyr::mutate(r = rank(-max_pd)) %>%
+    #dplyr::mutate(r = rank(-max_pd)) %>%
     #dplyr::filter(max_norm_s>=galpa) %>%
     #dplyr::select(-max_norm_s) %>%
     dplyr::filter(!is.na(MMPD))
@@ -218,6 +218,7 @@ step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL, cre
       #responsei <- create_harmony_datai[[response]]
 
       harmony_datai %>%
+        ungroup() %>%
         dplyr::mutate(
           response = harmony_datai[[response]]
         ) %>%
