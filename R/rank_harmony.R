@@ -23,48 +23,51 @@
 #' library(purrr)
 #' library(magrittr)
 #' sm <- smart_meter10 %>%
-#' filter(customer_id %in% c("10017936"))
+#'   filter(customer_id %in% c("10017936"))
 #' harmonies <- sm %>%
-#' harmony(ugran = "month",
-#'        filter_in = "wknd_wday",
-#'        filter_out = c("hhour", "fortnight"))
-#' .data = sm
-#' response  = "general_supply_kwh"
-#' harmony_tbl =  harmonies
-#' smart_harmony <- .data %>% rank_harmony(harmony_tbl = harmonies,
-#' response = "general_supply_kwh", dist_ordered = TRUE)
+#'   harmony(
+#'     ugran = "month",
+#'     filter_in = "wknd_wday",
+#'     filter_out = c("hhour", "fortnight")
+#'   )
+#' .data <- sm
+#' response <- "general_supply_kwh"
+#' harmony_tbl <- harmonies
+#' smart_harmony <- .data %>% rank_harmony(
+#'   harmony_tbl = harmonies,
+#'   response = "general_supply_kwh", dist_ordered = TRUE
+#' )
 #' harmony_tbl <- PBS %>% harmony(ugran = "year")
 #' rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
 #' @export rank_harmony
 
 rank_harmony <- function(.data = NULL,
-                            harmony_tbl = NULL,
-                            response = NULL,
-                            prob = seq(0.01, 0.99, 0.01),
-                            dist_distribution = "normal",
-                            hierarchy_tbl = NULL,
-                            dist_ordered = TRUE,
-                            alpha = 0.05,
-                            create_gran_data = TRUE)
-{
+                         harmony_tbl = NULL,
+                         response = NULL,
+                         prob = seq(0.01, 0.99, 0.01),
+                         dist_distribution = "normal",
+                         hierarchy_tbl = NULL,
+                         dist_ordered = TRUE,
+                         alpha = 0.05,
+                         create_gran_data = TRUE) {
   # <- _data <- <- <- step1(.data, harmony_tbl, response)
 
   dist_harmony_data <- dist_harmony_tbl(.data, harmony_tbl, response, prob, dist_distribution, hierarchy_tbl, dist_ordered, create_gran_data)
 
   comp_dist <- dist_harmony_data %>%
-    unlist %>%
+    unlist() %>%
     matrix(ncol = 2, byrow = TRUE) %>%
     tibble::as_tibble(.name_repair = "unique")
 
   # all for n = 100
   # taken from Tests for the Exponential, Weibull and Gumbel Distributions Based on the Stabilized Probability Plot
-  if(alpha == 0.05){
+  if (alpha == 0.05) {
     galpa <- 0.073
   }
-  else if (alpha == 0.1){
+  else if (alpha == 0.1) {
     galpa <- 0.066
   }
-  else if (alpha == 0.01){
+  else if (alpha == 0.01) {
     galpa <- 0.089
   }
 
@@ -72,44 +75,45 @@ rank_harmony <- function(.data = NULL,
   max_distance <- comp_dist$...2
 
   harmony_sort <- harmony_tbl %>%
-    dplyr::mutate(MMPD = round(mean_max,2)) %>%
-                  #max_pd = round(max_distance,5))
+    dplyr::mutate(MMPD = round(mean_max, 2)) %>%
     dplyr::arrange(dplyr::desc(MMPD)) %>%
-    #dplyr::mutate(r = rank(-max_pd)) %>%
-    #dplyr::filter(max_norm_s>=galpa) %>%
-    #dplyr::select(-max_norm_s) %>%
+    # dplyr::mutate(r = rank(-max_pd)) %>%
+    # dplyr::filter(max_norm_s>=galpa) %>%
+    # dplyr::select(-max_norm_s) %>%
     dplyr::filter(!is.na(MMPD)) %>%
-    rename("facet" = "facet_variable",
-           "x" = "x_variable",
-           "facet_l" = "facet_levels",
-           "x_l" = "x_levels")
+    rename(
+      "facet" = "facet_variable",
+      "x" = "x_variable",
+      "facet_l" = "facet_levels",
+      "x_l" = "x_levels"
+    )
+
 
   harmony_sort
 }
 
 
 # loop through all harmony pairs in the harmony table
-# uses dist_harmony_pair used for calculating max pairiwise
+# uses dist_harmony_pair used for calculatin%>% max pairiwise
 # distance for one harmony pair
 
 dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
-                             dist_distribution = NULL, hierarchy_tbl = NULL, dist_ordered = NULL, create_gran_data = NULL,...){
-  step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl,create_gran_data,...)
-  (1: length(step1_data)) %>%
-    purrr::map(function(rowi){
+                             dist_distribution = NULL, hierarchy_tbl = NULL, dist_ordered = NULL, create_gran_data = NULL, ...) {
+  step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl, create_gran_data, ...)
+  (1:length(step1_data)) %>%
+    purrr::map(function(rowi) {
       step_datai <- step1_data %>%
         magrittr::extract2(rowi)
-      z <- dist_harmony_pair(step_datai, prob, dist_distribution, dist_ordered,create_gran_data,...)
+      z <- dist_harmony_pair(step_datai, prob, dist_distribution, dist_ordered, create_gran_data, ...)
       c(z$val, z$max_distance)
     })
-  }
+}
 
 # average of max pairwise distance for one harmony pair
-dist_harmony_pair <-function(step1_datai,
-                             prob = seq(0.01, 0.99, 0.01),
-                             dist_distribution = "normal", dist_ordered,create_gran_data,...)
-{
-  colnames(step1_datai) <- paste0("L",colnames(step1_datai))
+dist_harmony_pair <- function(step1_datai,
+                              prob = seq(0.01, 0.99, 0.01),
+                              dist_distribution = "normal", dist_ordered, create_gran_data, ...) {
+  colnames(step1_datai) <- paste0("L", colnames(step1_datai))
   colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
   lencol <- length(colNms)
   lenrow <- nrow(step1_datai)
@@ -121,29 +125,27 @@ dist_harmony_pair <-function(step1_datai,
 
   step3 <- rep(list(diag(lenrow)), lencol)
 
-  step4 <- prob <- a <-  b <- mu <- sigma <- array(NA, dim = lencol)
+  step4 <- prob <- a <- b <- mu <- sigma <- array(NA, dim = lencol)
 
   dist_vector <- vector()
   ## Logic
-  #__ find the stepped sum difference of density vector elements
-  for (k in 1:lencol){
-
+  # __ find the stepped sum difference of density vector elements
+  for (k in 1:lencol) {
     dist <- matrix(NA,
-                   nrow = lenrow,
-                   ncol = lenrow) ## Matrix
+      nrow = lenrow,
+      ncol = lenrow
+    ) ## Matrix
     row_of_col_max <- NULL
-    for(i in 1:(lenrow-1))
+    for (i in 1:(lenrow - 1))
     {
-      for (j in (i+1):lenrow)
+      for (j in (i + 1):lenrow)
       {
         m1 <- step2[[k]][[i]]
         m2 <- step2[[k]][[j]]
         dist[i, j] <- compute_JSD(m1, m2)
         dist[dist == 0] <- NA
-        if(dist_ordered)
-        {
-
-          if(j!=i+1) dist[i, j] <-NA
+        if (dist_ordered) {
+          if (j != i + 1) dist[i, j] <- NA
         }
       }
     }
@@ -152,34 +154,32 @@ dist_harmony_pair <-function(step1_datai,
 
     dist[lower.tri(dist)] <- NA
     len_uniq_dist <- lenrow^2 - length(which(is.na(dist)))
-    prob[k] <- (1- 1/len_uniq_dist)
+    prob[k] <- (1 - 1 / len_uniq_dist)
 
     mu[k] <- mean(dist, na.rm = TRUE)
     sigma[k] <- stats::sd(dist, na.rm = TRUE)
 
-    if(dist_distribution == "general")
-    {
-      a[k] <- stats::quantile(as.vector(dist), prob = 1-prob[k], type = 8, na.rm = TRUE)
-      step4[k] <- max_dist/a[k]
+    if (dist_distribution == "general") {
+      a[k] <- stats::quantile(as.vector(dist), prob = 1 - prob[k], type = 8, na.rm = TRUE)
+      step4[k] <- max_dist / a[k]
     }
 
-    if(dist_distribution == "normal")
-    {
+    if (dist_distribution == "normal") {
       b[k] <- stats::qnorm(p = prob[k], mean = mu[k], sd = sigma[k])
-      a[k] <- 1/(len_uniq_dist*stats::dnorm(b[k], mean = mu[k], sd = sigma[k]))
-      step4[k] <- dplyr::if_else(len_uniq_dist==1, mu[k], (max_dist - b[k])/a[k])
+      a[k] <- 1 / (len_uniq_dist * stats::dnorm(b[k], mean = mu[k], sd = sigma[k]))
+      step4[k] <- dplyr::if_else(len_uniq_dist == 1, mu[k], (max_dist - b[k]) / a[k])
     }
 
-    d<- as.vector(dist)
+    d <- as.vector(dist)
     d <- d[!is.na(d)]
-    dist_vector <- rbind(dist_vector,d)
+    dist_vector <- rbind(dist_vector, d)
   }
 
   row.names(dist_vector)
 
   # normalised max of normalised max
 
-  nmax_nmax <- stats::median(step4, na.rm = TRUE)/log(lencol)
+  nmax_nmax <- stats::median(step4, na.rm = TRUE) / log(lencol)
 
   # unnormalised max of normalised max
 
@@ -187,7 +187,7 @@ dist_harmony_pair <-function(step1_datai,
 
   # normalised max of unormalised max
 
-  nmax_max <- stats::median(max_dist, na.rm = TRUE)/log(lencol)
+  nmax_max <- stats::median(max_dist, na.rm = TRUE) / log(lencol)
 
   # unnormalised max of unormalised max
 
@@ -198,28 +198,26 @@ dist_harmony_pair <-function(step1_datai,
 }
 
 # create two granularities at once
-create_gran_pair <-  function(.data, gran1, gran2, hierarchy_tbl = NULL)
-{
+create_gran_pair <- function(.data, gran1, gran2, hierarchy_tbl = NULL) {
   .data %>%
     create_gran(gran1, hierarchy_tbl) %>%
     create_gran(gran2, hierarchy_tbl)
 }
 
 
-#harmony_data <-create_harmony_data(.data, harmony_tbl, response)
+# harmony_data <-create_harmony_data(.data, harmony_tbl, response)
 
 # <- for each element of the list formed
 
-step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL, create_gran_data = NULL,...){
+step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL, create_gran_data = NULL, ...) {
+  harmony_data <- create_harmony_data(.data, harmony_tbl, response, hierarchy_tbl, create_gran_data)
 
-  harmony_data <-create_harmony_data(.data, harmony_tbl, response, hierarchy_tbl, create_gran_data)
-
-  (1: length(harmony_data)) %>%
-    purrr::map(function(rowi){
+  (1:length(harmony_data)) %>%
+    purrr::map(function(rowi) {
       harmony_datai <- harmony_data %>% magrittr::extract2(rowi)
       namesi <- names(harmony_datai)
 
-      #responsei <- create_harmony_datai[[response]]
+      # responsei <- create_harmony_datai[[response]]
 
       harmony_datai %>%
         dplyr::ungroup() %>%
@@ -227,9 +225,11 @@ step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL, cre
           response = harmony_datai[[response]]
         ) %>%
         dplyr::select(-!!response) %>%
-        tidyr::pivot_wider(names_from = namesi[1],
-                           values_from = response,
-                           values_fn = list(response = list))
+        tidyr::pivot_wider(
+          names_from = namesi[1],
+          values_from = response,
+          values_fn = list(response = list)
+        )
     })
 }
 
@@ -237,26 +237,28 @@ step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL, cre
 # a list created with a tsibble in each element corresponding to each row of the harmony table
 # create_harmony_data(smart_meter10, harmony_tbl, "general_supply_kwh")
 create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NULL, hierarchy_tbl = NULL,
-                                create_gran_data= TRUE,...)
-{
-  if(create_gran_data)
-  {
-  (1:nrow(harmony_tbl)) %>% purrr::map(function(rowi){
-    .data %>% create_gran_pair(harmony_tbl$facet_variable[rowi],
-                               harmony_tbl$x_variable[rowi], hierarchy_tbl) %>%
-      tibble::as_tibble() %>%
-      dplyr::select(harmony_tbl$facet_variable[rowi],
-                    harmony_tbl$x_variable[rowi],
-                    .data[[tidyselect::all_of(response)]])
-  })
+                                create_gran_data = TRUE, ...) {
+  if (create_gran_data) {
+    (1:nrow(harmony_tbl)) %>% purrr::map(function(rowi) {
+      .data %>%
+        create_gran_pair(
+          harmony_tbl$facet_variable[rowi],
+          harmony_tbl$x_variable[rowi], hierarchy_tbl
+        ) %>%
+        tibble::as_tibble() %>%
+        dplyr::select(
+          harmony_tbl$facet_variable[rowi],
+          harmony_tbl$x_variable[rowi],
+          .data[[tidyselect::all_of(response)]]
+        )
+    })
   }
-  else
-  {
+  else {
     return(.data)
   }
 }
 # already put
-#step1_data <- step1(.data, harmony_tbl, response)
+# step1_data <- step1(.data, harmony_tbl, response)
 
 # already put
 # dist_harmony_data <- dist_harmony_tbl(step1_data)
@@ -276,35 +278,30 @@ create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NUL
 #
 # Compute Jensen-Shannon distance
 # based on quantiles q and p at probabilities prob
-JS <- function(prob,q,p)
-{
+JS <- function(prob, q, p) {
   # Compute approximate densities
-  x <- seq(min(q,p),max(q,p), l=201)
-  qpmf <- pmf(x,prob,q)
-  ppmf <- pmf(x,prob,p)
+  x <- seq(min(q, p), max(q, p), l = 201)
+  qpmf <- pmf(x, prob, q)
+  ppmf <- pmf(x, prob, p)
   m <- 0.5 * (ppmf + qpmf)
-  JS <- suppressWarnings(0.5*(sum(stats::na.omit(ppmf*log(ppmf/m))) +
-                                sum(stats::na.omit(qpmf*log(qpmf/m)))))
+  JS <- suppressWarnings(0.5 * (sum(stats::na.omit(ppmf * log(ppmf / m))) +
+    sum(stats::na.omit(qpmf * log(qpmf / m)))))
   return(JS)
 }
 
 # Compute approximate discretized density (like a probability mass function)
 # at each x (equally spaced) given quantiles q with probabilities p
-pmf <- function(x, p, q)
-{
-  qcdf <- stats::approx(q,p,xout=x,yleft=0,yright=1, ties = mean)$y
-  qpmf <- c(0,diff(qcdf)/ (x[2]-x[1]))
+pmf <- function(x, p, q) {
+  qcdf <- stats::approx(q, p, xout = x, yleft = 0, yright = 1, ties = mean)$y
+  qpmf <- c(0, diff(qcdf) / (x[2] - x[1]))
   return(qpmf / sum(qpmf))
 }
 
-compute_JSD <- function(x, y, prob = seq(0.01, 0.99, 0.01))
-{
+compute_JSD <- function(x, y, prob = seq(0.01, 0.99, 0.01)) {
   JSD <- JS(prob, x, y)
   return(JSD)
 }
 
-quantile_extractx <- function(x =  NULL, prob = seq(0.01, 0.99, by = 0.01))
-{
-  stats::quantile(x, prob, type=8, na.rm = TRUE)
+quantile_extractx <- function(x = NULL, prob = seq(0.01, 0.99, by = 0.01)) {
+  stats::quantile(x, prob, type = 8, na.rm = TRUE)
 }
-
