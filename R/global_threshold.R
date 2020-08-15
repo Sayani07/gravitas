@@ -73,7 +73,7 @@ MMPD_sample_lst <- (1:nsamp) %>%
             .data %>% magrittr::extract2(lengthi) %>%  dplyr::mutate(id = lengthi)
           })
 
-        data <- dplyr::bind_rows(.data)%>% ungroup()
+        data <- dplyr::bind_rows(.data)%>% dplyr::ungroup()
         response_sample <-  sample(data[[response]], size = nrow(data))
 
         data_sample <- data %>%

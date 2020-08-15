@@ -218,7 +218,7 @@ step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL, cre
       #responsei <- create_harmony_datai[[response]]
 
       harmony_datai %>%
-        ungroup() %>%
+        dplyr::ungroup() %>%
         dplyr::mutate(
           response = harmony_datai[[response]]
         ) %>%

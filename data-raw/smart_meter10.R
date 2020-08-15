@@ -25,7 +25,7 @@ smart_meter_data$customer_id <- as.character(smart_meter_data$customer_id)
 
 sm_cust50 <- smart_meter_data %>%
   as_tsibble(index = reading_datetime, key = customer_id) %>%
-  ungroup() %>%
+  dplyr::ungroup() %>%
   dplyr::select(-calendar_key)
 
 # selecting just 10

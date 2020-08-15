@@ -99,7 +99,7 @@ cricket <-  cricketdata %>%
   summarise(wicket = sum(wicket),
             dot_balls = sum(dot_balls),
             runs_per_over = sum(total_runs),
-            run_rate = round(sum(total_runs)/length(total_runs))) %>% ungroup()
+            run_rate = round(sum(total_runs)/length(total_runs))) %>% dplyr::ungroup()
 
 
 cricket <-  cricket %>%
