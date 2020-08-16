@@ -142,7 +142,7 @@ dist_harmony_pair <- function(step1_datai,
       {
         m1 <- step2[[k]][[i]]
         m2 <- step2[[k]][[j]]
-        dist[i, j] <- compute_JSD(m1, m2)
+        dist[i, j] <- JS(prob, m1, m2)
         dist[dist == 0] <- NA
         if (dist_ordered) {
           if (j != i + 1) dist[i, j] <- NA
@@ -275,7 +275,8 @@ create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NUL
 # }
 
 #  Rob's code for computing JSD using quantiles
-#
+
+
 # Compute Jensen-Shannon distance
 # based on quantiles q and p at probabilities prob
 JS <- function(prob, q, p) {
@@ -297,10 +298,6 @@ pmf <- function(x, p, q) {
   return(qpmf / sum(qpmf))
 }
 
-compute_JSD <- function(x, y, prob = seq(0.01, 0.99, 0.01)) {
-  JSD <- JS(prob, x, y)
-  return(JSD)
-}
 
 quantile_extractx <- function(x = NULL, prob = seq(0.01, 0.99, by = 0.01)) {
   stats::quantile(x, prob, type = 8, na.rm = TRUE)
