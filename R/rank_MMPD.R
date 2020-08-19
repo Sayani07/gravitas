@@ -41,13 +41,12 @@ MMPD <- function(.data,
                  harmony_tbl = NULL,
                  response = NULL,
                  hierarchy_tbl = NULL,
-                 create_gran_data = NULL,...){
+                 create_gran_data = TRUE,...){
 
   harmony_data <- create_harmony_data(.data,
                                       harmony_tbl,
                                       response,
-                                      hierarchy_tbl,
-                                      create_gran_data = create_gran_data, ...)
+                                      hierarchy_tbl,create_gran_data,...)
 
   (1:length(harmony_data)) %>%
     purrr::map(function(rowi) {

@@ -11,7 +11,7 @@
 
 MMPD1 <- function(harmony_datai, quantile_prob = seq(0.01, 0.99, by = 0.01), dist_distribution = 'normal', dist_ordered = TRUE, base = exp(1),...){
   harmony_datai %>%
-    normalise_max_JSdist(quantile_prob,
+    norm_jsd_maxharmony(quantile_prob,
                          dist_distribution,
                          dist_ordered) %>%
     median_by_log()

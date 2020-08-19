@@ -20,6 +20,6 @@ pmf <- function(x, p, q) {
   return(qpmf / sum(qpmf))
 }
 
-quantile_extractx <- function(x = NULL, prob = seq(0.01, 0.99, by = 0.01)) {
-  stats::quantile(x, prob, type = 8, na.rm = TRUE)
+quantile_extractx <- function(x = NULL, quantile_prob = seq(0.01, 0.99, by = 0.01)) {
+  stats::quantile(x, prob = quantile_prob , type = 8, na.rm = TRUE)
 }
