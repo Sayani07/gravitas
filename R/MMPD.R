@@ -1,7 +1,5 @@
 # computing MMPD for one harmony pair
 
-harmony_data <- create_harmony_data(.data, harmony_tbl, response, hierarchy_tbl, create_gran_data)
-
 rank_MMPD <- function(.data,
                       harmony_tbl = NULL,
                       response = NULL,
@@ -22,8 +20,6 @@ harmony_tbl %>%
   dplyr::arrange(dplyr::desc(MMPD)) %>%
   dplyr::filter(!is.na(MMPD))
 }
-
-
 
 
 MMPD <- function(.data,
