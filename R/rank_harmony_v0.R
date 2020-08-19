@@ -429,33 +429,6 @@ step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL){
 # create data for each row of harmony table
 # a list created with a tsibble in each element corresponding to each row of the harmony table
 # create_harmony_data(smart_meter10, harmony_tbl, "general_supply_kwh")
-create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NULL, hierarchy_tbl = NULL)
-{
-  (1:nrow(harmony_tbl)) %>% purrr::map(function(rowi){
-    .data %>% create_gran_pair(harmony_tbl$facet_variable[rowi],
-                               harmony_tbl$x_variable[rowi], hierarchy_tbl) %>%
-      tibble::as_tibble() %>%
-      dplyr::select(harmony_tbl$facet_variable[rowi],
-                    harmony_tbl$x_variable[rowi],
-                    .data[[tidyselect::all_of(response)]])
-  })
-}
-# already put
-#step1_data <- step1(.data, harmony_tbl, response)
-
-# already put
-# dist_harmony_data <- dist_harmony_tbl(step1_data)
-
-# compute_JSD <- function(x, y, message = FALSE)
-# {
-#   mat <- rbind(x, y)
-#   return(philentropy::JSD(mat))
-# }
-
-# density_extractx <- function(x)
-# {
-#   stats::density(x)$y
-# }
 
 #  Rob's code for computing JSD using quantiles
 #
