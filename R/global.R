@@ -35,5 +35,7 @@ utils::globalVariables(
     "dist",
     "harmonies",
     "id",
-    "max_pd"
+    "max_pd",
+    "threshold",
+    "quantile_prob"
 ))

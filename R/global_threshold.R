@@ -82,7 +82,7 @@ global_threshold <- function(.data = NULL,
           dplyr::select(-!!response) %>%
           dplyr::mutate(
             !!response := response) %>%
-          dplyr::select(id, everything(), - response)
+          dplyr::select(id, dplyr::everything(), - response)
 
         data_sample <- split(data_sample, data_sample$id)
         data_sample <- purrr::map(data_sample, ~ (.x %>% select(-1)))
@@ -114,7 +114,7 @@ global_threshold <- function(.data = NULL,
   #gt_0.95_MMPD = right_quantile_MMPD)
   #gt_maxpd = max_pd > right_quantile_maxpd)
 
-  MMPD_obs <- MMPD_obs %>% mutate(threshold = right_quantile_MMPD) %>% dplyr::mutate(threshold = round(threshold,2)) %>% dplyr::mutate(MMPD = round(MMPD,2))
+  MMPD_obs <- MMPD_obs %>% dplyr::mutate(threshold = right_quantile_MMPD) %>% dplyr::mutate(threshold = round(threshold,2)) %>% dplyr::mutate(MMPD = round(MMPD,2))
 
 
   MMPD_sample <- unlist(MMPD_sample_lst)

@@ -1,9 +1,37 @@
+#' Normalise max pairwise distance for one variable
+#'
+#' @param harmony_datai a tibble with one row whose column consists of lists of numeric response variable
+#' @param quantile_prob numeric vector of probabilities with values in [0,1].
+#' @param dist_distribution Underlying distribution of distances.
+#' @param dist_ordered if levels of the time granularity is ordered.
+#' @param ... Other arguments passed on to individual methods.
+#' @return normalised max JS distance
+#' @export normalise_max_JSdist
+
+normalise_max_JSdist <- function(harmony_datai, quantile_prob = seq(0.01, 0.99, by = 0.01), dist_distribution = 'normal', dist_ordered = TRUE){
+
+  # iterate for all facet_levels
+  iter <- nrow(harmony_datai)
+
+  (1:iter) %>%
+    purrr::map(function(i){
+      harmony_datai %>%
+        dplyr::slice(i) %>%
+        dplyr::select(-1) %>%
+        quantile_extractx_n(quantile_prob) %>%
+        JSdist_pair_matrix(dist_ordered) %>%
+        norm_JSdist_maxpair(dist_distribution)
+    })
+}
+
+#dist_matrix_x(harmony_datai)
+
 # distance matrix between categories across x-axis
 
 # x: vector/matrix of multiple observations across categories
 # x = step1_data[[16]][-1][1,]
 quantile_extractx_n <-function(x,
-                               prob = seq(0.01, 0.99, by = 0.01)){
+                               quantile_prob = seq(0.01, 0.99, by = 0.01)){
   names(x) <- paste0("L", names(x))
   lencol <- ncol(x)
   lenrow <- nrow(x)
@@ -13,7 +41,7 @@ quantile_extractx_n <-function(x,
        x %>%
         magrittr::extract2(coli) %>%
         unlist() %>%
-        quantile_extractx(., prob)
+        quantile_extractx()
     })
 }
 
@@ -29,7 +57,7 @@ dist <- (1:(nrowy - 1)) %>%
       purrr::map(function(j){
         m1 <- y[i,]
         m2 <- y[j,]
-        z = JS(prob, m1, m2)
+        z = JS(prob = quantile_prob, m1, m2)
         if (dist_ordered) {
           if (j != i + 1)
          z = NA
@@ -41,7 +69,7 @@ dist <- (1:(nrowy - 1)) %>%
 
 # algorithm for normalisation
 # z = JSdist_pair_matrix(y)
-JSdist_normalise_matrix <- function(z,
+norm_JSdist_maxpair <- function(z,
                                     dist_distribution = 'normal')
 {
     dist <- unlist(z)
@@ -61,20 +89,3 @@ JSdist_normalise_matrix <- function(z,
     return(value)
   }
 
-normalise_max_JSdist <- function(harmony_datai){
-
-# iterate for all facet_levels
-iter <- nrow(harmony_datai)
-
-(1:iter) %>%
-    purrr::map(function(i){
-      harmony_datai %>%
-        dplyr::slice(i) %>%
-        dplyr::select(-1) %>%
-        quantile_extractx_n() %>%
-        JSdist_pair_matrix() %>%
-        JSdist_normalise_matrix()
-    })
-}
-
-#dist_matrix_x(harmony_datai)
