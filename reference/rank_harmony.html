@@ -213,16 +213,20 @@
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://purrr.tidyverse.org'>purrr</a></span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>magrittr</span>)
 <span class='kw'>sm</span> <span class='op'>&lt;-</span> <span class='kw'>smart_meter10</span> <span class='op'>%&gt;%</span>
-<span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>customer_id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"10017936"</span>))
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>customer_id</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"10017936"</span>))
 <span class='kw'>harmonies</span> <span class='op'>&lt;-</span> <span class='kw'>sm</span> <span class='op'>%&gt;%</span>
-<span class='fu'><a href='harmony.html'>harmony</a></span>(ugran = <span class='st'>"month"</span>,
-       filter_in = <span class='st'>"wknd_wday"</span>,
-       filter_out = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hhour"</span>, <span class='st'>"fortnight"</span>))
-<span class='kw'>.data</span> <span class='op'>=</span> <span class='kw'>sm</span>
-<span class='kw'>response</span>  <span class='op'>=</span> <span class='st'>"general_supply_kwh"</span>
-<span class='kw'>harmony_tbl</span> <span class='op'>=</span>  <span class='kw'>harmonies</span>
-<span class='kw'>smart_harmony</span> <span class='op'>&lt;-</span> <span class='kw'>.data</span> <span class='op'>%&gt;%</span> <span class='fu'>rank_harmony</span>(harmony_tbl = <span class='kw'>harmonies</span>,
-response = <span class='st'>"general_supply_kwh"</span>, dist_ordered = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>New names:</span>
+  <span class='fu'><a href='harmony.html'>harmony</a></span>(
+    ugran = <span class='st'>"month"</span>,
+    filter_in = <span class='st'>"wknd_wday"</span>,
+    filter_out = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"hhour"</span>, <span class='st'>"fortnight"</span>)
+  )
+<span class='kw'>.data</span> <span class='op'>&lt;-</span> <span class='kw'>sm</span>
+<span class='kw'>response</span> <span class='op'>&lt;-</span> <span class='st'>"general_supply_kwh"</span>
+<span class='kw'>harmony_tbl</span> <span class='op'>&lt;-</span> <span class='kw'>harmonies</span>
+<span class='kw'>smart_harmony</span> <span class='op'>&lt;-</span> <span class='kw'>.data</span> <span class='op'>%&gt;%</span> <span class='fu'>rank_harmony</span>(
+  harmony_tbl = <span class='kw'>harmonies</span>,
+  response = <span class='st'>"general_supply_kwh"</span>, dist_ordered = <span class='fl'>TRUE</span>
+)</div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* `` -&gt; ...1</span>
 #&gt; <span class='message'>* `` -&gt; ...2</span></div><div class='input'><span class='kw'>harmony_tbl</span> <span class='op'>&lt;-</span> <span class='kw'>PBS</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='harmony.html'>harmony</a></span>(ugran = <span class='st'>"year"</span>)
 <span class='fu'>rank_harmony</span>(<span class='kw'>PBS</span>, harmony_tbl = <span class='kw'>harmony_tbl</span>, response = <span class='st'>"Cost"</span>)</div><div class='output co'>#&gt; <span class='message'>New names:</span>
