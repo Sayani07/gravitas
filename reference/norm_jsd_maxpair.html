@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plotting probability distributions across granularities — rank_harmony • gravitas</title>
+<title>Normalise max pairwise distance for one variable — norm_jsd_maxpair • gravitas</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="Plotting probability distributions across granularities — rank_harmony" />
-<meta property="og:description" content="Plot probability distribution of univariate series across bivariate temporal granularities." />
+<meta property="og:title" content="Normalise max pairwise distance for one variable — norm_jsd_maxpair" />
+<meta property="og:description" content="Normalise max pairwise distance for one variable" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -137,25 +137,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plotting probability distributions across granularities</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/rank_harmony.R'><code>R/rank_harmony.R</code></a></small>
-    <div class="hidden name"><code>rank_harmony.Rd</code></div>
+    <h1>Normalise max pairwise distance for one variable</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Sayani07/gravitas/blob/master/R/norm_jsd_maxpair.R'><code>R/norm_jsd_maxpair.R</code></a></small>
+    <div class="hidden name"><code>norm_jsd_maxpair.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plot probability distribution of univariate series across bivariate temporal granularities.</p>
+    <p>Normalise max pairwise distance for one variable</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rank_harmony</span>(
-  .data = <span class='kw'>NULL</span>,
-  harmony_tbl = <span class='kw'>NULL</span>,
-  response = <span class='kw'>NULL</span>,
-  prob = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.99</span>, <span class='fl'>0.01</span>),
+    <pre class="usage"><span class='fu'>norm_jsd_maxpair</span>(
+  <span class='kw'>.data</span>,
+  quantile_prob = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.99</span>, by = <span class='fl'>0.01</span>),
   dist_distribution = <span class='st'>"normal"</span>,
-  hierarchy_tbl = <span class='kw'>NULL</span>,
-  dist_ordered = <span class='fl'>TRUE</span>,
-  alpha = <span class='fl'>0.05</span>,
-  create_gran_data = <span class='fl'>TRUE</span>
+  dist_ordered = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -163,71 +158,26 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.data</th>
-      <td><p>a tsibble, if cyclic granularity needs to be constructed or a list consisting of tibbles for each pair of cyclic granularity in the harmony table</p></td>
+      <td><p>a tibble with one row whose column consists of lists of numeric response variable</p></td>
     </tr>
     <tr>
-      <th>harmony_tbl</th>
-      <td><p>A tibble of harmonies and their levels obtained from the function().</p></td>
-    </tr>
-    <tr>
-      <th>response</th>
-      <td><p>response variable.</p></td>
-    </tr>
-    <tr>
-      <th>prob</th>
+      <th>quantile_prob</th>
       <td><p>numeric vector of probabilities with values in [0,1].</p></td>
     </tr>
     <tr>
       <th>dist_distribution</th>
-      <td><p>Underlying distribution of distances. Look at hist_distance()</p></td>
-    </tr>
-    <tr>
-      <th>hierarchy_tbl</th>
-      <td><p>A hierarchy table specifying the hierarchy of units</p></td>
+      <td><p>Underlying distribution of distances.</p></td>
     </tr>
     <tr>
       <th>dist_ordered</th>
       <td><p>if levels of the time granularity is ordered.</p></td>
     </tr>
-    <tr>
-      <th>alpha</th>
-      <td><p>significance level</p></td>
-    </tr>
-    <tr>
-      <th>create_gran_data</th>
-      <td><p>if data corresponding to a pair of cyclic granularity needs to be created</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble of harmonies and their levels ranked in descending order of average maximum pairwise distance of the harmony pairs.</p>
+    <p>normalised max JS distance</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://tsibbledata.tidyverts.org'>tsibbledata</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://tsibble.tidyverts.org'>tsibble</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>lvplot</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/Sayani07/gravitas'>gravitas</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://purrr.tidyverse.org'>purrr</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>magrittr</span>)
-<span class='kw'>harmony_tbl</span> <span class='op'>&lt;-</span> <span class='kw'>PBS</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='harmony.html'>harmony</a></span>(ugran = <span class='st'>"year"</span>)
-<span class='fu'>rank_harmony</span>(<span class='kw'>PBS</span>, harmony_tbl = <span class='kw'>harmony_tbl</span>, response = <span class='st'>"Cost"</span>)</div><div class='output co'>#&gt; <span class='message'>New names:</span>
-#&gt; <span class='message'>* `` -&gt; ...1</span>
-#&gt; <span class='message'>* `` -&gt; ...2</span></div><div class='output co'>#&gt; # A tibble: 10 x 5
-#&gt;    facet            x                facet_l   x_l  MMPD
-#&gt;    &lt;chr&gt;            &lt;chr&gt;              &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
-#&gt;  1 quarter_semester semester_year          2     2  0.02
-#&gt;  2 semester_year    month_semester         2     6  0.01
-#&gt;  3 month_quarter    quarter_semester       3     2  0.01
-#&gt;  4 semester_year    quarter_semester       2     2  0.01
-#&gt;  5 month_quarter    quarter_year           3     4  0.01
-#&gt;  6 month_quarter    semester_year          3     2  0.01
-#&gt;  7 month_semester   semester_year          6     2  0.01
-#&gt;  8 quarter_semester month_quarter          2     3  0   
-#&gt;  9 quarter_year     month_quarter          4     3  0   
-#&gt; 10 semester_year    month_quarter          2     3  0   </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
