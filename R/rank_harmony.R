@@ -112,7 +112,9 @@ dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
 # average of max pairwise distance for one harmony pair
 dist_harmony_pair <- function(step1_datai,
                               prob = seq(0.01, 0.99, 0.01),
-                              dist_distribution = "normal", dist_ordered, create_gran_data, ...) {
+                              dist_distribution = "normal",
+                              dist_ordered,
+                              create_gran_data, ...) {
   colnames(step1_datai) <- paste0("L", colnames(step1_datai))
   colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
   lencol <- length(colNms)
@@ -125,7 +127,7 @@ dist_harmony_pair <- function(step1_datai,
 
   step3 <- rep(list(diag(lenrow)), lencol)
 
-  step4 <- prob <- a <- b <- mu <- sigma <- array(NA, dim = lencol)
+  step4 <- p <- a <- b <- mu <- sigma <- array(NA, dim = lencol)
 
   dist_vector <- vector()
   ## Logic
@@ -154,18 +156,18 @@ dist_harmony_pair <- function(step1_datai,
 
     dist[lower.tri(dist)] <- NA
     len_uniq_dist <- lenrow^2 - length(which(is.na(dist)))
-    prob[k] <- (1 - 1 / len_uniq_dist)
+    p[k] <- (1 - 1 / len_uniq_dist)
 
     mu[k] <- mean(dist, na.rm = TRUE)
     sigma[k] <- stats::sd(dist, na.rm = TRUE)
 
     if (dist_distribution == "general") {
-      a[k] <- stats::quantile(as.vector(dist), prob = 1 - prob[k], type = 8, na.rm = TRUE)
+      a[k] <- stats::quantile(as.vector(dist), prob = 1 - p[k], type = 8, na.rm = TRUE)
       step4[k] <- max_dist / a[k]
     }
 
     if (dist_distribution == "normal") {
-      b[k] <- stats::qnorm(p = prob[k], mean = mu[k], sd = sigma[k])
+      b[k] <- stats::qnorm(p = p[k], mean = mu[k], sd = sigma[k])
       a[k] <- 1 / (len_uniq_dist * stats::dnorm(b[k], mean = mu[k], sd = sigma[k]))
       step4[k] <- dplyr::if_else(len_uniq_dist == 1, mu[k], (max_dist - b[k]) / a[k])
     }
@@ -209,7 +211,9 @@ create_gran_pair <- function(.data, gran1, gran2, hierarchy_tbl = NULL) {
 
 # <- for each element of the list formed
 
-step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL, create_gran_data = NULL, ...) {
+step1 <- function(.data, harmony_tbl,
+                  response = NULL, hierarchy_tbl = NULL,
+                  create_gran_data = NULL, ...) {
   harmony_data <- create_harmony_data(.data, harmony_tbl, response, hierarchy_tbl, create_gran_data)
 
   (1:length(harmony_data)) %>%
@@ -274,31 +278,5 @@ create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NUL
 #   stats::density(x)$y
 # }
 
-#  Rob's code for computing JSD using quantiles
 
 
-# Compute Jensen-Shannon distance
-# based on quantiles q and p at probabilities prob
-JS <- function(prob, q, p) {
-  # Compute approximate densities
-  x <- seq(min(q, p), max(q, p), l = 201)
-  qpmf <- pmf(x, prob, q)
-  ppmf <- pmf(x, prob, p)
-  m <- 0.5 * (ppmf + qpmf)
-  JS <- suppressWarnings(0.5 * (sum(stats::na.omit(ppmf * log(ppmf / m))) +
-    sum(stats::na.omit(qpmf * log(qpmf / m)))))
-  return(JS)
-}
-
-# Compute approximate discretized density (like a probability mass function)
-# at each x (equally spaced) given quantiles q with probabilities p
-pmf <- function(x, p, q) {
-  qcdf <- stats::approx(q, p, xout = x, yleft = 0, yright = 1, ties = mean)$y
-  qpmf <- c(0, diff(qcdf) / (x[2] - x[1]))
-  return(qpmf / sum(qpmf))
-}
-
-
-quantile_extractx <- function(x = NULL, prob = seq(0.01, 0.99, by = 0.01)) {
-  stats::quantile(x, prob, type = 8, na.rm = TRUE)
-}
