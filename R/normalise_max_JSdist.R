@@ -61,7 +61,7 @@ JSdist_normalise_matrix <- function(z,
     return(value)
   }
 
-dist_matrix_x <- function(harmony_datai){
+normalise_max_JSdist <- function(harmony_datai){
 
 # iterate for all facet_levels
 iter <- nrow(harmony_datai)
