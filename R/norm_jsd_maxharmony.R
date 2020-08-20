@@ -17,8 +17,8 @@ norm_jsd_maxharmony <- function(harmony_datai, quantile_prob = seq(0.01, 0.99, b
       harmony_datai %>%
         dplyr::slice(i) %>%
         dplyr::select(-1) %>%
-        quantile_extractx_n(quantile_prob) %>%
-        JSdist_pair_matrix(dist_ordered) %>%
-        norm_jsd_maxpair(dist_distribution)
+        #quantile_extractx_n(quantile_prob) %>%
+        #JSdist_pair_matrix(dist_ordered) %>%
+        norm_jsd_maxpair(quantile_prob, dist_distribution, dist_ordered)
     })
 }
