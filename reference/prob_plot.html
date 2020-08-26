@@ -234,7 +234,8 @@
   symmetric = <span class='fl'>TRUE</span>,
    outlier.colour = <span class='st'>"red"</span>,
   outlier.shape = <span class='fl'>2</span>, palette = <span class='st'>"Dark2"</span>
-) <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span>(breaks = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.1</span>, <span class='fl'>1.00</span>))</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("day_week", "hour_day")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("day_week", "hour_day")</span></div><div class='img'><img src='prob_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
+) <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span>(breaks = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.01</span>, <span class='fl'>0.1</span>, <span class='fl'>1.00</span>))
+</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("day_week", "hour_day")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("day_week", "hour_day")</span></div><div class='img'><img src='prob_plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='kw'>cricket_tsibble</span> <span class='op'>&lt;-</span> <span class='kw'>cricket</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(data_index = <span class='fu'><a href='https://dplyr.tidyverse.org/reference/ranking.html'>row_number</a></span>()) <span class='op'>%&gt;%</span>
@@ -250,7 +251,8 @@
     hierarchy_tbl = <span class='kw'>hierarchy_model</span>,
     response = <span class='st'>"runs_per_over"</span>,
     plot_type = <span class='st'>"lv"</span>
-  )</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("inning", "over")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("inning", "over")</span></div><div class='img'><img src='prob_plot-2.png' alt='' width='700' height='433' /></div></pre>
+  )
+</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("inning", "over")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("inning", "over")</span></div><div class='img'><img src='prob_plot-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

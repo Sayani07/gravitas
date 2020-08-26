@@ -190,28 +190,30 @@ different cities in India from 2008 to 2016.</p>
 <span class='co'># Compute granularities ----</span>
 <span class='kw'>cricket_tsibble</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='create_gran.html'>create_gran</a></span>(<span class='st'>"over_inning"</span>,
-               <span class='kw'>hierarchy_model</span>)</div><div class='output co'>#&gt; # A tsibble: 8,560 x 12 [1]
+               <span class='kw'>hierarchy_model</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tsibble: 8,560 x 12 [1]</span><span>
 #&gt;    season match_id batting_team bowling_team inning  over wicket dot_balls
-#&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;
-#&gt;  1   2008        2 Chennai Sup… Kings XI Pu…      1     1      0         4
-#&gt;  2   2008        2 Chennai Sup… Kings XI Pu…      1     2      0         2
-#&gt;  3   2008        2 Chennai Sup… Kings XI Pu…      1     3      1         4
-#&gt;  4   2008        2 Chennai Sup… Kings XI Pu…      1     4      0         3
-#&gt;  5   2008        2 Chennai Sup… Kings XI Pu…      1     5      0         3
-#&gt;  6   2008        2 Chennai Sup… Kings XI Pu…      1     6      0         3
-#&gt;  7   2008        2 Chennai Sup… Kings XI Pu…      1     7      1         1
-#&gt;  8   2008        2 Chennai Sup… Kings XI Pu…      1     8      1         3
-#&gt;  9   2008        2 Chennai Sup… Kings XI Pu…      1     9      0         1
-#&gt; 10   2008        2 Chennai Sup… Kings XI Pu…      1    10      0         2
-#&gt; # … with 8,550 more rows, and 4 more variables: runs_per_over &lt;dbl&gt;,
-#&gt; #   run_rate &lt;dbl&gt;, data_index &lt;int&gt;, over_inning &lt;fct&gt;</div><div class='input'><span class='co'># Visualise distribution of runs across granularities ----</span>
+#&gt;     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span>   </span><span style='text-decoration: underline;'>2</span><span>008        2 Chennai Sup… Kings XI Pu…      1     1      0         4
+#&gt; </span><span style='color: #555555;'> 2</span><span>   </span><span style='text-decoration: underline;'>2</span><span>008        2 Chennai Sup… Kings XI Pu…      1     2      0         2
+#&gt; </span><span style='color: #555555;'> 3</span><span>   </span><span style='text-decoration: underline;'>2</span><span>008        2 Chennai Sup… Kings XI Pu…      1     3      1         4
+#&gt; </span><span style='color: #555555;'> 4</span><span>   </span><span style='text-decoration: underline;'>2</span><span>008        2 Chennai Sup… Kings XI Pu…      1     4      0         3
+#&gt; </span><span style='color: #555555;'> 5</span><span>   </span><span style='text-decoration: underline;'>2</span><span>008        2 Chennai Sup… Kings XI Pu…      1     5      0         3
+#&gt; </span><span style='color: #555555;'> 6</span><span>   </span><span style='text-decoration: underline;'>2</span><span>008        2 Chennai Sup… Kings XI Pu…      1     6      0         3
+#&gt; </span><span style='color: #555555;'> 7</span><span>   </span><span style='text-decoration: underline;'>2</span><span>008        2 Chennai Sup… Kings XI Pu…      1     7      1         1
+#&gt; </span><span style='color: #555555;'> 8</span><span>   </span><span style='text-decoration: underline;'>2</span><span>008        2 Chennai Sup… Kings XI Pu…      1     8      1         3
+#&gt; </span><span style='color: #555555;'> 9</span><span>   </span><span style='text-decoration: underline;'>2</span><span>008        2 Chennai Sup… Kings XI Pu…      1     9      0         1
+#&gt; </span><span style='color: #555555;'>10</span><span>   </span><span style='text-decoration: underline;'>2</span><span>008        2 Chennai Sup… Kings XI Pu…      1    10      0         2
+#&gt; </span><span style='color: #555555;'># … with 8,550 more rows, and 4 more variables: runs_per_over </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,</span><span>
+#&gt; </span><span style='color: #555555;'>#   run_rate </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, data_index </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>, over_inning </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span></div><div class='input'><span class='co'># Visualise distribution of runs across granularities ----</span>
 <span class='kw'>cricket_tsibble</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='kw'>batting_team</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Mumbai Indians"</span>,
                              <span class='st'>"Chennai Super Kings"</span>))<span class='op'>%&gt;%</span>
   <span class='fu'><a href='prob_plot.html'>prob_plot</a></span>(<span class='st'>"inning"</span>, <span class='st'>"over"</span>,
   <span class='kw'>hierarchy_model</span>,
   response = <span class='st'>"runs_per_over"</span>,
-  plot_type = <span class='st'>"lv"</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("inning", "over")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("inning", "over")</span></div><div class='img'><img src='cricket-1.png' alt='' width='700' height='433' /></div></pre>
+  plot_type = <span class='st'>"lv"</span>)
+</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("inning", "over")</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = c("inning", "over")</span></div><div class='img'><img src='cricket-1.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

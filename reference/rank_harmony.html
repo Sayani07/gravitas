@@ -213,21 +213,22 @@
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://purrr.tidyverse.org'>purrr</a></span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>magrittr</span>)
 <span class='kw'>harmony_tbl</span> <span class='op'>&lt;-</span> <span class='kw'>PBS</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='harmony.html'>harmony</a></span>(ugran = <span class='st'>"year"</span>)
-<span class='fu'>rank_harmony</span>(<span class='kw'>PBS</span>, harmony_tbl = <span class='kw'>harmony_tbl</span>, response = <span class='st'>"Cost"</span>)</div><div class='output co'>#&gt; <span class='message'>New names:</span>
+<span class='fu'>rank_harmony</span>(<span class='kw'>PBS</span>, harmony_tbl = <span class='kw'>harmony_tbl</span>, response = <span class='st'>"Cost"</span>)
+</div><div class='output co'>#&gt; <span class='message'>New names:</span>
 #&gt; <span class='message'>* `` -&gt; ...1</span>
-#&gt; <span class='message'>* `` -&gt; ...2</span></div><div class='output co'>#&gt; # A tibble: 10 x 5
+#&gt; <span class='message'>* `` -&gt; ...2</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 10 x 5</span><span>
 #&gt;    facet            x                facet_l   x_l  MMPD
-#&gt;    &lt;chr&gt;            &lt;chr&gt;              &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
-#&gt;  1 quarter_semester semester_year          2     2  0.02
-#&gt;  2 semester_year    month_semester         2     6  0.01
-#&gt;  3 month_quarter    quarter_semester       3     2  0.01
-#&gt;  4 semester_year    quarter_semester       2     2  0.01
-#&gt;  5 month_quarter    quarter_year           3     4  0.01
-#&gt;  6 month_quarter    semester_year          3     2  0.01
-#&gt;  7 month_semester   semester_year          6     2  0.01
-#&gt;  8 quarter_semester month_quarter          2     3  0   
-#&gt;  9 quarter_year     month_quarter          4     3  0   
-#&gt; 10 semester_year    month_quarter          2     3  0   </div></pre>
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>            </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> quarter_semester semester_year          2     2  0.02
+#&gt; </span><span style='color: #555555;'> 2</span><span> semester_year    month_semester         2     6  0.01
+#&gt; </span><span style='color: #555555;'> 3</span><span> month_quarter    quarter_semester       3     2  0.01
+#&gt; </span><span style='color: #555555;'> 4</span><span> semester_year    quarter_semester       2     2  0.01
+#&gt; </span><span style='color: #555555;'> 5</span><span> month_quarter    quarter_year           3     4  0.01
+#&gt; </span><span style='color: #555555;'> 6</span><span> month_quarter    semester_year          3     2  0.01
+#&gt; </span><span style='color: #555555;'> 7</span><span> month_semester   semester_year          6     2  0.01
+#&gt; </span><span style='color: #555555;'> 8</span><span> quarter_semester month_quarter          2     3  0   
+#&gt; </span><span style='color: #555555;'> 9</span><span> quarter_year     month_quarter          4     3  0   
+#&gt; </span><span style='color: #555555;'>10</span><span> semester_year    month_quarter          2     3  0   </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -201,7 +201,8 @@
 <span class='kw'>gran2</span> <span class='op'>=</span> <span class='st'>"hour_day"</span>
 <span class='kw'>response</span>  <span class='op'>=</span> <span class='st'>"general_supply_kwh"</span>
 <span class='kw'>.data</span> <span class='op'>%&gt;%</span> <span class='fu'>histogram_distance</span>(gran1 = <span class='st'>"wknd_wday"</span>, gran2 = <span class='st'>"hour_day"</span>,
-response = <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
+response = <span class='st'>"general_supply_kwh"</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
 #&gt; <span class='warning'>* Use `values_fn = list` to suppress this warning.</span>
 #&gt; <span class='warning'>* Use `values_fn = length` to identify where the duplicates arise</span>
 #&gt; <span class='warning'>* Use `values_fn = {summary_fun}` to summarise duplicates</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>
@@ -211,7 +212,8 @@ response = <span class='st'>"general_supply_kwh"</span>)</div><div class='output
 #&gt; <span class='message'>* `` -&gt; ...4</span>
 #&gt; <span class='message'>* `` -&gt; ...5</span>
 #&gt; <span class='message'>* ...</span></div><div class='output co'>#&gt; <span class='message'>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</span></div><div class='img'><img src='histogram_distance-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>.data</span> <span class='op'>%&gt;%</span> <span class='fu'>histogram_distance</span>(gran1 = <span class='st'>"day_week"</span>, gran2 = <span class='st'>"hour_day"</span>,
-response = <span class='st'>"general_supply_kwh"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
+response = <span class='st'>"general_supply_kwh"</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Values are not uniquely identified; output will contain list-cols.</span>
 #&gt; <span class='warning'>* Use `values_fn = list` to suppress this warning.</span>
 #&gt; <span class='warning'>* Use `values_fn = length` to identify where the duplicates arise</span>
 #&gt; <span class='warning'>* Use `values_fn = {summary_fun}` to summarise duplicates</span></div><div class='output co'>#&gt; <span class='message'>New names:</span>

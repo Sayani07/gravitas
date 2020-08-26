@@ -209,7 +209,8 @@
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://dplyr.tidyverse.org'>dplyr</a></span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/Sayani07/gravitas'>gravitas</a></span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://purrr.tidyverse.org'>purrr</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>magrittr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>magrittr</span>)
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘magrittr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:purrr’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    set_names</span></div><div class='input'><span class='kw'>sm</span> <span class='op'>&lt;-</span> <span class='kw'>smart_meter10</span> <span class='op'>%&gt;%</span>
@@ -224,7 +225,9 @@
 <span class='kw'>response</span>  <span class='op'>=</span> <span class='st'>"general_supply_kwh"</span>
 <span class='kw'>global_harmony</span> <span class='op'>&lt;-</span>  <span class='kw'>sm</span> <span class='op'>%&gt;%</span>
 <span class='fu'>global_threshold</span>(harmony_tbl = <span class='kw'>harmonies</span>,
-response = <span class='st'>"general_supply_kwh"</span>, nsamp = <span class='fl'>2</span>)</div><div class='output co'>#&gt; <span class='error'>Error in nrow(harmony_tbl): object 'harmonies' not found</span></div><div class='input'><span class='co'># }</span></div></pre>
+response = <span class='st'>"general_supply_kwh"</span>, nsamp = <span class='fl'>2</span>)
+</div><div class='output co'>#&gt; <span class='error'>Error in nrow(harmony_tbl): object 'harmonies' not found</span></div><div class='input'><span class='co'># }</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
