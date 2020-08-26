@@ -116,7 +116,8 @@ cricket <-  cricket %>%
 
 
 
-save(cricket, file = "data/cricket.rda", compress = "gzip", version = 2)
+# save(cricket, file = "data/cricket.rda", compress = "gzip", version = 2)
 
 
+usethis::use_data(cricket, overwrite = TRUE, compress = "xz")
 
