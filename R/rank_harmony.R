@@ -22,21 +22,21 @@
 #' library(gravitas)
 #' library(purrr)
 #' library(magrittr)
-# sm <- smart_meter10 %>%
-#   filter(customer_id %in% c("10017936"))
-# harmonies <- sm %>%
-#   harmony(
-#     ugran = "month",
-#     filter_in = "wknd_wday",
-#     filter_out = c("hhour", "fortnight")
-#   )
-# .data <- sm
-# response <- "general_supply_kwh"
-# harmony_tbl <- harmonies
-# smart_harmony <- .data %>% rank_harmony(
-#   harmony_tbl = harmonies,
-#   response = "general_supply_kwh", dist_ordered = TRUE
-# )
+#' # sm <- smart_meter10 %>%
+#' #   filter(customer_id %in% c("10017936"))
+#' # harmonies <- sm %>%
+#' #   harmony(
+#' #     ugran = "month",
+#' #     filter_in = "wknd_wday",
+#' #     filter_out = c("hhour", "fortnight")
+#' #   )
+#' # .data <- sm
+#' # response <- "general_supply_kwh"
+#' # harmony_tbl <- harmonies
+#' # smart_harmony <- .data %>% rank_harmony(
+#' #   harmony_tbl = harmonies,
+#' #   response = "general_supply_kwh", dist_ordered = TRUE
+#' # )
 #' harmony_tbl <- PBS %>% harmony(ugran = "year")
 #' rank_harmony(PBS, harmony_tbl = harmony_tbl, response = "Cost")
 #' @export rank_harmony
@@ -277,6 +277,3 @@ create_harmony_data <- function(.data = NULL, harmony_tbl = NULL, response = NUL
 # {
 #   stats::density(x)$y
 # }
-
-
-

@@ -28,12 +28,13 @@ harmony <- function(.data,
                     filter_out = NULL,
                     facet_h = NULL, ...) {
   set1 <- search_gran(.data,
-                      lowest_unit = lgran,
-                      highest_unit = ugran,
-                      hierarchy_tbl,
-                      filter_in,
-                      filter_out,
-                      ...)
+    lowest_unit = lgran,
+    highest_unit = ugran,
+    hierarchy_tbl,
+    filter_in,
+    filter_out,
+    ...
+  )
 
   if (is.null(facet_h)) {
     facet_h <- 31
@@ -49,7 +50,7 @@ harmony <- function(.data,
 
   # getting the levels of facets and x-axis and storing them
   data_mutate <- .data
-  for (i in seq_along(set1)){
+  for (i in seq_along(set1)) {
     data_mutate <- data_mutate %>% create_gran(set1[i], hierarchy_tbl)
   }
 

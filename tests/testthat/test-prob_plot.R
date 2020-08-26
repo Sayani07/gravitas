@@ -11,8 +11,9 @@ cricket_tsibble <- cricket %>%
   tsibble::as_tsibble(index = data_index)
 
 hierarchy_model <- tibble::tibble(
-   units = c("index", "over", "inning", "match"),
-   convert_fct = c(1, 20, 2, 1))
+  units = c("index", "over", "inning", "match"),
+  convert_fct = c(1, 20, 2, 1)
+)
 
 # common tests for temporal and non-temporal data
 

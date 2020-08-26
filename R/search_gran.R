@@ -28,7 +28,7 @@ search_gran <- function(.data,
   x <- .data[[rlang::as_string(tsibble::index(.data))]]
 
   # if class is timestamp, then use predefined lookup table, have to state hierarchy table for non-temporal data
-  if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date", "yearweek", "yearquarter"))){
+  if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date", "yearweek", "yearquarter"))) {
     hierarchy_tbl <- lookup_table
   }
   else if (is.null(hierarchy_tbl)) {
@@ -153,9 +153,8 @@ search_gran <- function(.data,
       filter_out <- filter_out[match(units, filter_out)]
       filter_out <- filter_out[!is.na(filter_out)]
 
-      if("wknd_wday" %in% gran)
-      {
-        gran <- gran[gran!="wknd_wday"]
+      if ("wknd_wday" %in% gran) {
+        gran <- gran[gran != "wknd_wday"]
       }
 
       gran_split <- stringr::str_split(gran, "_", 2) %>%
@@ -167,18 +166,16 @@ search_gran <- function(.data,
 
       gran_out <- paste(gran1 = utils::combn(gran_split, 2)[1, ], gran2 = utils::combn(gran_split, 2)[2, ], sep = "_")
 
-      if("wknd_wday" %in% filter_in)
-      {
+      if ("wknd_wday" %in% filter_in) {
         gran <- c(gran_out, "wknd_wday")
       }
-      else
-      {
+      else {
         gran <- gran_out
       }
     }
-      #gran_return <- unique(c(gran, gran_out))
-      #gran_return <- gran_return[!is.na(gran_return)]
- return(gran)
+    # gran_return <- unique(c(gran, gran_out))
+    # gran_return <- gran_return[!is.na(gran_return)]
+    return(gran)
   }
 }
 

@@ -8,29 +8,28 @@
 #' @export norm_jsd_maxpair
 norm_jsd_maxpair <- function(.data, quantile_prob =
                                seq(0.01, 0.99, by = 0.01),
-                             dist_distribution = 'normal',
-                             dist_ordered = TRUE){
-
+                             dist_distribution = "normal",
+                             dist_ordered = TRUE) {
   .data %>%
     quantile_extractx_n(quantile_prob) %>%
     JSdist_pair_matrix(dist_ordered) %>%
     JSdist_norm(dist_distribution)
 }
 
-#dist_matrix_x(harmony_datai)
+# dist_matrix_x(harmony_datai)
 
 # distance matrix between categories across x-axis
 
 # x: vector/matrix of multiple observations across categories
 # x = step1_data[[16]][-1][1,]
-quantile_extractx_n <-function(x = NULL,
-                               quantile_prob = seq(0.01, 0.99, by = 0.01)){
+quantile_extractx_n <- function(x = NULL,
+                                quantile_prob = seq(0.01, 0.99, by = 0.01)) {
   names(x) <- paste0("L", names(x))
   lencol <- ncol(x)
   lenrow <- nrow(x)
 
   (1:lencol) %>%
-    purrr::map_dfr(function(coli){
+    purrr::map_dfr(function(coli) {
       x %>%
         magrittr::extract2(coli) %>%
         unlist() %>%
@@ -41,19 +40,20 @@ quantile_extractx_n <-function(x = NULL,
 # y = quantile_extractx_n(x)
 JSdist_pair_matrix <- function(y,
                                dist_ordered = TRUE,
-                               ...){
+                               ...) {
   nrowy <- nrow(y)
 
   dist <- (1:(nrowy - 1)) %>%
-    purrr::map(function(i){
+    purrr::map(function(i) {
       ((i + 1):nrowy) %>%
-        purrr::map(function(j){
-          m1 <- y[i,]
-          m2 <- y[j,]
-          z = JS(prob = quantile_prob, m1, m2)
+        purrr::map(function(j) {
+          m1 <- y[i, ]
+          m2 <- y[j, ]
+          z <- JS(prob = quantile_prob, m1, m2)
           if (dist_ordered) {
-            if (j != i + 1)
-              z = NA
+            if (j != i + 1) {
+              z <- NA
+            }
           }
           return(z)
         })
@@ -64,8 +64,7 @@ JSdist_pair_matrix <- function(y,
 # z = JSdist_pair_matrix(y)
 
 JSdist_norm <- function(z,
-                        dist_distribution = 'normal', dist_ordered = TRUE, ...)
-{
+                        dist_distribution = "normal", dist_ordered = TRUE, ...) {
   dist <- unlist(z)
   max_dist <- max(dist, na.rm = TRUE)
 
@@ -82,4 +81,3 @@ JSdist_norm <- function(z,
   }
   return(value)
 }
-

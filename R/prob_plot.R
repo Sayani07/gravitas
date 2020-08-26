@@ -24,15 +24,15 @@
 #' library(dplyr)
 #'
 #' smart_meter10 %>%
-#' dplyr::filter(customer_id %in% c("10017936")) %>%
-#' prob_plot(
-#'   gran1 = "day_week", gran2 = "hour_day",
-#'   response = "general_supply_kwh", plot_type = "quantile",
-#'   quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
-#'   symmetric = TRUE,
-#'    outlier.colour = "red",
-#'   outlier.shape = 2, palette = "Dark2"
-#' ) + scale_y_continuous(breaks = c(0.01, 0.1, 1.00))
+#'   dplyr::filter(customer_id %in% c("10017936")) %>%
+#'   prob_plot(
+#'     gran1 = "day_week", gran2 = "hour_day",
+#'     response = "general_supply_kwh", plot_type = "quantile",
+#'     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9),
+#'     symmetric = TRUE,
+#'     outlier.colour = "red",
+#'     outlier.shape = 2, palette = "Dark2"
+#'   ) + scale_y_continuous(breaks = c(0.01, 0.1, 1.00))
 #'
 #'
 #' cricket_tsibble <- cricket %>%
@@ -85,11 +85,12 @@ prob_plot <- function(.data,
   }
 
   if (is.null(plot_type)) {
-    gran_advice <- gran_advice(.data,
-                               gran1,
-                               gran2,
-                               hierarchy_tbl,
-                               ...
+    gran_advice <- gran_advice(
+      .data,
+      gran1,
+      gran2,
+      hierarchy_tbl,
+      ...
     )
     plot_type <- gran_advice$plot_choices[1]
   }
@@ -98,124 +99,136 @@ prob_plot <- function(.data,
 
   data_mutate <- .data %>%
     create_gran(gran1,
-                hierarchy_tbl = hierarchy_tbl
+      hierarchy_tbl = hierarchy_tbl
     ) %>%
     create_gran(gran2,
-                hierarchy_tbl = hierarchy_tbl
+      hierarchy_tbl = hierarchy_tbl
     )
   # conditional ggplot2 (if number iof observation few then show scatter plot)
 
-  gran_pair_obs =  data_mutate %>% gran_tbl(gran1, gran2, hierarchy_tbl)
+  gran_pair_obs <- data_mutate %>% gran_tbl(gran1, gran2, hierarchy_tbl)
 
-  if(is.null(threshold_nobs))
-  {
-  if(plot_type == "boxplot"){
-    threshold_nobs <- 10
-  }
-  else if (plot_type == "quantile"){
-    threshold_nobs <- max(10, length(quantile_prob))
-  }
-  else {
-    threshold_nobs <- 30
-  }
+  if (is.null(threshold_nobs)) {
+    if (plot_type == "boxplot") {
+      threshold_nobs <- 10
+    }
+    else if (plot_type == "quantile") {
+      threshold_nobs <- max(10, length(quantile_prob))
+    }
+    else {
+      threshold_nobs <- 30
+    }
   }
 
 
-  data_sub1 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% dplyr::left_join(gran_pair_obs) %>%  dplyr::filter(nobs<=threshold_nobs)
+  data_sub1 <- data_mutate %>%
+    tibble::as_tibble(.name_repair = "minimal") %>%
+    dplyr::left_join(gran_pair_obs) %>%
+    dplyr::filter(nobs <= threshold_nobs)
 
-  data_sub2 <-  data_mutate %>% tibble::as_tibble(.name_repair = "minimal") %>% dplyr::left_join(gran_pair_obs) %>%  dplyr::filter(nobs>threshold_nobs)
+  data_sub2 <- data_mutate %>%
+    tibble::as_tibble(.name_repair = "minimal") %>%
+    dplyr::left_join(gran_pair_obs) %>%
+    dplyr::filter(nobs > threshold_nobs)
 
   x_var <- dplyr::if_else(plot_type == "ridge", response, gran2)
   y_var <- dplyr::if_else(plot_type == "ridge", gran2, response)
 
-   # <- data_mutate %>%
-   #  tibble::as_tibble(.name_repair = "minimal") %>%
-    p <- data_mutate %>%
-      ggplot2::ggplot(ggplot2::aes(x = .data[[x_var]],
-                                      y = .data[[y_var]]))
+  # <- data_mutate %>%
+  #  tibble::as_tibble(.name_repair = "minimal") %>%
+  p <- data_mutate %>%
+    ggplot2::ggplot(ggplot2::aes(
+      x = .data[[x_var]],
+      y = .data[[y_var]]
+    ))
 
-  if(nrow(data_sub1)==0 & nrow(data_sub2)==0)
-  {
+  if (nrow(data_sub1) == 0 & nrow(data_sub2) == 0) {
     plot <- p
   }
 
-if(nrow(data_sub1)!=0)
-  {
-  p <- p +
-    ggplot2::geom_point(data = data_sub1,
-               ggplot2::aes(x = .data[[x_var]],
-                                y = .data[[y_var]]),alpha = 0.5,colour = "red",...)
+  if (nrow(data_sub1) != 0) {
+    p <- p +
+      ggplot2::geom_point(
+        data = data_sub1,
+        ggplot2::aes(
+          x = .data[[x_var]],
+          y = .data[[y_var]]
+        ), alpha = 0.5, colour = "red", ...
+      )
   }
 
-    if(nrow(data_sub2)!=0)
-    {
-      if (plot_type == "boxplot") {
-        p <- p +
-          ggplot2::geom_boxplot(data = data_sub2,...)
-      }
+  if (nrow(data_sub2) != 0) {
+    if (plot_type == "boxplot") {
+      p <- p +
+        ggplot2::geom_boxplot(data = data_sub2, ...)
+    }
     else if (plot_type == "violin") {
       p <- p + ggplot2::geom_violin(data = data_sub2, ...)
     }
 
-  else if (plot_type == "lv") {
-    p <-
-      p + lvplot::geom_lv(data = data_sub2, ggplot2::aes(fill = ..LV..),
-                  k = 5,
-                  ...
-      )
-  }
-
-  else if (plot_type == "ridge") {
-    p <- p +
-      ggridges::geom_density_ridges(data = data_sub2,...)
-  }
-
-  else if (plot_type == "quantile") {
-
-
-
-    p <- quantile_plot(.data = data_sub2,
-                          gran1,
-                          gran2,
-                          hierarchy_tbl,
-                          response,
-                          symmetric,
-                          quantile_prob,
-                          alpha,
-                          ...
-    )
-  }
+    else if (plot_type == "lv") {
+      p <-
+        p + lvplot::geom_lv(
+          data = data_sub2, ggplot2::aes(fill = ..LV..),
+          k = 5,
+          ...
+        )
     }
 
-    # +
-    # ggplot2::ggtitle(paste0(plot_type,
-    #                         " plot across ",
-    #                         gran2, "on x-axis",
-    #                         " given ",
-    #                         gran1, "on facets"
-    #)) +
-    # ggplot2::xlab(gran2) + ggplot2::ylab(response) +
-    # ggplot2::scale_fill_brewer()
+    else if (plot_type == "ridge") {
+      p <- p +
+        ggridges::geom_density_ridges(data = data_sub2, ...)
+    }
+
+    else if (plot_type == "quantile") {
+      p <- quantile_plot(
+        .data = data_sub2,
+        gran1,
+        gran2,
+        hierarchy_tbl,
+        response,
+        symmetric,
+        quantile_prob,
+        alpha,
+        ...
+      )
+    }
+  }
+
+  # +
+  # ggplot2::ggtitle(paste0(plot_type,
+  #                         " plot across ",
+  #                         gran2, "on x-axis",
+  #                         " given ",
+  #                         gran1, "on facets"
+  # )) +
+  # ggplot2::xlab(gran2) + ggplot2::ylab(response) +
+  # ggplot2::scale_fill_brewer()
 
 
-plot_return <- p +
+  plot_return <- p +
     ggplot2::facet_wrap(dplyr::vars(!!rlang::sym(gran1))) +
-    ggplot2::theme(legend.position = "bottom",
-                   strip.text = ggplot2::element_text(size = 7,margin = ggplot2::margin())) +
+    ggplot2::theme(
+      legend.position = "bottom",
+      strip.text = ggplot2::element_text(size = 7, margin = ggplot2::margin())
+    ) +
     ggplot2::ylab(y_var) +
     ggplot2::xlab(x_var) +
-    ggplot2::ggtitle(paste0(plot_type,
-                            " plot across ",
-                            gran2,
-                            " given ",
-                            gran1)) +
+    ggplot2::ggtitle(paste0(
+      plot_type,
+      " plot across ",
+      gran2,
+      " given ",
+      gran1
+    )) +
     ggplot2::scale_fill_brewer(palette = "Dark2")
 
   gran_warn(.data,
-            gran1,
-            gran2,
-            hierarchy_tbl = hierarchy_tbl,
-            response = response,...)
+    gran1,
+    gran2,
+    hierarchy_tbl = hierarchy_tbl,
+    response = response, ...
+  )
 
   return(plot_return)
 }
@@ -312,8 +325,7 @@ quantile_plot <- function(.data,
         x = data_mutate_obj[[gran2]],
         group = data_mutate_obj[[gran1]],
         colour = color_set
-      ),
-      ,
+      ), ,
       fill = color_set,
       alpha = alpha
       )
@@ -366,7 +378,7 @@ quantile_plot <- function(.data,
         color = quantiles
       )) +
       ggplot2::facet_wrap(~ data_pcntl[[gran1]]) +
-      #ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_pcntl[[gran2]])))) +
+      # ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_pcntl[[gran2]])))) +
       ggplot2::scale_fill_brewer()
   }
   return(plot)

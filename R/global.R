@@ -1,7 +1,8 @@
 # to appease R CMD check
 # most of these are in R/app.R
 utils::globalVariables(
-  c("L1",
+  c(
+    "L1",
     "L2",
     "n",
     ":=",
@@ -38,4 +39,5 @@ utils::globalVariables(
     "max_pd",
     "threshold",
     "quantile_prob"
-))
+  )
+)

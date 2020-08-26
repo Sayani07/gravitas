@@ -8,7 +8,7 @@ JS <- function(prob, q, p) {
   ppmf <- pmf(x, prob, p)
   m <- 0.5 * (ppmf + qpmf)
   JS <- suppressWarnings(0.5 * (sum(stats::na.omit(ppmf * log(ppmf / m, base = 2))) +
-                                  sum(stats::na.omit(qpmf * log(qpmf / m, base = 2)))))
+    sum(stats::na.omit(qpmf * log(qpmf / m, base = 2)))))
   return(JS)
 }
 
@@ -21,5 +21,5 @@ pmf <- function(x, p, q) {
 }
 
 quantile_extractx <- function(x = NULL, quantile_prob = seq(0.01, 0.99, by = 0.01)) {
-  stats::quantile(x, prob = quantile_prob , type = 8, na.rm = TRUE)
+  stats::quantile(x, prob = quantile_prob, type = 8, na.rm = TRUE)
 }

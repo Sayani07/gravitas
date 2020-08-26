@@ -14,18 +14,25 @@ cricket_tsibble <- cricket %>%
 
 hierarchy_model <- tibble::tibble(
   units = c("index", "over", "inning", "match"),
-  convert_fct = c(1, 20, 2, 1))
+  convert_fct = c(1, 20, 2, 1)
+)
 
-harmony_tbl <- tibble::tibble(facet_variable = c("hour_day","wknd_wday",
-               "wknd_wday", "hhour_hour",
-               "wknd_wday","hhour_hour",
-"hour_day"),
-x_variable = c("hhour_hour","hhour_hour",
-                   "hhour_day", "hour_day",
-                   "hour_day","wknd_wday",
-                   "wknd_wday"),
-facet_levels = c(24, 2, 2, 2, 2, 2, 24),
-x_levels = c(2, 2, 48, 24, 24, 2, 2))
+harmony_tbl <- tibble::tibble(
+  facet_variable = c(
+    "hour_day", "wknd_wday",
+    "wknd_wday", "hhour_hour",
+    "wknd_wday", "hhour_hour",
+    "hour_day"
+  ),
+  x_variable = c(
+    "hhour_hour", "hhour_hour",
+    "hhour_day", "hour_day",
+    "hour_day", "wknd_wday",
+    "wknd_wday"
+  ),
+  facet_levels = c(24, 2, 2, 2, 2, 2, 24),
+  x_levels = c(2, 2, 48, 24, 24, 2, 2)
+)
 
 harmony_tbl$facet_levels <- as.integer(harmony_tbl$facet_levels)
 harmony_tbl$x_levels <- as.integer(harmony_tbl$x_levels)
@@ -43,10 +50,12 @@ test_that("tibble output", {
 })
 
 
-test_that("norun check runs in create_gran",{
-expect_equal(smart_meter10 %>%
-   harmony(ugran = "day",
-           filter_in = "wknd_wday"),harmony_tbl)
+test_that("norun check runs in create_gran", {
+  expect_equal(smart_meter10 %>%
+    harmony(
+      ugran = "day",
+      filter_in = "wknd_wday"
+    ), harmony_tbl)
 })
 
 test_that("harmony error with null input", {

@@ -1,6 +1,6 @@
 #' Check if two temporal granularities are harmonies
 #'
-#'Interaction of pair of granularities, categorised as harmony and clash
+#' Interaction of pair of granularities, categorised as harmony and clash
 #' @param .data A tsibble object.
 #' @param gran1 One of the temporal granularities to check for harmonies.
 #' @param gran2 The second temporal granularity in the pair.
@@ -42,7 +42,7 @@ is_harmony <- function(.data,
     x_h <- 48
   }
 
-  if (cmbmiss == "TRUE" | nrow(facet_nlevel) > facet_h | nrow(x_nlevel) > x_h ) {
+  if (cmbmiss == "TRUE" | nrow(facet_nlevel) > facet_h | nrow(x_nlevel) > x_h) {
     return_output <- "FALSE"
   } else {
     return_output <- "TRUE"

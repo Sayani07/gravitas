@@ -42,9 +42,15 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
   }
 
   if (g_order(lgran, ugran) == 1) {
-    stop("Only one granularity ", lgran, "_", {
-      ugran
-    }, " can be formed. Function requires checking compatibility for bivariate granularities")
+    stop(
+      "Only one granularity ",
+      lgran,
+      "_",
+      {
+        ugran
+      },
+      " can be formed. Function requires checking compatibility for bivariate granularities"
+    )
   }
 
   ind <- .data[[rlang::as_string(tsibble::index(.data))]]

@@ -18,14 +18,15 @@ rank_MMPD <- function(.data,
                       hierarchy_tbl = NULL,
                       create_gran_data = TRUE,
                       quantile_prob = seq(0.01, 0.99, by = 0.01),
-                      dist_distribution = 'normal',
-                      dist_ordered = TRUE,...){
-
-  MMPD_data <- MMPD(.data,
-                    harmony_tbl,
-                    response,
-                    hierarchy_tbl,
-                    create_gran_data,...)
+                      dist_distribution = "normal",
+                      dist_ordered = TRUE, ...) {
+  MMPD_data <- MMPD(
+    .data,
+    harmony_tbl,
+    response,
+    hierarchy_tbl,
+    create_gran_data, ...
+  )
 
   MMPD_data_unlist <- unlist(MMPD_data)
 
@@ -41,12 +42,13 @@ MMPD <- function(.data,
                  harmony_tbl = NULL,
                  response = NULL,
                  hierarchy_tbl = NULL,
-                 create_gran_data = TRUE,...){
-
-  harmony_data <- create_harmony_data(.data,
-                                      harmony_tbl,
-                                      response,
-                                      hierarchy_tbl,create_gran_data,...)
+                 create_gran_data = TRUE, ...) {
+  harmony_data <- create_harmony_data(
+    .data,
+    harmony_tbl,
+    response,
+    hierarchy_tbl, create_gran_data, ...
+  )
 
   (1:length(harmony_data)) %>%
     purrr::map(function(rowi) {
@@ -66,4 +68,3 @@ MMPD <- function(.data,
       MMPD1(harmony_datai_wide)
     })
 }
-

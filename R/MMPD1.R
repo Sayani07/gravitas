@@ -9,11 +9,12 @@
 #' @param ... Other arguments passed on to individual methods.
 #' @export MMPD1
 
-MMPD1 <- function(harmony_datai, quantile_prob = seq(0.01, 0.99, by = 0.01), dist_distribution = 'normal', dist_ordered = TRUE, base = exp(1),...){
+MMPD1 <- function(harmony_datai, quantile_prob = seq(0.01, 0.99, by = 0.01), dist_distribution = "normal", dist_ordered = TRUE, base = exp(1), ...) {
   harmony_datai %>%
-    norm_jsd_maxharmony(quantile_prob,
-                         dist_distribution,
-                         dist_ordered) %>%
+    norm_jsd_maxharmony(
+      quantile_prob,
+      dist_distribution,
+      dist_ordered
+    ) %>%
     median_by_log()
 }
-

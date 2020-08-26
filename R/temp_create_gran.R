@@ -27,14 +27,15 @@ temp_create_gran <- function(.data,
   if (gran1 == "wknd_wday") {
     data_mutate <- .data %>%
       dplyr::mutate(L1 = build_gran(x,
-                                    lgran = "day",
-                                    ugran = "week", ...
+        lgran = "day",
+        ugran = "week", ...
       )) %>%
       dplyr::mutate(
         wknd_wday =
-          dplyr::if_else(L1 %in% c(6, 7),
-                         "Weekend",
-                         "Weekday"
+          dplyr::if_else(
+            L1 %in% c(6, 7),
+            "Weekend",
+            "Weekday"
           )
       )
 
@@ -86,18 +87,17 @@ temp_create_gran <- function(.data,
       if (lgran == "day" & ugran == "week") {
         data_mutate <- .data %>%
           dplyr::mutate(L1 = build_gran(x,
-                                        lgran,
-                                        ugran,
-                                        week_start = getOption("lubridate.week.start", 1),
-                                        label = TRUE
+            lgran,
+            ugran,
+            week_start = getOption("lubridate.week.start", 1),
+            label = TRUE
           ))
         names <- levels(data_mutate$L1)
       }
       else if (lgran == "month" & ugran == "year") {
-
         data_mutate <- .data %>%
           dplyr::mutate(L1 = lubridate::month(x,
-                                              label = TRUE
+            label = TRUE
           ))
         names <- levels(data_mutate$L1)
       }
@@ -178,47 +178,51 @@ build_gran <- function(x,
       # multiple-order-up
       value <- build_gran(x, lgran, lgran_ordr1) +
         gran_convert(lgran, lgran_ordr1) *
-        (build_gran(x, lgran_ordr1, ugran) - 1)
+          (build_gran(x, lgran_ordr1, ugran) - 1)
     }
   }
   return(value)
 }
 
-#TODO the lookup table - this needs to be changed if other granularities are included
+# TODO the lookup table - this needs to be changed if other granularities are included
 lookup_table <- tibble::tibble(
-  units = c("second", "minute", "qhour",
-            "hhour", "hour", "day", "week",
-            "fortnight", "month", "quarter",
-            "semester", "year"
+  units = c(
+    "second", "minute", "qhour",
+    "hhour", "hour", "day", "week",
+    "fortnight", "month", "quarter",
+    "semester", "year"
   ),
-  convert_fct = c(60, 15, 2,
-                  2, 24, 7, 2,
-                  2, 3, 2,
-                  2, 1
+  convert_fct = c(
+    60, 15, 2,
+    2, 24, 7, 2,
+    2, 3, 2,
+    2, 1
   ),
-  convertfun = c("lubridate::second",
-                 "minute_qhour",
-                 "qhour_hhour",
-                 "hhour_hour",
-                 "lubridate::hour",
-                 "lubridate::wday",
-                 "week_fortnight",
-                 "fortnight_month",
-                 "month_quarter",
-                 "quarter_semester",
-                 "semester_year", 1
+  convertfun = c(
+    "lubridate::second",
+    "minute_qhour",
+    "qhour_hhour",
+    "hhour_hour",
+    "lubridate::hour",
+    "lubridate::wday",
+    "week_fortnight",
+    "fortnight_month",
+    "month_quarter",
+    "quarter_semester",
+    "semester_year", 1
   ),
-  convertday = c("second_day",
-                 "minute_day",
-                 "qhour_day",
-                 "hhour_day",
-                 "lubridate::hour", 1,
-                 "lubridate::wday",
-                 "day_fortnight",
-                 "lubridate::mday",
-                 "lubridate::qday",
-                 "day_semester",
-                 "lubridate::yday"
+  convertday = c(
+    "second_day",
+    "minute_day",
+    "qhour_day",
+    "hhour_day",
+    "lubridate::hour", 1,
+    "lubridate::wday",
+    "day_fortnight",
+    "lubridate::mday",
+    "lubridate::qday",
+    "day_semester",
+    "lubridate::yday"
   ),
 )
 

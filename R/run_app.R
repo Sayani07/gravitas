@@ -20,13 +20,13 @@ run_app <- function() {
   #   stop("package \"shinyalert\" is required to run this app")
   # }
   appDir <- system.file("shiny-examples",
-                        "gravitas_app",
-                        package = "gravitas"
+    "gravitas_app",
+    package = "gravitas"
   )
   if (appDir == "") {
     stop("Could not find example directory.
          Try re-installing `gravitas`.",
-         call. = FALSE
+      call. = FALSE
     )
   }
 

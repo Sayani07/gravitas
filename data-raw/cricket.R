@@ -2,35 +2,40 @@ library(readr)
 library(tsibble)
 library(dplyr)
 
-#cricket <- read_csv("data-raw/deliveries.csv")
+# cricket <- read_csv("data-raw/deliveries.csv")
 
 
-deliveries <-  read_csv("data-raw/deliveries_all.csv")
+deliveries <- read_csv("data-raw/deliveries_all.csv")
 matches <- read_csv("data-raw/matches_all.csv")
 
 cricket_season <- deliveries %>%
-  left_join(matches, by = c("match_id" ="id")) %>%
-  mutate(winner_team = if_else(winner == batting_team, "batting_team","bowling_team"))
+  left_join(matches, by = c("match_id" = "id")) %>%
+  mutate(winner_team = if_else(winner == batting_team, "batting_team", "bowling_team"))
 
 
-cricket_winner <- cricket_season %>% select(match_id, winner_team) %>% unique()
+cricket_winner <- cricket_season %>%
+  select(match_id, winner_team) %>%
+  unique()
 # making it uniform
 # each over needs to have 6 balls
 
 cricket_fltr_ball <- cricket_season %>%
   filter(wide_runs + noball_runs == 0) %>% # filtering out scores that are gained by no balls or wide
   # still have to filter out overs for which number of balls per over less than 6
-  group_by(batting_team,
-           match_id,
-           inning,
-           over) %>%
+  group_by(
+    batting_team,
+    match_id,
+    inning,
+    over
+  ) %>%
   summarise(n_over = length(ball)) %>%
   filter(n_over == 6) %>%
   mutate(key = paste(batting_team,
-                     match_id,
-                     inning,
-                     over,
-                     sep = "_"))
+    match_id,
+    inning,
+    over,
+    sep = "_"
+  ))
 
 
 cricket_over_crctd <- cricket_season %>%
@@ -91,28 +96,37 @@ cricketdata <- cricket_over_inning_crctd %>%
 #   as_tsibble(index = data_index)
 
 
-cricket <-  cricketdata %>%
-  mutate(wicket = if_else(is.na(dismissal_kind),0,1),
-         dot_balls = if_else(total_runs== 0,1, 0)) %>%
-  group_by(season, match_id, batting_team,
-           bowling_team,  inning, over) %>%
-  summarise(wicket = sum(wicket),
-            dot_balls = sum(dot_balls),
-            runs_per_over = sum(total_runs),
-            run_rate = round(sum(total_runs)/length(total_runs))) %>% dplyr::ungroup()
+cricket <- cricketdata %>%
+  mutate(
+    wicket = if_else(is.na(dismissal_kind), 0, 1),
+    dot_balls = if_else(total_runs == 0, 1, 0)
+  ) %>%
+  group_by(
+    season, match_id, batting_team,
+    bowling_team, inning, over
+  ) %>%
+  summarise(
+    wicket = sum(wicket),
+    dot_balls = sum(dot_balls),
+    runs_per_over = sum(total_runs),
+    run_rate = round(sum(total_runs) / length(total_runs))
+  ) %>%
+  dplyr::ungroup()
 
 
-cricket <-  cricket %>%
-  left_join(cricket_winner, by= c("match_id"))%>%
-  select(season, match_id, batting_team,
-         bowling_team,
-         inning,
-         over,
-         wicket,
-         dot_balls,
-         runs_per_over,
-         run_rate,
-         winner_team)
+cricket <- cricket %>%
+  left_join(cricket_winner, by = c("match_id")) %>%
+  select(
+    season, match_id, batting_team,
+    bowling_team,
+    inning,
+    over,
+    wicket,
+    dot_balls,
+    runs_per_over,
+    run_rate,
+    winner_team
+  )
 
 
 
@@ -120,4 +134,3 @@ cricket <-  cricket %>%
 
 
 usethis::use_data(cricket, overwrite = TRUE, compress = "xz")
-

@@ -7,13 +7,13 @@
 #' @return normalised max JS distance
 #' @export norm_jsd_maxharmony
 
-norm_jsd_maxharmony <- function(harmony_datai, quantile_prob = seq(0.01, 0.99, by = 0.01), dist_distribution = 'normal', dist_ordered = TRUE){
+norm_jsd_maxharmony <- function(harmony_datai, quantile_prob = seq(0.01, 0.99, by = 0.01), dist_distribution = "normal", dist_ordered = TRUE) {
 
   # iterate for all facet_levels
   iter <- nrow(harmony_datai)
 
   (1:iter) %>%
-    purrr::map(function(i){
+    purrr::map(function(i) {
       harmony_datai %>%
         dplyr::slice(i) %>%
         dplyr::select(-1) %>%

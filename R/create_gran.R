@@ -23,25 +23,25 @@
 #' @return A tsibble with an additional column of granularity.
 #
 #' @examples
-#'library(dplyr)
-#'library(ggplot2)
-#'library(lvplot)
+#' library(dplyr)
+#' library(ggplot2)
+#' library(lvplot)
 #' # Search for granularities
 #' smart_meter10 %>%
 #'   search_gran(highest_unit = "week")
 #'
 #' # Screen harmonies from the search list
-#'\dontrun{
+#' \dontrun{
 #' smart_meter10 %>%
 #'   harmony(
 #'     ugran = "day",
 #'     filter_in = "wknd_wday"
 #'   )
-#'}
+#' }
 #' # visualize probability distribution of
 #' # the harmony pair (wknd_wday, hour_day)
 #' smart_meter10 %>%
-#' dplyr::filter(customer_id == "10017936") %>%
+#'   dplyr::filter(customer_id == "10017936") %>%
 #'   prob_plot(
 #'     gran1 = "wknd_wday",
 #'     gran2 = "hour_day",
@@ -51,12 +51,12 @@
 #'   ) +
 #'   scale_y_sqrt()
 #'
-#'#' # Compute granularities for non-temporal data
+#' #' # Compute granularities for non-temporal data
 #'
-#'library(tsibble)
+#' library(tsibble)
 #' cricket_tsibble <- cricket %>%
-#' mutate(data_index = row_number()) %>%
-#' as_tsibble(index = data_index)
+#'   mutate(data_index = row_number()) %>%
+#'   as_tsibble(index = data_index)
 #'
 #' hierarchy_model <- tibble::tibble(
 #'   units = c("index", "over", "inning", "match"),
@@ -68,13 +68,16 @@
 #'     hierarchy_model
 #'   )
 #'
-#'   cricket_tsibble %>%
-#'   filter(batting_team %in% c("Mumbai Indians",
-#'                              "Chennai Super Kings"))%>%
+#' cricket_tsibble %>%
+#'   filter(batting_team %in% c(
+#'     "Mumbai Indians",
+#'     "Chennai Super Kings"
+#'   )) %>%
 #'   prob_plot("inning", "over",
-#'   hierarchy_model,
-#'   response = "runs_per_over",
-#'   plot_type = "lv")
+#'     hierarchy_model,
+#'     response = "runs_per_over",
+#'     plot_type = "lv"
+#'   )
 #'
 #' # Validate if given column in the data set
 #' # equals computed granularity
@@ -122,9 +125,9 @@ create_gran <- function(.data, gran1 = NULL, hierarchy_tbl = NULL,
 
 
   if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date", "yearweek", "yearquarter"))) {
-    temp_create_gran(.data, gran1, label,  ...)
+    temp_create_gran(.data, gran1, label, ...)
   } else {
-    if (is.null(hierarchy_tbl) ) {
+    if (is.null(hierarchy_tbl)) {
       stop("Hierarchy table must be provided
            when class of index of the tsibble
            is not date-time")
@@ -190,21 +193,21 @@ dynamic_build_gran <- function(x, lgran = NULL, ugran = NULL, hierarchy_tbl = NU
     else {
       lgran_ordr1 <- dynamic_g_order(lgran, hierarchy_tbl = hierarchy_tbl, order = 1)
       value <- dynamic_build_gran(x,
-                                  lgran,
-                                  ugran = lgran_ordr1,
-                                  hierarchy_tbl
+        lgran,
+        ugran = lgran_ordr1,
+        hierarchy_tbl
       ) +
         dynamic_gran_convert(
           lgran,
           lgran_ordr1,
           hierarchy_tbl
         ) *
-        (dynamic_build_gran(
-          x,
-          lgran_ordr1,
-          ugran,
-          hierarchy_tbl
-        ) - 1)
+          (dynamic_build_gran(
+            x,
+            lgran_ordr1,
+            ugran,
+            hierarchy_tbl
+          ) - 1)
     }
   }
   return(value)
@@ -251,20 +254,20 @@ validate_gran <- function(.data,
   ugran <- gran_split[2]
 
   all_gran <- search_gran(.data,
-                          hierarchy_tbl = hierarchy_tbl
+    hierarchy_tbl = hierarchy_tbl
   )
 
   if (!(gran %in% all_gran)) # which granularity needs to be checked
-  {
-    stop("granularity to be validated needs
+    {
+      stop("granularity to be validated needs
          to be one that can be formed from the hierarchy table.")
-  }
+    }
   if (!(validate_col %in% names(.data))) # column of data which has the
-    #granularity
-  {
-    stop("validate_col should be one of the
+  # granularity
+    {
+      stop("validate_col should be one of the
          columns of the data")
-  }
+    }
 
   gran_data <- dynamic_build_gran(x, lgran, ugran, hierarchy_tbl)
 
@@ -288,15 +291,15 @@ create_single_gran <- function(x,
   if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date", "yearweek", "yearquarter"))) {
     ugran <- g_order(lgran, order = 1)
     value <- build_gran(x,
-                        lgran = lgran,
-                        ugran = ugran,
-                        ...
+      lgran = lgran,
+      ugran = ugran,
+      ...
     )
   }
   else {
     ugran <- dynamic_g_order(lgran,
-                             hierarchy_tbl = hierarchy_tbl,
-                             order = 1
+      hierarchy_tbl = hierarchy_tbl,
+      order = 1
     )
     index_lower_gran <- match(lgran, units)
     if (all(is.na(index_lower_gran))) {

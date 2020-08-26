@@ -41,9 +41,9 @@
 #' @examples
 #' data(cricket)
 #'
-#'library(tsibble)
-#'library(dplyr)
-#'library(ggplot2)
+#' library(tsibble)
+#' library(dplyr)
+#' library(ggplot2)
 #'
 #' # convert data set to a tsibble ----
 #' cricket_tsibble <- cricket %>%
@@ -54,16 +54,21 @@
 #'   units = c("index", "over", "inning", "match"),
 #'   convert_fct = c(1, 20, 2, 1)
 #' )
-#'# Compute granularities ----
+#' # Compute granularities ----
 #' cricket_tsibble %>%
-#'   create_gran("over_inning",
-#'                hierarchy_model)
+#'   create_gran(
+#'     "over_inning",
+#'     hierarchy_model
+#'   )
 #' # Visualise distribution of runs across granularities ----
 #' cricket_tsibble %>%
-#'   filter(batting_team %in% c("Mumbai Indians",
-#'                              "Chennai Super Kings"))%>%
+#'   filter(batting_team %in% c(
+#'     "Mumbai Indians",
+#'     "Chennai Super Kings"
+#'   )) %>%
 #'   prob_plot("inning", "over",
-#'   hierarchy_model,
-#'   response = "runs_per_over",
-#'   plot_type = "lv")
+#'     hierarchy_model,
+#'     response = "runs_per_over",
+#'     plot_type = "lv"
+#'   )
 "cricket"

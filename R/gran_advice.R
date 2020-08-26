@@ -11,38 +11,47 @@
 #' library(ggplot2)
 #'
 #' smart_meter10 %>%
-#' filter(customer_id == "10017936") %>%
-#'   gran_advice(gran1 = "wknd_wday",
-#'             gran2 = "hour_day")
-#'
+#'   filter(customer_id == "10017936") %>%
+#'   gran_advice(
+#'     gran1 = "wknd_wday",
+#'     gran2 = "hour_day"
+#'   )
 #' @export
-print.gran_advice <- function(x, ...){
-
+print.gran_advice <- function(x, ...) {
   z <- x
 
 
-  if(z$harmony=="TRUE") cat("The chosen granularities are harmonies","\n","\n")
-  else
+  if (z$harmony == "TRUE") {
+    cat("The chosen granularities are harmonies", "\n", "\n")
+  } else {
     cat("The chosen granularities are clashes.
-        Consider looking at harmony() to obtain possible harmonies","\n","\n")
+        Consider looking at harmony() to obtain possible harmonies", "\n", "\n")
+  }
 
-  cat("Recommended plots are:", z$plot_choices, "\n","\n")
+  cat("Recommended plots are:", z$plot_choices, "\n", "\n")
 
-  if(z$homogenous$inter_facet=="TRUE")
-    cat("Number of observations are homogenous across facets","\n","\n")
-  else
-    cat("Number of observations are significantly different across facets",
-        "\n","\n")
+  if (z$homogenous$inter_facet == "TRUE") {
+    cat("Number of observations are homogenous across facets", "\n", "\n")
+  } else {
+    cat(
+      "Number of observations are significantly different across facets",
+      "\n", "\n"
+    )
+  }
 
-  if(z$homogenous$intra_facet=="TRUE")
-    cat("Number of observations are homogenous within facets",
-        "\n","\n")
-  else
-    cat("Number of observations are significantly different within facets",
-        "\n","\n")
-  cat("Cross tabulation of granularities :", "\n","\n")
+  if (z$homogenous$intra_facet == "TRUE") {
+    cat(
+      "Number of observations are homogenous within facets",
+      "\n", "\n"
+    )
+  } else {
+    cat(
+      "Number of observations are significantly different within facets",
+      "\n", "\n"
+    )
+  }
+  cat("Cross tabulation of granularities :", "\n", "\n")
   print(z$gran_obs)
-
 }
 
 #' Advice summaries for granularities
@@ -60,13 +69,15 @@ print.gran_advice <- function(x, ...){
 #' library(ggplot2)
 #'
 #' smart_meter10 %>%
-#' filter(customer_id == "10017936") %>%
-#'   gran_advice(gran1 = "wknd_wday",
-#'             gran2 = "hour_day")
+#'   filter(customer_id == "10017936") %>%
+#'   gran_advice(
+#'     gran1 = "wknd_wday",
+#'     gran2 = "hour_day"
+#'   )
 #'
 #' # choosing quantile plots from plot choices
 #' smart_meter10 %>%
-#' filter(customer_id == "10017936") %>%
+#'   filter(customer_id == "10017936") %>%
 #'   prob_plot(
 #'     gran1 = "wknd_wday",
 #'     gran2 = "hour_day",
@@ -75,7 +86,6 @@ print.gran_advice <- function(x, ...){
 #'     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
 #'   ) +
 #'   scale_y_sqrt()
-#'
 #' @export gran_advice
 
 gran_advice <- function(.data,
@@ -94,42 +104,47 @@ gran_advice <- function(.data,
   }
 
   # checking if input data is harmony
-  harmony <- is_harmony(.data,
-                        gran1,
-                        gran2,
-                        hierarchy_tbl
+  harmony <- is_harmony(
+    .data,
+    gran1,
+    gran2,
+    hierarchy_tbl
   )
 
-  homogenous <- is_homogenous(.data,
-                              gran1,
-                              gran2,
-                              hierarchy_tbl
+  homogenous <- is_homogenous(
+    .data,
+    gran1,
+    gran2,
+    hierarchy_tbl
   )
 
   plot_choices <- plot_choices(.data,
-                               gran1,
-                               gran2,
-                               hierarchy_tbl,
-                               facet_h = 31,
-                               facet_m = 14,
-                               facet_l = 7,
-                               x_h = 31,
-                               x_m = 14,
-                               x_l = 7,
-                               ...
+    gran1,
+    gran2,
+    hierarchy_tbl,
+    facet_h = 31,
+    facet_m = 14,
+    facet_l = 7,
+    x_h = 31,
+    x_m = 14,
+    x_l = 7,
+    ...
   )
 
-  gran_obs <- gran_obs(.data,
-                       gran1,
-                       gran2,
-                       hierarchy_tbl,
-                       ...
+  gran_obs <- gran_obs(
+    .data,
+    gran1,
+    gran2,
+    hierarchy_tbl,
+    ...
   )
 
-  z <- list(harmony = harmony,
-            homogenous = homogenous,
-            plot_choices = plot_choices,
-            gran_obs = gran_obs)
+  z <- list(
+    harmony = harmony,
+    homogenous = homogenous,
+    plot_choices = plot_choices,
+    gran_obs = gran_obs
+  )
 
   class(z) <- "gran_advice"
   z
@@ -144,16 +159,18 @@ gran_warn <- function(.data,
                       gran2,
                       hierarchy_tbl = NULL,
                       facet_h = NULL, ...) {
-  gran_advice <- gran_advice(.data,
-                             gran1,
-                             gran2,
-                             hierarchy_tbl
+  gran_advice <- gran_advice(
+    .data,
+    gran1,
+    gran2,
+    hierarchy_tbl
   )
 
-  gran_tbl <- gran_tbl(.data,
-                       gran1,
-                       gran2,
-                       hierarchy_tbl
+  gran_tbl <- gran_tbl(
+    .data,
+    gran1,
+    gran2,
+    hierarchy_tbl
   )
 
   gran1_level <- gran_tbl %>%
@@ -184,7 +201,7 @@ gran_warn <- function(.data,
     }
 
 
-    #TODO: Facetting not recommended for so many levels
+    # TODO: Facetting not recommended for so many levels
 
     if (gran1_level > facet_h & gran2_level > facet_h) {
       warning(paste(
@@ -222,10 +239,11 @@ plot_choices <- function(.data,
                          x_h = 31,
                          x_m = 14,
                          x_l = 7) {
-  data_count <- gran_tbl(.data,
-                         gran1,
-                         gran2,
-                         hierarchy_tbl
+  data_count <- gran_tbl(
+    .data,
+    gran1,
+    gran2,
+    hierarchy_tbl
   )
 
   gran1_level <- data_count %>%
@@ -249,71 +267,71 @@ plot_choices <- function(.data,
   }
 
   if (dplyr::between(gran1_level, facet_m, facet_h) &
-      gran2_level > x_h) # (high, very high)
-  {
-    plots_list <- c("quantile")
-  }
+    gran2_level > x_h) # (high, very high)
+    {
+      plots_list <- c("quantile")
+    }
 
   else if (dplyr::between(gran1_level, facet_m, facet_h) &
-           dplyr::between(gran2_level, x_m, x_h)) # (high, high)
-  {
-    plots_list <- c("quantile")
-  }
+    dplyr::between(gran2_level, x_m, x_h)) # (high, high)
+    {
+      plots_list <- c("quantile")
+    }
 
   else if (dplyr::between(gran1_level, facet_m, facet_h) &
-           dplyr::between(gran2_level, x_l, x_m)) # (high, medium)
-  {
-    plots_list <- c("quantile")
-  }
+    dplyr::between(gran2_level, x_l, x_m)) # (high, medium)
+    {
+      plots_list <- c("quantile")
+    }
   else if (dplyr::between(gran1_level, facet_m, facet_h) &
-           gran2_level < x_l) # (high, low)
-  {
-    plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
-  }
+    gran2_level < x_l) # (high, low)
+    {
+      plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
+    }
 
   else if (dplyr::between(gran1_level, facet_l, facet_m) &
-           gran2_level > x_h) # (medium, very high)
-  {
-    plots_list <- c("quantile")
-  }
+    gran2_level > x_h) # (medium, very high)
+    {
+      plots_list <- c("quantile")
+    }
   else if (dplyr::between(gran1_level, facet_l, facet_m) &
-           dplyr::between(gran2_level, x_m, x_h)) # (medium, high)
-  {
-    plots_list <- c("quantile")
-  }
+    dplyr::between(gran2_level, x_m, x_h)) # (medium, high)
+    {
+      plots_list <- c("quantile")
+    }
 
   else if (dplyr::between(gran1_level, facet_l, facet_m) &
-           dplyr::between(gran2_level, x_l, x_m)) # (medium, medium)
-  {
-    plots_list <- c("violin", "lv", "quantile", "boxplot")
-  }
+    dplyr::between(gran2_level, x_l, x_m)) # (medium, medium)
+    {
+      plots_list <- c("violin", "lv", "quantile", "boxplot")
+    }
   else if (dplyr::between(gran1_level, facet_l, facet_m) &
-           gran2_level < x_l) # (medium, low)
-  {
-    plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
-  }
+    gran2_level < x_l) # (medium, low)
+    {
+      plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
+    }
 
 
   else if (gran1_level < facet_l &
-           gran2_level > x_h) # (low, very high)
-  {
-    plots_list <- c("quantile")
-  }
+    gran2_level > x_h) # (low, very high)
+    {
+      plots_list <- c("quantile")
+    }
   else if (gran1_level < facet_l &
-           dplyr::between(gran2_level, x_m, x_h)) # (low, high)
-  {
-    plots_list <- c("violin", "lv", "quantile", "boxplot")
-  }
+    dplyr::between(gran2_level, x_m, x_h)) # (low, high)
+    {
+      plots_list <- c("violin", "lv", "quantile", "boxplot")
+    }
 
   else if (gran1_level < facet_l &
-           dplyr::between(gran2_level, x_l, x_m)) # (low, medium)
-  {
-    plots_list <- c("violin", "lv", "quantile", "boxplot")
-  }
+    dplyr::between(gran2_level, x_l, x_m)) # (low, medium)
+    {
+      plots_list <- c("violin", "lv", "quantile", "boxplot")
+    }
   else if (gran1_level < facet_l & gran2_level < x_l) # (low, low)
-  {
-    plots_list <- c("ridge", "violin", "lv", "quantile")
-  }
+    {
+      plots_list <- c("ridge", "violin", "lv", "quantile")
+    }
 
   plots_list
 }
@@ -324,16 +342,17 @@ is_homogenous <- function(.data,
                           hierarchy_tbl = NULL) {
 
   # inter facet homogeneity
-  data_count <- gran_tbl(.data,
-                         gran1,
-                         gran2,
-                         hierarchy_tbl
+  data_count <- gran_tbl(
+    .data,
+    gran1,
+    gran2,
+    hierarchy_tbl
   )
 
   inter_facet_homogeneity <- data_count %>%
     dplyr::group_by(!!rlang::quo_name(gran1)) %>%
     dplyr::summarise(gini_meas = ineq::ineq(nobs)) %>%
-    dplyr::mutate(total_gini_meas = dplyr::if_else(gini_meas > 0.8, 1 ,0)) %>%
+    dplyr::mutate(total_gini_meas = dplyr::if_else(gini_meas > 0.8, 1, 0)) %>%
     dplyr::summarise(sum = sum(total_gini_meas)) %>%
     dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
 
@@ -341,14 +360,16 @@ is_homogenous <- function(.data,
   intra_facet_homogeneity <- data_count %>%
     dplyr::group_by(!!rlang::quo_name(gran2)) %>%
     dplyr::summarise(gini_meas = ineq::ineq(nobs)) %>%
-    dplyr::mutate(total_gini_meas = dplyr::if_else(gini_meas > 0.8, 1 ,0)) %>%
+    dplyr::mutate(total_gini_meas = dplyr::if_else(gini_meas > 0.8, 1, 0)) %>%
     dplyr::summarise(sum = sum(total_gini_meas)) %>%
     dplyr::mutate(value = dplyr::if_else(sum == 0, "TRUE", "FALSE"))
 
 
 
-  value_r <- tibble::tibble(inter_facet = inter_facet_homogeneity$value,
-                    intra_facet = intra_facet_homogeneity$value)
+  value_r <- tibble::tibble(
+    inter_facet = inter_facet_homogeneity$value,
+    intra_facet = intra_facet_homogeneity$value
+  )
   return(value_r)
 }
 
@@ -390,9 +411,10 @@ gran_tbl <- function(.data,
 
   output <- Allcomb %>%
     dplyr::left_join(combexist, by = c(gran1, gran2)) %>%
-    dplyr::select(gran1,
-                  gran2,
-                  nobs := count
+    dplyr::select(
+      gran1,
+      gran2,
+      nobs := count
     ) %>%
     dplyr::mutate(nobs = tidyr::replace_na(nobs, 0))
 
