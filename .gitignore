@@ -11,3 +11,4 @@ doc
 inst/doc
 inst/*.html
 .Rproj.user
+data-raw/*.7z

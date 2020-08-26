@@ -32,5 +32,4 @@
 ^NEWS\.md$
 ^README\.md$
 ^check\_gt\.R
-
-
+^data-raw\*.7z$

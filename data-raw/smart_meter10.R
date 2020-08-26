@@ -1,46 +1,58 @@
-    # smart_meter_data_raw <- read_csv("data/CD_INTERVAL_READING_ALL_NO_QUOTES.csv", n_max = 3e6)
-    # set.seed(12345)
-    # sm_cust <- smart_meter_data_raw %>% distinct(CUSTOMER_ID) %>% .$CUSTOMER_ID %>% sample(size= 50)
-    # smart_meter_data_raw <- smart_meter_data_raw %>% dplyr::filter(CUSTOMER_ID %in% sm_cust)
-    # write_rds(smart_meter_data_raw, "data/smart_meter_data_raw.rds", compress = "xz")
+  library(readr)
+  library(dplyr)
+  library(tsibble)
+  #devtools::install_github("jimhester/archive")
+  library(archive)
 
+  # Raw data obtained from Electricity Use Interval Reading of Smart-Grid Smart-City Customer Trial Data available in
+  # https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/distribution/dist-dga-b71eb954-196a-4901-82fd-69b17f88521e/details?q=smart%20meter
+  # file name:CD_INTERVAL_READING_ALL_NO_QUOTES.csv
 
-library(tidyverse)
-library(tsibble)
-library(gravitas)
-library(readr)
+  if (!file.exists("data-raw/smart-metre.7z")) {
+    download.file(
+      "http://datagovau.s3-ap-southeast-2.amazonaws.com/CDINTERVALREADINGALLNOQUOTES.csv.7z",
+      "data-raw/smart-metre.7z",
+      mode = "wb"
+    )
+  }
 
-    smart_meter_data_raw <- read_rds("data/smart_meter_data_raw.rds")
+  smart_meter_data_raw <- archive_read("data-raw/smart-metre.7z") %>%
+    read_csv(n_max = 3e6)
 
-smart_meter_data <- smart_meter_data_raw %>%
-  dplyr::rename_all(tolower) %>%
-  dplyr::arrange(customer_id, reading_datetime) %>%
-  dplyr::group_by(customer_id) %>%
-  dplyr::mutate(reading_datetime = case_when(
-    duplicated(reading_datetime) ~ reading_datetime + lubridate::hours(1),
-    TRUE ~ reading_datetime
-  ))
+set.seed(12345)
+sm_cust <- smart_meter_data_raw %>%
+  distinct(CUSTOMER_ID) %>%
+  pull(CUSTOMER_ID) %>%
+  sample(size = 50)
 
-smart_meter_data$customer_id <- as.character(smart_meter_data$customer_id)
-
-sm_cust50 <- smart_meter_data %>%
+sm_cust <- smart_meter_data_raw %>%
+  filter(CUSTOMER_ID %in% sm_cust) %>%
+  rename_all(tolower) %>%
+  arrange(customer_id, reading_datetime) %>%
+  group_by(customer_id) %>%
+  mutate(
+    reading_datetime = case_when(
+      duplicated(reading_datetime) ~ reading_datetime + lubridate::hours(1),
+      TRUE ~ reading_datetime
+    )
+  ) %>%
+  ungroup() %>%
+  mutate(customer_id = as.character(customer_id)) %>%
   as_tsibble(index = reading_datetime, key = customer_id) %>%
-  dplyr::ungroup() %>%
-  dplyr::select(-calendar_key)
+  select(-calendar_key)%>%
+  select(customer_id,
+         reading_datetime,
+         general_supply_kwh)
 
-# selecting just 10
-set.seed(1200)
-sm10 <- sm_cust50 %>%
+
+set.seed(12345)
+sm10 <- sm_cust %>%
   distinct(customer_id) %>%
-  dplyr:: slice_sample(n = 8)
+  dplyr:: slice_sample(n = 7)
 
-smart_meter10 <- sm_cust50 %>% filter(customer_id %in% c( sm10$customer_id, "10006704", "10017936"))
-
-smart_meter10 <- smart_meter10 %>%
-                 as_tsibble() %>%
-                 select(customer_id,p;
-                        reading_datetime,
-                        general_supply_kwh)
+smart_meter10 <- sm_cust %>% filter(customer_id %in% c(sm10$customer_id, "10006704", "10017936", "10006486"))
 
 
-save(smart_meter10, file = "data/smart_meter10.RData", compress = "xz")
+usethis::use_data(smart_meter10, overwrite = TRUE, compress = "xz")
+#
+# save(sm_cust10, file = "data/sm_cust50.rds", compress = "xz")
