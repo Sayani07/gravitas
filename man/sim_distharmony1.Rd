@@ -23,3 +23,23 @@ sim_distharmony1(
 \description{
 Selecting harmonies with significant difference in distributions for two cyclic granularities
 }
+\examples{
+library(ggplot2)
+library(gravitas)
+library(purrr)
+library(distributional)
+library(magrittr)
+library(tidyr)
+harmonies <- tibble::tibble(
+  facet_variable =
+    c("A", "B"),
+  x_variable = c("B", "A"), facet_levels = c(2, 3), x_levels = c(3, 2)
+)
+.data <- harmonies[1, ]
+data <- sim_distharmony1(.data,
+  sim_dist = c(
+    rep(dist_normal(mu = 2, sigma = 5), 3),
+    rep(dist_normal(mu = 5, sigma = 10), 3)
+  )
+)
+}

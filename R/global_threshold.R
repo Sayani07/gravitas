@@ -71,7 +71,7 @@ global_threshold <- function(.data = NULL,
       }
 
       else {
-        .data <- (1:length(.data)) %>%
+        .data <- (seq(length(.data))) %>%
           purrr::map(function(i) {
             .data %>%
               magrittr::extract2(i) %>%

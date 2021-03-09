@@ -50,7 +50,7 @@ MMPD <- function(.data,
     hierarchy_tbl, create_gran_data, ...
   )
 
-  (1:length(harmony_data)) %>%
+  (seq(length(harmony_data))) %>%
     purrr::map(function(rowi) {
       harmony_datai <- harmony_data %>% magrittr::extract2(rowi)
       namesi <- names(harmony_datai)

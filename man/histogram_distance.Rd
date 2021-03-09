@@ -39,13 +39,17 @@ library(gravitas)
 library(purrr)
 library(magrittr)
 sm <- smart_meter10 \%>\%
-filter(customer_id \%in\% c("10017936"))
-.data = sm
-gran1 = "wknd_wday"
-gran2 = "hour_day"
-response  = "general_supply_kwh"
-.data \%>\% histogram_distance(gran1 = "wknd_wday", gran2 = "hour_day",
-response = "general_supply_kwh")
-.data \%>\% histogram_distance(gran1 = "day_week", gran2 = "hour_day",
-response = "general_supply_kwh")
+  filter(customer_id \%in\% c("10017936"))
+.data <- sm
+gran1 <- "wknd_wday"
+gran2 <- "hour_day"
+response <- "general_supply_kwh"
+.data \%>\% histogram_distance(
+  gran1 = "wknd_wday", gran2 = "hour_day",
+  response = "general_supply_kwh"
+)
+.data \%>\% histogram_distance(
+  gran1 = "day_week", gran2 = "hour_day",
+  response = "general_supply_kwh"
+)
 }

@@ -49,17 +49,21 @@ library(gravitas)
 library(purrr)
 library(magrittr)
 sm <- smart_meter10 \%>\%
-filter(customer_id \%in\% c("10017936"))
-.data = sm
+  filter(customer_id \%in\% c("10017936"))
+.data <- sm
 harmonies <- sm \%>\%
-harmony(ugran = "month",
-       filter_in = "wknd_wday",
-       filter_out = c("hhour", "fortnight"))
-gran1 = "wknd_wday"
-gran2 = "hour_day"
-response  = "general_supply_kwh"
-global_harmony <-  sm \%>\%
-global_threshold(harmony_tbl = harmonies,
-response = "general_supply_kwh", nsamp = 2)
+  harmony(
+    ugran = "month",
+    filter_in = "wknd_wday",
+    filter_out = c("hhour", "fortnight")
+  )
+gran1 <- "wknd_wday"
+gran2 <- "hour_day"
+response <- "general_supply_kwh"
+global_harmony <- sm \%>\%
+  global_threshold(
+    harmony_tbl = harmonies,
+    response = "general_supply_kwh", nsamp = 2
+  )
 }
 }

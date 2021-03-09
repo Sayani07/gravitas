@@ -26,13 +26,15 @@ library(dplyr)
 library(ggplot2)
 
 smart_meter10 \%>\%
-filter(customer_id == "10017936") \%>\%
-  gran_advice(gran1 = "wknd_wday",
-            gran2 = "hour_day")
+  filter(customer_id == "10017936") \%>\%
+  gran_advice(
+    gran1 = "wknd_wday",
+    gran2 = "hour_day"
+  )
 
 # choosing quantile plots from plot choices
 smart_meter10 \%>\%
-filter(customer_id == "10017936") \%>\%
+  filter(customer_id == "10017936") \%>\%
   prob_plot(
     gran1 = "wknd_wday",
     gran2 = "hour_day",
@@ -41,5 +43,4 @@ filter(customer_id == "10017936") \%>\%
     quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9)
   ) +
   scale_y_sqrt()
-
 }

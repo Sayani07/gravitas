@@ -63,7 +63,7 @@ smart_meter10 \%>\%
 # visualize probability distribution of
 # the harmony pair (wknd_wday, hour_day)
 smart_meter10 \%>\%
-dplyr::filter(customer_id == "10017936") \%>\%
+  dplyr::filter(customer_id == "10017936") \%>\%
   prob_plot(
     gran1 = "wknd_wday",
     gran2 = "hour_day",
@@ -77,8 +77,8 @@ dplyr::filter(customer_id == "10017936") \%>\%
 
 library(tsibble)
 cricket_tsibble <- cricket \%>\%
-mutate(data_index = row_number()) \%>\%
-as_tsibble(index = data_index)
+  mutate(data_index = row_number()) \%>\%
+  as_tsibble(index = data_index)
 
 hierarchy_model <- tibble::tibble(
   units = c("index", "over", "inning", "match"),
@@ -90,13 +90,16 @@ cricket_tsibble \%>\%
     hierarchy_model
   )
 
-  cricket_tsibble \%>\%
-  filter(batting_team \%in\% c("Mumbai Indians",
-                             "Chennai Super Kings"))\%>\%
+cricket_tsibble \%>\%
+  filter(batting_team \%in\% c(
+    "Mumbai Indians",
+    "Chennai Super Kings"
+  )) \%>\%
   prob_plot("inning", "over",
-  hierarchy_model,
-  response = "runs_per_over",
-  plot_type = "lv")
+    hierarchy_model,
+    response = "runs_per_over",
+    plot_type = "lv"
+  )
 
 # Validate if given column in the data set
 # equals computed granularity

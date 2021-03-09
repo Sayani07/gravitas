@@ -62,7 +62,7 @@ rank_harmony_v0 <- function(.data = NULL,
 dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
                              dist_distribution = NULL, hierarchy_tbl = NULL, dist_ordered, ...) {
   step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl)
-  (1:length(step1_data)) %>%
+  (seq(length(step1_data))) %>%
     purrr::map(function(rowi) {
       step_datai <- step1_data %>%
         magrittr::extract2(rowi)
@@ -79,7 +79,7 @@ dist_harmony_pair <- function(step1_datai,
   colNms <- colnames(step1_datai)[2:ncol(step1_datai)]
 
   step2 <- NULL
-  for (i in 1:length(colNms)) {
+  for (i in seq(length(colNms))) {
     step2[[i]] <- lapply(step1_datai[[colNms[i]]], quantile_extractx)
   }
 
@@ -102,7 +102,7 @@ dist_harmony_pair <- function(step1_datai,
   dist_vector <- vector()
   ## Logic
   # __ find the stepped sum difference of density vector elements
-  for (k in 1:length(colNms)) {
+  for (k in seq(length(colNms))) {
     dist <- matrix(NA,
       nrow = nrow(step1_datai),
       ncol = nrow(step1_datai)
@@ -396,7 +396,7 @@ create_gran_pair <- function(.data, gran1, gran2, hierarchy_tbl = NULL) {
 step1 <- function(.data, harmony_tbl, response = NULL, hierarchy_tbl = NULL) {
   harmony_data <- create_harmony_data(.data, harmony_tbl, response, hierarchy_tbl)
 
-  (1:length(harmony_data)) %>%
+  (seq(length(harmony_data))) %>%
     purrr::map(function(rowi) {
       harmony_datai <- harmony_data %>% magrittr::extract2(rowi)
       namesi <- names(harmony_datai)

@@ -47,15 +47,20 @@ hierarchy_model <- tibble::tibble(
 )
 # Compute granularities ----
 cricket_tsibble \%>\%
-  create_gran("over_inning",
-               hierarchy_model)
+  create_gran(
+    "over_inning",
+    hierarchy_model
+  )
 # Visualise distribution of runs across granularities ----
 cricket_tsibble \%>\%
-  filter(batting_team \%in\% c("Mumbai Indians",
-                             "Chennai Super Kings"))\%>\%
+  filter(batting_team \%in\% c(
+    "Mumbai Indians",
+    "Chennai Super Kings"
+  )) \%>\%
   prob_plot("inning", "over",
-  hierarchy_model,
-  response = "runs_per_over",
-  plot_type = "lv")
+    hierarchy_model,
+    response = "runs_per_over",
+    plot_type = "lv"
+  )
 }
 \keyword{datasets}

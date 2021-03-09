@@ -22,14 +22,15 @@
 #' library(gravitas)
 #' library(purrr)
 #' library(magrittr)
-#' # sm <- smart_meter10 %>%
-#' #   filter(customer_id %in% c("10017936"))
-#' # harmonies <- sm %>%
-#' #   harmony(
-#' #     ugran = "month",
-#' #     filter_in = "wknd_wday",
-#' #     filter_out = c("hhour", "fortnight")
-#' #   )
+#' sm <- smart_meter10 %>%
+#'   filter(customer_id %in% c("10017936"))
+#'
+#' harmonies <- sm %>%
+#'   harmony(
+#'     ugran = "month",
+#'     filter_in = "wknd_wday",
+#'     filter_out = c("hhour", "fortnight")
+#' )
 #' # .data <- sm
 #' # response <- "general_supply_kwh"
 #' # harmony_tbl <- harmonies
@@ -100,7 +101,7 @@ rank_harmony <- function(.data = NULL,
 dist_harmony_tbl <- function(.data, harmony_tbl, response, prob,
                              dist_distribution = NULL, hierarchy_tbl = NULL, dist_ordered = NULL, create_gran_data = NULL, ...) {
   step1_data <- step1(.data, harmony_tbl, response, hierarchy_tbl, create_gran_data, ...)
-  (1:length(step1_data)) %>%
+  (seq(length(step1_data))) %>%
     purrr::map(function(rowi) {
       step_datai <- step1_data %>%
         magrittr::extract2(rowi)
@@ -216,7 +217,7 @@ step1 <- function(.data, harmony_tbl,
                   create_gran_data = NULL, ...) {
   harmony_data <- create_harmony_data(.data, harmony_tbl, response, hierarchy_tbl, create_gran_data)
 
-  (1:length(harmony_data)) %>%
+  (seq(length(harmony_data))) %>%
     purrr::map(function(rowi) {
       harmony_datai <- harmony_data %>% magrittr::extract2(rowi)
       namesi <- names(harmony_datai)
