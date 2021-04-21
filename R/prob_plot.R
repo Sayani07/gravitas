@@ -248,6 +248,7 @@ quantile_plot <- function(.data,
                           direction = 1,
                           palette = "YlGnBu",
                           package = "RColorBrewer",
+                          size = 1,
                           ...) {
   p <- quantile_prob
 
@@ -337,7 +338,7 @@ quantile_plot <- function(.data,
         y = data_mutate_obj[[quantile_names[mid_pos]]],
         group = data_mutate_obj[[!!gran1]]
       ),
-      size = 1
+      size
       ) +
       ggplot2::facet_wrap(~ data_mutate_obj[[gran1]]) +
       ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_mutate_obj[[gran2]]))))
