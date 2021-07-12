@@ -63,6 +63,7 @@ prob_plot <- function(.data,
                       symmetric = TRUE,
                       alpha = 0.8,
                       threshold_nobs = NULL,
+                      nrow =  NULL,
                       # begin = 0,
                       # end = 1,
                       # direction = 1,
@@ -207,7 +208,7 @@ prob_plot <- function(.data,
 
 
   plot_return <- p +
-    ggplot2::facet_wrap(dplyr::vars(!!rlang::sym(gran1))) +
+    ggplot2::facet_wrap(dplyr::vars(!!rlang::sym(gran1)), nrow =  nrow) +
     ggplot2::theme(
       legend.position = "bottom",
       strip.text = ggplot2::element_text(size = 7, margin = ggplot2::margin())
@@ -249,6 +250,7 @@ quantile_plot <- function(.data,
                           palette = "YlGnBu",
                           package = "RColorBrewer",
                           size = 1,
+                          nrow =  NULL,
                           ...) {
   p <- quantile_prob
 
@@ -326,7 +328,7 @@ quantile_plot <- function(.data,
         x = data_mutate_obj[[gran2]],
         group = data_mutate_obj[[gran1]],
         colour = color_set
-      ), ,
+      ),
       fill = color_set,
       alpha = alpha
       )
@@ -340,7 +342,7 @@ quantile_plot <- function(.data,
       ),
       size
       ) +
-      ggplot2::facet_wrap(~ data_mutate_obj[[gran1]]) +
+      ggplot2::facet_wrap(~ data_mutate_obj[[gran1]], nrow =  nrow) +
       ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_mutate_obj[[gran2]]))))
   }
 
@@ -378,7 +380,7 @@ quantile_plot <- function(.data,
         group = as.factor(quantiles),
         color = quantiles
       )) +
-      ggplot2::facet_wrap(~ data_pcntl[[gran1]]) +
+      ggplot2::facet_wrap(~ data_pcntl[[gran1]], nrow =  nrow) +
       # ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_pcntl[[gran2]])))) +
       ggplot2::scale_fill_brewer()
   }
