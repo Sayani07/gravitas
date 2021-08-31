@@ -33,7 +33,7 @@ temp_create_gran <- function(.data,
       dplyr::mutate(
         wknd_wday =
           dplyr::if_else(
-            L1 %in% c(6, 7),
+            L1 %in% c(1, 7),
             "Weekend",
             "Weekday"
           )
