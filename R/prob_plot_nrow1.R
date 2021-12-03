@@ -207,7 +207,7 @@ prob_plot_nrow1 <- function(.data,
 
 
   plot_return <- p +
-    ggplot2::facet_wrap(dplyr::vars(!!rlang::sym(gran1)), nrow = 1) +
+    ggplot2::facet_wrap(dplyr::vars(!!rlang::sym(gran1)), ncol = 1) +
     ggplot2::theme(
       legend.position = "bottom",
       strip.text = ggplot2::element_text(size = 7, margin = ggplot2::margin())

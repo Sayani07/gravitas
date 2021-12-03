@@ -16,6 +16,7 @@ prob_plot(
   symmetric = TRUE,
   alpha = 0.8,
   threshold_nobs = NULL,
+  nrow = NULL,
   ...
 )
 }
