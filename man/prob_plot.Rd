@@ -43,6 +43,8 @@ prob_plot(
 
 \item{threshold_nobs}{the minimum number of observations below which only points would be plotted}
 
+\item{nrow}{number of rows in facets}
+
 \item{...}{other arguments to be passed for customising the obtained ggplot object.}
 }
 \value{

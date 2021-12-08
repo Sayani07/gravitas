@@ -13,6 +13,7 @@
 #' @param symmetric If TRUE, symmetic quantile area <- is drawn. If FALSE, only quantile lines are drawn instead of area. If TRUE, length of quantile_prob should be odd and ideally the quantile_prob should be a symmetric vector with median at the middle position.
 #' @param alpha level of transperancy for the quantile area
 #' @param threshold_nobs the minimum number of observations below which only points would be plotted
+#' @param nrow number of rows in facets
 #' @param ... other arguments to be passed for customising the obtained ggplot object.
 #' @return a ggplot object which can be customised as usual.
 #
