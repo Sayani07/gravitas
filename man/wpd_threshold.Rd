@@ -57,8 +57,8 @@ harmonies <- sm \%>\%
     filter_in = "wknd_wday",
     filter_out = c("hhour", "fortnight")
   )
-all_harmony <- wpd_threshold(sm,
-  harmony_tbl = harmonies,
-  response = general_supply_kwh, nsamp = 3
-)
+#all_harmony <- wpd_threshold(sm,
+  #harmony_tbl = harmonies,
+  #response = general_supply_kwh, nsamp = 3
+#)
 }

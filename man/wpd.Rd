@@ -59,12 +59,14 @@ all_harmony <- wpd(sm,
   harmony_tbl = harmonies,
   response = general_supply_kwh
 )
-harmonies1 <- harmonies \%>\% mutate(facet_variable = NA)
+harmonies1 <- harmonies \%>\% dplyr::mutate(facet_variable = NA)
 
- h = harmonies1 \%>\% select(-facet_levels) \%>\% distinct() \%>\% mutate(facet_levels = NA)
- all_harmony <- wpd(sm,
+h <- harmonies1 \%>\%
+  select(-facet_levels) \%>\%
+  distinct() \%>\%
+  mutate(facet_levels = NA)
+all_harmony <- wpd(sm,
   harmony_tbl = h,
   response = general_supply_kwh, nperm = 200, use_perm = TRUE
 )
-
 }

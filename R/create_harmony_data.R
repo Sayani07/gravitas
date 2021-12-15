@@ -17,44 +17,45 @@
 #'     filter_in = "wknd_wday",
 #'     filter_out = c("hhour", "fortnight")
 #'   )
-#' #harmonies <- harmonies %>% mutate(facet_variable = NA)
+#' # harmonies <- harmonies %>% mutate(facet_variable = NA)
 #' panel_data <- create_harmony_data(
 #'   sm,
 #'   harmonies[3, ], general_supply_kwh
 #' )
 #' @export
 create_harmony_data <- function(.data, harmony_tbl_row, response) {
+  if (!is.na(harmony_tbl_row$facet_variable)) {
+    .data <- .data %>%
+      gravitas::create_gran(harmony_tbl_row$facet_variable) %>%
+      gravitas::create_gran(harmony_tbl_row$x_variable)
 
-  if(!is.na(harmony_tbl_row$facet_variable)){
-  .data <- .data %>%
-    gravitas::create_gran(harmony_tbl_row$facet_variable) %>%
-    gravitas::create_gran(harmony_tbl_row$x_variable)
 
-
-  data <- .data %>% tibble::as_tibble() %>%
-    dplyr::select(
-      id_facet = harmony_tbl_row$facet_variable,
-      id_x = harmony_tbl_row$x_variable,
-      sim_data = {{ response }}
-    )
-  }
-  else
-  {
+    data <- .data %>%
+      tibble::as_tibble() %>%
+      dplyr::select(
+        id_facet = harmony_tbl_row$facet_variable,
+        id_x = harmony_tbl_row$x_variable,
+        sim_data = {{ response }}
+      )
+  } else {
     .data <- .data %>%
       gravitas::create_gran(harmony_tbl_row$x_variable)
 
 
-    data <-.data %>% tibble::as_tibble() %>%
+    data <- .data %>%
+      tibble::as_tibble() %>%
       dplyr::select(
-        #id_facet = NA,
+        # id_facet = NA,
         id_x = harmony_tbl_row$x_variable,
         sim_data = {{ response }}
       ) %>%
       dplyr::mutate(id_facet = 1)
-
   }
 
-  data %>% mutate(x_variable = harmony_tbl_row$x_variable,
-                    facet_variable = harmony_tbl_row$facet_variable) %>%
-      dplyr::select(facet_variable,x_variable, id_facet, id_x, sim_data)
+  data %>%
+    dplyr::mutate(
+      x_variable = harmony_tbl_row$x_variable,
+      facet_variable = harmony_tbl_row$facet_variable
+    ) %>%
+    dplyr::select(facet_variable, x_variable, id_facet, id_x, sim_data)
 }

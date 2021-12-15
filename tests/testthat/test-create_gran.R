@@ -51,7 +51,7 @@ test_that("tsibble output", {
 test_that("create grans creates a factor", {
   expect_is(
     create_gran(x, "hhour_week") %>%
-      as_tibble() %>%
+      tibble::as_tibble() %>%
       .$hhour_week,
     "factor"
   )
@@ -90,7 +90,7 @@ test_that("create grans creates a
       "inning_match",
       hierarchy_tbl = hierarchy_model
     ) %>%
-      as_tibble() %>%
+      tibble::as_tibble() %>%
       .$inning_match,
     "factor"
   )

@@ -64,7 +64,7 @@ prob_plot <- function(.data,
                       symmetric = TRUE,
                       alpha = 0.8,
                       threshold_nobs = NULL,
-                      nrow =  NULL,
+                      nrow = NULL,
                       # begin = 0,
                       # end = 1,
                       # direction = 1,
@@ -113,11 +113,9 @@ prob_plot <- function(.data,
   if (is.null(threshold_nobs)) {
     if (plot_type == "boxplot") {
       threshold_nobs <- 10
-    }
-    else if (plot_type == "quantile") {
+    } else if (plot_type == "quantile") {
       threshold_nobs <- max(10, length(quantile_prob))
-    }
-    else {
+    } else {
       threshold_nobs <- 30
     }
   }
@@ -163,26 +161,19 @@ prob_plot <- function(.data,
     if (plot_type == "boxplot") {
       p <- p +
         ggplot2::geom_boxplot(data = data_sub2, ...)
-    }
-    else if (plot_type == "violin") {
+    } else if (plot_type == "violin") {
       p <- p + ggplot2::geom_violin(data = data_sub2, ...)
-    }
-
-    else if (plot_type == "lv") {
+    } else if (plot_type == "lv") {
       p <-
         p + lvplot::geom_lv(
           data = data_sub2, ggplot2::aes(fill = ..LV..),
           k = 5,
           ...
         )
-    }
-
-    else if (plot_type == "ridge") {
+    } else if (plot_type == "ridge") {
       p <- p +
         ggridges::geom_density_ridges(data = data_sub2, ...)
-    }
-
-    else if (plot_type == "quantile") {
+    } else if (plot_type == "quantile") {
       p <- quantile_plot(
         .data = data_sub2,
         gran1,
@@ -209,7 +200,7 @@ prob_plot <- function(.data,
 
 
   plot_return <- p +
-    ggplot2::facet_wrap(dplyr::vars(!!rlang::sym(gran1)), nrow =  nrow) +
+    ggplot2::facet_wrap(dplyr::vars(!!rlang::sym(gran1)), nrow = nrow) +
     ggplot2::theme(
       legend.position = "bottom",
       strip.text = ggplot2::element_text(size = 7, margin = ggplot2::margin())
@@ -251,7 +242,7 @@ quantile_plot <- function(.data,
                           palette = "YlGnBu",
                           package = "RColorBrewer",
                           size = 1,
-                          nrow =  NULL,
+                          nrow = NULL,
                           ...) {
   p <- quantile_prob
 
@@ -336,18 +327,17 @@ quantile_plot <- function(.data,
 
 
     plot <- eval(sum_expr(l)) +
-      ggplot2::geom_line(ggplot2::aes(
-        x = data_mutate_obj[[!!gran2]],
-        y = data_mutate_obj[[quantile_names[mid_pos]]],
-        group = data_mutate_obj[[!!gran1]]
-      ),
-      size
+      ggplot2::geom_line(
+        ggplot2::aes(
+          x = data_mutate_obj[[!!gran2]],
+          y = data_mutate_obj[[quantile_names[mid_pos]]],
+          group = data_mutate_obj[[!!gran1]]
+        ),
+        size
       ) +
-      ggplot2::facet_wrap(~ data_mutate_obj[[gran1]], nrow =  nrow) +
+      ggplot2::facet_wrap(~ data_mutate_obj[[gran1]], nrow = nrow) +
       ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_mutate_obj[[gran2]]))))
-  }
-
-  else {
+  } else {
     data_pcntl <- data_mutate %>%
       tibble::as_tibble() %>%
       dplyr::group_by(
@@ -381,7 +371,7 @@ quantile_plot <- function(.data,
         group = as.factor(quantiles),
         color = quantiles
       )) +
-      ggplot2::facet_wrap(~ data_pcntl[[gran1]], nrow =  nrow) +
+      ggplot2::facet_wrap(~ data_pcntl[[gran1]], nrow = nrow) +
       # ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_pcntl[[gran2]])))) +
       ggplot2::scale_fill_brewer()
   }
@@ -412,8 +402,7 @@ ribbon_function <- function(i, ymin, ymax, x,
 sum_expr <- function(v = NULL) {
   if (length(v) == 1) {
     count <- rlang::expr(ggplot2::ggplot(data_mutate_obj) + !!v[[1]])
-  }
-  else {
+  } else {
     count <- rlang::expr(ggplot2::ggplot(data_mutate_obj) + !!v[[1]])
     for (i in 2:length(v))
     {

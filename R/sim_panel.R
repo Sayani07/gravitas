@@ -11,8 +11,8 @@
 #' sim_varx_normal <- function(nx, nfacet, mean, sd, w) {
 #'   rep(dist_normal((mean + seq(0, nx - 1, by = 1) * w), sd), nfacet)
 #' }
-#'sim_varx_normal(2,3,0,1, 1)
-#'sim_varx_normal(2,3,0,1, -2)
+#' sim_varx_normal(2, 3, 0, 1, 1)
+#' sim_varx_normal(2, 3, 0, 1, -2)
 #'
 #' sim_panel_data <- sim_panel(
 #'   nx = 2, nfacet = 3,
@@ -34,8 +34,8 @@
 #' sim_varf_normal <- function(nx, nfacet, mean, sd, w) {
 #'   rep(dist_normal((mean + seq(0, nfacet - 1, by = 1) * w), sd), each = nx)
 #' }
-#' sim_varf_normal(2,3,0,1, 1)
-#' sim_varf_normal(2,3,0,1, 2)
+#' sim_varf_normal(2, 3, 0, 1, 1)
+#' sim_varf_normal(2, 3, 0, 1, 2)
 #' sim_panel_data <- sim_panel(
 #'   nx = 2, nfacet = 3,
 #'   ntimes = 50,
@@ -61,8 +61,8 @@
 #'     by = 1
 #'   ) * w), sd)
 #' }
-#' sim_varall_normal(2,3,0,1, 1)
-#' sim_varall_normal(2,3,0,1, 2)
+#' sim_varall_normal(2, 3, 0, 1, 1)
+#' sim_varall_normal(2, 3, 0, 1, 2)
 #' sim_panel_data <- sim_panel(
 #'   nx = 2, nfacet = 3,
 #'   ntimes = 5,
@@ -87,7 +87,6 @@ sim_panel <- function(nx = 2,
                       ntimes = 500,
                       sim_dist =
                         sim_varall) {
-
   sd <- w <- sim_data <- NULL
 
   sim_varall <- function(nx,
@@ -101,8 +100,7 @@ sim_panel <- function(nx = 2,
 
   if (typeof(sim_dist) == "list") {
     sim_dist_data <- sim_dist
-  }
-  else {
+  } else {
     sim_dist_data <- sim_dist(nx, nfacet, mean, sd, w)
   }
   id_x <- rep(seq_len(nx), nfacet)

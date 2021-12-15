@@ -47,8 +47,7 @@
 
 compute_quantiles <- function(sim_panel_data,
                               quantile_prob = seq(0.01, 0.99, 0.01)) {
-
-  sim_data <- id_facet <- id_x <- list_data <- sim_data_quantile <-  NULL
+  sim_data <- id_facet <- id_x <- list_data <- sim_data_quantile <- NULL
   # preprocess the data(quantile_transform)
   sim_panel_data <- sim_panel_data %>%
     dplyr::ungroup()

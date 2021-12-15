@@ -30,9 +30,9 @@ harmonies <- sm \%>\%
     filter_in = "wknd_wday",
     filter_out = c("hhour", "fortnight")
   )
-#harmonies <- harmonies \%>\% mutate(facet_variable = NA)
+# harmonies <- harmonies \%>\% mutate(facet_variable = NA)
 all_harmony <- create_harmony_tbl_data(sm,
-  harmony_tbl = harmonies[1:7,],
+  harmony_tbl = harmonies[1:7, ],
   response = general_supply_kwh
 )
 }

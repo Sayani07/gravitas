@@ -68,7 +68,7 @@ knitr::kable(hierarchy_model, format = "markdown")
 ```{r crickread}
 library(tsibble)
 cricket_tsibble <- cricket %>%
-  mutate(data_index = row_number()) %>%
+  dplyr::mutate(data_index = row_number()) %>%
   as_tsibble(index = data_index)
 ```
 

@@ -24,10 +24,10 @@
 #'     filter_in = "wknd_wday",
 #'     filter_out = c("hhour", "fortnight")
 #'   )
-#' all_harmony <- wpd_threshold(sm,
-#'   harmony_tbl = harmonies,
-#'   response = general_supply_kwh, nsamp = 3
-#' )
+#' #all_harmony <- wpd_threshold(sm,
+#'   #harmony_tbl = harmonies,
+#'   #response = general_supply_kwh, nsamp = 3
+#' #)
 #' @export
 wpd_threshold <- function(.data,
                           harmony_tbl = NULL,
@@ -40,7 +40,6 @@ wpd_threshold <- function(.data,
                           probs = c(0.9, 0.95, 0.99),
                           nsamp = 100,
                           create_harmony_data = TRUE) {
-
   wpd_observed <- wpd(.data,
     harmony_tbl,
     response = {{ response }},
@@ -53,9 +52,8 @@ wpd_threshold <- function(.data,
   )
 
   wpd_sample <- parallel::mclapply((1:nsamp), function(x) {
-
-    if(!create_harmony_data){
-      .data = .data %>% bind_rows()
+    if (!create_harmony_data) {
+      .data <- .data %>% dplyr::bind_rows()
     }
 
 
@@ -70,12 +68,13 @@ wpd_threshold <- function(.data,
       dplyr::select(-{{ response }}) %>%
       dplyr::bind_cols(response = response_sample)
 
-    if(!create_harmony_data){
-      data_sample <-  data_sample %>% group_split(nfacet, nx)
+    if (!create_harmony_data) {
+      data_sample <- data_sample %>% dplyr::group_split(nfacet, nx)
     }
 
 
-    wpd(data_sample,
+    wpd(
+      data_sample,
       harmony_tbl,
       {{ response }},
       quantile_prob,
@@ -100,10 +99,10 @@ wpd_threshold <- function(.data,
     dplyr::mutate(wpd = round(wpd, 3)) %>%
     dplyr::mutate(
       select_harmony =
-        if_else(wpd_observed > threshold_01,
+        dplyr::if_else(wpd_observed > threshold_01,
           paste(wpd, "***", sep = " "),
-          if_else(wpd_observed > threshold_02, paste(wpd, "**", sep = " "),
-            if_else(wpd_observed > threshold_03, paste(wpd, "*", sep = " "), as.character(wpd))
+          dplyr::if_else(wpd_observed > threshold_02, paste(wpd, "**", sep = " "),
+                         dplyr::if_else(wpd_observed > threshold_03, paste(wpd, "*", sep = " "), as.character(wpd))
           )
         )
     ) %>%

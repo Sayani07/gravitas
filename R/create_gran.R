@@ -185,12 +185,10 @@ dynamic_build_gran <- function(x, lgran = NULL, ugran = NULL, hierarchy_tbl = NU
 
   if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date", "yearweek", "yearquarter"))) {
     value <- build_gran(x, lgran = lgran, ugran = ugran, ...)
-  }
-  else {
+  } else {
     if (dynamic_g_order(lgran, ugran, hierarchy_tbl) == 1) {
       value <- create_single_gran(x, lgran, hierarchy_tbl)
-    }
-    else {
+    } else {
       lgran_ordr1 <- dynamic_g_order(lgran, hierarchy_tbl = hierarchy_tbl, order = 1)
       value <- dynamic_build_gran(x,
         lgran,
@@ -295,8 +293,7 @@ create_single_gran <- function(x,
       ugran = ugran,
       ...
     )
-  }
-  else {
+  } else {
     ugran <- dynamic_g_order(lgran,
       hierarchy_tbl = hierarchy_tbl,
       order = 1

@@ -53,22 +53,22 @@
 #' @export prob_plot_nrow1
 
 prob_plot_nrow1 <- function(.data,
-                      gran1 = NULL,
-                      gran2 = NULL,
-                      hierarchy_tbl = NULL,
-                      response = NULL,
-                      plot_type = NULL,
-                      quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99),
-                      facet_h = NULL,
-                      symmetric = TRUE,
-                      alpha = 0.8,
-                      threshold_nobs = NULL,
-                      # begin = 0,
-                      # end = 1,
-                      # direction = 1,
-                      # palette = "YlGnBu",
-                      # package = "RColorBrewer",
-                      ...) {
+                            gran1 = NULL,
+                            gran2 = NULL,
+                            hierarchy_tbl = NULL,
+                            response = NULL,
+                            plot_type = NULL,
+                            quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99),
+                            facet_h = NULL,
+                            symmetric = TRUE,
+                            alpha = 0.8,
+                            threshold_nobs = NULL,
+                            # begin = 0,
+                            # end = 1,
+                            # direction = 1,
+                            # palette = "YlGnBu",
+                            # package = "RColorBrewer",
+                            ...) {
   # data must be tsibble
   if (!tsibble::is_tsibble(.data)) {
     stop("must use tsibble")
@@ -99,10 +99,10 @@ prob_plot_nrow1 <- function(.data,
 
   data_mutate <- .data %>%
     create_gran(gran1,
-                hierarchy_tbl = hierarchy_tbl
+      hierarchy_tbl = hierarchy_tbl
     ) %>%
     create_gran(gran2,
-                hierarchy_tbl = hierarchy_tbl
+      hierarchy_tbl = hierarchy_tbl
     )
   # conditional ggplot2 (if number iof observation few then show scatter plot)
 
@@ -111,11 +111,9 @@ prob_plot_nrow1 <- function(.data,
   if (is.null(threshold_nobs)) {
     if (plot_type == "boxplot") {
       threshold_nobs <- 10
-    }
-    else if (plot_type == "quantile") {
+    } else if (plot_type == "quantile") {
       threshold_nobs <- max(10, length(quantile_prob))
-    }
-    else {
+    } else {
       threshold_nobs <- 30
     }
   }
@@ -161,26 +159,19 @@ prob_plot_nrow1 <- function(.data,
     if (plot_type == "boxplot") {
       p <- p +
         ggplot2::geom_boxplot(data = data_sub2, ...)
-    }
-    else if (plot_type == "violin") {
+    } else if (plot_type == "violin") {
       p <- p + ggplot2::geom_violin(data = data_sub2, ...)
-    }
-
-    else if (plot_type == "lv") {
+    } else if (plot_type == "lv") {
       p <-
         p + lvplot::geom_lv(
           data = data_sub2, ggplot2::aes(fill = ..LV..),
           k = 5,
           ...
         )
-    }
-
-    else if (plot_type == "ridge") {
+    } else if (plot_type == "ridge") {
       p <- p +
         ggridges::geom_density_ridges(data = data_sub2, ...)
-    }
-
-    else if (plot_type == "quantile") {
+    } else if (plot_type == "quantile") {
       p <- quantile_plot(
         .data = data_sub2,
         gran1,
@@ -224,10 +215,10 @@ prob_plot_nrow1 <- function(.data,
     ggplot2::scale_fill_brewer(palette = "Dark2")
 
   gran_warn(.data,
-            gran1,
-            gran2,
-            hierarchy_tbl = hierarchy_tbl,
-            response = response, ...
+    gran1,
+    gran2,
+    hierarchy_tbl = hierarchy_tbl,
+    response = response, ...
   )
 
   return(plot_return)
@@ -341,9 +332,7 @@ quantile_plot <- function(.data,
       ) +
       ggplot2::facet_wrap(~ data_mutate_obj[[gran1]]) +
       ggplot2::scale_x_discrete(breaks = pretty(as.integer(unique(data_mutate_obj[[gran2]]))))
-  }
-
-  else {
+  } else {
     data_pcntl <- data_mutate %>%
       tibble::as_tibble() %>%
       dplyr::group_by(
@@ -408,8 +397,7 @@ ribbon_function <- function(i, ymin, ymax, x,
 sum_expr <- function(v = NULL) {
   if (length(v) == 1) {
     count <- rlang::expr(ggplot2::ggplot(data_mutate_obj) + !!v[[1]])
-  }
-  else {
+  } else {
     count <- rlang::expr(ggplot2::ggplot(data_mutate_obj) + !!v[[1]])
     for (i in 2:length(v))
     {

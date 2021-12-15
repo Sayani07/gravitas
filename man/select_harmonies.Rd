@@ -51,8 +51,11 @@ harmonies <- sm \%>\%
     filter_in = "wknd_wday",
     filter_out = c("hhour", "fortnight", "quarter", "semester")
   )
- harmonies1 <- harmonies \%>\% mutate(facet_variable = NA)
- h = harmonies1 \%>\% select(-facet_levels) \%>\% distinct() \%>\% mutate(facet_levels = NA)
+harmonies1 <- harmonies \%>\% mutate(facet_variable = NA)
+h <- harmonies1 \%>\%
+  select(-facet_levels) \%>\%
+  distinct() \%>\%
+  dplyr::mutate(facet_levels = NA)
 all_harmony <- select_harmonies(sm,
   harmony_tbl = h,
   response = general_supply_kwh, nperm = 200, nsamp = 20

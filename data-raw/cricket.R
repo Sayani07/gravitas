@@ -9,8 +9,8 @@ deliveries <- read_csv("data-raw/deliveries_all.csv")
 matches <- read_csv("data-raw/matches_all.csv")
 
 cricket_season <- deliveries %>%
-  left_join(matches, by = c("match_id" = "id")) %>%
-  mutate(winner_team = if_else(winner == batting_team, "batting_team", "bowling_team"))
+  dplyr::left_join(matches, by = c("match_id" = "id")) %>%
+  dplyr::mutate(winner_team = if_else(winner == batting_team, "batting_team", "bowling_team"))
 
 
 cricket_winner <- cricket_season %>%
@@ -30,7 +30,7 @@ cricket_fltr_ball <- cricket_season %>%
   ) %>%
   summarise(n_over = length(ball)) %>%
   filter(n_over == 6) %>%
-  mutate(key = paste(batting_team,
+  dplyr::mutate(key = paste(batting_team,
     match_id,
     inning,
     over,
@@ -39,10 +39,10 @@ cricket_fltr_ball <- cricket_season %>%
 
 
 cricket_over_crctd <- cricket_season %>%
-  mutate(cricket_key = paste(batting_team, match_id, inning, over, sep = "_")) %>%
+  dplyr::mutate(cricket_key = paste(batting_team, match_id, inning, over, sep = "_")) %>%
   filter(cricket_key %in% cricket_fltr_ball$key) %>%
   filter(wide_runs + noball_runs == 0) %>%
-  mutate(ball_per_over = purrr::rep_along(match_id, 1:6))
+  dplyr::mutate(ball_per_over = purrr::rep_along(match_id, 1:6))
 
 # each innings need to have 20 overs
 
@@ -51,10 +51,10 @@ cricket_fltr_over <- cricket_over_crctd %>%
   group_by(inning, match_id) %>%
   summarise(n = length(over)) %>%
   filter(n == 120) %>%
-  mutate(key = paste(match_id, inning, sep = "_"))
+  dplyr::mutate(key = paste(match_id, inning, sep = "_"))
 
 cricket_over_inning_crctd <- cricket_over_crctd %>%
-  mutate(over_key = paste(match_id, inning, sep = "_")) %>%
+  dplyr::mutate(over_key = paste(match_id, inning, sep = "_")) %>%
   filter(over_key %in% cricket_fltr_over$key) %>%
   filter(inning %in% c(1, 2))
 
@@ -69,7 +69,7 @@ cricket_filtr_inning <- cricket_over_inning_crctd %>%
 cricketdata <- cricket_over_inning_crctd %>%
   filter(match_id %in% cricket_filtr_inning$match_id) %>%
   filter(wide_runs + noball_runs == 0) %>%
-  mutate(ball_per_over = purrr::rep_along(match_id, 1:6)) %>%
+  dplyr::mutate(ball_per_over = purrr::rep_along(match_id, 1:6)) %>%
   filter(inning %in% c(1, 2))
 
 #
@@ -97,7 +97,7 @@ cricketdata <- cricket_over_inning_crctd %>%
 
 
 cricket <- cricketdata %>%
-  mutate(
+  dplyr::mutate(
     wicket = if_else(is.na(dismissal_kind), 0, 1),
     dot_balls = if_else(total_runs == 0, 1, 0)
   ) %>%
@@ -115,7 +115,7 @@ cricket <- cricketdata %>%
 
 
 cricket <- cricket %>%
-  left_join(cricket_winner, by = c("match_id")) %>%
+  dplyr::left_join(cricket_winner, by = c("match_id")) %>%
   select(
     season, match_id, batting_team,
     bowling_team,

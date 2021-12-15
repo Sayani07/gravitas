@@ -18,8 +18,7 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
       lgran_multiple <- data_interval[[1]]
       if (lgran_multiple == 1) {
         lgran <- lgran_iden
-      }
-      else if (lgran_multiple > 1) {
+      } else if (lgran_multiple > 1) {
         index_lgran <- granularity %>% match(x = lgran_iden)
 
         if (constant[index_lgran] < lgran_multiple) {
@@ -29,9 +28,7 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
         lgran <- granularity[last_index + 1]
       }
     }
-  }
-
-  else if (!tsibble::is_regular(.data)) {
+  } else if (!tsibble::is_regular(.data)) {
     if (is.null(lgran)) {
       stop("lgran must be provided when the tsibble is irregularly spaced")
     }
@@ -87,17 +84,13 @@ temp_search_gran <- function(.data, ugran = "year", lgran = NULL, filter_in = NU
       # all are temporal units
       if (all(filter_in %in% granularity) == TRUE) {
         gran <- gran_sub
-      }
-
-      else {
+      } else {
         filter_in_sub1 <- filter_in[match(data_names, filter_in)]
         filter_in_sub2 <- filter_in_sub1[!is.na(filter_in_sub1)]
         gran <- c(gran_sub, filter_in_sub2)
       }
     }
-  }
-
-  else if (!is.null(filter_out)) {
+  } else if (!is.null(filter_out)) {
     if (!all(filter_out %in% granularity)) {
       stop("temporal units to be filtered out not found: make sure vector contains units which are between lgran and ugran")
     }

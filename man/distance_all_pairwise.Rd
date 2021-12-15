@@ -41,8 +41,7 @@ sim_panel_data <- sim_panel(
 ) \%>\%
   unnest(c(data))
 sim_panel_quantiles <-
-  compute_quantiles(sim_panel_data
-  )
+  compute_quantiles(sim_panel_data)
 
 distance_all_pairwise(sim_panel_quantiles, lambda = 0.5)
 dist_data <- distance_all_pairwise(sim_panel_quantiles, lambda = 0.7)

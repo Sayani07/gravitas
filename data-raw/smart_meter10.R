@@ -21,7 +21,7 @@ smart_meter_data_raw <- archive_read("data-raw/smart-metre.7z") %>%
 
 set.seed(12345)
 sm_cust <- smart_meter_data_raw %>%
-  distinct(CUSTOMER_ID) %>%
+  dplyr::distinct(CUSTOMER_ID) %>%
   pull(CUSTOMER_ID) %>%
   sample(size = 50)
 
@@ -30,14 +30,14 @@ sm_cust <- smart_meter_data_raw %>%
   rename_all(tolower) %>%
   arrange(customer_id, reading_datetime) %>%
   group_by(customer_id) %>%
-  mutate(
+  dplyr::mutate(
     reading_datetime = case_when(
       duplicated(reading_datetime) ~ reading_datetime + lubridate::hours(1),
       TRUE ~ reading_datetime
     )
   ) %>%
   ungroup() %>%
-  mutate(customer_id = as.character(customer_id)) %>%
+  dplyr::mutate(customer_id = as.character(customer_id)) %>%
   as_tsibble(index = reading_datetime, key = customer_id) %>%
   select(-calendar_key) %>%
   select(
@@ -49,7 +49,7 @@ sm_cust <- smart_meter_data_raw %>%
 
 set.seed(12345)
 sm10 <- sm_cust %>%
-  distinct(customer_id) %>%
+  dplyr::distinct(customer_id) %>%
   dplyr::slice_sample(n = 7)
 
 smart_meter10 <- sm_cust %>% filter(customer_id %in% c(sm10$customer_id, "10006704", "10017936", "10006486"))

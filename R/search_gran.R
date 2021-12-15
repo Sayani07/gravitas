@@ -30,8 +30,7 @@ search_gran <- function(.data,
   # if class is timestamp, then use predefined lookup table, have to state hierarchy table for non-temporal data
   if (any(class(x) %in% c("POSIXct", "POSIXt", "yearmonth", "Date", "yearweek", "yearquarter"))) {
     hierarchy_tbl <- lookup_table
-  }
-  else if (is.null(hierarchy_tbl)) {
+  } else if (is.null(hierarchy_tbl)) {
     stop("Hierarchy table must be provided when class of index of the tsibble is not date-time")
   }
 
@@ -58,8 +57,7 @@ search_gran <- function(.data,
         lgran_multiple <- data_interval[[1]]
         if (lgran_multiple == 1) {
           lowest_unit <- lgran_iden
-        }
-        else if (lgran_multiple > 1) {
+        } else if (lgran_multiple > 1) {
           index_lgran <- units %>% match(x = lgran_iden)
 
           if (convert_fct[index_lgran] < lgran_multiple) {
@@ -68,13 +66,10 @@ search_gran <- function(.data,
           }
           lowest_unit <- units[last_index + 1]
         }
-      }
-
-      else if (!tsibble::is_regular(.data)) {
+      } else if (!tsibble::is_regular(.data)) {
         stop("lowest_unit must be provided when the tsibble is irregularly spaced")
       }
-    }
-    else {
+    } else {
       lowest_unit <- dplyr::first(units)
     }
   }
@@ -134,9 +129,7 @@ search_gran <- function(.data,
         # all are temporal units
         if (all(filter_in %in% units) == TRUE) {
           gran <- gran_sub
-        }
-
-        else {
+        } else {
           filter_in_sub1 <- filter_in[match(data_names, filter_in)]
           filter_in_sub2 <- filter_in_sub1[!is.na(filter_in_sub1)]
           gran <- c(gran_sub, filter_in_sub2)
@@ -168,8 +161,7 @@ search_gran <- function(.data,
 
       if ("wknd_wday" %in% filter_in) {
         gran <- c(gran_out, "wknd_wday")
-      }
-      else {
+      } else {
         gran <- gran_out
       }
     }
@@ -210,8 +202,7 @@ dynamic_gran_convert <- function(lower_gran = NULL, upper_gran = NULL, hierarchy
     }
     if (dynamic_g_order(lower_gran, upper_gran, hierarchy_tbl) == 0) {
       return(1)
-    }
-    else {
+    } else {
       return(convert_fct[index_l] * dynamic_gran_convert(dynamic_g_order(lower_gran, hierarchy_tbl = hierarchy_tbl, order = 1), upper_gran, hierarchy_tbl))
     }
   }

@@ -38,6 +38,21 @@ utils::globalVariables(
     "id",
     "max_pd",
     "threshold",
-    "quantile_prob"
+    "quantile_prob",
+    "id_facet",
+    "id_x",
+    "sim_data",
+    "facet_levels",
+    "id_facet_ref.x",
+    "id_facet_ref.y",
+    "facet_variable",
+    "x_variable",
+    "nfacet",
+    "nx",
+    "id_x_ref.x",
+    "id_x_ref.y"
+
+
+
   )
 )

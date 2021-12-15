@@ -32,7 +32,6 @@ compute_norm_pairwise_max <- function(.data,
                                       dist_ordered = TRUE,
                                       nperm = 100,
                                       lambda = 0.67) {
-
   sd <- NULL
 
   mmpd_raw <- compute_pairwise_max(

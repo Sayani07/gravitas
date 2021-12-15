@@ -16,7 +16,6 @@
 #' library(gravitas)
 #' library(parallel)
 #' library(dplyr)
-
 #' library(tidyr)
 #' sm <- smart_meter10 %>%
 #'   filter(customer_id %in% c("10006414"))
@@ -30,14 +29,16 @@
 #'   harmony_tbl = harmonies,
 #'   response = general_supply_kwh
 #' )
-#' harmonies1 <- harmonies %>% mutate(facet_variable = NA)
+#' harmonies1 <- harmonies %>% dplyr::mutate(facet_variable = NA)
 #'
-#'  h = harmonies1 %>% select(-facet_levels) %>% distinct() %>% mutate(facet_levels = NA)
-#'  all_harmony <- wpd(sm,
+#' h <- harmonies1 %>%
+#'   select(-facet_levels) %>%
+#'   distinct() %>%
+#'   mutate(facet_levels = NA)
+#' all_harmony <- wpd(sm,
 #'   harmony_tbl = h,
 #'   response = general_supply_kwh, nperm = 200, use_perm = TRUE
 #' )
-#'
 #' @export
 wpd <- function(.data,
                 harmony_tbl = NULL,
@@ -48,15 +49,13 @@ wpd <- function(.data,
                 nperm = 20,
                 use_perm = TRUE,
                 create_harmony_data = TRUE) {
-
-
   facet_levels <- x_levels <- sim_data <- NULL
 
   # one row or all harmonies of the harmony table
 
   harmony_data <- create_harmony_tbl_data(.data,
-                                          harmony_tbl = harmony_tbl,
-                                          response = {{ response }}
+    harmony_tbl = harmony_tbl,
+    response = {{ response }}
   )
 
 
@@ -67,9 +66,9 @@ wpd <- function(.data,
       x_variable
     ) %>%
     dplyr::group_keys() %>%
-    left_join(harmony_tbl, by = c("facet_variable", "x_variable"))
+    dplyr::left_join(harmony_tbl, by = c("facet_variable", "x_variable"))
 
-  if(all(is.na(harmony_tbl$facet_levels))){
+  if (all(is.na(harmony_tbl$facet_levels))) {
     harmony_tbl_lev <- harmony_tbl %>% dplyr::mutate(lev = dplyr::if_else(x_levels <= 5, "low", "high"))
   } else {
     harmony_tbl_lev <- harmony_tbl %>%
@@ -81,36 +80,36 @@ wpd <- function(.data,
     lapply(
       harmony_data,
       function(x) {
-d = compute_pairwise_norm_scalar(
-  x,
-  gran_x = "id_x",
-  gran_facet = "id_facet",
-  response = sim_data,
-  quantile_prob,
-  dist_ordered,
-  lambda
-)
-x %>% distinct(facet_variable, x_variable) %>% bind_cols(wpd=d)
+        d <- compute_pairwise_norm_scalar(
+          x,
+          gran_x = "id_x",
+          gran_facet = "id_facet",
+          response = sim_data,
+          quantile_prob,
+          dist_ordered,
+          lambda
+        )
+        x %>%
+          dplyr::distinct(facet_variable, x_variable) %>%
+          dplyr::bind_cols(wpd = d)
       }
-) %>% dplyr::bind_rows()
-
+    ) %>% dplyr::bind_rows()
   } else {
     parallel::mclapply(
       seq_len(nrow(harmony_tbl_lev)),
       function(x) {
         if (harmony_tbl_lev[x, ]$lev == "high") {
-          d = compute_pairwise_norm_scalar(
+          d <- compute_pairwise_norm_scalar(
             harmony_data %>% magrittr::extract2(x),
             gran_x = "id_x",
             gran_facet = "id_facet",
             response = sim_data,
             quantile_prob = quantile_prob,
             dist_ordered = dist_ordered,
-            lambda =lambda
+            lambda = lambda
           )
-        }
-        else {
-          d = compute_pairwise_norm(
+        } else {
+          d <- compute_pairwise_norm(
             harmony_data %>% magrittr::extract2(x),
             gran_x = "id_x",
             gran_facet = "id_facet",
@@ -121,14 +120,19 @@ x %>% distinct(facet_variable, x_variable) %>% bind_cols(wpd=d)
             nperm = nperm
           )
         }
-        wpd_row <- bind_cols(harmony_data %>% magrittr::extract2(x) %>% distinct(x_variable, facet_variable), wpd =  d)
+        wpd_row <- dplyr::bind_cols(harmony_data %>% magrittr::extract2(x) %>%
+          dplyr::distinct(
+            x_variable,
+            facet_variable
+          ),
+        wpd = d
+        )
       }
     ) %>% dplyr::bind_rows()
   }
 }
-  # wpd <- unlist(value) %>%
-  #   tibble::as_tibble()
-  #
-  # harmony_tbl %>%
-  #   dplyr::mutate(wpd = wpd)
-
+# wpd <- unlist(value) %>%
+#   tibble::as_tibble()
+#
+# harmony_tbl %>%
+#   dplyr::mutate(wpd = wpd)

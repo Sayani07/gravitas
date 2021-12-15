@@ -27,8 +27,8 @@ library(distributional)
 sim_varx_normal <- function(nx, nfacet, mean, sd, w) {
   rep(dist_normal((mean + seq(0, nx - 1, by = 1) * w), sd), nfacet)
 }
-sim_varx_normal(2,3,0,1, 1)
-sim_varx_normal(2,3,0,1, -2)
+sim_varx_normal(2, 3, 0, 1, 1)
+sim_varx_normal(2, 3, 0, 1, -2)
 
 sim_panel_data <- sim_panel(
   nx = 2, nfacet = 3,
@@ -50,8 +50,8 @@ compute_quantiles(sim_panel_data) \%>\%
 sim_varf_normal <- function(nx, nfacet, mean, sd, w) {
   rep(dist_normal((mean + seq(0, nfacet - 1, by = 1) * w), sd), each = nx)
 }
-sim_varf_normal(2,3,0,1, 1)
-sim_varf_normal(2,3,0,1, 2)
+sim_varf_normal(2, 3, 0, 1, 1)
+sim_varf_normal(2, 3, 0, 1, 2)
 sim_panel_data <- sim_panel(
   nx = 2, nfacet = 3,
   ntimes = 50,
@@ -77,8 +77,8 @@ sim_varall_normal <- function(nx, nfacet, mean, sd, w) {
     by = 1
   ) * w), sd)
 }
-sim_varall_normal(2,3,0,1, 1)
-sim_varall_normal(2,3,0,1, 2)
+sim_varall_normal(2, 3, 0, 1, 1)
+sim_varall_normal(2, 3, 0, 1, 2)
 sim_panel_data <- sim_panel(
   nx = 2, nfacet = 3,
   ntimes = 5,

@@ -87,7 +87,7 @@ server <- function(input, output, session) {
       "filter_in",
       choices = c(
         fileinput() %>%
-          as_tibble() %>%
+          tibble::as_tibble() %>%
           select_if(~ !is.POSIXlt(.)) %>%
           select_if(~ !is.POSIXct(.)) %>%
           select_if(~ !is.POSIXt(.)) %>%

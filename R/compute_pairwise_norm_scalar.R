@@ -22,7 +22,7 @@
 #' )
 #' # month of the year not working in this setup
 #' @export compute_pairwise_norm_scalar
-  compute_pairwise_norm_scalar <- function(.data,
+compute_pairwise_norm_scalar <- function(.data,
                                          gran_x = NULL,
                                          gran_facet = NULL,
                                          response = NULL,
@@ -43,20 +43,18 @@
   raw <- max(dist_data$trans_value, na.rm = TRUE)
 
   # fitting a log-linear model and normalising for the number of distances
-  #(raw - 0.0027 * log(nrow(dist_data))) %>% round(digits = 3)
+  # (raw - 0.0027 * log(nrow(dist_data))) %>% round(digits = 3)
 
-# for two granularities
-  if(!is.na(gran_facet))
-  {
-    (raw - 1/(23.4 - 0.96 * log(nrow(dist_data))))*320 %>%
+  # for two granularities
+  if (!is.na(gran_facet)) {
+    (raw - 1 / (23.4 - 0.96 * log(nrow(dist_data)))) * 320 %>%
       round(digits = 3)
-
   }
 
-# for one granularity
+  # for one granularity
 
-  else{
-    (raw - 1/(26.09 - 1.87 * log(nrow(dist_data))))*260 %>%
+  else {
+    (raw - 1 / (26.09 - 1.87 * log(nrow(dist_data)))) * 260 %>%
       round(digits = 3)
   }
 }

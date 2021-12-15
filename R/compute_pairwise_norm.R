@@ -34,13 +34,12 @@ compute_pairwise_norm <- function(.data,
                                   lambda = 0.67,
                                   nperm = 100,
                                   seed = 9000) {
-
   sd <- sd1 <- NULL
 
   mmpd_raw <- compute_pairwise_max(
     .data, gran_x, gran_facet,
     {{ response }}, quantile_prob,
-    dist_ordered,lambda
+    dist_ordered, lambda
   )
   .data <- .data %>% dplyr::ungroup()
 
@@ -72,9 +71,10 @@ compute_pairwise_norm <- function(.data,
     }
   ) %>% dplyr::bind_rows()
 
-  sd1 <- if_else(sd(shuffle_data$mmpd_raw, na.rm = TRUE)==0,
-                 1,
-                 sd(shuffle_data$mmpd_raw, na.rm = TRUE))
+  sd1 <- dplyr::if_else(sd(shuffle_data$mmpd_raw, na.rm = TRUE) == 0,
+    1,
+    sd(shuffle_data$mmpd_raw, na.rm = TRUE)
+  )
 
   val <- (mmpd_raw - mean(shuffle_data$mmpd_raw, na.rm = TRUE)) / sd1
   val

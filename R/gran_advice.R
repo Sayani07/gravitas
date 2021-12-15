@@ -191,9 +191,7 @@ gran_warn <- function(.data,
     warning("Granularities chosen are Clashes.
             \nYou might be interested to look at the
             set of harmonies using harmony(data).")
-  }
-
-  else {
+  } else {
     if (any(gran_tbl$nobs < 30)) {
       warning("Some combinations of granularities have less than 30 observations.
             Check gran_obs() to find combinations which have low observations.
@@ -209,8 +207,7 @@ gran_warn <- function(.data,
                   too many categories in ",
         gran1, "and", gran2
       ))
-    }
-    else if (gran1_level > facet_h & gran2_level <= facet_h) {
+    } else if (gran1_level > facet_h & gran2_level <= facet_h) {
       warning(paste(
         "Facetting not recommended:
                   too many categories in ",
@@ -260,8 +257,7 @@ plot_choices <- function(.data,
   if (gran1_level > facet_h) {
     if (gran2_level < x_l) {
       plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
-    }
-    else {
+    } else {
       plots_list <- c("quantile")
     }
   }
@@ -270,65 +266,47 @@ plot_choices <- function(.data,
     gran2_level > x_h) # (high, very high)
     {
       plots_list <- c("quantile")
-    }
-
-  else if (dplyr::between(gran1_level, facet_m, facet_h) &
+    } else if (dplyr::between(gran1_level, facet_m, facet_h) &
     dplyr::between(gran2_level, x_m, x_h)) # (high, high)
     {
       plots_list <- c("quantile")
-    }
-
-  else if (dplyr::between(gran1_level, facet_m, facet_h) &
+    } else if (dplyr::between(gran1_level, facet_m, facet_h) &
     dplyr::between(gran2_level, x_l, x_m)) # (high, medium)
     {
       plots_list <- c("quantile")
-    }
-  else if (dplyr::between(gran1_level, facet_m, facet_h) &
+    } else if (dplyr::between(gran1_level, facet_m, facet_h) &
     gran2_level < x_l) # (high, low)
     {
       plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
-    }
-
-  else if (dplyr::between(gran1_level, facet_l, facet_m) &
+    } else if (dplyr::between(gran1_level, facet_l, facet_m) &
     gran2_level > x_h) # (medium, very high)
     {
       plots_list <- c("quantile")
-    }
-  else if (dplyr::between(gran1_level, facet_l, facet_m) &
+    } else if (dplyr::between(gran1_level, facet_l, facet_m) &
     dplyr::between(gran2_level, x_m, x_h)) # (medium, high)
     {
       plots_list <- c("quantile")
-    }
-
-  else if (dplyr::between(gran1_level, facet_l, facet_m) &
+    } else if (dplyr::between(gran1_level, facet_l, facet_m) &
     dplyr::between(gran2_level, x_l, x_m)) # (medium, medium)
     {
       plots_list <- c("violin", "lv", "quantile", "boxplot")
-    }
-  else if (dplyr::between(gran1_level, facet_l, facet_m) &
+    } else if (dplyr::between(gran1_level, facet_l, facet_m) &
     gran2_level < x_l) # (medium, low)
     {
       plots_list <- c("ridge", "violin", "lv", "quantile", "boxplot")
-    }
-
-
-  else if (gran1_level < facet_l &
+    } else if (gran1_level < facet_l &
     gran2_level > x_h) # (low, very high)
     {
       plots_list <- c("quantile")
-    }
-  else if (gran1_level < facet_l &
+    } else if (gran1_level < facet_l &
     dplyr::between(gran2_level, x_m, x_h)) # (low, high)
     {
       plots_list <- c("violin", "lv", "quantile", "boxplot")
-    }
-
-  else if (gran1_level < facet_l &
+    } else if (gran1_level < facet_l &
     dplyr::between(gran2_level, x_l, x_m)) # (low, medium)
     {
       plots_list <- c("violin", "lv", "quantile", "boxplot")
-    }
-  else if (gran1_level < facet_l & gran2_level < x_l) # (low, low)
+    } else if (gran1_level < facet_l & gran2_level < x_l) # (low, low)
     {
       plots_list <- c("ridge", "violin", "lv", "quantile")
     }

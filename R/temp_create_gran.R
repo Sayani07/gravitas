@@ -93,8 +93,7 @@ temp_create_gran <- function(.data,
             label = TRUE
           ))
         names <- levels(data_mutate$L1)
-      }
-      else if (lgran == "month" & ugran == "year") {
+      } else if (lgran == "month" & ugran == "year") {
         data_mutate <- .data %>%
           dplyr::mutate(L1 = lubridate::month(x,
             label = TRUE
@@ -271,8 +270,7 @@ gran_convert <- function(a,
     }
     if (g_order(a, b) == 0) {
       return(1)
-    }
-    else {
+    } else {
       return(conv_fac[index_gran1] * gran_convert(g_order(a, order = 1), b))
     }
   }
@@ -368,8 +366,7 @@ day_fortnight <- function(x, ...) {
 parse_exp <- function(y) {
   if (y == "1") {
     value <- 1
-  }
-  else {
+  } else {
     value <- parse(text = paste0(y, "(x,...)"))
   }
   return(value)

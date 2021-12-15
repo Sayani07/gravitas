@@ -16,9 +16,9 @@
 #'     filter_in = "wknd_wday",
 #'     filter_out = c("hhour", "fortnight")
 #'   )
-#' #harmonies <- harmonies %>% mutate(facet_variable = NA)
+#' # harmonies <- harmonies %>% mutate(facet_variable = NA)
 #' all_harmony <- create_harmony_tbl_data(sm,
-#'   harmony_tbl = harmonies[1:7,],
+#'   harmony_tbl = harmonies[1:7, ],
 #'   response = general_supply_kwh
 #' )
 #' @export
@@ -26,22 +26,19 @@
 create_harmony_tbl_data <- function(.data,
                                     harmony_tbl = NULL,
                                     response = NULL) {
-
   facet_variable <- x_variable <- NULL
 
-  if(all(!is.na(harmony_tbl$facet_variable))){
+  if (all(!is.na(harmony_tbl$facet_variable))) {
     harmonies_split <- harmony_tbl %>%
       dplyr::group_by(
         facet_variable,
         x_variable
       ) %>%
       dplyr::group_split()
-  }
-
-  else{
+  } else {
     harmonies_split <- harmony_tbl %>%
-      select(-facet_levels) %>%
-      distinct() %>%
+      dplyr::select(-facet_levels) %>%
+      dplyr::distinct() %>%
       dplyr::group_split(x_variable)
   }
 

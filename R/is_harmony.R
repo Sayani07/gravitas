@@ -77,8 +77,7 @@ clash_reason <- function(.data,
     data_count <- gran_tbl(.data, gran1, gran2, hierarchy_tbl)
 
     return(list(paste(gran1, "has", distinct_gran1, "distinct levels and", gran2, "has", distinct_gran2, "distinct levels", "with the following structurally empty combinations. They are structurally empty as the structure of calendar does not allow these combinations to appear together."), clash_combination))
-  }
-  else {
+  } else {
     return(paste("Good Work! You have chosen harmonies. Go ahead and save the plot using your choice of distribution plot"))
   }
 }

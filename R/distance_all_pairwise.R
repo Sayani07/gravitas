@@ -22,8 +22,7 @@
 #' ) %>%
 #'   unnest(c(data))
 #' sim_panel_quantiles <-
-#'   compute_quantiles(sim_panel_data
-#'   )
+#'   compute_quantiles(sim_panel_data)
 #'
 #' distance_all_pairwise(sim_panel_quantiles, lambda = 0.5)
 #' dist_data <- distance_all_pairwise(sim_panel_quantiles, lambda = 0.7)
@@ -42,13 +41,12 @@ distance_all_pairwise <- function(sim_panel_quantiles,
                                   quantile_prob = seq(0.01, 0.99, 0.01),
                                   dist_ordered = TRUE,
                                   lambda = 0.67)
-  # dist_rel = function(x){1-x}
-  # relative distance
-  # additive inverse
-  # weights = function(x){1/x} multiplicative inverse)
-
+                                  # dist_rel = function(x){1-x}
+                                  # relative distance
+                                  # additive inverse
+# weights = function(x){1/x} multiplicative inverse)
 {
-  row_number <- id_facet.x <- id_facet.y <- id_x.x <- remove_row <- id_facet_1 <-  id_x_1 <- id_facet_2 <-  id_x_2 <- value <- id_x.y <-  NULL
+  row_number <- id_facet.x <- id_facet.y <- id_x.x <- remove_row <- id_facet_1 <- id_x_1 <- id_facet_2 <- id_x_2 <- value <- id_x.y <- NULL
 
   dist_type <- NULL
   # ncoly <- sim_panel_quantiles %>%
@@ -67,13 +65,21 @@ distance_all_pairwise <- function(sim_panel_quantiles,
   # }
 
 
-  id_facet_ref <- sim_panel_quantiles$id_facet %>% unique() %>% as_tibble() %>%
-    rlang::set_names("id_facet") %>% mutate(id_facet_ref = row_number())
+  id_facet_ref <- sim_panel_quantiles$id_facet %>%
+    unique() %>%
+    tibble::as_tibble() %>%
+    rlang::set_names("id_facet") %>%
+    dplyr::mutate(id_facet_ref = row_number())
 
-  id_x_ref <-sim_panel_quantiles$id_x %>% unique() %>% as_tibble() %>%
-    rlang::set_names("id_x") %>% mutate(id_x_ref = row_number())
+  id_x_ref <- sim_panel_quantiles$id_x %>%
+    unique() %>%
+    tibble::as_tibble() %>%
+    rlang::set_names("id_x") %>%
+    dplyr::mutate(id_x_ref = row_number())
 
-  vm <- sim_panel_quantiles %>% left_join(id_facet_ref, by = "id_facet") %>% left_join(id_x_ref, by = "id_x") %>%
+  vm <- sim_panel_quantiles %>%
+    dplyr::left_join(id_facet_ref, by = "id_facet") %>%
+    dplyr::left_join(id_x_ref, by = "id_x") %>%
     dplyr::mutate(row_number = row_number())
 
   # differences of all combination of row taking two a time need to be computed
@@ -86,8 +92,8 @@ distance_all_pairwise <- function(sim_panel_quantiles,
     dplyr::left_join(vm, by = c("V1" = "row_number")) %>%
     dplyr::left_join(vm, by = c("V2" = "row_number")) %>%
     dplyr::mutate(dist_type = dplyr::if_else(id_facet_ref.x == id_facet_ref.y,
-                                             "within-facet",
-                                             dplyr::if_else(id_x_ref.x == id_x_ref.y, "between-facet", "uncategorised")
+      "within-facet",
+      dplyr::if_else(id_x_ref.x == id_x_ref.y, "between-facet", "uncategorised")
     )) %>%
     dplyr::filter(dist_type != "uncategorised")
 
@@ -98,7 +104,7 @@ distance_all_pairwise <- function(sim_panel_quantiles,
       dplyr::mutate(
         remove_row =
           dplyr::if_else((dist_type == "within-facet" &
-                            (as.numeric(id_x_ref.y) - as.numeric(id_x_ref.x)) != 1), 1, 0)
+            (as.numeric(id_x_ref.y) - as.numeric(id_x_ref.x)) != 1), 1, 0)
       ) %>%
       dplyr::filter(remove_row == 0)
   }
@@ -134,8 +140,8 @@ distance_all_pairwise <- function(sim_panel_quantiles,
     ) %>%
     dplyr::bind_cols(all_dist) %>%
     dplyr::mutate(trans_value = dplyr::if_else(dist_type == "within-facet",
-                                               lambda * value,
-                                               (1 - lambda) * value
+      lambda * value,
+      (1 - lambda) * value
     ))
 
   return_data
@@ -148,7 +154,7 @@ JS <- function(prob, q, p) {
   ppmf <- pmf(x, prob, p)
   m <- 0.5 * (ppmf + qpmf)
   JS <- suppressWarnings(0.5 * (sum(stats::na.omit(ppmf * log(ppmf / m, base = 2))) +
-                                  sum(stats::na.omit(qpmf * log(qpmf / m, base = 2)))))
+    sum(stats::na.omit(qpmf * log(qpmf / m, base = 2)))))
   return(JS)
 }
 

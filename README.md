@@ -170,7 +170,7 @@ library(tsibble)
 #> 
 #>     id
 cricket_tsibble <- cricket %>%
- mutate(data_index = row_number()) %>%
+ dplyr::mutate(data_index = row_number()) %>%
  as_tsibble(index = data_index)
 
  hierarchy_model <- tibble::tibble(
