@@ -39,7 +39,7 @@ select_harmonies(
 Select harmonies with significant patterns
 }
 \examples{
-library(gravitas)
+\dontrun{
 library(parallel)
 library(dplyr)
 library(tidyr)
@@ -64,4 +64,5 @@ all_harmony2 <- select_harmonies(sm,
   harmony_tbl = harmonies,
   response = general_supply_kwh, nperm = 20, nsamp = 20
 )
+}
 }

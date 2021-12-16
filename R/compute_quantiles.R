@@ -7,8 +7,9 @@
 #' @author Sayani07
 #' @examples
 #' library(ggplot2)
-#' library(tidyverse)
+#' library(dplyr)
 #' library(distributional)
+#' library(tidyr)
 #' sim_panel_data <- sim_panel(
 #'   nx = 3,
 #'   nfacet = 2,

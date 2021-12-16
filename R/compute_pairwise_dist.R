@@ -10,8 +10,7 @@
 #' @return the raw weighted pairwise  within-facet and between-facet distances
 #'
 #' @examples
-#' library(tidyverse)
-#' library(gravitas)
+#' library(dplyr)
 #' library(parallel)
 #' sm <- smart_meter10 %>%
 #'   filter(customer_id %in% c("10017936"))

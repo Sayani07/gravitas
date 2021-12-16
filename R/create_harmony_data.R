@@ -7,7 +7,6 @@
 #' @return a tibble with the harmony pair and response variable
 #'
 #' @examples
-#' library(gravitas)
 #' library(dplyr)
 #' sm <- smart_meter10 %>%
 #'   filter(customer_id %in% c("10017936"))

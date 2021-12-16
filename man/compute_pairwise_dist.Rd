@@ -36,8 +36,7 @@ the raw weighted pairwise  within-facet and between-facet distances
 Title computing all within and between facet distances between quantile categories given a data
 }
 \examples{
-library(tidyverse)
-library(gravitas)
+library(dplyr)
 library(parallel)
 sm <- smart_meter10 \%>\%
   filter(customer_id \%in\% c("10017936"))

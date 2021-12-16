@@ -20,7 +20,6 @@ a tibble with the harmony pair and response variable
 Create data for one harmony pair
 }
 \examples{
-library(gravitas)
 library(dplyr)
 sm <- smart_meter10 \%>\%
   filter(customer_id \%in\% c("10017936"))

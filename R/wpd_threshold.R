@@ -12,7 +12,6 @@
 #' @param create_harmony_data a logical value indicating if data corresponding to harmonies to be created or not
 #'
 #' @examples
-#' library(gravitas)
 #' library(parallel)
 #' library(dplyr)
 #' library(tidyr)

@@ -9,7 +9,7 @@
 #' @param use_perm should permutation approach for normalization be used
 #' @param nsamp number of permutation for computing the threshold
 #' @examples
-#' library(gravitas)
+#' \dontrun{
 #' library(parallel)
 #' library(dplyr)
 #' library(tidyr)
@@ -34,6 +34,7 @@
 #'   harmony_tbl = harmonies,
 #'   response = general_supply_kwh, nperm = 20, nsamp = 20
 #' )
+#' }
 #' @export
 select_harmonies <- function(.data,
                              harmony_tbl = NULL,

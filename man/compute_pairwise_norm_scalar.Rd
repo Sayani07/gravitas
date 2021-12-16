@@ -36,8 +36,7 @@ the weighted pairwise distance normalised through modeling raw distances as a fu
 Title Compute scalar normalised pairwise distances
 }
 \examples{
-library(tidyverse)
-library(gravitas)
+library(dplyr)
 library(parallel)
 sm <- smart_meter10 \%>\%
   dplyr::filter(customer_id \%in\% c("10017936"))

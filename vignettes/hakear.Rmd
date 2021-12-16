@@ -1,0 +1,186 @@
+---
+title: "Selecting and ranking cyclic granularities"
+author: "<i>Sayani Gupta</i <br> <hr>"
+output: 
+  rmarkdown::html_vignette:
+vignette: >
+  %\VignetteIndexEntry{Selecting and ranking cyclic granularities}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+<!-- #Example vignette: 
+https://github.com/njtierney/naniar/blob/master/vignettes/getting-started-w-naniar.Rmd -->
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  collapse = TRUE,
+  comment = "#>",
+  fig.height = 5,
+  fig.width = 8,
+  fig.align = "center",
+  cache = FALSE
+)
+library(gravitas)
+library(dplyr)
+library(ggplot2)
+library(tsibble)
+library(lvplot)
+```
+
+# Introduction
+
+The smart meter data set for eight households in Melbourne were procured by downloading the data from the energy supplier/retailer. The data has been cleaned to form a `tsibble` containing half-hourly electricity consumption from July to December 2019 for each of the households. No behavioral pattern is likely to be discerned from the time plot of energy usage over the entire period, since the plot will have too many observations squeezed in a linear representation. When we zoom into the September 2019 data, some patterns are visible in terms of peaks and troughs, but we do not know if they are regular or what is their period.
+
+ss
+
+Package `gravitas` is not only restricted to temporal data. An application on cricket follows to illustrate how this package can be generalized in other applications. 
+
+
+The Indian Premier League (IPL) is a professional Twenty20 cricket league in India contested by teams representing different cities in India. In a Twenty20 game, the two teams have a single innings each, which is restricted to a maximum of 20 overs. Hence, in this format of cricket, a match will consist of 2 innings, an innings will consist of 20 overs, an over will consist of 6 balls. Therefore, a hierarchy can be construed for this game format.
+
+
+The ball by ball data for IPL season is sourced from [Kaggle](https://www.kaggle.com/josephgpinto/ipl-data-analysis/data). The `cricket` data set in the `gravitas` package summarizes the ball-by-ball data cross overs and contains information for a sample of 214 matches spanning 9 seasons (2008 to 2016). 
+
+```{r readdata}
+library(gravitas)
+library(tibble)
+glimpse(cricket)
+```
+
+
+<!-- Mumbai Indians(MI) and Delhi Daredevils (DD) are two teams that played from 2010 to 2015, in which MI always qualified in top 4, and DD never made it to top 4. It would be interesting to see the difference in their strategies throughout all matches in these seasons. The following two questions might help us partially understand their strategies/performances.  -->
+
+<!-- - Q1: How their run rates vary depending on if they bat first or 2nd? -->
+
+<!-- <!-- - Q2: Is there a chance that they are more likely to win if they bat first? --> 
+<!-- - Q2: Which team is more consistent in their approach in terms of run-rate across different overs of the innings? -->
+
+Although there is no conventional time granularity in cricket, we can still represent the data set `cricket` through a `tsibble`, where each over, which represents an ordering from past to future, can form the index of the tsibble. The hierarchy table would look like the following: 
+
+
+```{r hierarchy2}
+
+hierarchy_model <- tibble::tibble(
+  units = c("index", "over", "inning", "match"),
+  convert_fct = c(1, 20, 2, 1))
+
+knitr::kable(hierarchy_model, format = "markdown")
+
+```
+
+
+```{r crickread}
+library(tsibble)
+cricket_tsibble <- cricket %>%
+  dplyr::mutate(data_index = row_number()) %>%
+  as_tsibble(index = data_index)
+```
+
+
+
+# How run rates vary depending on if a team bats first or second?
+
+We filtered the data for two top teams in IPL - Mumbai Indians and Chennai Super Kings. 
+Each inning of the match is plotted across facets and overs of the innings are plotted across the x-axis. It can be observed from the letter value plot that there is no clear upward shift in runs in the second innings as compared to the first innings. The variability of runs increases as the teams approach towards the end of the innings, as observed through the longer and more distinct letter values.
+  
+```{r cricex}
+cricket_tsibble %>%
+  filter(batting_team %in% c("Mumbai Indians",
+                             "Chennai Super Kings"))%>%
+  prob_plot("inning", "over",
+  hierarchy_model,
+  response = "runs_per_over",
+  plot_type = "lv")
+```
+
+<!-- # Is there a chance that they are more likely to win if they bat first? -->
+
+
+<!-- ```{r} -->
+<!-- cricket_tsibble %>% -->
+<!--   filter(batting_team %in% c("Mumbai Indians", -->
+<!--                              "Chennai Super Kings"))%>% -->
+<!--   mutate(win = if_else(winner_team == "batting_team", 1, 0), -->
+<!--          bat_first = if_else(inning == 1, 1, 0)) %>%  -->
+<!--   prob_plot("bat_first", "win", -->
+<!--   hierarchy_model, -->
+<!--   response = "runs_per_over", -->
+<!--   plot_type = "lv") -->
+<!-- ``` -->
+<br>
+
+# Do wickets and dot balls affect the runs differently across overs?
+
+A dot ball is a delivery bowled without any runs scored off it. The number of dot balls is reflective of the quality of bowling in the game. The number of wickets per over can be thought to be a measure of good fielding. It might be interesting to see how good fielding or bowling effect runs per over differently.
+
+Now, the number of wickets/dot balls per over does not appear in the hierarchy table, but they can still be thought of as granularities since they are constructed for each index (over) of the tsibble. The relationship is not periodic because of the number of wickets that are dismissed or dot balls that are being bowled changes across overs. This is unlike the periodic relationship for units specified in the hierarchy table. 
+
+`gran_advice` is employed to check if it would be appropriate to plot wickets and dot balls across overs. The output suggests that the pairs (dot_balls, over) and (wicket, over) are clashes. It also gives us the number of observations per categorization. The number of observations of 2, 3 or 4 wickets are too few to plot a distribution, implying there are hardly any overs in which 2 or more wickets are dismissed.  The number of observations for more than 5 dot balls in any over is again very low suggesting those are even rarer cases.
+
+
+```{r exwicket}
+cricket_tsibble %>%
+  gran_advice("wicket",
+            "over",
+            hierarchy_model)
+```
+
+```{r exdot}
+cricket_tsibble %>%
+  gran_advice("dot_balls",
+            "over",
+            hierarchy_model)
+```
+
+
+Hence, we filter our data set to retain those overs where the number of wickets or dot balls are less than, or equal to 2. Some pairs of granularities should still be analyzed with caution as suggested by `gran_advice`. Area quantile plots are drawn across overs of the innings, faceted by either number of dot balls (first) or the number of wickets (second). The dark black line represents the median, whereas the orange and green represent the area between the 25th and 75th percentile and between the 10th and 90th percentile respectively. For both the plots, runs per over decreases as we move from left to right, implying runs decreases as the number of dot balls or wickets increases.
+
+
+Moreover, it seems like with zero or one wicket overs, there is still an upward trend in runs across overs of the innings, whereas the same is not true for dot balls more than 0 per over.
+
+
+
+```{r exdotplot}
+cricket_tsibble %>% 
+  filter(dot_balls %in% c(0, 1, 2)) %>%
+  prob_plot("dot_balls",
+            "over",
+            hierarchy_model,
+            response = "runs_per_over",
+            plot_type = "quantile",
+            quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
+
+
+```
+
+```{r exwicketplot}
+cricket_tsibble %>% 
+  filter(wicket %in% c(0, 1)) %>%
+  prob_plot("wicket",
+            "over",
+            hierarchy_model,
+            response = "runs_per_over",
+            plot_type = "quantile",
+            quantile_prob = c(0.1, 0.25, 0.5, 0.75, 0.9))
+
+```
+
+<!-- ```{r} -->
+<!-- cricket_tsibble %>% -->
+<!--   filter(batting_team == "Mumbai Indians") %>%  -->
+<!--     prob_plot("inning", "over", -->
+<!--              hierarchy_model, -->
+<!--              response = "runs_per_over", -->
+<!--              plot_type = "lv") -->
+
+<!-- cricket_tsibble %>% -->
+<!--   filter(batting_team == "Delhi Daredevils") %>%  -->
+<!--     prob_plot("inning", "over", -->
+<!--              hierarchy_model, -->
+<!--              response = "runs_per_over", -->
+<!--              plot_type = "lv") -->
+<!-- ``` -->
+
+
+
+

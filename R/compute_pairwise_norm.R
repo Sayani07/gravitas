@@ -12,8 +12,7 @@
 #' @return weighted pairwise distances normalized using permutation approach
 #'
 #' @examples
-#' library(tidyverse)
-#' library(gravitas)
+#' library(dplyr)
 #' library(parallel)
 #' sm <- smart_meter10 %>%
 #'   dplyr::filter(customer_id %in% c("10017936"))

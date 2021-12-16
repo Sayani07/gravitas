@@ -8,11 +8,11 @@
 #' @author Sayani07
 #' @export distance_all_pairwise
 #' @examples
-#' library(tidyverse)
-#' library(gravitas)
+#' library(dplyr)
 #' library(parallel)
 #' library(ggplot2)
 #' library(distributional)
+#' library(tidyr)
 #' sim_panel_data <- sim_panel(
 #'   nx = 2,
 #'   nfacet = 3,

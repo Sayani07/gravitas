@@ -42,8 +42,7 @@ weighted pairwise distances normalized using permutation approach
 Title Compute normalised mmpd
 }
 \examples{
-library(tidyverse)
-library(gravitas)
+library(dplyr)
 library(parallel)
 sm <- smart_meter10 \%>\%
   dplyr::filter(customer_id \%in\% c("10017936"))

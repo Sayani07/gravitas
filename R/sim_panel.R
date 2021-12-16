@@ -6,8 +6,10 @@
 #' @return the simulated data for the data structure considered
 #' @author Sayani07
 #' @examples
-#' library(tidyverse)
+#' library(dplyr)
 #' library(distributional)
+#' library(tidyr)
+#' library(ggplot2)
 #' sim_varx_normal <- function(nx, nfacet, mean, sd, w) {
 #'   rep(dist_normal((mean + seq(0, nx - 1, by = 1) * w), sd), nfacet)
 #' }

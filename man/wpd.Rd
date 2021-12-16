@@ -43,7 +43,6 @@ chooses compute_pairwise_norm for smaller levels (<=5)
 chooses compute_pairwise_norm_scalar for higher levels (>5)
 }
 \examples{
-library(gravitas)
 library(parallel)
 library(dplyr)
 library(tidyr)

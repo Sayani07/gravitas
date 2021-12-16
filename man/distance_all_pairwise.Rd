@@ -27,11 +27,11 @@ within and between facet distances
 computing all within and between facet distances between quantile categories given quantile data
 }
 \examples{
-library(tidyverse)
-library(gravitas)
+library(dplyr)
 library(parallel)
 library(ggplot2)
 library(distributional)
+library(tidyr)
 sim_panel_data <- sim_panel(
   nx = 2,
   nfacet = 3,

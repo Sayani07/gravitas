@@ -45,7 +45,6 @@ wpd_threshold(
 chooses threshold for a harmony table
 }
 \examples{
-library(gravitas)
 library(parallel)
 library(dplyr)
 library(tidyr)

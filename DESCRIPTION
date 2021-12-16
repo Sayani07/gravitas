@@ -63,7 +63,13 @@ Description: Provides tools for systematically exploring large quantities of
              single-order-up or multiple-order-up granularities, check the
              feasibility of creating plots for any two cyclic granularities
              and recommend probability distributions plots for exploring
-             periodicity in the data.<doi:10.1080/10618600.2021.1938588>
+             periodicity in the data <doi:10.1080/10618600.2021.1938588>
+                 When there are many granularities that can be constructed for 
+             a time period, there will also be too many possible displays to
+             decide which might be the more interesting to display.
+             `gravitas` also provides functions to screen and rank the 
+             possible granularities, and hence choose the most interesting 
+             ones to plot.
 BugReports: https://github.com/Sayani07/gravitas/issues
 License: GPL-3
 URL: https://github.com/Sayani07/gravitas/
