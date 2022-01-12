@@ -80,10 +80,10 @@
 #'   ggplot() +
 #'   geom_boxplot(aes(x = as.factor(id_x), y = sim_data_quantile)) +
 #'   facet_wrap(~id_facet)
+#'
 #' compute_pairwise_max(sim_panel_data, "id_x", "id_facet",
 #'   response = sim_data
 #' )
-#' @export
 sim_panel <- function(nx = 2,
                       nfacet = 3,
                       ntimes = 500,
