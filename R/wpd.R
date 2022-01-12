@@ -3,10 +3,11 @@
 #' chooses compute_pairwise_norm_scalar for higher levels (>5)
 #'
 #' @param .data a tsibble or data with already computed categories
-#' @param harmony_tbl A tibble containing one or more hamronies with facet_variable, x_variable, facet_levels and x_levels
+#' @param harmony_tbl A tibble containing one or more harmonies with facet_variable, x_variable, facet_levels and x_levels
 #' @param dist_ordered if categories are ordered
-#' @param quantile_prob numeric vector of probabilities with value #'in [0,1]  whose sample quantiles are wanted. Default is set to #' "decile" plot
-#' @param lambda value of tuning parameter for computing weighted
+#' @param quantile_prob numeric vector of probabilities with value in [0,1]
+#' whose sample quantiles are wanted. Default is set to percentiles
+#' @param lambda value of tuning parameter
 #' @param nperm number of permutations for normalization
 #' @param response the response variable
 #' @param use_perm should permutation approach for normalization be used

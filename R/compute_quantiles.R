@@ -44,6 +44,7 @@
 #'   ggplot() +
 #'   geom_boxplot(aes(x = as.factor(id_x), y = unlist(sim_data_quantile))) +
 #'   facet_wrap(~id_facet)
+#'@export
 
 compute_quantiles <- function(sim_panel_data,
                               quantile_prob = seq(0.01, 0.99, 0.01)) {

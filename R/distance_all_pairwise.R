@@ -19,8 +19,7 @@
 #'   ntimes = 5,
 #'   sim_dist = distributional
 #'   ::dist_normal(5, 10)
-#' ) %>%
-#'   unnest(c(data))
+#' ) %>% tidyr::unnest(c(data))
 #' sim_panel_quantiles <-
 #'   compute_quantiles(sim_panel_data)
 #'
@@ -49,20 +48,6 @@ distance_all_pairwise <- function(sim_panel_quantiles,
   row_number <- id_facet.x <- id_facet.y <- id_x.x <- remove_row <- id_facet_1 <- id_x_1 <- id_facet_2 <- id_x_2 <- value <- id_x.y <- NULL
 
   dist_type <- NULL
-  # ncoly <- sim_panel_quantiles %>%
-  #   distinct(id_facet) %>%
-  #   nrow()
-  # nrowy <- sim_panel_quantiles %>%
-  #   distinct(id_x) %>%
-  #   nrow()
-
-  # range of i, j and k are defined in this way since some cyclic granularities start from 0 and others from 1 -  it was creating a problem while filtering in m1 and m2, where m2 was leading to a tibble of 0 rows and JS function was failing
-  # if (any((class(sim_panel_quantiles$id_x) %in% c("character", "integer")))) {
-  #   sim_panel_quantiles$id_x <- as.numeric(sim_panel_quantiles$id_x) %>% factor()
-  # }
-  # if (any((class(sim_panel_quantiles$id_facet) %in% c("character", "integer")))) {
-  #   sim_panel_quantiles$id_facet <- as.numeric(sim_panel_quantiles$id_facet) %>% factor()
-  # }
 
 
   id_facet_ref <- sim_panel_quantiles$id_facet %>%
