@@ -39,6 +39,7 @@ library(ggplot2)
 library(patchwork)
 library(scales)
 library(GGally)
+library(gghighlight)
 #library(viridis)
 #remotes::install_github("Sayani07/hakear", force = TRUE)
 library(hakear)
@@ -49,31 +50,31 @@ When there are too many possible displays
 - How to decide which might be the more interesting ones to display?
 - How to rank the most interesting ones?
 
-This implements the distance metric $wpd$ to screen and rank possible granularities as proposed in [@paper-hakear].
+These questions are answered using the functions `wpd()` and `select_harmonies()`
+which implements the distance metric $wpd$ (weighted pairwise distances) proposed in [@paper-hakear]. This vignette shows how to use these functions to screen and rank important cyclic granularities for a data set containing smart meter electricity usage for eight residential households in Melbourne.
 
-# Case study: eight residential households in Melbourne
+# Linear display of electricity usage data
 
-The smart meter data set for eight households in Melbourne were procured by downloading the data from the energy supplier/retailer. The data has been cleaned to form a `tsibble` containing half-hourly electricity consumption from July to December 2019 for each of the households. 
+The smart meter data set for eight households has been cleaned to form a `tsibble` containing half-hourly electricity consumption from July to December 2019 for each of the households. 
 
-- No behavioral pattern could be discerned from the time plot of energy usage over the entire period, since the plot will have too many observations squeezed in a linear representation
-
-- When we zoom into the September 2019 data, some patterns are visible in terms of peaks and troughs, but we do not know if they are regular or what is their period.
-
-- Which patterns are present in these households? How strong are the patterns? Are some houses similar in some periodic patterns but different in others?
-
-(ref:dotplot-8) An ensemble plot with a heatmap (a), line plot (b), parallel coordinate plot (c) to demonstrate energy behavior of the households in different ways. Panel (b) shows the raw demand series for September to highlight the repetitive patterns of energy demand. Panel (a) shows $\wpd$ values across harmonies where a darker color indicates a higher ranking harmony. A significant harmony is shown with an asterisk. For example, ids 7 and 8 have significant patterns across (*hod*, *dow*) and (*dow*, *hod*). Panel (c) is useful for comparing households across harmonies. For example, for the harmony (*dow*-*hod*), ids 1 and 7 have the least and highest $\wpd$ respectively.
-
-
-
-
-```{r linear-scale-8, fig.cap = "Electricity demand for eight households is shown in different facets from Jul-19 to Dec-19 in Fig a and it has been zoomed in for Sep-19 in Fig b, where a week in Sep-19 has been highlighted. From the scales of Fig a, it is apparent that these households vary in consumption levels, but all their periodic patterns have been squeezed with this representation. In fig b, we can see some weekly patterns for the entire period and daily patterns for the highlighted week and there could be some other patterns visible in terms of peaks and troughs, but it is not clear if they are regular or significant.", fig.height=8}
-
+```{r}
 elec <- read_rds(here("data/elec_all-8.rds")) %>% 
   dplyr::filter(date(reading_datetime) >= ymd("20190701"), date(reading_datetime) < ymd("20191231"), meter_id==1) %>% 
   select(-meter_id) %>% 
   rename("id" = "household_id",
          "date_time" = "reading_datetime") %>% 
   mutate(date = date(date_time))
+
+elec %>% select(-date)
+```
+
+The data is plotted in different facets for each id from Jul-19 to Dec-19 in Fig a and it has been zoomed in for Sep-19 in Fig b, where a week in Sep-19 has been highlighted. 
+
+- From the scales of Fig a, it is apparent that these households vary in consumption levels, but all their patterns have been squeezed with this representation.
+
+- In fig b, we can see some weekly patterns for the entire period and daily patterns for the highlighted week 
+
+```{r linear-scale-8}
 
 
 elec_linear <- elec %>% 
@@ -98,7 +99,53 @@ elec_linear + elec_zoom
 
 ```
 
-```{r dotplot-8, fig.cap = "(ref:dotplot-8)", fig.height = 7, eval=FALSE}
+<!-- - No behavioral pattern could be discerned from the time plot of energy usage over the entire period, since the plot will have too many observations squeezed in a linear representation -->
+
+<!-- - When we zoom into the September 2019 data, some patterns are visible in terms of peaks and troughs, but we do not know if they are regular or what is their period. -->
+
+The facts that are not clear from this display are:
+
+(1) which patterns are present in these households?
+(2) How strong are the patterns, are they significant enough to be investigated?
+(3) Are some houses similar in few periodic patterns but different in others?
+
+We answer these questions using the package.
+
+# Show for one id and then say similarly we need to find for other ids using the code below
+
+
+```{r, eval= FALSE, echo = TRUE}
+
+elec_split = elec %>% group_split(id)
+
+elec_select_harmony = parallel::mclapply(1:8, function(x){
+
+  data_id <-  elec_split %>% magrittr::extract2(x) %>%
+    as_tsibble(index = date_time)
+
+  harmonies <- data_id %>%
+    harmony(
+      ugran = "month",
+      filter_in = "wknd_wday",
+      filter_out = c("hhour", "fortnight")
+    )
+  
+  hakear::select_harmonies(data_id,
+                           harmony_tbl = harmonies,
+                           response = kwh
+  )
+}, mc.cores = parallel::detectCores() - 1, mc.preschedule = FALSE, mc.set.seed = FALSE)
+```
+
+# Show the table
+
+Explain
+
+# Show three plots together
+
+Explain
+
+```{r dotplot-8, fig.cap = "(ref:dotplot-8)"}
 
 # OkabeIto color blind friendly scale
 okabeito <- c("#D55E00", "#0072B2","#009E73", "#CC79A7", "#E69F00", "#56B4E9", "#F0E442", "#333333")
@@ -252,7 +299,12 @@ parcoord <- GGally::ggparcoord(data_pcp,
 
 ```
 
+```{r tab-rank-8, dependson="dotplot-8"}
+```
 
 
+# Show two ids (similar or different)
+
+Explain
 
 
