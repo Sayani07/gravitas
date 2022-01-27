@@ -34,6 +34,16 @@ reference:
       - gran_advice
       - starts_with("prob_plot")
 
+  - title: "Refine search for informative granularities"
+    desc: >
+     Identify granularities for which differences between displayed
+     disributions are greatest and rating them in order of importance
+     of capturing maximum variation.
+
+    contents:
+      - wpd
+      - select_harmonies
+
   - title: "Shiny App"
     desc: >
      Runs a shiny app demonstrating functionalities of gravitas

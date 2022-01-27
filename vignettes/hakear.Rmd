@@ -105,13 +105,75 @@ elec_linear + elec_zoom
 
 The facts that are not clear from this display are:
 
-(1) which patterns are present in these households?
-(2) How strong are the patterns, are they significant enough to be investigated?
-(3) Are some houses similar in few periodic patterns but different in others?
+(1) which temporal patterns are present in each of these households?
+(2) How strong are the patterns, are they significant enough for further investigation?
+(3) Are some houses similar in few temporal patterns but different in others?
 
 We answer these questions using the package.
 
-# Show for one id and then say similarly we need to find for other ids using the code below
+Since electricity data generally have a daily, weekly and annual pattern, we consider all cyclic granularities that could be formed using temporal units "hour", "day", "week", "month", "wknd_wday".
+
+## Choose the set of granularities you are interested in using `search_gran()`.
+
+
+```{r echo=TRUE}
+elec %>% search_gran(highest_unit = "month",
+                              filter_out = c("hhour", "fortnight"),
+                     filter_in = "wknd_wday"
+)
+```
+
+## Find the harmonies using harmony()
+
+```{r}
+harmonies <- elec %>%
+  harmony(
+    ugran = "month",
+    filter_in = "wknd_wday",
+    filter_out = c("hhour", "fortnight")
+  )
+```
+
+## Find wpd() for each harmony
+
+```{r select-harmonies-with-facet, echo=TRUE}
+
+sm <- elec %>% filter(id==1)
+
+all_harmony_id1 <- select_harmonies(sm,
+ harmony_tbl = harmonies,
+ response = kwh,
+ nsamp = 20
+)
+
+tab2 <- all_harmony_id1
+tab2
+
+```
+
+## Find wpd() for each granularity
+
+
+```{r select-harmonies-no-facet}
+
+harmonies1 <- harmonies %>% mutate(facet_variable = NA)
+
+h <- harmonies1 %>%
+  select(-facet_levels) %>%
+  distinct() %>%
+  dplyr::mutate(facet_levels = NA)
+
+all_harmony <- select_harmonies(sm,
+ harmony_tbl = h,
+ response = kwh,
+ nsamp = 20
+)
+
+tab1 <- all_harmony %>% select(-facet_variable, -facet_levels)
+tab1
+```
+
+# Find `wpd()` and `select_harmony()` for all ids
 
 
 ```{r, eval= FALSE, echo = TRUE}
@@ -139,11 +201,14 @@ elec_select_harmony = parallel::mclapply(1:8, function(x){
 
 # Show the table
 
-Explain
+```{r}
+
+
+```
+
+
 
 # Show three plots together
-
-Explain
 
 ```{r dotplot-8, fig.cap = "(ref:dotplot-8)"}
 
@@ -300,6 +365,18 @@ parcoord <- GGally::ggparcoord(data_pcp,
 ```
 
 ```{r tab-rank-8, dependson="dotplot-8"}
+elec_rank <- elec_sig_split %>% 
+  select(-c(6, 7, 9, 10)) %>% 
+  pivot_wider(
+    names_from = id,
+    values_from = rank) %>% 
+  rename("facet variable" = "facet_variable",
+         "x variable" = "x_variable") %>% 
+  select(-facet_levels, -x_levels)
+
+elec_rank %>% 
+  kable(format = "markdown", 
+        caption = "Ranking of harmonies for the eight households with significance marked for different thresholds. Rankings are different and at most three harmonies are significant for any household. The number of harmonies to explore are reduced from 42 to 3.")
 ```
 
 
