@@ -123,9 +123,9 @@ elec %>% search_gran(highest_unit = "month",
 )
 ```
 
-## Find the harmonies using harmony()
+## Find the harmonies using `harmony()`
 
-```{r}
+```{r, echo = TRUE}
 harmonies <- elec %>%
   harmony(
     ugran = "month",
@@ -134,7 +134,7 @@ harmonies <- elec %>%
   )
 ```
 
-## Find wpd() for each harmony
+## Find `wpd()` for each harmony for one customer
 
 ```{r select-harmonies-with-facet, echo=TRUE}
 
@@ -151,7 +151,7 @@ tab2
 
 ```
 
-## Find wpd() for each granularity
+## Find `wpd()` for each granularity for one customer
 
 
 ```{r select-harmonies-no-facet}
@@ -173,7 +173,7 @@ tab1 <- all_harmony %>% select(-facet_variable, -facet_levels)
 tab1
 ```
 
-# Find `wpd()` and `select_harmony()` for all ids
+# Find `wpd()` for all ids
 
 
 ```{r, eval= FALSE, echo = TRUE}
@@ -234,7 +234,25 @@ elec_sig_split <- elec_harmony_all %>%
 
 elec_sig_split$significant <- 
   factor(elec_sig_split$significant, levels = c("highest", "high", "medium", "low"))
+```
 
+```{r tab-rank-8, dependson="dotplot-8"}
+elec_rank <- elec_sig_split %>% 
+  select(-c(6, 7, 9, 10)) %>% 
+  pivot_wider(
+    names_from = id,
+    values_from = rank) %>% 
+  rename("facet variable" = "facet_variable",
+         "x variable" = "x_variable") %>% 
+  select(-facet_levels, -x_levels)
+
+elec_rank %>% 
+  kable(format = "markdown", 
+        caption = "Ranking of harmonies for the eight households with significance marked for different thresholds. Rankings are different and at most three harmonies are significant for any household. The number of harmonies to explore are reduced from 42 to 3.")
+```
+
+
+```{r all-in-one}
 heatplot <- elec_sig_split %>% 
   mutate(significance_95 = if_else(significant %in% c("high", "highest"), "*", "")) %>% 
   ggplot(aes(x = x_variable,
@@ -362,21 +380,6 @@ parcoord <- GGally::ggparcoord(data_pcp,
     theme(legend.position='bottom') + 
   theme(panel.spacing = unit(0.2, "lines"))
 
-```
-
-```{r tab-rank-8, dependson="dotplot-8"}
-elec_rank <- elec_sig_split %>% 
-  select(-c(6, 7, 9, 10)) %>% 
-  pivot_wider(
-    names_from = id,
-    values_from = rank) %>% 
-  rename("facet variable" = "facet_variable",
-         "x variable" = "x_variable") %>% 
-  select(-facet_levels, -x_levels)
-
-elec_rank %>% 
-  kable(format = "markdown", 
-        caption = "Ranking of harmonies for the eight households with significance marked for different thresholds. Rankings are different and at most three harmonies are significant for any household. The number of harmonies to explore are reduced from 42 to 3.")
 ```
 
 
