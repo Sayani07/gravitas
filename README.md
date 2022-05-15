@@ -1,6 +1,5 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <!-- badges: start -->
 
 # gravitas <img src="man/figures/logo.png" align="right" height=140/>
@@ -18,22 +17,27 @@ Badge](http://www.r-pkg.org/badges/version/gravitas)](https://cran.r-project.org
 
 ## Overview
 
+Several classes of time deconstructions exist, resulting in alternative
+data segmentation and, as a result, different visualizations that can
+aid in the identification of underlying patterns. Cyclic granularities
+is one form of time deconstruction (like hour of the day, day of the
+week, or special holidays) that can be used to create a visualization of
+the data to explore for periodicities, associations, and anomalies.
 Package `gravitas` provides a tool to examine the probability
-distribution of univariate time series across bivariate temporal
+distribution of univariate time series across bivariate cyclic
 granularities using a range of graphics in `ggplot2` through the
 following:
 
-  - create multiple-order-up circular or aperiodic temporal
-    granularities.
+-   create multiple-order-up cyclic temporal granularities.
 
-  - categorize pairs of granularities as either *harmony* or *clash*,
+-   categorize pairs of granularities as either *harmony* or *clash*,
     where harmonies are pairs of granularities that aid exploratory data
     analysis, and clashes are pairs that are incompatible with each
     other for exploratory analysis.
 
-  - recommending appropriate probability distribution plots of the time
-    series variable across the bivariate granularities based on the
-    levels of the bivariate granularities and their interaction.
+-   recommending appropriate probability distribution plots of the time
+    series variable across the bivariate cyclic granularities based on
+    the levels of the granularities and their interaction.
 
 `gravitas` is not restricted to temporal data. It can be utilized in
 non-temporal cases for which a hierarchical structure can be construed
@@ -63,29 +67,29 @@ devtools::install_github("Sayani07/gravitas")
 
 `gravitas` comes with an interactive webpage, which lets you go through
 the different functionalities of this package. To try it, simply use
-gravitas::run\_app().
+gravitas::run_app().
 
 ## Features
 
-  - Search for a set of all possible temporal granularities with
+-   Search for a set of all possible temporal granularities with
     `search_gran()`
 
-  - Build any temporal granularity with `create_gran()`
+-   Build any temporal granularity with `create_gran()`
 
-  - Check if two temporal granularities are harmonies with
+-   Check if two temporal granularities are harmonies with
     `is_harmony()`
 
-  - Get all possible harmonies with `harmony()`
+-   Get all possible harmonies with `harmony()`
 
-  - Get recommendations on choosing more appropriate distribution plots
+-   Get recommendations on choosing more appropriate distribution plots
     and advice on the interaction between granularities, number of
     observations available for drawing probability distributions for
     chosen granularities with `gran_advice()`
 
-  - Validate if the created granularity matches your already existing
+-   Validate if the created granularity matches your already existing
     column with `validate_gran()`
 
-  - Explore probability distribution across bivariate temporal
+-   Explore probability distribution across bivariate temporal
     granularities with `prob_plot()`
 
 ## Example: temporal case
@@ -95,14 +99,12 @@ from [customer
 trials](https://data.gov.au/dataset/ds-dga-4e21dea3-9b87-4610-94c7-15a8a77907ef/details?q=smart-meter)
 can be explored as follows:
 
-### Search for granularities
+*Search for granularities*
 
 ``` r
 library(gravitas)
 library(dplyr)
-#> Warning: package 'dplyr' was built under R version 3.5.2
 library(ggplot2)
-#> Warning: package 'ggplot2' was built under R version 3.5.2
 library(lvplot)
 
  smart_meter10 %>%
@@ -111,7 +113,7 @@ library(lvplot)
 #> [6] "day_week"
 ```
 
-### Screen harmonies from the search list
+*Screen harmonies from the search list*
 
 ``` r
  smart_meter10 %>%
@@ -119,7 +121,7 @@ library(lvplot)
      ugran = "day",
      filter_in = "wknd_wday"
    )
-#> # A tibble: 7 x 4
+#> # A tibble: 7 × 4
 #>   facet_variable x_variable facet_levels x_levels
 #>   <chr>          <chr>             <int>    <int>
 #> 1 hour_day       hhour_hour           24        2
@@ -131,7 +133,8 @@ library(lvplot)
 #> 7 hour_day       wknd_wday            24        2
 ```
 
-### Visualize probability distribution of the harmony pair (wknd\_wday, hour\_day)
+*Visualize probability distribution of the harmony pair (wknd_wday,
+hour_day)*
 
 Box plots are drawn across hours of the day faceted by weekend/weekday
 for a household in the data `smart_meter10` in the package. It is
@@ -145,13 +148,15 @@ more or less similar.
 
 ``` r
 smart_meter10 %>%
- filter(customer_id == 10017936) %>%
+ filter(customer_id == "10017936") %>%
    prob_plot(
      gran1 = "wknd_wday",
      gran2 = "hour_day",
      response = "general_supply_kwh",
      plot_type = "boxplot") +
    scale_y_sqrt() + scale_x_discrete(breaks = seq(0, 23, 3))
+#> Joining, by = c("wknd_wday", "hour_day")
+#> Joining, by = c("wknd_wday", "hour_day")
 ```
 
 <img src="man/figures/README-probplot-1.png" width="100%" />
@@ -163,12 +168,11 @@ a hierarchy table as follows:
 
 ``` r
 library(tsibble)
-#> Warning: package 'tsibble' was built under R version 3.5.2
 #> 
 #> Attaching package: 'tsibble'
-#> The following object is masked from 'package:dplyr':
+#> The following objects are masked from 'package:base':
 #> 
-#>     id
+#>     intersect, setdiff, union
 cricket_tsibble <- cricket %>%
  dplyr::mutate(data_index = row_number()) %>%
  as_tsibble(index = data_index)
@@ -177,29 +181,29 @@ cricket_tsibble <- cricket %>%
    units = c("index", "ball", "over", "inning", "match"),
    convert_fct = c(1, 6, 20, 2, 1)
  )
- cricket_tsibble %>%
+ cricket_tsibble %>% 
    create_gran(
      "over_inning",
      hierarchy_model
    )
 #> # A tsibble: 8,560 x 12 [1]
-#>    season match_id batting_team bowling_team inning  over wicket dot_balls
-#>     <dbl>    <dbl> <chr>        <chr>         <dbl> <dbl>  <dbl>     <dbl>
-#>  1   2008        2 Chennai Sup… Kings XI Pu…      1     1      0         4
-#>  2   2008        2 Chennai Sup… Kings XI Pu…      1     2      0         2
-#>  3   2008        2 Chennai Sup… Kings XI Pu…      1     3      1         4
-#>  4   2008        2 Chennai Sup… Kings XI Pu…      1     4      0         3
-#>  5   2008        2 Chennai Sup… Kings XI Pu…      1     5      0         3
-#>  6   2008        2 Chennai Sup… Kings XI Pu…      1     6      0         3
-#>  7   2008        2 Chennai Sup… Kings XI Pu…      1     7      1         1
-#>  8   2008        2 Chennai Sup… Kings XI Pu…      1     8      1         3
-#>  9   2008        2 Chennai Sup… Kings XI Pu…      1     9      0         1
-#> 10   2008        2 Chennai Sup… Kings XI Pu…      1    10      0         2
+#>    season match_id batting_team       bowling_team inning  over wicket dot_balls
+#>     <dbl>    <dbl> <chr>              <chr>         <dbl> <dbl>  <dbl>     <dbl>
+#>  1   2008        2 Chennai Super Kin… Kings XI Pu…      1     1      0         4
+#>  2   2008        2 Chennai Super Kin… Kings XI Pu…      1     2      0         2
+#>  3   2008        2 Chennai Super Kin… Kings XI Pu…      1     3      1         4
+#>  4   2008        2 Chennai Super Kin… Kings XI Pu…      1     4      0         3
+#>  5   2008        2 Chennai Super Kin… Kings XI Pu…      1     5      0         3
+#>  6   2008        2 Chennai Super Kin… Kings XI Pu…      1     6      0         3
+#>  7   2008        2 Chennai Super Kin… Kings XI Pu…      1     7      1         1
+#>  8   2008        2 Chennai Super Kin… Kings XI Pu…      1     8      1         3
+#>  9   2008        2 Chennai Super Kin… Kings XI Pu…      1     9      0         1
+#> 10   2008        2 Chennai Super Kin… Kings XI Pu…      1    10      0         2
 #> # … with 8,550 more rows, and 4 more variables: runs_per_over <dbl>,
 #> #   run_rate <dbl>, data_index <int>, over_inning <fct>
 ```
 
-#### Visualize granularities for non-temporal data
+*Visualize granularities for non-temporal data*
 
 Letter value plot of total runs per over is shown overs of the innings
 (x-axis) and innings of the match (facet). It can be observed that there
@@ -209,7 +213,6 @@ approach towards the end of the innings, as observed through the longer
 and more distinct letter values.
 
 ``` r
-
    cricket_tsibble %>%
    filter(batting_team %in% c("Mumbai Indians",
                               "Chennai Super Kings"))%>%
@@ -217,6 +220,8 @@ and more distinct letter values.
    hierarchy_model,
    response = "runs_per_over",
    plot_type = "lv")
+#> Joining, by = c("inning", "over")
+#> Joining, by = c("inning", "over")
 ```
 
 <img src="man/figures/README-cricket-1.png" width="100%" />
@@ -224,10 +229,10 @@ and more distinct letter values.
 ## More information
 
 View the [vignette](https://sayani07.github.io/gravitas/) to get
-started\!
+started!
 
 This package takes tsibble as the data input. Tsibble provides a data
-class of tbl\_ts to represent tidy temporal data. It consists of a time
+class of tbl_ts to represent tidy temporal data. It consists of a time
 index, key and other measured variables in a data-centric format, which
 makes it easier to work with temporal data. To learn more about it,
 please visit <https://tsibble.tidyverts.org/>
@@ -236,8 +241,8 @@ please visit <https://tsibble.tidyverts.org/>
 
 Thanks to PhD supervisors [Prof. Rob J
 Hyndman](https://robjhyndman.com/), [Prof. Dianne
-Cook](http://dicook.org/) and [Google Summer of
-Code 2019](https://summerofcode.withgoogle.com/) mentor [Prof. Antony
+Cook](http://dicook.org/) and [Google Summer of Code
+2019](https://summerofcode.withgoogle.com/) mentor [Prof. Antony
 Unwin](http://rosuda.org/~unwin/) for their support and always leading
 by example. The fine balance of encouraging me to work on my ideas and
 stepping in to help when I need has made the development of this package
