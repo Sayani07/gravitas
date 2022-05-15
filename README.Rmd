@@ -88,6 +88,7 @@ library(gravitas)
 library(dplyr)
 library(ggplot2)
 library(lvplot)
+library(ggpubr)
 
  smart_meter10 %>%
    search_gran(highest_unit = "week")
@@ -105,18 +106,75 @@ _Screen harmonies from the search list_
 
 _Visualize probability distribution of the harmony pair (wknd_wday, hour_day)_
 
-Box plots are drawn across hours of the day faceted by weekend/weekday for a household in the data `smart_meter10` in the package. It is interesting to see the difference in energy consumption in the early morning hours (1 am - 7 am) for weekdays and weekends. The interquartile range is the same in these hours, however, median energy consumption for these hours is higher for weekends compared to weekdays. The distribution for the rest of the day is not significantly different for weekdays and weekends, implying their energy behavior after 7 am remains more or less similar.
+Energy consumption of a single customer shown with different distribution displays, and granularity arrangements: hour of the day; and weekday/weekend. **a** The side-by-side boxplots make the comparison between day types easier, and suggest that there is generally lower energy use on the weekend. Interestingly, this is the opposite to what might be expected. Plots **b**, **c** examine the temporal trend of consumption over the course of a day, separately for the type of day. The area quantile emphasizes time, and indicates that median consumption shows prolonged high usage in the morning on weekdays. The violin plot emphasizes subtler distributional differences across hours: morning use is bimodal.
 
  
-```{r probplot} 
-smart_meter10 %>%
- filter(customer_id == "10017936") %>%
-   prob_plot(
-     gran1 = "wknd_wday",
-     gran2 = "hour_day",
-     response = "general_supply_kwh",
-     plot_type = "boxplot") +
-   scale_y_sqrt() + scale_x_discrete(breaks = seq(0, 23, 3))
+```{r probplot, message=FALSE} 
+cust2_quantile <- smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>%
+  prob_plot(
+    "wknd_wday", "hour_day",
+    response = "general_supply_kwh",
+    plot_type = "quantile",
+    symmetric = TRUE,
+    quantile_prob = c(0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99)
+  ) +
+  scale_y_sqrt() +
+  ylab("") +
+  # ylab("electricity demand [KWh]") +
+  xlab("hours of the day") +
+  ggtitle("") +
+  theme_minimal() +
+  theme(panel.border = element_rect(colour = "#E0E0E0", fill = NA)
+  )
+
+cust2_violin <- smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>%
+  prob_plot(
+    "wknd_wday",  "hour_day",
+    response = "general_supply_kwh",
+    plot_type = "violin"
+  ) +
+  scale_y_sqrt() +
+  ylab("") +
+  xlab("hours of the day") +
+  ggtitle("") +
+  scale_x_discrete(breaks = seq(0, 23, 5)) +
+  theme_minimal() +
+  theme(panel.border = element_rect(colour = "#E0E0E0", fill = NA)
+  )
+
+cust2_box <- smart_meter10 %>%
+  filter(customer_id %in% c(10017936)) %>%
+  prob_plot(
+    "hour_day", "wknd_wday",
+    response = "general_supply_kwh",
+    plot_type = "boxplot"
+  ) +
+  xlab("") +
+  ylab("") +
+  ggtitle("") +
+  scale_x_discrete(labels = c("wday", "wend")) +
+  scale_y_sqrt() +
+  theme(axis.text.x = element_text(size = 7)) +
+  theme_minimal() +
+ theme(panel.border = element_rect(colour = "#E0E0E0", fill = NA)
+)
+
+gg_fig <- ggarrange(
+  cust2_box,
+  ggarrange(
+    cust2_quantile, cust2_violin,
+    nrow = 2, labels = c("b", "c")
+  ),
+  ncol = 2, labels = "a"
+)
+
+gg_fig %>%
+  annotate_figure(
+  left = text_grob("electricity demand [KWh]", rot = 90)
+)
+
 ```    
 
 ## Example: non-temporal case

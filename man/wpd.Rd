@@ -47,8 +47,7 @@ chooses compute_pairwise_norm_scalar for higher levels (>5)
 library(parallel)
 library(dplyr)
 library(tidyr)
-sm <- smart_meter10 \%>\%
-  filter(customer_id \%in\% c("10006414"))
+sm <- smart_meter10 \%>\% dplyr::filter(customer_id \%in\% c("10006414"))
 harmonies <- sm \%>\%
   harmony(
     ugran = "year",

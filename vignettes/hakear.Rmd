@@ -42,7 +42,6 @@ library(GGally)
 library(gghighlight)
 #library(viridis)
 #remotes::install_github("Sayani07/hakear", force = TRUE)
-library(hakear)
 ```
 
 When there are too many possible displays
@@ -347,7 +346,8 @@ data_pcp <- elec_harmony_all %>%
   mutate(comb = paste(facet_variable, x_variable, sep = "-")) %>% 
   left_join(data_order) %>% 
   arrange(desc(m)) %>% 
-  pivot_wider(-c(2, 3, 4, 5, 7, 8, 9, 10), 
+  select(-c(2, 3, 4, 5, 7, 8, 10)) %>% 
+  pivot_wider(., 
               names_from = comb, 
               values_from = wpd) 
 
