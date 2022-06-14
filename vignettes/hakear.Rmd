@@ -1,6 +1,5 @@
 ---
 title: "Selecting and ranking cyclic granularities"
-author: "<i>Sayani Gupta</i <br> <hr>"
 output: 
   rmarkdown::html_vignette:
 vignette: >
@@ -174,7 +173,6 @@ tab1
 
 # Find `wpd()` for all ids
 
-
 ```{r, eval= FALSE, echo = TRUE}
 
 elec_split = elec %>% group_split(id)
@@ -198,16 +196,6 @@ elec_select_harmony = parallel::mclapply(1:8, function(x){
 }, mc.cores = parallel::detectCores() - 1, mc.preschedule = FALSE, mc.set.seed = FALSE)
 ```
 
-# Show the table
-
-```{r}
-
-
-```
-
-
-
-# Show three plots together
 
 ```{r dotplot-8, fig.cap = "(ref:dotplot-8)"}
 
@@ -249,6 +237,9 @@ elec_rank %>%
   kable(format = "markdown", 
         caption = "Ranking of harmonies for the eight households with significance marked for different thresholds. Rankings are different and at most three harmonies are significant for any household. The number of harmonies to explore are reduced from 42 to 3.")
 ```
+
+
+Table \ref{tab:tab-rank-8} shows the rank of the harmonies for different households. The rankings are different for different households, which is a reflection of their varied behaviors. Most importantly, there are at most three harmonies that are significant for any household. This is a huge reduction in the number of potential harmonies to explore.
 
 
 ```{r all-in-one}
@@ -381,6 +372,8 @@ parcoord <- GGally::ggparcoord(data_pcp,
   theme(panel.spacing = unit(0.2, "lines"))
 
 ```
+
+According to Figure \ref{fig:dotplot-8}(c), for the harmony pair (*dow*-*hod*), household id 7 has the greatest value of $\wpd$, while id 1 has the least. From Table \ref{tab:tab-rank-8} it can be seen that the harmony pair (*dow*, *hod*) is important for id 7, however it has been labeled as an inconsequential pair for id 1. The distribution of energy demand for both of these households, with *dow* as the facet and *hod* on the x-axis, may help explain the choice. Figure \ref{fig:gravitas-plot-8} demonstrates that for id 7, the median (black) and quartile deviation (orange) of energy consumption fluctuates for most hours of the day and days of the week, while for id 1, daily patterns are more consistent within weekdays and weekends. As a result, for id 1, it is more appropriate to examine the distributional difference solely across (*dow*, *wdwnd*), which has been rated higher in Table \ref{tab:tab-rank-8}.
 
 
 # Show two ids (similar or different)

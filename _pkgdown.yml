@@ -65,5 +65,7 @@ navbar:
         href: articles/gravitas_vignette.html
       - text: Non-temporal study
         href: articles/cricket.html
+      - text: Selecting and ranking cyclic granularities
+        href: articles/hakear.html
   - text: Reference
     href: reference/index.html
