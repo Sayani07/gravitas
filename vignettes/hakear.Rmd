@@ -121,7 +121,7 @@ elec %>% search_gran(highest_unit = "month",
 )
 ```
 
-## Find the harmonies using `harmony()`
+## Find the = using `harmony()`
 
 ```{r, echo = TRUE}
 harmonies <- elec %>%
@@ -182,12 +182,6 @@ elec_select_harmony = parallel::mclapply(1:8, function(x){
   data_id <-  elec_split %>% magrittr::extract2(x) %>%
     as_tsibble(index = date_time)
 
-  harmonies <- data_id %>%
-    harmony(
-      ugran = "month",
-      filter_in = "wknd_wday",
-      filter_out = c("hhour", "fortnight")
-    )
   
   hakear::select_harmonies(data_id,
                            harmony_tbl = harmonies,
@@ -222,6 +216,7 @@ elec_sig_split <- elec_harmony_all %>%
 elec_sig_split$significant <- 
   factor(elec_sig_split$significant, levels = c("highest", "high", "medium", "low"))
 ```
+
 
 ```{r tab-rank-8, dependson="dotplot-8"}
 elec_rank <- elec_sig_split %>% 
@@ -373,11 +368,11 @@ parcoord <- GGally::ggparcoord(data_pcp,
 
 ```
 
-According to Figure \ref{fig:dotplot-8}(c), for the harmony pair (*dow*-*hod*), household id 7 has the greatest value of $\wpd$, while id 1 has the least. From Table \ref{tab:tab-rank-8} it can be seen that the harmony pair (*dow*, *hod*) is important for id 7, however it has been labeled as an inconsequential pair for id 1. The distribution of energy demand for both of these households, with *dow* as the facet and *hod* on the x-axis, may help explain the choice. Figure \ref{fig:gravitas-plot-8} demonstrates that for id 7, the median (black) and quartile deviation (orange) of energy consumption fluctuates for most hours of the day and days of the week, while for id 1, daily patterns are more consistent within weekdays and weekends. As a result, for id 1, it is more appropriate to examine the distributional difference solely across (*dow*, *wdwnd*), which has been rated higher in Table \ref{tab:tab-rank-8}.
+According to Figure \ref{fig:dotplot-8}(c), for the harmony pair (*dow*-*hod*), household id 7 has the greatest value of $wpd$, while id 1 has the least. From Table \ref{tab:tab-rank-8} it can be seen that the harmony pair (*dow*, *hod*) is important for id 7, however it has been labeled as an inconsequential pair for id 1. The distribution of energy demand for both of these households, with *dow* as the facet and *hod* on the x-axis, may help explain the choice. Figure \ref{fig:gravitas-plot-8} demonstrates that for id 7, the median (black) and quartile deviation (orange) of energy consumption fluctuates for most hours of the day and days of the week, while for id 1, daily patterns are more consistent within weekdays and weekends. As a result, for id 1, it is more appropriate to examine the distributional difference solely across (*dow*, *wdwnd*), which has been rated higher in Table \ref{tab:tab-rank-8}.
 
 
-# Show two ids (similar or different)
+<!-- # Show two ids (similar or different) -->
 
-Explain
+<!-- Explain -->
 
 
